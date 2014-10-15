@@ -4,7 +4,7 @@ BackstopJS
 **Catch CSS curve balls.**
 
 
-*PROJECT CODE COMING SOON!*
+*PROJECT COMING OCT 17th!*
 
 ---
 
