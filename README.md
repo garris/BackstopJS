@@ -1,4 +1,7 @@
 BackstopJS
 ==========
 
-For the CSS bug you missed.
+Catch the CSS bugs you didn't see.
+
+
+*Coming this week.*
