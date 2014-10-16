@@ -17,18 +17,19 @@ var grabConfigs = config.grabConfigs;
 
 var compareConfig = {testPairs:[]};
 
-var casper = require("casper").create();
+var casper = require("casper").create({
+	// clientScripts: ["jquery.js"] //lets try not to use this it's friggin 2014 already people...
+});
 
 casper.on('resource.received', function(resource) {
 		//casper.echo(resource.url);
 });
 
 casper.on("page.error", function(msg, trace) {
-	// this.echo("Remote Error >    " + msg, "error");
-	// this.echo("file:     " + trace[0].file, "WARNING");
-	// this.echo("line:     " + trace[0].line, "WARNING");
-	// this.echo("function: " + trace[0]["function"], "WARNING");
-	//errors.push(msg);
+	this.echo("Remote Error >    " + msg, "error");
+	this.echo("file:     " + trace[0].file, "WARNING");
+	this.echo("line:     " + trace[0].line, "WARNING");
+	this.echo("function: " + trace[0]["function"], "WARNING");
 });
 
 casper.on('remote.message', function(message) {
@@ -72,14 +73,22 @@ function capturePageSelectors(url,grabConfigs,viewports,bitmaps_reference,bitmap
 			casper.then(function() {
 				this.echo('Current location is ' + grabConfig.url, 'info');
 
-		    //var src = this.evaluate(function() {return document.body.outerHTML; });
-		    //this.echo(src);
+				//var src = this.evaluate(function() {return document.body.outerHTML; });
+				//this.echo(src);
 			});
 
 			this.then(function(){
 
 				this.echo('Screenshots for ' + vp.name + ' (' + vp.viewport.width + 'x' + vp.viewport.height + ')', 'info');
 
+				//HIDE SELECTORS WE WANT TO AVOID
+				grabConfig.ignoreSelectors.forEach(function(o,i,a){
+					casper.evaluate(function(o){
+						document.querySelector(o).style.visibility='hidden';
+					},o);
+				});
+
+				//CREATE SCREEN SHOTS AND TEST COMPARE CONFIGURATION (CONFIG FILE WILL BE SAVED WHEN THIS PROCESS RETURNS)
 				grabConfig.selectors.forEach(function(o,i,a){
 					var cleanedSelectorName = o.replace(/[^a-zA-Z\d]/,'');//remove anything that's not a letter or a number 				
 					//var cleanedUrl = grabConfig.url.replace(/[^a-zA-Z\d]/,'');//remove anything that's not a letter or a number
@@ -114,8 +123,8 @@ function capturePageSelectors(url,grabConfigs,viewports,bitmaps_reference,bitmap
 
 
 //========================
-//this query should be moved to the prior process vvv
-//isReference should be passed as env parameter
+//this query should be moved to the prior process
+//`isReference` could be better passed as env parameter
 var exists = fs.exists(bitmaps_reference);
 var isReference = false;
 if(!exists){isReference=true; console.log('CREATING NEW REFERENCE FILES')}
@@ -132,8 +141,8 @@ capturePageSelectors(
 );
 
 casper.run(function(){
-  complete();
-  this.exit();
+	complete();
+	this.exit();
 });
 
 function complete(){

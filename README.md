@@ -4,7 +4,7 @@ BackstopJS
 **Catch CSS curve balls.**
 
 
-BackstopJS makes it easy to test your responsive web UI by visually comparing DOM screenshots at various viewport sizes.
+BackstopJS tests your responsive web UI by visually comparing DOM screenshots at various viewport sizes.
 
 **Heres the process:**
 
@@ -13,16 +13,17 @@ BackstopJS makes it easy to test your responsive web UI by visually comparing DO
 3. Make some changes to your CSS or add new DOM components.
 4. Run a test. Any changes effecting your layout it will show up in the report!
 
+    
 **Backstory:** BackstopJS is basically a wrapper around the very fabulous [Resemble.js](https://github.com/Huddle/Resemble.js) component written by [James Cryer](https://github.com/jamescryer). Other implementations of Resemble.js, namely [PhantomCSS](https://github.com/Huddle/PhantomCSS) require writing long form [CasperJS](http://casperjs.org) tests. This is of course great for testing complex UI interactions – but kind of cumbersome for more simple applications like static CMS templates or other higher level sanity testing. 
 
 BackstopJS may be just the thing if you develop custom Wordpress, Drupal or other CMS templates.  Or not, [Let me know what you think!](https://twitter.com/garris)
 
-<a href="https://twitter.com/garris" class="twitter-follow-button" data-show-count="false">Follow @garris</a>
+<strong><a href="https://twitter.com/garris" class="twitter-follow-button" data-show-count="false">Follow @garris</a></strong>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 
 
 
-
+...
 
 
 ---
@@ -54,38 +55,39 @@ BackstopJS may be just the thing if you develop custom Wordpress, Drupal or othe
 
 see capture/config.json
 
-    {
-    
-    	"viewports" : [
-    		{
-    		 "name": "phone",
-    		 "viewport": {"width": 320, "height": 480}
-    		}
-    		,{
-    		 "name": "tablet_v",
-    		 "viewport": {"width": 568, "height": 1024}
-    		}
-    		,{
-    		 "name": "tablet_h",
-    		 "viewport": {"width": 1024, "height": 768}
-    		}
-    	]
-    	,
-    	"grabConfigs" : [
-    		{
-    			"testName":"http://getbootstrap.com"
-    			,"url":"http://getbootstrap.com"
-    			,"selectors":[
-    				"header"
-    				,"main"
-    				,"body .bs-docs-featurette:nth-of-type(1)"
-    				,"body .bs-docs-featurette:nth-of-type(2)"
-    				,"footer"
-    			]
-    		}
-    	]
-    
-    }
+	{
+		"viewports" : [
+			{
+			 "name": "phone",
+			 "viewport": {"width": 320, "height": 480}
+			}
+			,{
+			 "name": "tablet_v",
+			 "viewport": {"width": 568, "height": 1024}
+			}
+			,{
+			 "name": "tablet_h",
+			 "viewport": {"width": 1024, "height": 768}
+			}
+		]
+		,"grabConfigs" : [
+			{
+				"testName":"http://getbootstrap.com"
+				,"url":"http://getbootstrap.com"
+				,"ignoreSelectors": [
+					"#carbonads-container"
+				]
+				,"selectors":[
+					"header"
+					,"main"
+					,"body .bs-docs-featurette:nth-of-type(1)"
+					,"body .bs-docs-featurette:nth-of-type(2)"
+					,"footer"
+					,"body"
+				]
+			}
+		]
+	}
     
 
 
@@ -105,3 +107,27 @@ This task will create a (or update an existing) `bitmaps_reference` directory wi
 This task will create a new set of bitmaps in `bitmaps_test/<timestamp>/`.  
 
 Once the test bitmaps are generated, a report comparing the most recent test bitmaps against the current reference bitmaps will run. Significant differences will be detected and shown. 
+
+
+### usage notes
+
+
+
+The test comparison report was written in Angular.js and requires a running HTTP server instance.  This instance is auto-started after a test is run.  The server is also auto-stopped after 15 minutes so you don't have to go worrying about bloaty node processes running all over the place.
+
+To manually start the server...
+
+    $ gulp start
+    
+...and to manually stop theres...
+
+    $ gulp stop
+    
+    
+
+
+
+
+
+
+**fin.**

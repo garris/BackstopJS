@@ -45,8 +45,9 @@ var watcher = null;
 
 
 //FIRST CLEAN REFERENCE DIR.  THEN TEST
-gulp.task('reference', ['clean','bless','test'], function() {
-	console.log('reference has run.')
+gulp.task('reference', ['clean','bless'], function() {
+		setTimeout(function(){gulp.run('test')},100);
+		console.log('reference has run.')
 });
 
 
@@ -80,34 +81,44 @@ gulp.task('test', function () {
 		return;
 	}
 
-	// Test for capture config cache -- create on fail.
-	if(fs.existsSync(captureConfigFileNameCache)){
-		// console.log('\n'+captureConfigFileNameCache+' file exists.\n')
-
-		//compare config against cache 
-		var config = fs.readFileSync(captureConfigFileName, 'utf8');
-		var cache = fs.readFileSync(captureConfigFileNameCache, 'utf8');
-		if(config !== cache){
-			console.log('\nIt looks like the reference configuration has been changed since last reference batch.');
-			console.log('Please run `$ gulp reference` to generate a fresh set of reference files')
-			console.log('or run `$ gulp bless` then `$ gulp test` to enable testing with this configuration.\n\n')
-			return;
-		}else{
-			// console.log('\n The two files are the same. Running test.\n')
-		}
-	}else{
-		// console.log('\nNo captureConfigFileNameCache file exists. Creating.\n')
-		gulp.run('bless');
-	}
 
 	// genReferenceMode contains the state which switches test or reference file generation modes
 	var genReferenceMode = false;
 
-
+	// THIS IS THE BLOCK WHICH SWITCHES US INTO "GENERATE REFERENCE" MODE.  I'D RATHER SOMETHING MORE EXPLICIT THO. LIKE AN ENV PARAMETER...  
 	if(!fs.existsSync(bitmaps_reference)){
-		console.log('\n*** No bitmaps_reference directory found. Generating reference files.***\n');
+		console.log('\n*** Generating reference files.***\n');
 		genReferenceMode = true;
 	}
+
+	//IF WE ARE IN TEST GENERATION MODE -- LOOK FOR CHANGES IN THE 'CAPTURE CONFIG'.
+	if(!genReferenceMode){	
+	
+		// TEST FOR CAPTURE CONFIG CACHE -- CREATE IF ONE DOESN'T EXIST (If a .cache file does not exist it is likely a scenario where the user is testing shared reference files in a new context. e.g different dev env.).
+		if(fs.existsSync(captureConfigFileNameCache)){
+
+			//COMPARE CAPTURE CONFIG AGAINST THE CACHED VERSION. PROMPT IF DIFFERENT. 
+			var config = fs.readFileSync(captureConfigFileName, 'utf8');
+			var cache = fs.readFileSync(captureConfigFileNameCache, 'utf8');
+			if(config !== cache){
+				console.log('\nIt looks like the reference configuration has been changed since last reference batch.');
+				console.log('Please run `$ gulp reference` to generate a fresh set of reference files')
+				console.log('or run `$ gulp bless` then `$ gulp test` to enable testing with this configuration.\n\n')
+				return;
+			}
+
+		}else{
+			gulp.run('bless');
+		}
+	
+	}
+
+
+
+
+
+
+	// AT THIS POINT WE ARE EITHER RUNNING IN "TEST" OR "REFERENCE" MODE 
 
 	var tests = ['capture/genBitmaps.js'];
 	
@@ -144,9 +155,8 @@ gulp.task('test', function () {
 
 
 
-gulp.task('report',['startServer'],function(){
-	setTimeout(function(){gulp.run('openReport')},100)
-	setTimeout(function(){gulp.run('stopServer')},5000)
+gulp.task('report',['start'],function(){
+	setTimeout(function(){gulp.run('openReport')},100);
 })
 
 
@@ -167,8 +177,10 @@ gulp.task("openReport", function(){
 
 
 
-gulp.task("startServer",function(){
 
+//THIS WILL START THE LOCAL WEBSERVER
+//IF ALREADY STARTED IT WILL NOT TRY TO START AGAIN
+gulp.task("start",function(){
 
 	fs.readFile(serverPidFile, function(err,data){
 
@@ -197,7 +209,7 @@ gulp.task("startServer",function(){
 
 
 
-gulp.task("stopServer",function(){
+gulp.task("stop",function(){
 
 	fs.readFile(serverPidFile, function(err,pid){
 		if(pid){
