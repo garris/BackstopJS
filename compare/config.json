@@ -2,105 +2,105 @@
   "testPairs": [
     {
       "reference": "bitmaps_reference/0_0_header_0_phone.png",
-      "test": "bitmaps_test/20141015-174251/0_0_header_0_phone.png",
+      "test": "bitmaps_test/20141015-224247/0_0_header_0_phone.png",
       "selector": "header",
       "fileName": "0_0_header_0_phone.png",
       "testName": "http://getbootstrap.com"
     },
     {
       "reference": "bitmaps_reference/0_1_main_0_phone.png",
-      "test": "bitmaps_test/20141015-174251/0_1_main_0_phone.png",
+      "test": "bitmaps_test/20141015-224247/0_1_main_0_phone.png",
       "selector": "main",
       "fileName": "0_1_main_0_phone.png",
       "testName": "http://getbootstrap.com"
     },
     {
       "reference": "bitmaps_reference/0_2_body.bs-docs-featurette:nth-of-type(1)_0_phone.png",
-      "test": "bitmaps_test/20141015-174251/0_2_body.bs-docs-featurette:nth-of-type(1)_0_phone.png",
+      "test": "bitmaps_test/20141015-224247/0_2_body.bs-docs-featurette:nth-of-type(1)_0_phone.png",
       "selector": "body .bs-docs-featurette:nth-of-type(1)",
       "fileName": "0_2_body.bs-docs-featurette:nth-of-type(1)_0_phone.png",
       "testName": "http://getbootstrap.com"
     },
     {
       "reference": "bitmaps_reference/0_3_body.bs-docs-featurette:nth-of-type(2)_0_phone.png",
-      "test": "bitmaps_test/20141015-174251/0_3_body.bs-docs-featurette:nth-of-type(2)_0_phone.png",
+      "test": "bitmaps_test/20141015-224247/0_3_body.bs-docs-featurette:nth-of-type(2)_0_phone.png",
       "selector": "body .bs-docs-featurette:nth-of-type(2)",
       "fileName": "0_3_body.bs-docs-featurette:nth-of-type(2)_0_phone.png",
       "testName": "http://getbootstrap.com"
     },
     {
       "reference": "bitmaps_reference/0_4_footer_0_phone.png",
-      "test": "bitmaps_test/20141015-174251/0_4_footer_0_phone.png",
+      "test": "bitmaps_test/20141015-224247/0_4_footer_0_phone.png",
       "selector": "footer",
       "fileName": "0_4_footer_0_phone.png",
       "testName": "http://getbootstrap.com"
     },
     {
       "reference": "bitmaps_reference/0_0_header_1_tablet_v.png",
-      "test": "bitmaps_test/20141015-174251/0_0_header_1_tablet_v.png",
+      "test": "bitmaps_test/20141015-224247/0_0_header_1_tablet_v.png",
       "selector": "header",
       "fileName": "0_0_header_1_tablet_v.png",
       "testName": "http://getbootstrap.com"
     },
     {
       "reference": "bitmaps_reference/0_1_main_1_tablet_v.png",
-      "test": "bitmaps_test/20141015-174251/0_1_main_1_tablet_v.png",
+      "test": "bitmaps_test/20141015-224247/0_1_main_1_tablet_v.png",
       "selector": "main",
       "fileName": "0_1_main_1_tablet_v.png",
       "testName": "http://getbootstrap.com"
     },
     {
       "reference": "bitmaps_reference/0_2_body.bs-docs-featurette:nth-of-type(1)_1_tablet_v.png",
-      "test": "bitmaps_test/20141015-174251/0_2_body.bs-docs-featurette:nth-of-type(1)_1_tablet_v.png",
+      "test": "bitmaps_test/20141015-224247/0_2_body.bs-docs-featurette:nth-of-type(1)_1_tablet_v.png",
       "selector": "body .bs-docs-featurette:nth-of-type(1)",
       "fileName": "0_2_body.bs-docs-featurette:nth-of-type(1)_1_tablet_v.png",
       "testName": "http://getbootstrap.com"
     },
     {
       "reference": "bitmaps_reference/0_3_body.bs-docs-featurette:nth-of-type(2)_1_tablet_v.png",
-      "test": "bitmaps_test/20141015-174251/0_3_body.bs-docs-featurette:nth-of-type(2)_1_tablet_v.png",
+      "test": "bitmaps_test/20141015-224247/0_3_body.bs-docs-featurette:nth-of-type(2)_1_tablet_v.png",
       "selector": "body .bs-docs-featurette:nth-of-type(2)",
       "fileName": "0_3_body.bs-docs-featurette:nth-of-type(2)_1_tablet_v.png",
       "testName": "http://getbootstrap.com"
     },
     {
       "reference": "bitmaps_reference/0_4_footer_1_tablet_v.png",
-      "test": "bitmaps_test/20141015-174251/0_4_footer_1_tablet_v.png",
+      "test": "bitmaps_test/20141015-224247/0_4_footer_1_tablet_v.png",
       "selector": "footer",
       "fileName": "0_4_footer_1_tablet_v.png",
       "testName": "http://getbootstrap.com"
     },
     {
       "reference": "bitmaps_reference/0_0_header_2_tablet_h.png",
-      "test": "bitmaps_test/20141015-174251/0_0_header_2_tablet_h.png",
+      "test": "bitmaps_test/20141015-224247/0_0_header_2_tablet_h.png",
       "selector": "header",
       "fileName": "0_0_header_2_tablet_h.png",
       "testName": "http://getbootstrap.com"
     },
     {
       "reference": "bitmaps_reference/0_1_main_2_tablet_h.png",
-      "test": "bitmaps_test/20141015-174251/0_1_main_2_tablet_h.png",
+      "test": "bitmaps_test/20141015-224247/0_1_main_2_tablet_h.png",
       "selector": "main",
       "fileName": "0_1_main_2_tablet_h.png",
       "testName": "http://getbootstrap.com"
     },
     {
       "reference": "bitmaps_reference/0_2_body.bs-docs-featurette:nth-of-type(1)_2_tablet_h.png",
-      "test": "bitmaps_test/20141015-174251/0_2_body.bs-docs-featurette:nth-of-type(1)_2_tablet_h.png",
+      "test": "bitmaps_test/20141015-224247/0_2_body.bs-docs-featurette:nth-of-type(1)_2_tablet_h.png",
       "selector": "body .bs-docs-featurette:nth-of-type(1)",
       "fileName": "0_2_body.bs-docs-featurette:nth-of-type(1)_2_tablet_h.png",
       "testName": "http://getbootstrap.com"
     },
     {
       "reference": "bitmaps_reference/0_3_body.bs-docs-featurette:nth-of-type(2)_2_tablet_h.png",
-      "test": "bitmaps_test/20141015-174251/0_3_body.bs-docs-featurette:nth-of-type(2)_2_tablet_h.png",
+      "test": "bitmaps_test/20141015-224247/0_3_body.bs-docs-featurette:nth-of-type(2)_2_tablet_h.png",
       "selector": "body .bs-docs-featurette:nth-of-type(2)",
       "fileName": "0_3_body.bs-docs-featurette:nth-of-type(2)_2_tablet_h.png",
       "testName": "http://getbootstrap.com"
     },
     {
       "reference": "bitmaps_reference/0_4_footer_2_tablet_h.png",
-      "test": "bitmaps_test/20141015-174251/0_4_footer_2_tablet_h.png",
+      "test": "bitmaps_test/20141015-224247/0_4_footer_2_tablet_h.png",
       "selector": "footer",
       "fileName": "0_4_footer_2_tablet_h.png",
       "testName": "http://getbootstrap.com"

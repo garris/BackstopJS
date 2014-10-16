@@ -2,14 +2,14 @@ var gulp = require('gulp');
 var del = require('del');
 var open = require("gulp-open");
 var spawn = require('child_process').spawn;
+var exec = require('child_process').exec;
 var fs = require('fs');
 
-
+var serverPidFile = __dirname+'/server.pid';
 var bitmaps_reference = __dirname+'/bitmaps_reference';
 var bitmaps_test = 'bitmaps_test';
 var compareConfigFileName = __dirname+'/compare/config.json'
 var compareReportURL = 'http://localhost:3000/compare/'
-var serverHook = null; 
 
 //Default config for report (compare) app
 var configDefault = {
@@ -89,7 +89,7 @@ gulp.task('test', function () {
 		if(genReferenceMode || !resultConfig.testPairs||resultConfig.testPairs.length==0){
 			console.log('\nRun `$ gulp test` to generate diff report.\n')
 		}else{
-			gulp.run('openReport');
+			gulp.run('report');
 		}
 	
 	});
@@ -100,23 +100,20 @@ gulp.task('test', function () {
 
 
 gulp.task('report',['startServer'],function(){
-
-
-	setTimeout(function(){gulp.run('openReport')},500)
+	setTimeout(function(){gulp.run('openReport')},100)
 	setTimeout(function(){gulp.run('stopServer')},5000)
-
-
 })
 
 
+
 gulp.task("openReport", function(){
+	
+	console.log('\nOpening report -> ',compareReportURL);
 
 	var options = {
 		url: compareReportURL
 		,app: "Google Chrome"
 	};
-
-	console.log('\nOpening report -> ',compareReportURL);
 
 	gulp.src(compareConfigFileName)
 		.pipe(open("",options)); 
@@ -124,29 +121,48 @@ gulp.task("openReport", function(){
 });
 
 
+
 gulp.task("startServer",function(){
 
-	if(serverHook!=null)return;
 
-	serverHook = spawn('node', ['server.js'],  {});//detached: true, stdio: [ 'ignore', out, err ]
-	serverHook.stdout.on('data', function(data) {
-	    console.log('stdout: ' + data);
-	});
-	serverHook.stderr.on('data', function(data) {
-	    console.log('stdout: ' + data);
-	});
-	serverHook.on('close', function(code) {
-	    console.log('closing code: ' + code);
+	fs.readFile(serverPidFile, function(err,data){
+
+		if(data){
+			exec('kill -0 '+data,function(error, stdout, stderr){
+				if(/no such process/i.test(stderr))
+					start();
+			});
+
+		}else{
+			start();
+		}
+		
 	});
 
-	console.log('Server running with PID: '+serverHook.pid)
-	//serverHook.unref();
+
+	function start(){
+		var serverHook = spawn('node', ['server.js'],  {detached: true, stdio:'ignore'});
+		serverHook.unref();
+		fs.writeFileSync(serverPidFile,serverHook.pid);
+		console.log('Server launched with PID: '+serverHook.pid)
+	}
+
+	
 });
 
 
 
 gulp.task("stopServer",function(){
-	if(serverHook!=null)serverHook.kill();
+
+	fs.readFile(serverPidFile, function(err,pid){
+		if(pid){
+			exec('kill '+pid,function(error, stdout, stderr){
+				console.log('Stopped PID:'+pid)
+				fs.unlinkSync(serverPidFile);
+			});
+		}
+	});
+
 });
 
 
