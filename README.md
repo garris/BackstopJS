@@ -6,14 +6,14 @@ BackstopJS
 
 BackstopJS makes it easy to test your responsive web UI by visually comparing DOM screenshots at various viewport sizes.
 
-Heres the overview:
+**Heres the process:**
 
-1. Set up a test config file: specify screen sizes and DOM selectors
+1. Set up a test config file: specify screen sizes and DOM selectors.
 2. Create reference screenshots – these will be used to test future changes.
 3. Make some changes to your CSS or add new DOM components.
-4. Run a test. If any of your changes or new modules have hosed your existing CSS it will show up in the report.
+4. Run a test. Any changes effecting your layout it will show up in the report!
 
-**Backstory:** BackstopJS is basically a wrapper around the very fabulous [Resemble.js](https://github.com/Huddle/Resemble.js) component written by [James Cryer](https://github.com/jamescryer). Other implementations of Resemble.js, namely [PhantomCSS](https://github.com/Huddle/PhantomCSS) require writing long form [CasperJS](http://casperjs.org) tests. This is perfect for testing complex UI interactions – but kind of cumbersome for some of our static CMS template test needs. 
+**Backstory:** BackstopJS is basically a wrapper around the very fabulous [Resemble.js](https://github.com/Huddle/Resemble.js) component written by [James Cryer](https://github.com/jamescryer). Other implementations of Resemble.js, namely [PhantomCSS](https://github.com/Huddle/PhantomCSS) require writing long form [CasperJS](http://casperjs.org) tests. This is of course great for testing complex UI interactions – but kind of cumbersome for more simple applications like static CMS templates or other higher level sanity testing. 
 
 BackstopJS may be just the thing if you develop custom Wordpress, Drupal or other CMS templates.  Or not, [Let me know what you think!](https://twitter.com/garris)
 
