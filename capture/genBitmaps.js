@@ -1,17 +1,19 @@
 
-
 var fs = require('fs');
 
+
+
+var bitmaps_reference = 'bitmaps_reference';
+var bitmaps_test = 'bitmaps_test';
+var compareConfigFileName = 'compare/config.json'
 var genConfigPath = 'capture/config.json'
+
+
 var configJSON = fs.read(genConfigPath);
 var config = JSON.parse(configJSON);
 
 var viewports = config.viewports;
 var grabConfigs = config.grabConfigs;
-
-var bitmaps_reference = 'bitmaps_reference';
-var bitmaps_test = 'bitmaps_test';
-var compareConfigFileName = 'compare/config.json'
 
 var compareConfig = {testPairs:[]};
 
@@ -111,11 +113,14 @@ function capturePageSelectors(url,grabConfigs,viewports,bitmaps_reference,bitmap
 }
 
 
-
-
+//========================
+//this query should be moved to the prior process vvv
+//isReference should be passed as env parameter
 var exists = fs.exists(bitmaps_reference);
 var isReference = false;
 if(!exists){isReference=true; console.log('CREATING NEW REFERENCE FILES')}
+//========================
+
 
 capturePageSelectors(
 	'index.html'
@@ -135,7 +140,7 @@ function complete(){
 	var configData = JSON.stringify(compareConfig,null,2);
 	fs.write(compareConfigFileName, configData, 'w');
 	console.log(
-		'complete'
+		'Comparison config file updated.'
 		//,configData
 	);
 }
