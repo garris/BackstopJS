@@ -53,7 +53,7 @@ BackstopJS may be just the thing if you develop custom Wordpress, Drupal or othe
 
 ##Configuration
 
-see capture/config.json
+see `capture/config.json`
 
 	{
 		"viewports" : [
@@ -109,9 +109,22 @@ This task will create a new set of bitmaps in `bitmaps_test/<timestamp>/`.
 Once the test bitmaps are generated, a report comparing the most recent test bitmaps against the current reference bitmaps will run. Significant differences will be detected and shown. 
 
 
-### usage notes
+## Usage Notes
+
+### dynamic content
+
+Now, this screenshot approach is not optimal for testing live dynamic content. The best way to test say, an angular template would be to use a content data stub – or ideally many various content stubs which you know should produce certain specific bitmap output.
+
+That said, for a use case where you are testing a DOM with say an ad banner or a block of content which retains static dimensions, we have the `ignoreSelectors` property in `capture/config.json`...
+
+    "ignoreSelectors": [
+    	"#someAdSpaceSelector"
+    ]
+
+Any DOM selectors found in this property list will be set to `visibility:hidden`. This will hide the content from our Resemble.js analysis but still allow you to test for any changes in the overall layout orientation or flow.
 
 
+### running the report server
 
 The test comparison report was written in Angular.js and requires a running HTTP server instance.  This instance is auto-started after a test is run.  The server is also auto-stopped after 15 minutes so you don't have to go worrying about bloaty node processes running all over the place.
 
