@@ -26,3 +26,10 @@ node_modules
 
 # Users Environment Variables
 .lock-wscript
+
+*.sublime*
+
+bower_components
+
+bitmaps_test
+bitmaps_reference

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<head>
+	<title>BackstopJS</title>
+
+<link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+
+<script type="text/javascript" src="../bower_components/angular/angular.min.js"></script>
+<script type="text/javascript" src="../bower_components/angular-route/angular-route.js"></script>
+<script type="text/javascript" src="../bower_components/resemblejs/resemble.js"></script>
+
+<script type="text/javascript">
+	var compareApp = angular.module('compareApp', ['ngRoute']);
+
+
+	compareApp.config( function( $routeProvider ){
+		$routeProvider
+			.when( "/compare", {redirect:'/url'} )
+			.when( "/url", {action: 'url'} )
+			.when( "/file", {action:'file'} )
+			.otherwise( {action: "file"} )
+	});
+
+
+	compareApp.controller('MainCtrl', function ($scope, $route, $routeParams, $q, $http) {
+
+		var misMatchThresh = 1;
+
+		$scope.detailFilterOptions = ['failed','passed','all','none'];
+		$scope.statusFilter = 'failed';
+
+		$scope.displayOnStatusFilter = function(o){
+			if(o.processing)return false;
+			//console.log($scope.statusFilter,o)
+			if($scope.statusFilter=='all'){
+				return true;
+			}else if($scope.statusFilter=='failed'){
+				if(!o.passed){return true;}
+			}else if($scope.statusFilter=='passed'){
+				if(o.passed){return true;}
+			}else{
+				return false;
+			}
+		}
+
+
+		$scope.testPairs = [];
+		var ImagesObj = function(a,b,c,o){
+			this.a={src:a||'',srcClass:'reference'}, 
+			this.b={src:b||'',srcClass:'test'},	
+			this.c={src:c||'',srcClass:'diff'},
+			this.report=null;
+			this.processing=false;
+			this.passed=false;
+			this.meta = o;
+		};
+
+		$scope.$on("$routeChangeSuccess", function( $currentRoute, $previousRoute ){
+			$scope.params = JSON.stringify($routeParams,null,2);;
+			$scope.action = $route.current.action;
+
+			if($scope.action=='url')
+				$scope.runUrlConfig($routeParams);
+			else
+				$scope.runFileConfig($routeParams);
+
+
+		});
+
+		$scope.runUrlConfig = function(params){
+			console.log(params)
+			$scope.testPairs.push(new ImagesObj('../'+params.a, '../'+params.b, null))
+			$scope.compareImages($scope.testPairs[0]);
+		};
+
+		$scope.runFileConfig = function(params){
+
+			$http.get('./'+(params.path||'config.json'))
+			.success(function(data, status) {
+				//console.log('got data!',status,data);
+				data.testPairs.forEach(function(o,i,a){
+					$scope.testPairs.push(new ImagesObj('../'+o.reference, '../'+o.test, null, o));
+				});
+				$scope.compareTestPairs($scope.testPairs);
+			})
+			.error(function(data, status) {
+				console.log('config file operation failed '+status);
+			});
+		};
+
+		$scope.compareTestPairs = function compareTestPairs(testPairs){
+			testPairs.forEach(function(testPair){
+				$scope.compareImages(testPair);
+			})
+		}
+
+		$scope.compareImages = function compareImages(images){
+			images.processing=true;
+
+			var outputConfig = {
+				errorColor: {red: 255, green: 0, blue: 255},
+				errorType: 'movement',
+				transparency: 0.1,
+				largeImageThreshold: 1200
+			}
+
+			resemble.outputSettings(outputConfig);
+
+			var diff = resemble(images.a.src).compareTo(images.b.src).onComplete(function(diffData){
+				$scope.$apply(function(){
+					images.report = JSON.stringify(diffData,null,2);
+					images.c.src = diffData.getImageDataUrl();
+					images.processing=false;
+					images.passed=(diffData.isSameDimensions && diffData.misMatchPercentage<misMatchThresh)?true:false;
+				});
+			});
+		};//scope.compareImages()
+
+
+	});
+
+
+
+</script>
+
+
+<style type="text/css">
+	body{font-family: HelveticaNeue,Arial}
+	label span{display: block;}
+	td,th{vertical-align: top;padding: 8px;width: 25%;}
+	/*td:nth-child(4){background-color: #eee;}*/
+	td img{width: 100%;}
+	table{width: 100%;border-collapse: collapse;margin-bottom: 50px;}
+	input{width: 55ex; display: none;}
+	th{text-align: left;background: #ddd;padding: 10px;white-space: nowrap;}
+	th.selector,th.filename{background-color: #666;color:#fff;}
+	th.filename{text-align: right;}
+	.reportTxt{white-space: pre-wrap;font-family: monospace; font-size: 11px;}
+	.summaryList{padding: 0px;list-style: none;width: auto;}
+	.summaryList td{width: auto; padding: 5px;}
+	.summaryList tr:nth-child(2n-1){background-color: #f0f0f0;}
+	.detailReport{ margin:50px 10px 10px;}
+	.detailReport select{display: inline-block;width: auto;}
+	.summaryBlock .fileName{font-style: italic;font-weight: 100;color: #999;}
+
+	.filterGroup{padding: 7px; background-color: #eee;}
+	.summaryList .statusInds{width: 15ex;}
+	.detailReport .indicator{display: block;}
+	.indicator{display: inline-block;font-style: italic;font-weight: 100;color: #999;}
+
+	
+	.dot{
+		width: 0.5em;
+		height: 0.5em;
+		border-radius: .5em;
+		display: inline-block;
+		margin-right: 0.8ex;
+	}
+	.yellow{background-color: #ffcc00; }
+	.red{background: #c60000; }
+	.green{background: #56e900; }
+	.flash {animation: blink 350ms infinite alternate; -webkit-animation: blink 350ms infinite alternate; }
+	@keyframes blink {to { opacity: 0; } }
+	@-webkit-keyframes blink {to { opacity: 0; } }
+
+
+</style>
+
+</head>
+<body ng-app="compareApp">
+	<div id="root" ng-controller="MainCtrl">
+		<div class="container"><h1>BackstopJS Report</h1></div>
+		<div class="container summaryBlock">
+			<h2 class='lead'>Processed {{(testPairs | filter:{processing:'false'}).length}} of {{testPairs.length}}</h2>
+			<table class="summaryList">
+				<tr ng-repeat="thisTestPair in testPairs">
+					<td class="statusInds">
+						<div class="indicator scanning" ng-if="thisTestPair.processing"><span class="dot yellow flash"></span>scanning</div>
+						<div class="indicator failed" ng-if="!thisTestPair.passed&&!thisTestPair.processing"><span class="dot red"></span>failed</div>
+						<div class="indicator passed" ng-if="thisTestPair.passed"><span class="dot green"></span>passed</span>
+					</td>
+					<td>
+						{{ thisTestPair.meta.testName }} {{ thisTestPair.meta.selector }} <span class="fileName">{{ thisTestPair.meta.fileName }}</span>
+					</td>
+				</tr>
+			</table>
+		</div> <!-- end summaryBlock -->
+
+		<div class="detailReport">
+			<div class='filterGroup form-group'>
+				<label for="statusFilter" class="control-label">status filter</label>
+				<select id="statusFilter" class="form-control" ng-model="statusFilter" ng-options="status for status in detailFilterOptions"></select>
+			</div>
+			
+			<table ng-repeat="thisTestPair in testPairs | filter : displayOnStatusFilter ">   <!-- | filter {thisTestPair.processing:'false'} -->
+				<thead>
+					<tr>
+						<th class="selector" colspan="2">{{ thisTestPair.meta.testName }} {{ thisTestPair.meta.selector }}</th>
+						<th class="filename" colspan="2">{{ thisTestPair.meta.fileName }}</th>
+					</tr>
+					<tr>
+						<th>Reference</th>
+						<th>Test</th>
+						<th>Diff</th>
+						<th>Report</th>
+					</tr>
+				</thead>
+				<tr>
+					<td>
+						<img ng-src="{{ thisTestPair.a.src }}">
+					</td>
+					<td>
+						<img ng-src="{{ thisTestPair.b.src }}">
+					</td>
+					<td>
+						<img ng-src="{{ thisTestPair.c.src }}" image-name="c">
+					</td>
+					<td>
+						<div class="statusInds">
+							<div class="indicator scanning" ng-if="thisTestPair.processing"><span class="dot yellow flash"></span>scanning</div>
+							<div class="indicator failed" ng-if="!thisTestPair.passed&&!thisTestPair.processing"><span class="dot red"></span>failed</div>
+							<div class="indicator passed" ng-if="thisTestPair.passed"><span class="dot green"></span>passed</span>
+						</div>
+						<span class="reportTxt">{{ thisTestPair.report }}</span>
+					</td>
+				</tr>
+			</table>
+		</div> <!-- end detailReport -->
+
+
+
+
+	</div> <!-- end #root -->
+
+</body>
+</html>
+
+
+
