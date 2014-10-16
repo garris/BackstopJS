@@ -23,14 +23,14 @@ var configDefault = {
 	"testPairs": []
 };
 
-var genDefaultConfig = function genDefaultConfig(){
+var genDefaultCompareConfig = function genDefaultCompareConfig(){
 	fs.writeFileSync(compareConfigFileName, JSON.stringify(configDefault,null,2));
 }
 
 
 if(!fs.existsSync(compareConfigFileName)){
 	console.log('No config.json file exists. Creating default file.')
-	genDefaultConfig();
+	genDefaultCompareConfig();
 }
 
 var config = JSON.parse(fs.readFileSync(compareConfigFileName, 'utf8'));
@@ -45,7 +45,7 @@ var watcher = null;
 
 
 //FIRST CLEAN REFERENCE DIR.  THEN TEST
-gulp.task('reference', ['clean','test'], function() {
+gulp.task('reference', ['clean','bless','test'], function() {
 	console.log('reference has run.')
 });
 
@@ -56,11 +56,12 @@ gulp.task('clean', function (cb) {
 	del([
 		bitmaps_reference + '/**'
 	], cb);
-	genDefaultConfig();
+	genDefaultCompareConfig();
 	console.log('bitmaps_reference was cleaned.');
 });
 
 
+//BLESS THE CURRENT CAPTURE CONFIG
 gulp.task('bless',function(){
 	gulp.src(captureConfigFileName)
 		.pipe(rename(captureConfigFileNameCache))
