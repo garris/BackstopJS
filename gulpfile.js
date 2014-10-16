@@ -1,22 +1,31 @@
-var gulp = require('gulp');
-var del = require('del');
-var open = require("gulp-open");
-var spawn = require('child_process').spawn;
-var exec = require('child_process').exec;
-var fs = require('fs');
+var gulp 		= require('gulp');
+var del 		= require('del');
+var open 		= require("gulp-open");
+var rename 		= require("gulp-rename");
+var spawn 	= require('child_process').spawn;
+var exec 		= require('child_process').exec;
+var fs 			= require('fs');
 
-var serverPidFile = __dirname+'/server.pid';
-var bitmaps_reference = __dirname+'/bitmaps_reference';
-var bitmaps_test = 'bitmaps_test';
-var compareConfigFileName = __dirname+'/compare/config.json'
-var compareReportURL = 'http://localhost:3000/compare/'
+var serverPidFile 						= __dirname+'/server.pid';
+
+var bitmaps_reference 				= __dirname+'/bitmaps_reference';
+var bitmaps_test 							= 'bitmaps_test';
+
+var captureConfigFileName 		= __dirname+'/capture/config.json'
+var captureConfigFileNameCache 	= captureConfigFileName+'.cache'
+
+var compareConfigFileName 		= __dirname+'/compare/config.json'
+var compareReportURL 					= 'http://localhost:3000/compare/'
+
 
 //Default config for report (compare) app
 var configDefault = {
 	"testPairs": []
 };
 
-var genDefaultConfig = function genDefaultConfig(){fs.writeFileSync(compareConfigFileName, JSON.stringify(configDefault,null,2));}
+var genDefaultConfig = function genDefaultConfig(){
+	fs.writeFileSync(compareConfigFileName, JSON.stringify(configDefault,null,2));
+}
 
 
 if(!fs.existsSync(compareConfigFileName)){
@@ -52,15 +61,50 @@ gulp.task('clean', function (cb) {
 });
 
 
+gulp.task('bless',function(){
+	gulp.src(captureConfigFileName)
+		.pipe(rename(captureConfigFileNameCache))
+		.pipe(gulp.dest('/'));
+});
+
 
 //This task will generate a date-named directory with DOM screenshot files as specified in `./capture/config.json` followed by running a report.
 //NOTE: If there is no bitmaps_reference directory or if the bitmaps_reference directory is empty then a new batch of reference files will be generated in the bitmaps_reference directory.  Reporting will be skipped in this case.
 gulp.task('test', function () {
 
+	// Test for a valid capture config -- exit on fail.
+	if(!fs.existsSync(captureConfigFileName)){
+		console.log('\nERROR => config file not found: '+ captureConfigFileName);
+		console.log('Please create a config file.\n');
+		return;
+	}
+
+	// Test for capture config cache -- create on fail.
+	if(fs.existsSync(captureConfigFileNameCache)){
+		// console.log('\n'+captureConfigFileNameCache+' file exists.\n')
+
+		//compare config against cache 
+		var config = fs.readFileSync(captureConfigFileName, 'utf8');
+		var cache = fs.readFileSync(captureConfigFileNameCache, 'utf8');
+		if(config !== cache){
+			console.log('\nIt looks like the reference configuration has been changed since last reference batch.');
+			console.log('Please run `$ gulp reference` to generate a fresh set of reference files')
+			console.log('or run `$ gulp bless` then `$ gulp test` to enable testing with this configuration.\n\n')
+			return;
+		}else{
+			// console.log('\n The two files are the same. Running test.\n')
+		}
+	}else{
+		// console.log('\nNo captureConfigFileNameCache file exists. Creating.\n')
+		gulp.run('bless');
+	}
+
+	// genReferenceMode contains the state which switches test or reference file generation modes
 	var genReferenceMode = false;
 
+
 	if(!fs.existsSync(bitmaps_reference)){
-		console.log('\n*** No bitmaps_reference directory found. Now generating reference files.***\n')
+		console.log('\n*** No bitmaps_reference directory found. Generating reference files.***\n');
 		genReferenceMode = true;
 	}
 
