@@ -1,21 +1,21 @@
-var gulp 		= require('gulp');
-var del 		= require('del');
-var open 		= require("gulp-open");
+var gulp 			= require('gulp');
+var del 			= require('del');
+var open 			= require("gulp-open");
 var rename 		= require("gulp-rename");
-var spawn 	= require('child_process').spawn;
-var exec 		= require('child_process').exec;
-var fs 			= require('fs');
+var spawn 		= require('child_process').spawn;
+var exec 			= require('child_process').exec;
+var fs 				= require('fs');
 
-var serverPidFile 						= __dirname+'/server.pid';
+var serverPidFile 								= __dirname+'/server.pid';
 
-var bitmaps_reference 				= __dirname+'/bitmaps_reference';
-var bitmaps_test 							= 'bitmaps_test';
+var bitmaps_reference 						= __dirname+'/bitmaps_reference';
+var bitmaps_test 									= 'bitmaps_test';
 
-var captureConfigFileName 		= __dirname+'/capture/config.json'
-var captureConfigFileNameCache 	= captureConfigFileName+'.cache'
+var captureConfigFileName 				= __dirname+'/capture/config.json'
+var captureConfigFileNameCache 		= __dirname+'/capture/.config.json.cache'
 
-var compareConfigFileName 		= __dirname+'/compare/config.json'
-var compareReportURL 					= 'http://localhost:3000/compare/'
+var compareConfigFileName 				= __dirname+'/compare/config.json'
+var compareReportURL 							= 'http://localhost:3000/compare/'
 
 
 //Default config for report (compare) app
