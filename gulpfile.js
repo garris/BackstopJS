@@ -13,6 +13,7 @@ var bitmaps_test 									= 'bitmaps_test';
 
 var captureConfigFileName 				= __dirname+'/capture/config.json';
 var captureConfigFileNameCache 		= __dirname+'/capture/.config.json.cache';
+var captureConfigFileNameDefault 	= __dirname+'/capture/config.default.json';
 
 var comparePath										= __dirname+'/compare';
 var compareConfigFileName 				= comparePath+'/config.json';
@@ -30,7 +31,7 @@ var genDefaultCompareConfig = function genDefaultCompareConfig(){
 
 
 if(!fs.existsSync(compareConfigFileName)){
-	console.log('No config.json file exists. Creating default file.')
+	console.log('No compare/config.json file exists. Creating default file.')
 	genDefaultCompareConfig();
 }
 
@@ -44,17 +45,18 @@ if(!config.testPairs||config.testPairs.length==0){
 var watcher = null;
 
 
-//install capture bower components
+//install dependencies
 gulp.task('init',function(){
-	spawn('bower',['install'],{cwd:comparePath});
+	testForBowerComponents();
+	testForValidCaptureConfig();
 });
+
 
 //FIRST CLEAN REFERENCE DIR.  THEN TEST
 gulp.task('reference', ['clean','bless'], function() {
 		setTimeout(function(){gulp.run('test')},100);
 		console.log('reference has run.')
 });
-
 
 
 //CLEAN THE bitmaps_reference DIRECTORY
@@ -67,6 +69,7 @@ gulp.task('clean', function (cb) {
 });
 
 
+
 //BLESS THE CURRENT CAPTURE CONFIG
 gulp.task('bless',function(){
 	gulp.src(captureConfigFileName)
@@ -77,14 +80,7 @@ gulp.task('bless',function(){
 
 //This task will generate a date-named directory with DOM screenshot files as specified in `./capture/config.json` followed by running a report.
 //NOTE: If there is no bitmaps_reference directory or if the bitmaps_reference directory is empty then a new batch of reference files will be generated in the bitmaps_reference directory.  Reporting will be skipped in this case.
-gulp.task('test', function () {
-
-	// Test for a valid capture config -- exit on fail.
-	if(!fs.existsSync(captureConfigFileName)){
-		console.log('\nERROR => config file not found: '+ captureConfigFileName);
-		console.log('Please create a config file.\n');
-		return;
-	}
+gulp.task('test',['init'], function () {
 
 
 	// genReferenceMode contains the state which switches test or reference file generation modes
@@ -115,12 +111,7 @@ gulp.task('test', function () {
 		}else{
 			gulp.run('bless');
 		}
-	
 	}
-
-
-
-
 
 
 	// AT THIS POINT WE ARE EITHER RUNNING IN "TEST" OR "REFERENCE" MODE 
@@ -231,9 +222,27 @@ gulp.task("stop",function(){
 gulp.task('default',function(){});
 
 
-if(!fs.existsSync(comparePath+'/bower_components')){
-	console.log('\nBackstopJS needs to update bower_components, please hang on...\n');
-	gulp.run('init');
+
+//TEST FOR bower_components INSTALL
+function testForBowerComponents(){
+	if(!fs.existsSync(comparePath+'/bower_components')){
+		console.log('\nBackstopJS needs to update bower_components, please hang on...\n');
+		spawn('bower',['install'],{cwd:comparePath});
+	}
+}
+
+
+
+// TEST FOR A VALID CAPTURE CONFIG -- CREATE ONE FROM DEFAULT.
+function testForValidCaptureConfig(){
+	if(!fs.existsSync(captureConfigFileName)){
+		console.log('\nConfig file not found.');
+		console.log('Initalizing default capture config...\n');
+		console.log('Modify this file to create your own tests... \n ==> '+ captureConfigFileName + '\n');
+		gulp.src(captureConfigFileNameDefault)
+			.pipe(rename(captureConfigFileName))
+			.pipe(gulp.dest('/'));
+	}
 }
 
 

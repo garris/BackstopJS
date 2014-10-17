@@ -5,7 +5,9 @@
   "ignore": [
     "node_modules",
     "bitmaps_test",
-    "*.sublime*"
+    "*.sublime*",
+    "capture/config.json",
+    "compare/config.json"
   ],
   "dependencies": {
   },
