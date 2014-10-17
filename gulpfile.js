@@ -11,11 +11,12 @@ var serverPidFile 								= __dirname+'/server.pid';
 var bitmaps_reference 						= __dirname+'/bitmaps_reference';
 var bitmaps_test 									= 'bitmaps_test';
 
-var captureConfigFileName 				= __dirname+'/capture/config.json'
-var captureConfigFileNameCache 		= __dirname+'/capture/.config.json.cache'
+var captureConfigFileName 				= __dirname+'/capture/config.json';
+var captureConfigFileNameCache 		= __dirname+'/capture/.config.json.cache';
 
-var compareConfigFileName 				= __dirname+'/compare/config.json'
-var compareReportURL 							= 'http://localhost:3000/compare/'
+var comparePath										= __dirname+'/compare';
+var compareConfigFileName 				= comparePath+'/config.json';
+var compareReportURL 							= 'http://localhost:3000/compare/';
 
 
 //Default config for report (compare) app
@@ -43,6 +44,10 @@ if(!config.testPairs||config.testPairs.length==0){
 var watcher = null;
 
 
+//install capture bower components
+gulp.task('init',function(){
+	spawn('bower',['install'],{cwd:comparePath});
+});
 
 //FIRST CLEAN REFERENCE DIR.  THEN TEST
 gulp.task('reference', ['clean','bless'], function() {
@@ -221,5 +226,14 @@ gulp.task("stop",function(){
 	});
 
 });
+
+
+gulp.task('default',function(){});
+
+
+if(!fs.existsSync(comparePath+'/bower_components')){
+	console.log('\nBackstopJS needs to update bower_components, please hang on...\n');
+	gulp.run('init');
+}
 
 

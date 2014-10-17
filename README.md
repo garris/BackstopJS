@@ -32,21 +32,21 @@ BackstopJS may be just the thing if you develop custom Wordpress, Drupal or othe
 
 ##Installation
 
-**STEP 1. BackstopJS package.  see... http://backstopjs.org/**
+**BackstopJS package.  see... http://backstopjs.org/**
     
     $ bower install backstopjs
 
-**STEP 2. Global install of PhantomJS. see... http://phantomjs.org/download.html**
+**Install node server and tests.**
+
+    $ npm install
+
+**If you have not already installed PhantomJS...** http://phantomjs.org/download.html
 
     $ npm install phantomjs
 
-**STEP 3. Global install of CasperJS. see... http://docs.casperjs.org/en/latest/installation.html**
+**If you have not already installed CasperJS...** http://docs.casperjs.org/en/latest/installation.html
     
     $ npm install -g casperjs
-
-**STEP 4. Install node server and tests.**
-
-    $ npm install
 
 
 
