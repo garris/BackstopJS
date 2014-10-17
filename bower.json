@@ -4,13 +4,11 @@
   "main": "/",
   "ignore": [
     "node_modules",
-    "bitmaps_test"
+    "bitmaps_test",
+    "*.sublime*"
   ],
   "dependencies": {
-    "resemblejs": "~1.2.0",
-    "angular": "~1.3.0",
-    "angular-route": "~1.3.0",
-    "bootstrap": "~3.2.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+  }
 }
