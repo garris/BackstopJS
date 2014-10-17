@@ -113,7 +113,7 @@ Once the test bitmaps are generated, a report comparing the most recent test bit
 
 ### dynamic content
 
-Now, this screenshot approach is not optimal for testing live dynamic content. The best way to test say, an angular template would be to use a content data stub – or ideally many various content stubs which you know should produce certain specific bitmap output.
+For obvious reasons, this screenshot approach is not optimal for testing live dynamic content. The best way to test a dynamic app would be to use a known static content data stub – or ideally many content stubs of varying lengths which, regardless of input length, should produce certain specific bitmap output.
 
 That said, for a use case where you are testing a DOM with say an ad banner or a block of content which retains static dimensions, we have the `ignoreSelectors` property in `capture/config.json`...
 
@@ -121,7 +121,7 @@ That said, for a use case where you are testing a DOM with say an ad banner or a
     	"#someAdSpaceSelector"
     ]
 
-Any DOM selectors found in this property list will be set to `visibility:hidden`. This will hide the content from our Resemble.js analysis but still allow you to test for any changes in the overall layout orientation or flow.
+Any DOM selectors found in this property list will be set to `visibility:hidden`. This will hide the content from our Resemble.js analysis but still allow you to test for any changes in the overall box-model orientation or flow.
 
 
 ### running the report server
