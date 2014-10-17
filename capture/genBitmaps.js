@@ -40,10 +40,6 @@ casper.on('resource.received', function(resource) {
 	var status = resource.status;
 	if(status >= 400) {
 		casper.log('remote error > ' + resource.url + ' failed to load (' + status + ')', 'error');
-		resourceErrors.push({
-			url: resource.url,
-			status: resource.status
-		});
 	}
 });
 
