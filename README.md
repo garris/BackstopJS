@@ -36,10 +36,14 @@ BackstopJS may be just the thing if you develop custom Wordpress, Drupal or othe
     
     $ bower install backstopjs
 
-**Install node server and tests.**
+**Install reporting host.**
 
     $ cd bower_components/backstopjs
     $ npm install
+
+**Initalize BackstopJS.**
+
+    $ gulp init
 
 **If you don't already have a global PhantomJS install...** http://phantomjs.org/download.html
 
