@@ -9,7 +9,7 @@ var express = require('express')
 
 var autoShutDownMs = 1000 * 60 * 15;//set to 0 to never auto-shutdown
 var rootDir = __dirname;
-var port 	= 3000;
+var port 	= 3001;
 
 
 app.use(express.json());

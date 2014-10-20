@@ -17,7 +17,7 @@ var captureConfigFileNameDefault 	= __dirname+'/capture/config.default.json';
 
 var comparePath										= __dirname+'/compare';
 var compareConfigFileName 				= comparePath+'/config.json';
-var compareReportURL 							= 'http://localhost:3000/compare/';
+var compareReportURL 							= 'http://localhost:3001/compare/';
 
 
 //Default config for report (compare) app
