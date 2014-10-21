@@ -41,7 +41,7 @@ BackstopJS may be just the thing if you develop custom Wordpress, Drupal or othe
     $ cd bower_components/backstopjs
     $ npm install
 
-**Initalize BackstopJS.**
+**Initalize BackstopJS.** *from the `bower_components/backstopjs` directory.*
 
     $ gulp init
 
@@ -98,7 +98,8 @@ see `capture/config.json`
 
 ##Usage
 
-### generating (or updating) reference bitmaps
+### generating (or updating) reference bitmaps 
+*from the `bower_components/backstopjs` directory.*
 
     $ gulp reference
 
@@ -106,7 +107,8 @@ This task will create a (or update an existing) `bitmaps_reference` directory wi
 
 
 ### generating test bitmaps
-
+ *from the `bower_components/backstopjs` directory.*
+ 
     $ gulp test
 
 This task will create a new set of bitmaps in `bitmaps_test/<timestamp>/`.  
@@ -133,11 +135,11 @@ Any DOM selectors found in this property list will be set to `visibility:hidden`
 
 The test comparison report was written in Angular.js and requires a running HTTP server instance.  This instance is auto-started after a test is run.  The server is also auto-stopped after 15 minutes so you don't have to go worrying about bloaty node processes running all over the place.
 
-To manually start the server...
+To manually start the server...  *from the `bower_components/backstopjs` directory.*
 
     $ gulp start
     
-...and to manually stop theres...
+...and to manually stop there is...  *from the `bower_components/backstopjs` directory.*
 
     $ gulp stop
     
