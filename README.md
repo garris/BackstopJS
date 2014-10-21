@@ -99,7 +99,7 @@ see `capture/config.json`
 ##Usage
 
 ### generating (or updating) reference bitmaps 
-*from the `bower_components/backstopjs` directory.*
+*From the `bower_components/backstopjs` directory.*
 
     $ gulp reference
 
@@ -107,7 +107,7 @@ This task will create a (or update an existing) `bitmaps_reference` directory wi
 
 
 ### generating test bitmaps
- *from the `bower_components/backstopjs` directory.*
+ *From the `bower_components/backstopjs` directory.*
  
     $ gulp test
 
