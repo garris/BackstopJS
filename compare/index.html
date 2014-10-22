@@ -39,10 +39,11 @@
 		$scope.testPairsCompleted = 0;
 		$scope.passedCount = 0;
 		$scope.testDuration = 0;
+		$scope.testIsRunning = true;
 
 
 		$scope.detailFilterOptions = ['failed','passed','all','none'];
-		$scope.statusFilter = 'failed';
+		$scope.statusFilter = 'none';
 
 		$scope.displayOnStatusFilter = function(o){
 			if(o.processing)return false;
@@ -61,7 +62,7 @@
 
 
 
-		var ImagesObj = function(a,b,c,o){
+		var testPairObj = function(a,b,c,o){
 			this.a={src:a||'',srcClass:'reference'}, 
 			this.b={src:b||'',srcClass:'test'},	
 			this.c={src:c||'',srcClass:'diff'},
@@ -87,7 +88,7 @@
 		//TAKES PARAMETERS FROM URL AND RUNS IMG DIFF TEST
 		$scope.runUrlConfig = function(params){
 			console.log(params)
-			$scope.testPairs.push(new ImagesObj('../'+params.a, '../'+params.b, null))
+			$scope.testPairs.push(new testPairObj('../'+params.a, '../'+params.b, null))
 			$scope.compareTestPair($scope.testPairs[0]);
 		};
 
@@ -99,7 +100,7 @@
 			.success(function(data, status) {
 				//console.log('got data!',status,data);
 				data.testPairs.forEach(function(o,i,a){
-					$scope.testPairs.push(new ImagesObj('../'+o.reference, '../'+o.test, null, o));
+					$scope.testPairs.push(new testPairObj('../'+o.reference, '../'+o.test, null, o));
 				});
 				$scope.compareTestPairs($scope.testPairs);
 		
@@ -128,7 +129,12 @@
 					});
 				}
 				,function(){
-					console.log('TESTS COMPLETED >> ',$scope.testDuration+'ms');
+					$scope.testIsRunning = false;
+					if($scope.passedCount == $scope.testPairsCompleted)
+						$scope.statusFilter='passed';
+					else
+						$scope.statusFilter='failed'
+					$scope.$digest();
 				}
 			);
 
@@ -164,8 +170,8 @@
 
 <style type="text/css">
 	body{font-family: HelveticaNeue,Arial}
+	footer{margin-bottom: 200px;}
 	label span{display: block;}
-	h2 span{white-space: nowrap;margin-right: 2em;}
 	td,th{vertical-align: top;padding: 8px;width: 25%;}
 	/*td:nth-child(4){background-color: #eee;}*/
 	td img{width: 100%;}
@@ -181,6 +187,11 @@
 	.detailReport{ margin:50px 10px 10px;}
 	.detailReport select{display: inline-block;width: auto;}
 	.summaryBlock .fileName{font-style: italic;font-weight: 100;color: #999;}
+
+	h2>.stat{white-space: nowrap;margin-right: 2em;display: inline-block;}
+	.progressBarBlock{width:130px;display: inline-block;margin-right: 2em;}
+	.progress{margin-bottom: -3px;}
+	.progress-bar{transition:width 0ms;min-width:20%;}
 
 	.filterGroup{padding: 7px; background-color: #eee;}
 	.summaryList .statusInds{width: 15ex;}
@@ -219,9 +230,16 @@
 		<div class="container"><h1>BackstopJS Report</h1></div>
 		<div class="container summaryBlock">
 			<h2 class='lead'>
-				<span>Passed <strong class='green circle'>{{passedCount}}</strong>&nbsp;&nbsp; Failed <strong class='red circle'>{{testPairsCompleted-passedCount}}</strong></span>
-				<span>Progress {{testPairsCompleted}} of {{testPairs.length}}</span>
-				<span>Duration {{testDuration/1000 | number : 2}}s</span>
+				<div class="stat">Passed <strong class='green circle'>{{passedCount}}</strong>&nbsp;&nbsp; Failed <strong class='red circle'>{{testPairsCompleted-passedCount}}</strong></div>
+				<div class="stat">{{testPairsCompleted}} of {{testPairs.length}}</div>
+				<div class="stat">{{testDuration/1000 | number : 2}}s</div>
+				<div class="progressBarBlock" ng-if="testIsRunning">
+					<div class="progress">
+					  <div class="progress-bar progress-bar-striped active"  role="progressbar" aria-valuenow="{{testPairsCompleted}}" aria-valuemin="0" aria-valuemax="{{testPairs.length}}" style="width: {{testPairsCompleted/testPairs.length*100| number : 0}}%">
+					    <span class="sr-only">{{testPairsCompleted}} of {{testPairs.length}}</span>
+					  </div>
+					</div>
+				</div>
 			</h2>
 			<table class="summaryList">
 				<tr ng-repeat="thisTestPair in testPairs">
@@ -238,12 +256,14 @@
 		</div> <!-- end summaryBlock -->
 
 		<div class="detailReport">
+		
 			<div class='filterGroup form-group'>
 				<label for="statusFilter" class="control-label">status filter</label>
 				<select id="statusFilter" class="form-control" ng-model="statusFilter" ng-options="status for status in detailFilterOptions"></select>
+
 			</div>
 			
-			<table ng-repeat="thisTestPair in testPairs | filter : displayOnStatusFilter ">   <!-- | filter {thisTestPair.processing:'false'} -->
+			<table ng-repeat="thisTestPair in testPairs | filter : displayOnStatusFilter ">
 				<thead>
 					<tr>
 						<th class="selector" colspan="2">{{ thisTestPair.meta.testName }} {{ thisTestPair.meta.selector }}</th>
@@ -276,9 +296,12 @@
 					</td>
 				</tr>
 			</table>
+
+
 		</div> <!-- end detailReport -->
 
 
+	<footer></footer>
 
 
 	</div> <!-- end #root -->
