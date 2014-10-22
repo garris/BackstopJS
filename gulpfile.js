@@ -5,6 +5,7 @@ var rename 		= require("gulp-rename");
 var spawn 		= require('child_process').spawn;
 var exec 			= require('child_process').exec;
 var fs 				= require('fs');
+var fse 			= require('fs-extra')
 var path 			= require("path");
 
 var serverPidFile 								= __dirname+'/server.pid';
@@ -21,6 +22,25 @@ var captureConfigFileNameDefault 	= __dirname+'/capture/config.default.json';
 var comparePath										= __dirname+'/compare';
 var compareConfigFileName 				= comparePath+'/config.json';
 var compareReportURL 							= 'http://localhost:3001/compare/';
+
+var activeCaptureConfigPath = '';
+
+
+
+if(!fs.existsSync(backstopConfigFileName)){
+	// console.log('\nCould not find a valid config file.');
+	// console.log('\nUsing demo configuration.');
+	console.log('\nTo run your own tests create a config here...\n ==> '+backstopConfigFileName);
+	console.log('\nRun `$ gulp genConfig` to generate a config template file in this location.\n')
+	activeCaptureConfigPath = captureConfigFileNameDefault;
+}else{
+	// console.log('\nBackstopJS Config loaded.\n')
+	activeCaptureConfigPath = backstopConfigFileName;
+}
+
+
+//this is for compare/genBitmaps.js until we can pass the active location via env
+fse.copySync(activeCaptureConfigPath,captureConfigFileName);
 
 
 //Default config for report (compare) app
@@ -48,16 +68,33 @@ if(!config.testPairs||config.testPairs.length==0){
 var watcher = null;
 
 
-//install dependencies
-gulp.task('init',['importBackStopConfig'],function(){
-	testForBowerComponents();
-	return testForValidCaptureConfig();
+
+//MANAGE DEPENDENCIES
+gulp.task('init',function(cb){
+
+	//load missing bower components
+	if(!fs.existsSync(comparePath+'/bower_components')){
+		console.log('\nBackstopJS needs to update bower_components, please hang on...\n');
+		spawn('bower',['install'],{cwd:comparePath});
+	}
+	cb();
+	
 });
+
+
+
+//GENERATE CAPTURE CONFIG
+gulp.task('genConfig',function(){
+	return gulp.src(captureConfigFileNameDefault)
+		.pipe(rename(backstopConfigFileName))
+		.pipe(gulp.dest('/'));
+});
+
 
 
 //FIRST CLEAN REFERENCE DIR.  THEN TEST
 gulp.task('reference', ['clean','bless'], function() {
-		setTimeout(function(){gulp.run('test')},100);
+		gulp.run('test');
 		console.log('reference has run.')
 });
 
@@ -73,18 +110,10 @@ gulp.task('clean', function (cb) {
 
 
 
-//COPY BACKSTOP CONFIG TO CAPTURE CONFIG
-gulp.task('importBackStopConfig',function(){
-// 	del([captureConfigFileName]);
-	return gulp.src(backstopConfigFileName)
-		.pipe(rename(captureConfigFileName))
-		.pipe(gulp.dest('/'));
-});
-
 
 //BLESS THE CURRENT CAPTURE CONFIG
 gulp.task('bless',function(){
-	gulp.src(captureConfigFileName)
+	return gulp.src(activeCaptureConfigPath)
 		.pipe(rename(captureConfigFileNameCache))
 		.pipe(gulp.dest('/'));
 });
@@ -111,7 +140,7 @@ gulp.task('test',['init'], function () {
 		if(fs.existsSync(captureConfigFileNameCache)){
 
 			//COMPARE CAPTURE CONFIG AGAINST THE CACHED VERSION. PROMPT IF DIFFERENT. 
-			var config = fs.readFileSync(captureConfigFileName, 'utf8');
+			var config = fs.readFileSync(activeCaptureConfigPath, 'utf8');
 			var cache = fs.readFileSync(captureConfigFileNameCache, 'utf8');
 			if(config !== cache){
 				console.log('\nIt looks like the reference configuration has been changed since last reference batch.');
@@ -236,26 +265,5 @@ gulp.task('default',function(){});
 
 
 
-//TEST FOR bower_components INSTALL
-function testForBowerComponents(){
-	if(!fs.existsSync(comparePath+'/bower_components')){
-		console.log('\nBackstopJS needs to update bower_components, please hang on...\n');
-		spawn('bower',['install'],{cwd:comparePath});
-	}
-}
-
-
-
-// TEST FOR A VALID CAPTURE CONFIG -- CREATE ONE FROM DEFAULT.
-function testForValidCaptureConfig(){
-	if(!fs.existsSync(captureConfigFileName)){
-		console.log('\nConfig file not found.');
-		console.log('Using demo capture config...\n');
-		console.log('Create a config file here to create your own tests... \n ==> '+ backstopConfigFileName + '\n');
-		return gulp.src(captureConfigFileNameDefault)
-			.pipe(rename(captureConfigFileName))
-			.pipe(gulp.dest('/'));
-	}
-}
 
 
