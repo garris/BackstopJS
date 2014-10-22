@@ -5,11 +5,14 @@ var rename 		= require("gulp-rename");
 var spawn 		= require('child_process').spawn;
 var exec 			= require('child_process').exec;
 var fs 				= require('fs');
+var path 			= require("path");
 
 var serverPidFile 								= __dirname+'/server.pid';
 
 var bitmaps_reference 						= __dirname+'/bitmaps_reference';
 var bitmaps_test 									= 'bitmaps_test';
+
+var backstopConfigFileName 				= path.join(__dirname, '../..', 'backstop.json')
 
 var captureConfigFileName 				= __dirname+'/capture/config.json';
 var captureConfigFileNameCache 		= __dirname+'/capture/.config.json.cache';
@@ -46,9 +49,9 @@ var watcher = null;
 
 
 //install dependencies
-gulp.task('init',function(){
+gulp.task('init',['importBackStopConfig'],function(){
 	testForBowerComponents();
-	testForValidCaptureConfig();
+	return testForValidCaptureConfig();
 });
 
 
@@ -68,6 +71,15 @@ gulp.task('clean', function (cb) {
 	console.log('bitmaps_reference was cleaned.');
 });
 
+
+
+//COPY BACKSTOP CONFIG TO CAPTURE CONFIG
+gulp.task('importBackStopConfig',function(){
+// 	del([captureConfigFileName]);
+	return gulp.src(backstopConfigFileName)
+		.pipe(rename(captureConfigFileName))
+		.pipe(gulp.dest('/'));
+});
 
 
 //BLESS THE CURRENT CAPTURE CONFIG
@@ -238,9 +250,9 @@ function testForBowerComponents(){
 function testForValidCaptureConfig(){
 	if(!fs.existsSync(captureConfigFileName)){
 		console.log('\nConfig file not found.');
-		console.log('Initalizing default capture config...\n');
-		console.log('Modify this file to create your own tests... \n ==> '+ captureConfigFileName + '\n');
-		gulp.src(captureConfigFileNameDefault)
+		console.log('Using demo capture config...\n');
+		console.log('Create a config file here to create your own tests... \n ==> '+ backstopConfigFileName + '\n');
+		return gulp.src(captureConfigFileNameDefault)
 			.pipe(rename(captureConfigFileName))
 			.pipe(gulp.dest('/'));
 	}

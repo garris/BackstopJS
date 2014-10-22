@@ -79,7 +79,9 @@ see `capture/config.json`
 			{
 				"testName":"http://getbootstrap.com"
 				,"url":"http://getbootstrap.com"
-				,"ignoreSelectors": [
+				,"hideSelectors": [
+				]
+				,"removeSelectors": [
 					"#carbonads-container"
 				]
 				,"selectors":[
@@ -93,6 +95,8 @@ see `capture/config.json`
 			}
 		]
 	}
+
+
     
 
 
@@ -122,13 +126,19 @@ Once the test bitmaps are generated, a report comparing the most recent test bit
 
 For obvious reasons, this screenshot approach is not optimal for testing live dynamic content. The best way to test a dynamic app would be to use a known static content data stub – or ideally many content stubs of varying lengths which, regardless of input length, should produce certain specific bitmap output.
 
-That said, for a use case where you are testing a DOM with say an ad banner or a block of content which retains static dimensions, we have the `ignoreSelectors` property in `capture/config.json`...
+That said, for a use case where you are testing a DOM with say an ad banner or a block of dynamic content which retains static dimensions, we have the `hideSelectors` property in `capture/config.json` which will set the corresponding DOM to `visibility:hidden`, thus hiding the content from our Resemble.js analysis but retaining the original layout flow.
 
-    "ignoreSelectors": [
-    	"#someAdSpaceSelector"
+    "hideSelectors": [
+    	"#someFixedSizeDomSelector"
     ]
 
-Any DOM selectors found in this property list will be set to `visibility:hidden`. This will hide the content from our Resemble.js analysis but still allow you to test for any changes in the overall box-model orientation or flow.
+There may also be elements which need to be completely removed during testing. For that we have `removeSelectors` which sets elements to `display:none`.
+
+    "removeSelectors": [
+    	"#someUnpredictableSizedDomSelector"
+    ]
+
+
 
 
 ### running the report server
