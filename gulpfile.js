@@ -61,7 +61,7 @@ if(!fs.existsSync(compareConfigFileName)){
 var config = JSON.parse(fs.readFileSync(compareConfigFileName, 'utf8'));
 
 if(!config.testPairs||config.testPairs.length==0){
-	console.log('No config data found.');
+	//console.log('No config data found.');
 	config=configDefault;
 }
 

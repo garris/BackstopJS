@@ -33,6 +33,8 @@ BackstopJS may be just the thing if you develop custom Wordpress, Drupal or othe
 ##Installation
 
 **BackstopJS package.**  see... http://backstopjs.org/
+
+You can add BackstopJS from the root directory of any project.
     
     $ bower install backstopjs
 
@@ -41,9 +43,11 @@ BackstopJS may be just the thing if you develop custom Wordpress, Drupal or othe
     $ cd bower_components/backstopjs
     $ npm install
 
-**Initalize BackstopJS.** *from the `bower_components/backstopjs` directory.*
+**If you don't already have a BackstopJS config file.** The following command will create a config template file which you can modify in your root directory. *Note: this will overwrite any existing config files.*
 
-    $ gulp init
+*From the `bower_components/backstopjs` directory.*
+
+    $ gulp genConfig
 
 **If you don't already have a global PhantomJS install...** http://phantomjs.org/download.html
 
