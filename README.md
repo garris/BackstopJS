@@ -16,7 +16,9 @@ BackstopJS tests your responsive web UI by visually comparing DOM screenshots at
     
 **Backstory:** BackstopJS is basically a wrapper around the very fabulous [Resemble.js](https://github.com/Huddle/Resemble.js) component written by [James Cryer](https://github.com/jamescryer). Other implementations of Resemble.js, namely [PhantomCSS](https://github.com/Huddle/PhantomCSS) require writing long form [CasperJS](http://casperjs.org) tests. This is of course great for testing complex UI interactions – but kind of cumbersome for more simple applications like static CMS templates or other higher level sanity testing. 
 
-BackstopJS may be just the thing if you develop custom Wordpress, Drupal or other CMS templates.  Or not, [Let me know what you think!](https://twitter.com/garris)
+BackstopJS may be just the thing if you develop custom Wordpress, Drupal or other CMS templates.  Tested on OSX.
+
+BackstopJS was created by [Garris Shipon](expanded.me) at [Art.com labs](www.art.com).
 
 <strong><a href="https://twitter.com/garris" class="twitter-follow-button" data-show-count="false">Follow @garris</a></strong>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
@@ -83,8 +85,7 @@ see `capture/config.json`
 			{
 				"testName":"http://getbootstrap.com"
 				,"url":"http://getbootstrap.com"
-				,"hideSelectors": [
-				]
+				,"hideSelectors": []
 				,"removeSelectors": [
 					"#carbonads-container"
 				]
@@ -99,6 +100,7 @@ see `capture/config.json`
 			}
 		]
 	}
+
 
 
     
