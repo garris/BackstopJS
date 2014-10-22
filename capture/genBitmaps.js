@@ -78,9 +78,16 @@ function capturePageSelectors(url,grabConfigs,viewports,bitmaps_reference,bitmap
 				this.echo('Screenshots for ' + vp.name + ' (' + vp.viewport.width + 'x' + vp.viewport.height + ')', 'info');
 
 				//HIDE SELECTORS WE WANT TO AVOID
-				grabConfig.ignoreSelectors.forEach(function(o,i,a){
+				grabConfig.hideSelectors.forEach(function(o,i,a){
 					casper.evaluate(function(o){
 						document.querySelector(o).style.visibility='hidden';
+					},o);
+				});
+
+				//REMOVE UNWANTED SELECTORS FROM RENDER TREE
+				grabConfig.removeSelectors.forEach(function(o,i,a){
+					casper.evaluate(function(o){
+						document.querySelector(o).style.display='none';
 					},o);
 				});
 

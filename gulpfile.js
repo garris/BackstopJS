@@ -88,7 +88,7 @@ gulp.task('test',['init'], function () {
 
 	// THIS IS THE BLOCK WHICH SWITCHES US INTO "GENERATE REFERENCE" MODE.  I'D RATHER SOMETHING MORE EXPLICIT THO. LIKE AN ENV PARAMETER...  
 	if(!fs.existsSync(bitmaps_reference)){
-		console.log('\n*** Generating reference files.***\n');
+		console.log('\nGenerating reference files.\n');
 		genReferenceMode = true;
 	}
 
@@ -129,7 +129,7 @@ gulp.task('test',['init'], function () {
 
 	casperChild.on('close', function (code) {
 		var success = code === 0; // Will be 1 in the event of failure
-		var result = (success)?'test file generation completed':'testing script failed with code: '+code;
+		var result = (success)?'Bitmap file generation completed.':'Testing script failed with code: '+code;
 	
 		console.log('\n'+result);
 
@@ -197,7 +197,8 @@ gulp.task("start",function(){
 		var serverHook = spawn('node', ['server.js'],  {detached: true, stdio:'ignore'});
 		serverHook.unref();
 		fs.writeFileSync(serverPidFile,serverHook.pid);
-		console.log('Server launched with PID: '+serverHook.pid)
+		console.log('\nServer launched in background with PID: '+serverHook.pid)
+		console.log('NOTE: Sever will auto-shutdown (default time 15 mins). See documentation for more info.\n')
 	}
 
 	
