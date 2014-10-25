@@ -3,8 +3,9 @@ BackstopJS
 
 **Catch CSS curve balls.**
 
-
 BackstopJS tests your responsive web UI by visually comparing DOM screenshots at various viewport sizes.
+
+Learn more at [http://BackstopJS.org/](http://garris.github.io/BackstopJS/).
 
 **Heres the process:**
 
