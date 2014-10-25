@@ -51,6 +51,11 @@ color: #4A4A4A;
 text-shadow: 0 1px 1px #fff;
 }
 
+.oneTwoThree strong{
+font-family: HelveticaNeue-Bold;
+font-weight: 100;
+}
+
 .topHat span{
 	white-space: nowrap;
 	margin: auto .1em;
