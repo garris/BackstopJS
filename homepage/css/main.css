@@ -1,0 +1,143 @@
+
+
+/* ==========================================================================
+   Author's custom styles
+   ========================================================================== */
+
+
+
+body{
+		background: url('../img/backgrounds/cream_dust/cream_dust.png');
+}
+
+a{color: #F5A623;}
+a:hover{text-decoration: none;}
+
+/*div.col-sm-4{
+max-width: 320px;
+margin: auto;
+}*/
+.topHat button{
+	box-shadow: 1px 1px 25px rgba(255,255,255,1);
+	font-family: HelveticaNeue-Bold;
+}
+
+.topHat h1{
+text-align: center;
+font-family: HelveticaNeue-UltraLight;
+color: #4A90E2;
+/* BackstopJS */
+margin-bottom: 0;
+font-size: 5em;
+text-shadow:0 1px 1px #FFFFFF, 0 1px 30px #FFFFFF;
+}
+
+
+.topHat h2{
+text-align: center;
+font-family: HelveticaNeue-Bold;
+font-size: 1.9em;
+color: #F5A623;
+/* Catch CSS curve balls */
+margin-top: 0;
+text-shadow:0 1px 1px #fff, 0 1px 12px rgba(255,255,255,1);
+}
+
+.topHat p{
+text-align: center;
+font-family: HelveticaNeue-Light;
+color: #4A4A4A;
+/* Breaking CSS is easy... */
+text-shadow: 0 1px 1px #fff;
+}
+
+.topHat span{
+	white-space: nowrap;
+	margin: auto .1em;
+}
+
+.topHat button{
+	margin-top: .9em;
+}
+
+.jumbotron{
+	/*background: url('../img/backgrounds/skulls/skulls.png');*/
+	/*background: url('../img/backgrounds/textured_paper/textured_paper.png');*/
+	/*background: url('../img/backgrounds/squairy_light/squairy_light.png');*/
+	/*background: url('../img/backgrounds/fabric_of_squares_gray/fabric_of_squares_gray.png');*/
+	/*background: url('../img/backgrounds/diagonal_waves/diagonal_waves.png');*/
+	background: url('../img/backgrounds/subtlenet2/subtlenet2.png');
+}
+
+h2{
+font-family: HelveticaNeue-UltraLight;
+font-size: 31px;
+color: #000000;
+line-height: 37px;
+/* ONE TWO THREE */
+text-align: center;
+}
+
+.secondPanel h2 a{
+/*font-family: HelveticaNeue-Light;*/
+}
+
+figcaption{
+font-family: HelveticaNeue-Light;
+font-size: 16px;
+color: #4A90E2;
+text-align: center;
+height: 8ex;
+}
+
+.oneTwoThree img{
+margin: auto;
+}
+
+.secondPanel p,
+.oneTwoThree p{
+font-family: HelveticaNeue-Light;
+font-size: 18px;
+color: #333;
+/* BackstopJS is a conf: */
+margin-bottom: 3em;
+margin-top: 1em;
+}
+
+.secondPanel p{
+	text-align: center;
+}
+
+.oneTwoThree{
+max-width: 1024px;
+}
+
+
+footer{
+	margin: 50px auto;
+}
+
+footer p{
+	text-align: center;
+	font-family: HelveticaNeue-Light;
+	margin: 0 auto;
+}
+
+@media (max-width: 767px){
+	div.col-sm-4{
+		max-width: 320px;
+		margin: auto;
+	}
+	.topHat h1{
+		font-size: 3em;
+	}
+	.topHat h2{
+		font-size: 1.4em;
+	}
+	.topHat span{
+			white-space: normal;
+	}
+	.topHat p{
+		font-size: 1.2em;
+	}
+}
