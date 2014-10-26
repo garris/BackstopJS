@@ -133,7 +133,7 @@ footer p{
 
 @media (max-width: 767px){
 	figure{
-		max-width: 320px;
+		max-width: 400px;
 		margin: auto;
 	}
 	.topHat h1{
@@ -148,5 +148,11 @@ footer p{
 	}
 	.topHat p{
 		font-size: 1.2em;
+	}
+	.oneTwoThree .row{
+		margin-bottom: 0;
+	}
+	.oneTwoThree .row.firstPanel>div{
+		margin-bottom: 5em;
 	}
 }
