@@ -38,11 +38,11 @@ console.log('Press Ctrl + C to stop.');
 if(autoShutDownMs>0){
 	
 	setTimeout(function(){
-		console.log('\nServer is going to auto-shutdown now.\n');
+		console.log('\n['+new Date()+'] Server is shutting down now. Bye!\n');
 		listenerHook.close();
 	}, autoShutDownMs);
 
-	console.log('\nPLEASE NOTE: THIS SERVER WILL AUTOMATICLY SHUT DOWN IN ' + Math.round(autoShutDownMs/60000 * 100) / 100+ ' MINS.\n')
+	console.log('\n['+new Date()+'] PLEASE NOTE: THIS SERVER WILL AUTOMATICLY SHUT DOWN IN ' + Math.round(autoShutDownMs/60000 * 100) / 100+ ' MINS.\n')
 }
 
 

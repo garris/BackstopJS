@@ -40,7 +40,7 @@ font-size: 1.9em;
 color: #F5A623;
 /* Catch CSS curve balls */
 margin-top: 0;
-text-shadow:0 1px 1px #fff, 0 1px 12px rgba(255,255,255,1);
+text-shadow:0 1px 1px #fff, 0 1px 12px rgba(255,255,255,.7);
 }
 
 .topHat p{
@@ -51,10 +51,10 @@ color: #4A4A4A;
 text-shadow: 0 1px 1px #fff;
 }
 
-.oneTwoThree strong{
-font-family: HelveticaNeue-Bold;
-font-weight: 100;
-}
+/*.oneTwoThree strong{
+font-family: HelveticaNeue-Light;
+font-weight: normal;
+}*/
 
 .topHat span{
 	white-space: nowrap;
@@ -105,18 +105,21 @@ font-family: HelveticaNeue-Light;
 font-size: 18px;
 color: #333;
 /* BackstopJS is a conf: */
-margin-bottom: 3em;
 margin-top: 1em;
 }
 
-.secondPanel p{
-	text-align: center;
+.secondPanel h2{
+	text-align: left;
 }
 
 .oneTwoThree{
 max-width: 1024px;
 }
+.oneTwoThree .row{margin-bottom: 4em;}
 
+.finalWords p{
+	text-align: center;
+}
 
 footer{
 	margin: 50px auto;
@@ -129,13 +132,14 @@ footer p{
 }
 
 @media (max-width: 767px){
-	div.col-sm-4{
+	figure{
 		max-width: 320px;
 		margin: auto;
 	}
 	.topHat h1{
 		font-size: 3em;
 	}
+
 	.topHat h2{
 		font-size: 1.4em;
 	}
