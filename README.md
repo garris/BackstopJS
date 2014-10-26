@@ -10,9 +10,9 @@ Learn more at [http://BackstopJS.org/](http://garris.github.io/BackstopJS/).
 **Heres the process:**
 
 1. Set up a test config file: specify screen sizes and DOM selectors.
-2. Create reference screenshots – these will be used to test future changes.
+2. Use BackstopJS to create reference screenshots.
 3. Make some changes to your CSS or add new DOM components.
-4. Run a test. Any changes effecting your layout it will show up in the report!
+4. Run a test. BackstopJS creates a set of *test* screenshots and any changes show up in the report!
 
     
 **Backstory:** BackstopJS is basically a wrapper around the very fabulous [Resemble.js](https://github.com/Huddle/Resemble.js) component written by [James Cryer](https://github.com/jamescryer). Other implementations of Resemble.js, namely [PhantomCSS](https://github.com/Huddle/PhantomCSS) require writing long form [CasperJS](http://casperjs.org) tests. This is of course great for testing complex UI interactions – but kind of cumbersome for more simple applications like static CMS templates or other higher level sanity testing. 
