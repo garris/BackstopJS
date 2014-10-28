@@ -21,14 +21,14 @@ margin: auto;
 .topHat button{
 	box-shadow: 1px 1px 25px rgba(255,255,255,1);
 /*	font-family: 'HelveticaNeue-Bold';	*/
-	font-family: 'Raleway' ,'HelveticaNeue' ,'Helvetica Neue';
+	font-family: 'Raleway' ,'HelveticaNeue' ,'Helvetica Neue',Helvetica,Sans-Serif;
 	font-weight: 700;
 }
 
 .topHat h1{
 text-align: center;
 /*font-family: 'HelveticaNeue-UltraLight';	*/
-font-family: 'Raleway' ,'HelveticaNeue' ,'Helvetica Neue';
+font-family: 'Raleway' ,'HelveticaNeue' ,'Helvetica Neue',Helvetica,Sans-Serif;
 font-weight: 100;
 color: #4A90E2;
 /* BackstopJS */
@@ -41,7 +41,7 @@ text-shadow:0 1px 1px #FFFFFF, 0 1px 30px #FFFFFF;
 .topHat h2{
 text-align: center;
 /*font-family: 'HelveticaNeue-Bold';	*/
-font-family: 'Raleway' ,'HelveticaNeue' ,'Helvetica Neue';
+font-family: 'Raleway' ,'HelveticaNeue' ,'Helvetica Neue',Helvetica,Sans-Serif;
 font-weight: 700;
 font-size: 1.9em;
 color: #F5A623;
@@ -53,7 +53,7 @@ text-shadow:0 1px 1px #fff, 0 1px 12px rgba(255,255,255,.7);
 .topHat p{
 text-align: center;
 /*font-family: 'HelveticaNeue-Light';	*/
-font-family: 'Raleway' ,'HelveticaNeue' ,'Helvetica Neue';
+font-family: 'Raleway' ,'HelveticaNeue' ,'Helvetica Neue',Helvetica,Sans-Serif;
 font-weight: 300;
 color: #4A4A4A;
 /* Breaking CSS is easy... */
@@ -62,7 +62,7 @@ text-shadow: 0 1px 1px #fff;
 
 .oneTwoThree strong{
 /*font-family: 'HelveticaNeue-Light';	*/
-font-family: 'Raleway' ,'HelveticaNeue' ,'Helvetica Neue';
+font-family: 'Raleway' ,'HelveticaNeue' ,'Helvetica Neue',Helvetica,Sans-Serif;
 font-weight: 300;
 }
 
@@ -86,7 +86,7 @@ font-weight: 300;
 
 h2{
 /*font-family: 'HelveticaNeue-UltraLight';	*/
-font-family: 'Raleway' ,'HelveticaNeue' ,'Helvetica Neue';
+font-family: 'Raleway' ,'HelveticaNeue' ,'Helvetica Neue',Helvetica,Sans-Serif;
 font-weight: 100;
 font-size: 31px;
 color: #000000;
@@ -97,14 +97,14 @@ text-align: center;
 
 .secondPanel h2 a{
 /*font-family: 'HelveticaNeue-Light';	*/
-font-family: 'Raleway' ,'HelveticaNeue' ,'Helvetica Neue';
+font-family: 'Raleway' ,'HelveticaNeue' ,'Helvetica Neue',Helvetica,Sans-Serif;
 font-weight:300;
 
 }
 
 figcaption{
 /*font-family: 'HelveticaNeue-Light';	*/
-font-family: 'Raleway' ,'HelveticaNeue' ,'Helvetica Neue';
+font-family: 'Raleway' ,'HelveticaNeue' ,'Helvetica Neue',Helvetica,Sans-Serif;
 font-weight: 300;
 font-size: 16px;
 color: #4A90E2;
@@ -119,7 +119,7 @@ margin: auto;
 .secondPanel p,
 .oneTwoThree p{
 /*font-family: 'HelveticaNeue-Light';	*/
-font-family: 'Raleway' ,'HelveticaNeue' ,'Helvetica Neue';
+font-family: 'Raleway' ,'HelveticaNeue' ,'Helvetica Neue',Helvetica,Sans-Serif;
 font-weight: 300;
 font-size: 18px;
 color: #777;
@@ -150,7 +150,7 @@ footer{
 footer p{
 	text-align: center;
 /*	font-family: 'HelveticaNeue-Light';	*/
-	font-family: 'Raleway' ,'HelveticaNeue' ,'Helvetica Neue';
+	font-family: 'Raleway' ,'HelveticaNeue' ,'Helvetica Neue',Helvetica,Sans-Serif;
 	font-weight: 300;
 	margin: 0 auto;
 }
