@@ -8,7 +8,7 @@
 
 
 body{
-		/*background: url('../img/backgrounds/cream_dust/cream_dust.png');*/
+		background: url('../img/backgrounds/cream_dust/cream_dust.png');
 }
 
 a{color: #F5A623;}
@@ -109,7 +109,7 @@ font-weight: 300;
 font-size: 16px;
 color: #4A90E2;
 text-align: center;
-height: 8ex;
+height: 9ex;
 }
 
 .oneTwoThree img{
@@ -178,5 +178,8 @@ footer p{
 	}
 	.oneTwoThree .row.firstPanel>div{
 		margin-bottom: 5em;
+	}
+	figcaption{
+		height: 8ex;		
 	}
 }
