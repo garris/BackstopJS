@@ -7,7 +7,7 @@ BackstopJS tests your responsive web UI by visually comparing DOM screenshots at
 
 Learn more at [http://BackstopJS.org/](http://garris.github.io/BackstopJS/).
 
-**Heres the process:**
+**Once installed, heres how it works:**
 
 1. Set up a test config file: specify screen sizes and DOM selectors.
 2. Use BackstopJS to create reference screenshots.
