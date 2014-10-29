@@ -155,6 +155,10 @@ footer p{
 	margin: 0 auto;
 }
 
+.text-nowrap {
+white-space: nowrap;
+}
+
 @media (max-width: 767px){
 	figure{
 		max-width: 400px;
