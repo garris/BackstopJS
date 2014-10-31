@@ -72,7 +72,8 @@ function capturePageSelectors(url,grabConfigs,viewports,bitmaps_reference,bitmap
 			casper.then(function() {
 				this.echo('\n==================\nCurrent location is ' + grabConfig.url +'\n==================\n', 'warn');
 
-				var src = this.evaluate(function() {return document.body.outerHTML; });
+				// var src = this.evaluate(function() {return document.body.outerHTML; });
+				var src = this.evaluate(function() {return document.all[0].outerHTML; });
 				this.echo('\n\n'+src);
 			});
 
