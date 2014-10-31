@@ -127,6 +127,17 @@ This task will create a new set of bitmaps in `bitmaps_test/<timestamp>/`.
 Once the test bitmaps are generated, a report comparing the most recent test bitmaps against the current reference bitmaps will run. Significant differences will be detected and shown. 
 
 
+### troubleshooting
+
+BackstopJS is fairly bare bones and there is not much in the way of guardrails to recover from things like an invalid config or a file not found. If something goes wrong it generally manifests in casperJS complaining about a missing selector.  If this happens you have the option of sending the configured URL(s) file contents to the console.
+
+ *From the `bower_components/backstopjs` directory.*
+ 
+    $ gulp echoFiles
+
+This is probably the best way to troubleshoot -- from here you can verify that PhantomJS is indeed making a successful file query (and receiving the correct file back too.)
+
+
 ## Usage Notes
 
 ### dynamic content
