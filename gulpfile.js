@@ -119,7 +119,7 @@ gulp.task('bless',function(){
 });
 
 
-gulp.task('echoFiles',function(){
+gulp.task('echo',function(){
 	var genReferenceMode = false;
 
 	var tests = ['capture/echoFiles.js'];
@@ -204,7 +204,10 @@ gulp.task('test',['init'], function () {
 		console.log('\n'+result);
 
 		//exit if there was some kind of failure in the casperChild process
-		if(code!=0)return false;
+		if(code!=0){
+			console.log('\nLooks like an error occured. You may want to try running `$ gulp echo`. This will echo the requested test URL output to the console. You can check this output to verify that the file requested is indeed being received in the expected format.');
+			return false;
+		};
 		
 
 		var resultConfig = JSON.parse(fs.readFileSync(compareConfigFileName, 'utf8'));

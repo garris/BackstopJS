@@ -133,7 +133,7 @@ BackstopJS is fairly bare bones and there is not much in the way of guardrails t
 
  *From the `bower_components/backstopjs` directory.*
  
-    $ gulp echoFiles
+    $ gulp echo
 
 This is probably the best way to troubleshoot -- from here you can verify that PhantomJS is indeed making a successful file query (and receiving the correct file back too.)
 
