@@ -46,7 +46,7 @@ You can add BackstopJS from the root directory of any project.
     $ cd bower_components/backstopjs
     $ npm install
 
-**If you don't already have a BackstopJS config file.** The following command will create a config template file which you can modify in your root directory. *Note: this will overwrite any existing config files.*
+**If you don't already have a `./backstop.json` file.** The following command will create a config template file **in your project root directory**.   You can modify this to suit your needs. *Note: this will overwrite any existing `./backstop.json` file already at this location.*
 
 *From the `bower_components/backstopjs` directory.*
 
