@@ -65,7 +65,9 @@ You can add BackstopJS from the root directory of any project.
 
 ##Configuration
 
-see `./backstop.json`  If this file is not present then the following file is used...
+From the project root, see `./backstop.json`  
+
+If that file is not present then the following file is used...
 `bower_components/backstopjs/capture/config.default.json`
 
 	{
