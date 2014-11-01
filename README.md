@@ -35,13 +35,16 @@ BackstopJS was created by [Garris Shipon](expanded.me) at [Art.com labs](www.art
 
 ##Installation
 
-**BackstopJS package.**  see... http://backstopjs.org/
+**BackstopJS package**  
 
 You can add BackstopJS from the root directory of any project.
     
     $ bower install backstopjs
 
-**Install reporting host.**
+
+This will create the folder structure `<root>/bower_components/backstopjs`.
+
+**Install reporting host**
 
     $ cd bower_components/backstopjs
     $ npm install
