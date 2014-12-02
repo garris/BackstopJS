@@ -1,16 +1,14 @@
-BackstopJS
-==========
-
+#BackstopJS
 **Catch CSS curve balls.**
 
 BackstopJS automates CSS regression tesing of your responsive web UI by comparing DOM screenshots at various viewport sizes.
 
-Try the step-by-step tutorial on [http://css-tricks.com/automating-css-regression-testing/](http://css-tricks.com/automating-css-regression-testing/).
+**Try the step-by-step tutorial on [http://css-tricks.com/automating-css-regression-testing/](http://css-tricks.com/automating-css-regression-testing/).**
 
 Learn more at [http://BackstopJS.org/](http://garris.github.io/BackstopJS/).
 
 
-##Heres how it works:##
+##Heres how it works:
 
 1. Set up a test config file: specify screen sizes and DOM selectors.
 2. Use BackstopJS to create reference screenshots.
@@ -18,7 +16,8 @@ Learn more at [http://BackstopJS.org/](http://garris.github.io/BackstopJS/).
 4. Run a test. BackstopJS creates a set of *test* screenshots and any changes show up in a report!
 
     
-**Backstory:** BackstopJS is basically a wrapper around the very fabulous [Resemble.js](https://github.com/Huddle/Resemble.js) component written by [James Cryer](https://github.com/jamescryer). Other implementations of Resemble.js, namely [PhantomCSS](https://github.com/Huddle/PhantomCSS) require writing long form [CasperJS](http://casperjs.org) tests. This is of course great for testing complex UI interactions – but kind of cumbersome for more simple applications like static CMS templates or other higher level sanity testing. 
+##Backstory:
+BackstopJS is basically a wrapper around the very fabulous [Resemble.js](https://github.com/Huddle/Resemble.js) component written by [James Cryer](https://github.com/jamescryer). Other implementations of Resemble.js, namely [PhantomCSS](https://github.com/Huddle/PhantomCSS) require writing long form [CasperJS](http://casperjs.org) tests. This is of course great for testing complex UI interactions – but kind of cumbersome for more simple applications like static CMS templates or other higher level sanity testing. 
 
 BackstopJS may be just the thing if you develop custom Wordpress, Drupal or other CMS templates.  Tested on OSX.
 
@@ -38,13 +37,16 @@ BackstopJS was created by [Garris Shipon](expanded.me) at [Art.com labs](www.art
 
 ##Installation
 
-**BackstopJS package.**  see... http://backstopjs.org/
+**BackstopJS package**  
 
 You can add BackstopJS from the root directory of any project.
     
     $ bower install backstopjs
 
-**Install reporting host.**
+
+This will create the folder structure `<root>/bower_components/backstopjs`.
+
+**Install NPM dependencies**
 
     $ cd bower_components/backstopjs
     $ npm install
@@ -79,7 +81,11 @@ You can add BackstopJS from the root directory of any project.
 
 
 
-see `capture/config.json`
+From the project root, see `./backstop.json`  
+
+If that file is not present then the following file is used...
+`bower_components/backstopjs/capture/config.default.json`
+
 
 	{
 		"viewports" : [
