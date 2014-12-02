@@ -3,16 +3,19 @@ BackstopJS
 
 **Catch CSS curve balls.**
 
-BackstopJS tests your responsive web UI by visually comparing DOM screenshots at various viewport sizes.
+BackstopJS automates CSS regression tesing of your responsive web UI by comparing DOM screenshots at various viewport sizes.
+
+Try the step-by-step tutorial on [http://css-tricks.com/automating-css-regression-testing/](http://css-tricks.com/automating-css-regression-testing/).
 
 Learn more at [http://BackstopJS.org/](http://garris.github.io/BackstopJS/).
 
-**Once installed, heres how it works:**
+
+##Heres how it works:##
 
 1. Set up a test config file: specify screen sizes and DOM selectors.
 2. Use BackstopJS to create reference screenshots.
 3. Make some changes to your CSS or add new DOM components.
-4. Run a test. BackstopJS creates a set of *test* screenshots and any changes show up in the report!
+4. Run a test. BackstopJS creates a set of *test* screenshots and any changes show up in a report!
 
     
 **Backstory:** BackstopJS is basically a wrapper around the very fabulous [Resemble.js](https://github.com/Huddle/Resemble.js) component written by [James Cryer](https://github.com/jamescryer). Other implementations of Resemble.js, namely [PhantomCSS](https://github.com/Huddle/PhantomCSS) require writing long form [CasperJS](http://casperjs.org) tests. This is of course great for testing complex UI interactions – but kind of cumbersome for more simple applications like static CMS templates or other higher level sanity testing. 
@@ -46,15 +49,17 @@ You can add BackstopJS from the root directory of any project.
     $ cd bower_components/backstopjs
     $ npm install
 
-**If you don't already have a BackstopJS config file.** The following command will create a config template file which you can modify in your root directory. *Note: this will overwrite any existing config files.*
 
-*From the `bower_components/backstopjs` directory.*
+**If you don't already have a global Gulp instance...** http://gulpjs.com
+    
+    $ sudo npm install gulp -g
 
-    $ gulp genConfig
+
 
 **If you don't already have a global PhantomJS install...** http://phantomjs.org/download.html
 
     $ npm install phantomjs
+
 
 **If you don't already have a global CasperJS install...** http://docs.casperjs.org/en/latest/installation.html
     
@@ -64,6 +69,15 @@ You can add BackstopJS from the root directory of any project.
 
 
 ##Configuration
+
+
+**If you don't already have a BackstopJS config file.** The following command will create a config template file which you can modify in your root directory. *Note: this will overwrite any existing backstopjs config file.*
+
+*From the `bower_components/backstopjs` directory.*
+
+    $ gulp genConfig
+
+
 
 see `capture/config.json`
 
