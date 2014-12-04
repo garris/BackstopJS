@@ -1,6 +1,7 @@
 #BackstopJS
 **Catch CSS curve balls.**
 
+
 BackstopJS automates CSS regression tesing of your responsive web UI by comparing DOM screenshots at various viewport sizes.
 
 **Try the step-by-step tutorial on [css-tricks.com](http://css-tricks.com/automating-css-regression-testing/).**
