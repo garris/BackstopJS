@@ -80,17 +80,21 @@ function capturePageSelectors(url,grabConfigs,viewports,bitmaps_reference,bitmap
 				//HIDE SELECTORS WE WANT TO AVOID
 				grabConfig.hideSelectors.forEach(function(o,i,a){
 					casper.evaluate(function(o){
-						document.querySelector(o).style.visibility='hidden';
+						Array.prototype.forEach.call(document.querySelectorAll(o), function(s, j){
+							s.style.visibility='hidden';
+						});
 					},o);
 				});
 
 				//REMOVE UNWANTED SELECTORS FROM RENDER TREE
 				grabConfig.removeSelectors.forEach(function(o,i,a){
 					casper.evaluate(function(o){
-						document.querySelector(o).style.display='none';
+						Array.prototype.forEach.call(document.querySelectorAll(o), function(s, j){
+							s.style.display='none';
+						});
 					},o);
 				});
-
+				
 				//CREATE SCREEN SHOTS AND TEST COMPARE CONFIGURATION (CONFIG FILE WILL BE SAVED WHEN THIS PROCESS RETURNS)
 				grabConfig.selectors.forEach(function(o,i,a){
 					var cleanedSelectorName = o.replace(/[^a-zA-Z\d]/,'');//remove anything that's not a letter or a number 				
