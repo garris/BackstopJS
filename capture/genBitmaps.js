@@ -100,6 +100,10 @@ function capturePageSelectors(url,grabConfigs,viewports,bitmaps_reference,bitmap
         }
 
 				//CREATE SCREEN SHOTS AND TEST COMPARE CONFIGURATION (CONFIG FILE WILL BE SAVED WHEN THIS PROCESS RETURNS)
+        // If no selectors are provided then set the default 'body'
+        if ( !grabConfig.hasOwnProperty('selectors') ) {
+          grabConfig.selectors = [ 'body' ];
+        }
 				grabConfig.selectors.forEach(function(o,i,a){
 					var cleanedSelectorName = o.replace(/[^a-zA-Z\d]/,'');//remove anything that's not a letter or a number
 					//var cleanedUrl = grabConfig.url.replace(/[^a-zA-Z\d]/,'');//remove anything that's not a letter or a number
