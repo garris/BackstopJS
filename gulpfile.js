@@ -79,7 +79,7 @@ gulp.task('init',function(cb){
 		spawn(bowerProcess,['install'],{cwd:comparePath}).on('error', function(){console.log('\nBower process fail. :(  Please report this bug on github.\n');});
 	}
 	cb();
-	
+
 });
 
 
@@ -124,9 +124,9 @@ gulp.task('echo',function(){
 	var genReferenceMode = false;
 
 	var tests = ['capture/echoFiles.js'];
-	
+
 	// var args = ['test'].concat(tests); //this is required if using casperjs test option
-	
+
 	var casperChild = spawn('casperjs', tests);//use args here to add test option to casperjs execute stmt
 
 	casperChild.stdout.on('data', function (data) {
@@ -137,12 +137,12 @@ gulp.task('echo',function(){
 	casperChild.on('close', function (code) {
 		var success = code === 0; // Will be 1 in the event of failure
 		var result = (success)?'Echo files completed.':'Echo files failed with code: '+code;
-	
+
 		console.log('\n'+result);
 
 		//exit if there was some kind of failure in the casperChild process
 		if(code!=0)return false;
-	
+
 	});
 
 
@@ -157,19 +157,19 @@ gulp.task('test',['init'], function () {
 	// genReferenceMode contains the state which switches test or reference file generation modes
 	var genReferenceMode = false;
 
-	// THIS IS THE BLOCK WHICH SWITCHES US INTO "GENERATE REFERENCE" MODE.  I'D RATHER SOMETHING MORE EXPLICIT THO. LIKE AN ENV PARAMETER...  
+	// THIS IS THE BLOCK WHICH SWITCHES US INTO "GENERATE REFERENCE" MODE.  I'D RATHER SOMETHING MORE EXPLICIT THO. LIKE AN ENV PARAMETER...
 	if(!fs.existsSync(bitmaps_reference)){
 		console.log('\nGenerating reference files.\n');
 		genReferenceMode = true;
 	}
 
 	//IF WE ARE IN TEST GENERATION MODE -- LOOK FOR CHANGES IN THE 'CAPTURE CONFIG'.
-	if(!genReferenceMode){	
-	
+	if(!genReferenceMode){
+
 		// TEST FOR CAPTURE CONFIG CACHE -- CREATE IF ONE DOESN'T EXIST (If a .cache file does not exist it is likely a scenario where the user is testing shared reference files in a new context. e.g different dev env.).
 		if(fs.existsSync(captureConfigFileNameCache)){
 
-			//COMPARE CAPTURE CONFIG AGAINST THE CACHED VERSION. PROMPT IF DIFFERENT. 
+			//COMPARE CAPTURE CONFIG AGAINST THE CACHED VERSION. PROMPT IF DIFFERENT.
 			var config = fs.readFileSync(activeCaptureConfigPath, 'utf8');
 			var cache = fs.readFileSync(captureConfigFileNameCache, 'utf8');
 			if(config !== cache){
@@ -185,12 +185,12 @@ gulp.task('test',['init'], function () {
 	}
 
 
-	// AT THIS POINT WE ARE EITHER RUNNING IN "TEST" OR "REFERENCE" MODE 
+	// AT THIS POINT WE ARE EITHER RUNNING IN "TEST" OR "REFERENCE" MODE
 
 	var tests = ['capture/genBitmaps.js'];
-	
+
 	// var args = ['test'].concat(tests); //this is required if using casperjs test option
-	
+
 	// var casperChild = spawn('casperjs', tests);//use args here to add test option to casperjs execute stmt
 	var casperProcess = (process.platform === "win32" ? "casperjs.cmd" : "casperjs");
 	var casperChild = spawn(casperProcess, tests);
@@ -204,7 +204,7 @@ gulp.task('test',['init'], function () {
 	casperChild.on('close', function (code) {
 		var success = code === 0; // Will be 1 in the event of failure
 		var result = (success)?'Bitmap file generation completed.':'Testing script failed with code: '+code;
-	
+
 		console.log('\n'+result);
 
 		//exit if there was some kind of failure in the casperChild process
@@ -212,7 +212,7 @@ gulp.task('test',['init'], function () {
 			console.log('\nLooks like an error occured. You may want to try running `$ gulp echo`. This will echo the requested test URL output to the console. You can check this output to verify that the file requested is indeed being received in the expected format.');
 			return false;
 		};
-		
+
 
 		var resultConfig = JSON.parse(fs.readFileSync(compareConfigFileName, 'utf8'));
 		if(genReferenceMode || !resultConfig.testPairs||resultConfig.testPairs.length==0){
@@ -220,7 +220,7 @@ gulp.task('test',['init'], function () {
 		}else{
 			gulp.run('report');
 		}
-	
+
 	});
 
 
@@ -235,7 +235,7 @@ gulp.task('report',['start'],function(){
 
 
 gulp.task("openReport", function(){
-	
+
 	console.log('\nOpening report -> ',compareReportURL);
 
 	var options = {
@@ -244,7 +244,7 @@ gulp.task("openReport", function(){
 	};
 
 	gulp.src(compareConfigFileName)
-		.pipe(open("",options)); 
+		.pipe(open("",options));
 
 });
 
@@ -266,7 +266,7 @@ gulp.task("start",function(){
 		}else{
 			start();
 		}
-		
+
 	});
 
 
@@ -278,7 +278,7 @@ gulp.task("start",function(){
 		console.log('NOTE: Sever will auto-shutdown (default time 15 mins). See documentation for more info.\n')
 	}
 
-	
+
 });
 
 
@@ -298,8 +298,3 @@ gulp.task("stop",function(){
 
 
 gulp.task('default',function(){});
-
-
-
-
-

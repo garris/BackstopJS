@@ -63,8 +63,8 @@
 
 
 		var testPairObj = function(a,b,c,o){
-			this.a={src:a||'',srcClass:'reference'}, 
-			this.b={src:b||'',srcClass:'test'},	
+			this.a={src:a||'',srcClass:'reference'},
+			this.b={src:b||'',srcClass:'test'},
 			this.c={src:c||'',srcClass:'diff'},
 			this.report=null;
 			this.processing=true;
@@ -103,7 +103,7 @@
 					$scope.testPairs.push(new testPairObj('../'+o.reference, '../'+o.test, null, o));
 				});
 				$scope.compareTestPairs($scope.testPairs);
-		
+
 			})
 			.error(function(data, status) {
 				console.log('config file operation failed '+status);
@@ -256,13 +256,13 @@
 		</div> <!-- end summaryBlock -->
 
 		<div class="detailReport">
-		
+
 			<div class='filterGroup form-group'>
 				<label for="statusFilter" class="control-label">status filter</label>
 				<select id="statusFilter" class="form-control" ng-model="statusFilter" ng-options="status for status in detailFilterOptions"></select>
 
 			</div>
-			
+
 			<table ng-repeat="thisTestPair in testPairs | filter : displayOnStatusFilter ">
 				<thead>
 					<tr>
@@ -308,6 +308,3 @@
 
 </body>
 </html>
-
-
-
