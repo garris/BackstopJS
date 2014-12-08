@@ -2,7 +2,9 @@
   "name": "BackstopJS",
   "version": "0.0.0",
   "description": "",
-  "scripts": {},
+  "scripts": {
+	  "test": "gulp lint"
+	},
   "author": "",
   "license": "",
   "main": "",
