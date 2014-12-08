@@ -1,13 +1,10 @@
 
 var fs = require('fs');
 
-
-
 var bitmaps_reference = 'bitmaps_reference';
 var bitmaps_test = 'bitmaps_test';
-var compareConfigFileName = 'compare/config.json'
-var genConfigPath = 'capture/config.json'
-
+var compareConfigFileName = 'compare/config.json';
+var genConfigPath = 'capture/config.json';
 
 var configJSON = fs.read(genConfigPath);
 var config = JSON.parse(configJSON);
@@ -17,15 +14,15 @@ var grabConfigs = config.grabConfigs;
 
 var compareConfig = {testPairs:[]};
 
-var casper = require("casper").create({
+var casper = require('casper').create({
 	// clientScripts: ["jquery.js"] //lets try not to use this it's friggin 2014 already people...
 });
 
 casper.on('resource.received', function(resource) {
-		//casper.echo(resource.url);
+	//casper.echo(resource.url);
 });
 
-casper.on("page.error", function(msg, trace) {
+casper.on('page.error', function(msg, trace) {
 	// this.echo("Remote Error >    " + msg, "error");
 	// this.echo("file:     " + trace[0].file, "WARNING");
 	// this.echo("line:     " + trace[0].line, "WARNING");
@@ -43,32 +40,27 @@ casper.on('resource.received', function(resource) {
 	}
 });
 
-
-
 function capturePageSelectors(url,grabConfigs,viewports,bitmaps_reference,bitmaps_test,isReference){
 
-	var 
-		gotErrors = [],
+	var gotErrors = [],
 		screenshotNow = new Date(),
 		screenshotDateTime = screenshotNow.getFullYear() + pad(screenshotNow.getMonth() + 1) + pad(screenshotNow.getDate()) + '-' + pad(screenshotNow.getHours()) + pad(screenshotNow.getMinutes()) + pad(screenshotNow.getSeconds());
 
 	casper.start();
 	// casper.viewport(1280,1024);
 
-
 	casper.each(grabConfigs,function(casper, grabConfig, grabConfig_index){
-
 
 		// casper.each(viewports, function(casper, vp, viewport_index) {
 			// this.then(function() {
 			// 	this.viewport(vp.viewport.width, vp.viewport.height);
 			// });
 
-
 			// this.thenOpen(grabConfig.url, function() {
 			casper.thenOpen(grabConfig.url, function() {
 				casper.wait(500);
 			});
+
 			casper.then(function() {
 				this.echo('\n==================\nCurrent location is ' + grabConfig.url +'\n==================\n', 'warn');
 
@@ -97,7 +89,7 @@ function capturePageSelectors(url,grabConfigs,viewports,bitmaps_reference,bitmap
 
 			// 	//CREATE SCREEN SHOTS AND TEST COMPARE CONFIGURATION (CONFIG FILE WILL BE SAVED WHEN THIS PROCESS RETURNS)
 			// 	grabConfig.selectors.forEach(function(o,i,a){
-			// 		var cleanedSelectorName = o.replace(/[^a-zA-Z\d]/,'');//remove anything that's not a letter or a number 				
+			// 		var cleanedSelectorName = o.replace(/[^a-zA-Z\d]/,'');//remove anything that's not a letter or a number
 			// 		//var cleanedUrl = grabConfig.url.replace(/[^a-zA-Z\d]/,'');//remove anything that's not a letter or a number
 			// 		var fileName = grabConfig_index + '_' + i + '_' + cleanedSelectorName + '_' + viewport_index + '_' + vp.name + '.png';;
 
@@ -117,11 +109,11 @@ function capturePageSelectors(url,grabConfigs,viewports,bitmaps_reference,bitmap
 
 			// 		casper.captureSelector(filePath, o);
 			// 		//casper.echo('remote capture to > '+filePath,'info');
-				
+
 			// 	});//end topLevelModules.forEach
 			// });
-			
-			
+
+
 		// });//end casper.each viewports
 
 	});//end casper.each grabConfig
@@ -134,7 +126,10 @@ function capturePageSelectors(url,grabConfigs,viewports,bitmaps_reference,bitmap
 //`isReference` could be better passed as env parameter
 var exists = fs.exists(bitmaps_reference);
 var isReference = false;
-if(!exists){isReference=true; console.log('CREATING NEW REFERENCE FILES')}
+if(!exists){
+	isReference = true;
+	console.log('CREATING NEW REFERENCE FILES');
+}
 //========================
 
 
@@ -181,4 +176,3 @@ function pad(number) {
 	}
 	return r;
 }
-

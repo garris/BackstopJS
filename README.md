@@ -16,9 +16,9 @@ Learn more at [http://BackstopJS.org/](http://garris.github.io/BackstopJS/).
 3. Make some changes to your CSS or add new DOM components.
 4. Run a test. BackstopJS creates a set of *test* screenshots and any changes show up in a report!
 
-    
+
 ##Backstory:
-BackstopJS is basically a wrapper around the very fabulous [Resemble.js](https://github.com/Huddle/Resemble.js) component written by [James Cryer](https://github.com/jamescryer). Other implementations of Resemble.js, namely [PhantomCSS](https://github.com/Huddle/PhantomCSS) require writing long form [CasperJS](http://casperjs.org) tests. This is of course great for testing complex UI interactions – but kind of cumbersome for more simple applications like static CMS templates or other higher level sanity testing. 
+BackstopJS is basically a wrapper around the very fabulous [Resemble.js](https://github.com/Huddle/Resemble.js) component written by [James Cryer](https://github.com/jamescryer). Other implementations of Resemble.js, namely [PhantomCSS](https://github.com/Huddle/PhantomCSS) require writing long form [CasperJS](http://casperjs.org) tests. This is of course great for testing complex UI interactions – but kind of cumbersome for more simple applications like static CMS templates or other higher level sanity testing.
 
 BackstopJS may be just the thing if you develop custom Wordpress, Drupal or other CMS templates.  Tested on OSX.
 
@@ -38,10 +38,10 @@ BackstopJS was created by [Garris Shipon](expanded.me) at [Art.com labs](www.art
 
 ##Installation
 
-**BackstopJS package**  
+**BackstopJS package**
 
 You can add BackstopJS from the root directory of any project.
-    
+
     $ bower install backstopjs
 
 
@@ -54,7 +54,7 @@ This will create the folder structure `<root>/bower_components/backstopjs`.
 
 
 **If you don't already have a global Gulp instance...** http://gulpjs.com
-    
+
     $ sudo npm install gulp -g
 
 
@@ -65,7 +65,7 @@ This will create the folder structure `<root>/bower_components/backstopjs`.
 
 
 **If you don't already have a global CasperJS install...** http://docs.casperjs.org/en/latest/installation.html
-    
+
     $ npm install -g casperjs
 
 
@@ -82,7 +82,7 @@ This will create the folder structure `<root>/bower_components/backstopjs`.
 
 
 
-From the project root, see `./backstop.json`  
+From the project root, see `./backstop.json`
 
 If that file is not present then the following file is used...
 `bower_components/backstopjs/capture/config.default.json`
@@ -125,12 +125,12 @@ If that file is not present then the following file is used...
 
 
 
-    
+
 
 
 ##Usage
 
-### generating (or updating) reference bitmaps 
+### generating (or updating) reference bitmaps
 *From the `bower_components/backstopjs` directory.*
 
     $ gulp reference
@@ -140,12 +140,12 @@ This task will create a (or update an existing) `bitmaps_reference` directory wi
 
 ### generating test bitmaps
  *From the `bower_components/backstopjs` directory.*
- 
+
     $ gulp test
 
-This task will create a new set of bitmaps in `bitmaps_test/<timestamp>/`.  
+This task will create a new set of bitmaps in `bitmaps_test/<timestamp>/`.
 
-Once the test bitmaps are generated, a report comparing the most recent test bitmaps against the current reference bitmaps will run. Significant differences will be detected and shown. 
+Once the test bitmaps are generated, a report comparing the most recent test bitmaps against the current reference bitmaps will run. Significant differences will be detected and shown.
 
 
 ### troubleshooting
@@ -153,7 +153,7 @@ Once the test bitmaps are generated, a report comparing the most recent test bit
 BackstopJS is fairly bare bones and there is not much in the way of guardrails to recover from things like an invalid config or a file not found. If something goes wrong it generally manifests in casperJS complaining about a missing selector.  If this happens you have the option of sending the configured URL(s) file contents to the console.
 
  *From the `bower_components/backstopjs` directory.*
- 
+
     $ gulp echo
 
 This is probably the best way to troubleshoot -- from here you can verify that PhantomJS is indeed making a successful file query (and receiving the correct file back too.)
@@ -187,12 +187,12 @@ The test comparison report was written in Angular.js and requires a running HTTP
 To manually start the server...  *from the `bower_components/backstopjs` directory.*
 
     $ gulp start
-    
+
 ...and to manually stop there is...  *from the `bower_components/backstopjs` directory.*
 
     $ gulp stop
-    
-    
+
+
 
 
 
