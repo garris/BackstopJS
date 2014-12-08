@@ -1,13 +1,10 @@
 
 var fs = require('fs');
 
-
-
 var bitmaps_reference = 'bitmaps_reference';
 var bitmaps_test = 'bitmaps_test';
-var compareConfigFileName = 'compare/config.json'
-var genConfigPath = 'capture/config.json'
-
+var compareConfigFileName = 'compare/config.json';
+var genConfigPath = 'capture/config.json';
 
 var configJSON = fs.read(genConfigPath);
 var config = JSON.parse(configJSON);
@@ -17,7 +14,7 @@ var grabConfigs = config.grabConfigs;
 
 var compareConfig = {testPairs:[]};
 
-var casper = require("casper").create({
+var casper = require('casper').create({
 	// clientScripts: ["jquery.js"] //lets try not to use this it's friggin 2014 already people...
 });
 
@@ -25,7 +22,7 @@ casper.on('resource.received', function(resource) {
 		//casper.echo(resource.url);
 });
 
-casper.on("page.error", function(msg, trace) {
+casper.on('page.error', function(msg, trace) {
 	// this.echo("Remote Error >    " + msg, "error");
 	// this.echo("file:     " + trace[0].file, "WARNING");
 	// this.echo("line:     " + trace[0].line, "WARNING");
@@ -43,12 +40,9 @@ casper.on('resource.received', function(resource) {
 	}
 });
 
-
-
 function capturePageSelectors(url,grabConfigs,viewports,bitmaps_reference,bitmaps_test,isReference){
 
-	var
-		screenshotNow = new Date(),
+	var screenshotNow = new Date(),
 		screenshotDateTime = screenshotNow.getFullYear() + pad(screenshotNow.getMonth() + 1) + pad(screenshotNow.getDate()) + '-' + pad(screenshotNow.getHours()) + pad(screenshotNow.getMinutes()) + pad(screenshotNow.getSeconds());
 
 	casper.start();
@@ -78,42 +72,43 @@ function capturePageSelectors(url,grabConfigs,viewports,bitmaps_reference,bitmap
 				this.echo('Screenshots for ' + vp.name + ' (' + vp.viewport.width + 'x' + vp.viewport.height + ')', 'info');
 
 				//HIDE SELECTORS WE WANT TO AVOID
-				grabConfig.hideSelectors.forEach(function(o,i,a){
+				grabConfig.hideSelectors.forEach(function(o){
 					casper.evaluate(function(o){
-						Array.prototype.forEach.call(document.querySelectorAll(o), function(s, j){
+						Array.prototype.forEach.call(document.querySelectorAll(o), function(s){
 							s.style.visibility='hidden';
 						});
 					},o);
 				});
 
 				//REMOVE UNWANTED SELECTORS FROM RENDER TREE
-				grabConfig.removeSelectors.forEach(function(o,i,a){
+				grabConfig.removeSelectors.forEach(function(o){
 					casper.evaluate(function(o){
-						Array.prototype.forEach.call(document.querySelectorAll(o), function(s, j){
+						Array.prototype.forEach.call(document.querySelectorAll(o), function(s){
 							s.style.display='none';
 						});
 					},o);
 				});
 
 				//CREATE SCREEN SHOTS AND TEST COMPARE CONFIGURATION (CONFIG FILE WILL BE SAVED WHEN THIS PROCESS RETURNS)
-				grabConfig.selectors.forEach(function(o,i,a){
+				grabConfig.selectors.forEach(function(o,i){
 					var cleanedSelectorName = o.replace(/[^a-zA-Z\d]/,'');//remove anything that's not a letter or a number
 					//var cleanedUrl = grabConfig.url.replace(/[^a-zA-Z\d]/,'');//remove anything that's not a letter or a number
-					var fileName = grabConfig_index + '_' + i + '_' + cleanedSelectorName + '_' + viewport_index + '_' + vp.name + '.png';;
+					var fileName = grabConfig_index + '_' + i + '_' + cleanedSelectorName + '_' + viewport_index + '_' + vp.name + '.png';
 
 					var reference_FP 	= bitmaps_reference + '/' + fileName;
 					var test_FP 			= bitmaps_test + '/' + screenshotDateTime + '/' + fileName;
 
 					var filePath 			= (isReference)?reference_FP:test_FP;
 
-					if(!isReference)
+					if(!isReference) {
 						compareConfig.testPairs.push({
 							reference:reference_FP,
 							test:test_FP,
 							selector:o,
 							fileName:fileName,
 							testName:grabConfig.testName
-						})
+						});
+					}
 
 					casper.captureSelector(filePath, o);
 					//casper.echo('remote capture to > '+filePath,'info');
@@ -134,7 +129,10 @@ function capturePageSelectors(url,grabConfigs,viewports,bitmaps_reference,bitmap
 //`isReference` could be better passed as env parameter
 var exists = fs.exists(bitmaps_reference);
 var isReference = false;
-if(!exists){isReference=true; console.log('CREATING NEW REFERENCE FILES')}
+if(!exists){
+	isReference=true;
+	console.log('CREATING NEW REFERENCE FILES');
+}
 //========================
 
 

@@ -1,37 +1,37 @@
-var gulp 			= require('gulp');
-var del 			= require('del');
-var open 			= require("gulp-open");
-var rename 		= require("gulp-rename");
-var spawn 		= require('child_process').spawn;
-var exec 			= require('child_process').exec;
-var fs 				= require('fs');
-var fse 			= require('fs-extra')
-var path 			= require("path");
+var gulp = require('gulp');
+var del = require('del');
+var open = require('gulp-open');
+var rename = require('gulp-rename');
+var spawn = require('child_process').spawn;
+var exec = require('child_process').exec;
+var fs = require('fs');
+var fse = require('fs-extra');
+var path = require('path');
+var jshint = require('gulp-jshint');
+var stylish = require('jshint-stylish');
 
-var serverPidFile 								= __dirname+'/server.pid';
+var serverPidFile = __dirname+'/server.pid';
 
-var bitmaps_reference 						= __dirname+'/bitmaps_reference';
-var bitmaps_test 									= 'bitmaps_test';
+var bitmaps_reference = __dirname+'/bitmaps_reference';
+// var bitmaps_test = 'bitmaps_test';
 
-var backstopConfigFileName 				= path.join(__dirname, '../..', 'backstop.json')
+var backstopConfigFileName = path.join(__dirname, '../..', 'backstop.json');
 
-var captureConfigFileName 				= __dirname+'/capture/config.json';
-var captureConfigFileNameCache 		= __dirname+'/capture/.config.json.cache';
-var captureConfigFileNameDefault 	= __dirname+'/capture/config.default.json';
+var captureConfigFileName = __dirname+'/capture/config.json';
+var captureConfigFileNameCache = __dirname+'/capture/.config.json.cache';
+var captureConfigFileNameDefault = __dirname+'/capture/config.default.json';
 
-var comparePath										= __dirname+'/compare';
-var compareConfigFileName 				= comparePath+'/config.json';
-var compareReportURL 							= 'http://localhost:3001/compare/';
+var comparePath = __dirname+'/compare';
+var compareConfigFileName = comparePath+'/config.json';
+var compareReportURL = 'http://localhost:3001/compare/';
 
 var activeCaptureConfigPath = '';
-
-
 
 if(!fs.existsSync(backstopConfigFileName)){
 	// console.log('\nCould not find a valid config file.');
 	// console.log('\nUsing demo configuration.');
 	console.log('\nTo run your own tests create a config here...\n ==> '+backstopConfigFileName);
-	console.log('\nRun `$ gulp genConfig` to generate a config template file in this location.\n')
+	console.log('\nRun `$ gulp genConfig` to generate a config template file in this location.\n');
 	activeCaptureConfigPath = captureConfigFileNameDefault;
 }else{
 	// console.log('\nBackstopJS Config loaded.\n')
@@ -45,27 +45,27 @@ fse.copySync(activeCaptureConfigPath,captureConfigFileName);
 
 //Default config for report (compare) app
 var configDefault = {
-	"testPairs": []
+	'testPairs': []
 };
 
 var genDefaultCompareConfig = function genDefaultCompareConfig(){
 	fs.writeFileSync(compareConfigFileName, JSON.stringify(configDefault,null,2));
-}
+};
 
 
 if(!fs.existsSync(compareConfigFileName)){
-	console.log('No compare/config.json file exists. Creating default file.')
+	console.log('No compare/config.json file exists. Creating default file.');
 	genDefaultCompareConfig();
 }
 
 var config = JSON.parse(fs.readFileSync(compareConfigFileName, 'utf8'));
 
-if(!config.testPairs||config.testPairs.length==0){
+if(!config.testPairs || config.testPairs.length === 0){
 	//console.log('No config data found.');
 	config=configDefault;
 }
 
-var watcher = null;
+// var watcher = null;
 
 
 
@@ -75,7 +75,7 @@ gulp.task('init',function(cb){
 	//load missing bower components
 	if(!fs.existsSync(comparePath+'/bower_components')){
 		console.log('\nBackstopJS needs to update bower_components, please hang on...\n');
-		var bowerProcess = (process.platform === "win32" ? "bower.cmd" : "bower");
+		var bowerProcess = (process.platform === 'win32' ? 'bower.cmd' : 'bower');
 		spawn(bowerProcess,['install'],{cwd:comparePath}).on('error', function(){console.log('\nBower process fail. :(  Please report this bug on github.\n');});
 	}
 	cb();
@@ -96,7 +96,7 @@ gulp.task('genConfig',function(){
 //FIRST CLEAN REFERENCE DIR.  THEN TEST
 gulp.task('reference', ['clean','bless'], function() {
 		gulp.run('test');
-		console.log('reference has run.')
+		console.log('reference has run.');
 });
 
 
@@ -121,7 +121,6 @@ gulp.task('bless',function(){
 
 
 gulp.task('echo',function(){
-	var genReferenceMode = false;
 
 	var tests = ['capture/echoFiles.js'];
 
@@ -141,12 +140,12 @@ gulp.task('echo',function(){
 		console.log('\n'+result);
 
 		//exit if there was some kind of failure in the casperChild process
-		if(code!=0)return false;
+		if(code !== 0) {
+			return false;
+		}
 
 	});
-
-
-})
+});
 
 
 //This task will generate a date-named directory with DOM screenshot files as specified in `./capture/config.json` followed by running a report.
@@ -174,8 +173,8 @@ gulp.task('test',['init'], function () {
 			var cache = fs.readFileSync(captureConfigFileNameCache, 'utf8');
 			if(config !== cache){
 				console.log('\nIt looks like the reference configuration has been changed since last reference batch.');
-				console.log('Please run `$ gulp reference` to generate a fresh set of reference files')
-				console.log('or run `$ gulp bless` then `$ gulp test` to enable testing with this configuration.\n\n')
+				console.log('Please run `$ gulp reference` to generate a fresh set of reference files');
+				console.log('or run `$ gulp bless` then `$ gulp test` to enable testing with this configuration.\n\n');
 				return;
 			}
 
@@ -192,7 +191,7 @@ gulp.task('test',['init'], function () {
 	// var args = ['test'].concat(tests); //this is required if using casperjs test option
 
 	// var casperChild = spawn('casperjs', tests);//use args here to add test option to casperjs execute stmt
-	var casperProcess = (process.platform === "win32" ? "casperjs.cmd" : "casperjs");
+	var casperProcess = (process.platform === 'win32' ? 'casperjs.cmd' : 'casperjs');
 	var casperChild = spawn(casperProcess, tests);
 
 
@@ -208,16 +207,15 @@ gulp.task('test',['init'], function () {
 		console.log('\n'+result);
 
 		//exit if there was some kind of failure in the casperChild process
-		if(code!=0){
+		if(code !== 0){
 			console.log('\nLooks like an error occured. You may want to try running `$ gulp echo`. This will echo the requested test URL output to the console. You can check this output to verify that the file requested is indeed being received in the expected format.');
 			return false;
-		};
-
+		}
 
 		var resultConfig = JSON.parse(fs.readFileSync(compareConfigFileName, 'utf8'));
-		if(genReferenceMode || !resultConfig.testPairs||resultConfig.testPairs.length==0){
-			console.log('\nRun `$ gulp test` to generate diff report.\n')
-		}else{
+		if(genReferenceMode || !resultConfig.testPairs || resultConfig.testPairs.length === 0){
+			console.log('\nRun `$ gulp test` to generate diff report.\n');
+		} else {
 			gulp.run('report');
 		}
 
@@ -229,22 +227,24 @@ gulp.task('test',['init'], function () {
 
 
 gulp.task('report',['start'],function(){
-	setTimeout(function(){gulp.run('openReport')},100);
-})
+	setTimeout(function(){
+		gulp.run('openReport');
+	},100);
+});
 
 
 
-gulp.task("openReport", function(){
+gulp.task('openReport', function(){
 
 	console.log('\nOpening report -> ',compareReportURL);
 
 	var options = {
-		url: compareReportURL
-		,app: "Google Chrome"
+		url: compareReportURL,
+		app: 'Google Chrome'
 	};
 
 	gulp.src(compareConfigFileName)
-		.pipe(open("",options));
+		.pipe(open('',options));
 
 });
 
@@ -253,14 +253,15 @@ gulp.task("openReport", function(){
 
 //THIS WILL START THE LOCAL WEBSERVER
 //IF ALREADY STARTED IT WILL NOT TRY TO START AGAIN
-gulp.task("start",function(){
+gulp.task('start', function(){
 
 	fs.readFile(serverPidFile, function(err,data){
 
 		if(data){
 			exec('kill -0 '+data,function(error, stdout, stderr){
-				if(/no such process/i.test(stderr))
+				if(/no such process/i.test(stderr)) {
 					start();
+				}
 			});
 
 		}else{
@@ -274,8 +275,8 @@ gulp.task("start",function(){
 		var serverHook = spawn('node', ['server.js'],  {detached: true, stdio:'ignore'});
 		serverHook.unref();
 		fs.writeFileSync(serverPidFile,serverHook.pid);
-		console.log('\nServer launched in background with PID: '+serverHook.pid)
-		console.log('NOTE: Sever will auto-shutdown (default time 15 mins). See documentation for more info.\n')
+		console.log('\nServer launched in background with PID: '+serverHook.pid);
+		console.log('NOTE: Sever will auto-shutdown (default time 15 mins). See documentation for more info.\n');
 	}
 
 
@@ -283,17 +284,24 @@ gulp.task("start",function(){
 
 
 
-gulp.task("stop",function(){
+gulp.task('stop',function(){
 
 	fs.readFile(serverPidFile, function(err,pid){
 		if(pid){
-			exec('kill '+pid,function(error, stdout, stderr){
-				console.log('Stopped PID:'+pid)
+			exec('kill '+pid,function(){
+				console.log('Stopped PID:'+pid);
 				fs.unlinkSync(serverPidFile);
 			});
 		}
 	});
 
+});
+
+
+gulp.task('lint', function() {
+  return gulp.src(['./*.js', 'capture/*.js'])
+    .pipe(jshint())
+    .pipe(jshint.reporter(stylish));
 });
 
 
