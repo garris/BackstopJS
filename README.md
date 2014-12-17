@@ -84,8 +84,6 @@ This will create the folder structure `<root>/bower_components/backstopjs`.
 
 From the project root, see `./backstop.json`  
 
-If that file is not present then the following file is used...
-`bower_components/backstopjs/capture/config.default.json`
 
 
 	{
@@ -125,6 +123,7 @@ If that file is not present then the following file is used...
 
 
 
+**NOTE:** If `./backstop.json` is not present at the project root then BackstopJS will fallback to use the following config at... `bower_components/backstopjs/capture/config.default.json`
     
 
 
