@@ -25,6 +25,8 @@ var compareReportURL 							= 'http://localhost:3001/compare/';
 
 var activeCaptureConfigPath = '';
 
+var isWin = /^win/.test(process.platform);
+
 
 
 if(!fs.existsSync(backstopConfigFileName)){
@@ -240,7 +242,7 @@ gulp.task("openReport", function(){
 
 	var options = {
 		url: compareReportURL
-		,app: "Google Chrome"
+		,app: isWin ? "chrome" : "Google Chrome"
 	};
 
 	gulp.src(compareConfigFileName)
