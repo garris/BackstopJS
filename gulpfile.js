@@ -129,7 +129,8 @@ gulp.task('echo',function(){
 	
 	// var args = ['test'].concat(tests); //this is required if using casperjs test option
 	
-	var casperChild = spawn('casperjs', tests);//use args here to add test option to casperjs execute stmt
+	var casperProcess = (process.platform === "win32" ? "casperjs.cmd" : "casperjs");
+	var casperChild = spawn(casperProcess, tests); //use args here to add test option to casperjs execute stmt
 
 	casperChild.stdout.on('data', function (data) {
 		console.log('CasperJS:', data.toString().slice(0, -1)); // Remove \n
