@@ -69,6 +69,11 @@ This will create the folder structure `<root>/bower_components/backstopjs`.
     $ npm install -g casperjs
 
 
+###Note for windows installation
+
+Windows users who have trouble getting BackstopJS to run (e.g. Error: spawn ENOENT) may want to look at [ENOENT error #2](https://github.com/garris/BackstopJS/issues/2)
+
+Please check that PhantomJS, CasperJS and Python are installed and added to your console PATH.
 
 
 ##Configuration
