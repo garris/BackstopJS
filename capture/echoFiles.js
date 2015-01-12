@@ -64,9 +64,9 @@ function capturePageSelectors(url,grabConfigs,viewports,bitmaps_reference,bitmap
 			// 	this.viewport(vp.viewport.width, vp.viewport.height);
 			// });
 
-
-			// this.thenOpen(grabConfig.url, function() {
+			console.log('LOG> CASPER IS RUNNING')
 			casper.thenOpen(grabConfig.url, function() {
+				console.log('LOG> PHANTOM IS RUNNING')
 				casper.wait(500);
 			});
 			casper.then(function() {
