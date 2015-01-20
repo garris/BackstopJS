@@ -78,32 +78,32 @@ function capturePageSelectors(url,grabConfigs,viewports,bitmaps_reference,bitmap
 				this.echo('Screenshots for ' + vp.name + ' (' + vp.viewport.width + 'x' + vp.viewport.height + ')', 'info');
 
 				//HIDE SELECTORS WE WANT TO AVOID
-        if ( grabConfig.hasOwnProperty('hideSelectors') ) {
-  				grabConfig.hideSelectors.forEach(function(o,i,a){
-  					casper.evaluate(function(o){
-  						Array.prototype.forEach.call(document.querySelectorAll(o), function(s, j){
-  							s.style.visibility='hidden';
-  						});
-  					},o);
-  				});
-        }
+		        if ( grabConfig.hasOwnProperty('hideSelectors') ) {
+		  				grabConfig.hideSelectors.forEach(function(o,i,a){
+		  					casper.evaluate(function(o){
+		  						Array.prototype.forEach.call(document.querySelectorAll(o), function(s, j){
+		  							s.style.visibility='hidden';
+		  						});
+		  					},o);
+		  				});
+		        }
 
 				//REMOVE UNWANTED SELECTORS FROM RENDER TREE
-        if ( grabConfig.hasOwnProperty('removeSelectors') ) {
-  				grabConfig.removeSelectors.forEach(function(o,i,a){
-  					casper.evaluate(function(o){
-  						Array.prototype.forEach.call(document.querySelectorAll(o), function(s, j){
-  							s.style.display='none';
-  						});
-  					},o);
-  				});
-        }
+		        if ( grabConfig.hasOwnProperty('removeSelectors') ) {
+		  				grabConfig.removeSelectors.forEach(function(o,i,a){
+		  					casper.evaluate(function(o){
+		  						Array.prototype.forEach.call(document.querySelectorAll(o), function(s, j){
+		  							s.style.display='none';
+		  						});
+		  					},o);
+		  				});
+		        }
 
 				//CREATE SCREEN SHOTS AND TEST COMPARE CONFIGURATION (CONFIG FILE WILL BE SAVED WHEN THIS PROCESS RETURNS)
-        // If no selectors are provided then set the default 'body'
-        if ( !grabConfig.hasOwnProperty('selectors') ) {
-          grabConfig.selectors = [ 'body' ];
-        }
+		        // If no selectors are provided then set the default 'body'
+		        if ( !grabConfig.hasOwnProperty('selectors') ) {
+		          grabConfig.selectors = [ 'body' ];
+		        }
 				grabConfig.selectors.forEach(function(o,i,a){
 					var cleanedSelectorName = o.replace(/[^a-zA-Z\d]/,'');//remove anything that's not a letter or a number
 					//var cleanedUrl = grabConfig.url.replace(/[^a-zA-Z\d]/,'');//remove anything that's not a letter or a number
@@ -127,8 +127,8 @@ function capturePageSelectors(url,grabConfigs,viewports,bitmaps_reference,bitmap
 					//casper.echo('remote capture to > '+filePath,'info');
 
 				});//end topLevelModules.forEach
+				
 			});
-
 
 		});//end casper.each viewports
 
