@@ -30,6 +30,8 @@
 				,"footer"
 				,"body"
 			]
+			,"readyEvent":null
+			,"delay":0			
 		}
 	]
 }

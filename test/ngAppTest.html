@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.9/angular.min.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+	<style type="text/css">
+		@import url(http://fonts.googleapis.com/css?family=Slabo+27px);
+		body{
+			font-family: 'Slabo 27px', sans-serif;
+			font-size: 17px;
+		}
+		input{
+			border: none;
+			padding:.5em;
+			margin-bottom: 20px;
+		}
+
+		.simpleApp{
+			display: inline-block;
+			background-color: rgb(194, 203, 216);
+			padding: 20px;
+			margin-bottom: 20px;
+			width: 250px;
+		}
+		.container{
+			padding: 20px;
+		}
+
+	</style>
+</head>
+<html>
+<body ng-app="myApp">
+
+<div class="container">
+	
+
+	<div ng-controller="MyCtrlr" class="simpleApp">
+		<h1>Test APP</h1>
+	    <input type="text" placeholder="type here..." ng-model="myData" maxlength="15"></input>
+	    
+	    <p>{{(myData)?'> '+myData:'Go ahead and type somehting.'}}</p>
+	</div>
+
+	<p class="ipsum">
+		Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?
+
+	</p>
+
+	
+</div>
+
+
+</body>
+</html>
+
+
+
+<script type="text/javascript">
+	
+	console.log('The DOM is loaded.')
+	
+	myApp = angular.module('myApp',[]);
+
+	myApp.controller('MyCtrlr',['$scope',function($scope){
+		
+		// $scope.$watch('myData',function(d){console.log(d)});
+		
+		var count = 0;
+		setInterval(function(){
+			count++;
+			console.log('lap '+count);
+		},500);
+
+		setTimeout(function(){
+			$scope.$apply(
+				function(){$scope.myData="Backstop.Ready"}
+			)
+			console.log('backstop.ready');
+		},2900);
+	
+	}]);
+	
+</script>

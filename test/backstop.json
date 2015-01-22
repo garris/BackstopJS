@@ -1,0 +1,58 @@
+{
+	"viewports" : [
+		{
+		 "name": "phone",
+		 "viewport": {"width": 320, "height": 480}
+		}
+		,{
+		 "name": "tablet_v",
+		 "viewport": {"width": 568, "height": 1024}
+		}
+		,{
+		 "name": "tablet_h",
+		 "viewport": {"width": 1024, "height": 768}
+		}
+	]
+	,"grabConfigs" : [
+		{
+			"testName":"test script"
+			,"url":"test/ngAppTest.html"
+			,"hideSelectors": [
+			]
+			,"removeSelectors": [
+			]
+			,"selectors":[
+				"body"
+			]
+			,"readyEvent":"backstop.ready"
+			,"delay":100
+		}
+		,{
+			"testName":"test script"
+			,"url":"test/ngAppTest.html"
+			,"hideSelectors": [
+			]
+			,"removeSelectors": [
+			]
+			,"selectors":[
+				"body"
+			]
+			,"readyEvent":null
+			,"delay":0
+		}
+		,{
+			"testName":"test script"
+			,"url":"../../simplePage.html"
+			,"hideSelectors": [
+			]
+			,"removeSelectors": [
+			]
+			,"selectors":[
+				"body"
+			]
+			,"readyEvent":"backstop.ready"
+			,"delay":100
+		}
+	]
+}
+

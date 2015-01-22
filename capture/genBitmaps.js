@@ -51,6 +51,17 @@ function capturePageSelectors(url,grabConfigs,viewports,bitmaps_reference,bitmap
 		screenshotNow = new Date(),
 		screenshotDateTime = screenshotNow.getFullYear() + pad(screenshotNow.getMonth() + 1) + pad(screenshotNow.getDate()) + '-' + pad(screenshotNow.getHours()) + pad(screenshotNow.getMinutes()) + pad(screenshotNow.getSeconds());
 
+
+	var consoleBuffer = '';
+	var scriptTimeout = 20000;
+
+
+	casper.on('remote.message', function(message) {
+	    this.echo(message);
+	    consoleBuffer = consoleBuffer + '\n' + message;
+	});
+
+
 	casper.start();
 	// casper.viewport(1280,1024);
 
@@ -64,7 +75,22 @@ function capturePageSelectors(url,grabConfigs,viewports,bitmaps_reference,bitmap
 				this.viewport(vp.viewport.width, vp.viewport.height);
 			});
 			this.thenOpen(grabConfig.url, function() {
-				this.wait(500);
+
+				casper.waitFor(
+					function(){ //test
+						if(!grabConfig.readyEvent)return true;
+						var regExReadyFlag = new RegExp(grabConfig.readyEvent,'i');
+						return consoleBuffer.search(regExReadyFlag)>=0;
+					}
+					,function(){//on done 
+						consoleBuffer = ''; 
+						casper.echo('Ready event received.');
+					} 
+					,function(){casper.echo('ERROR: casper timeout.')} //on timeout
+					,scriptTimeout
+				);
+				casper.wait(grabConfig.delay||1);
+
 			});
 			casper.then(function() {
 				this.echo('Current location is ' + grabConfig.url, 'info');
