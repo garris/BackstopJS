@@ -31,7 +31,7 @@
 				,"body"
 			]
 			,"readyEvent":null
-			,"delay":0			
+			,"delay":500
 		}
 	]
 }

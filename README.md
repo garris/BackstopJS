@@ -83,9 +83,12 @@ This will create the folder structure `<root>/bower_components/backstopjs`.
 
 ###Note for windows installation
 
-Windows users who have trouble getting BackstopJS to run (e.g. Error: spawn ENOENT) may want to look at [ENOENT error #2](https://github.com/garris/BackstopJS/issues/2)
+Windows users who have trouble getting BackstopJS to run (e.g. Error: spawn ENOENT) may want to look at [ENOENT error #2](https://github.com/garris/BackstopJS/issues/2). Also, please check that PhantomJS, CasperJS and Python are installed and added to your console PATH.
 
-Please check that PhantomJS, CasperJS and Python are installed and added to your console PATH.
+
+###Installing a develpment version
+
+    # bower install git://github.com/garris/BackstopJS/#master
 
 
 ##Configuration
@@ -99,7 +102,9 @@ Please check that PhantomJS, CasperJS and Python are installed and added to your
 
 
 
-From the project root, see `./backstop.json`  
+`genConfig` will put `backstop.json` at the project root.
+
+**A step-by-step tutorial is at [css-tricks.com](http://css-tricks.com/automating-css-regression-testing/).**
 
 
 
@@ -140,46 +145,51 @@ From the project root, see `./backstop.json`
 
 
 
-**NOTE:** If `./backstop.json` is not present at the project root then BackstopJS will fallback to use the following config at... `bower_components/backstopjs/capture/config.default.json`
+**DEV NOTE:** If `./backstop.json` is not present at the project root then BackstopJS will fallback to use the following config at... `bower_components/backstopjs/capture/config.default.json`
     
-
-
-##Usage
-
-### generating (or updating) reference bitmaps 
-*From the `bower_components/backstopjs` directory.*
-
-    $ gulp reference
-
-This task will create a (or update an existing) `bitmaps_reference` directory with screen captures from the current project build.
-
-
-### generating test bitmaps
- *From the `bower_components/backstopjs` directory.*
- 
-    $ gulp test
-
-This task will create a new set of bitmaps in `bitmaps_test/<timestamp>/`.  
-
-Once the test bitmaps are generated, a report comparing the most recent test bitmaps against the current reference bitmaps will run. Significant differences will be detected and shown. 
-
-
-### troubleshooting
-
-BackstopJS is fairly bare bones and there is not much in the way of guardrails to recover from things like an invalid config or a file not found. If something goes wrong it generally manifests in casperJS complaining about a missing selector.  If this happens you have the option of sending the configured URL(s) file contents to the console.
-
- *From the `bower_components/backstopjs` directory.*
- 
-    $ gulp echo
-
-This is probably the best way to troubleshoot -- from here you can verify that PhantomJS is indeed making a successful file query (and receiving the correct file back too.)
 
 
 ## Usage Notes
 
-### dynamic content
+### testing SPAs and AJAX content
+
+It is very common for client-side web apps is to initially download a small chunk of important content and render it to the screen as soon as it arrives at the browser. Once this has completed, various JS components often take over to progressively load more, less important content (e.g. ads, feeds or other supporting content/features) over some relatively short amount of time.
+
+The problem testing these apps is knowing _when_ to take the screenshot.  BackstopJS solves this problem with two config properties: `readyEvent` and `delay`.
+
+####trigger screen capture via console.log()
+
+The `readyEvent` property enables you to trigger the screen capture by logging a predefined string to the console. For example, the following line will delay screen capture until your web app calls `console.log("backstopjs_ready")`...
+
+    "readyEvent": "backstopjs_ready"
+
+In the above case it would be up to you to wait for all dependencies to complete before calling logging `"backstopjs_ready"` string to the console.
+
+
+####delay screen capture
+
+The `delay` property enables you to pause screen capturing for a specified duration of time. This delay is applied after `readyEvent` (if also applied).
+
+    "delay": 1000 //delay in ms
+
+In the above case, BackstopJS would wait for one second before taking a screenshot.
+
+In the following case, BackstopJS would wait for one second after the string `backstopjs_ready` is logged to the console.
+
+    {
+    ...
+    "readyEvent": "backstopjs_ready",
+    "delay": 1000 //delay in ms
+    }
+
+
+
+
+### dealing with dynamic content
 
 For obvious reasons, this screenshot approach is not optimal for testing live dynamic content. The best way to test a dynamic app would be to use a known static content data stub – or ideally many content stubs of varying lengths which, regardless of input length, should produce certain specific bitmap output.
+
+####hiding selectors
 
 That said, for a use case where you are testing a DOM with say an ad banner or a block of dynamic content which retains static dimensions, we have the `hideSelectors` property in `capture/config.json` which will set the corresponding DOM to `visibility:hidden`, thus hiding the content from our Resemble.js analysis but retaining the original layout flow.
 
@@ -187,11 +197,13 @@ That said, for a use case where you are testing a DOM with say an ad banner or a
     	"#someFixedSizeDomSelector"
     ]
 
+####removing selectors
 There may also be elements which need to be completely removed during testing. For that we have `removeSelectors` which sets elements to `display:none`.
 
     "removeSelectors": [
     	"#someUnpredictableSizedDomSelector"
     ]
+
 
 
 
@@ -209,7 +221,6 @@ To manually start the server...  *from the `bower_components/backstopjs` directo
     $ gulp stop
     
     
-
 
 
 
