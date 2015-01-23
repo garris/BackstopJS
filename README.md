@@ -138,6 +138,8 @@ Windows users who have trouble getting BackstopJS to run (e.g. Error: spawn ENOE
 					,"body .bs-docs-featurette:nth-of-type(2)"
 					,"footer"
 					,"body"
+					,"readyEvent":null
+					,"delay": 500
 				]
 			}
 		]
