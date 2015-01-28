@@ -13,7 +13,7 @@ var configJSON = fs.read(genConfigPath);
 var config = JSON.parse(configJSON);
 
 var viewports = config.viewports;
-var grabConfigs = config.grabConfigs;
+var scenarios = config.scenarios;
 
 var compareConfig = {testPairs:[]};
 
@@ -45,7 +45,7 @@ casper.on('resource.received', function(resource) {
 
 
 
-function capturePageSelectors(url,grabConfigs,viewports,bitmaps_reference,bitmaps_test,isReference){
+function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_test,isReference){
 
 	var
 		screenshotNow = new Date(),
@@ -67,12 +67,12 @@ function capturePageSelectors(url,grabConfigs,viewports,bitmaps_reference,bitmap
 
 
 
-	casper.each(grabConfigs,function(casper, grabConfig, grabConfig_index){
+	casper.each(scenarios,function(casper, grabConfig, grabConfig_index){
 
 
 		casper.each(viewports, function(casper, vp, viewport_index) {
 			this.then(function() {
-				this.viewport(vp.viewport.width, vp.viewport.height);
+				this.viewport(vp.width, vp.height);
 			});
 			this.thenOpen(grabConfig.url, function() {
 
@@ -82,10 +82,10 @@ function capturePageSelectors(url,grabConfigs,viewports,bitmaps_reference,bitmap
 						var regExReadyFlag = new RegExp(grabConfig.readyEvent,'i');
 						return consoleBuffer.search(regExReadyFlag)>=0;
 					}
-					,function(){//on done 
-						consoleBuffer = ''; 
+					,function(){//on done
+						consoleBuffer = '';
 						casper.echo('Ready event received.');
-					} 
+					}
 					,function(){casper.echo('ERROR: casper timeout.')} //on timeout
 					,scriptTimeout
 				);
@@ -101,7 +101,7 @@ function capturePageSelectors(url,grabConfigs,viewports,bitmaps_reference,bitmap
 
 			this.then(function(){
 
-				this.echo('Screenshots for ' + vp.name + ' (' + vp.viewport.width + 'x' + vp.viewport.height + ')', 'info');
+				this.echo('Screenshots for ' + vp.name + ' (' + vp.width + 'x' + vp.height + ')', 'info');
 
 				//HIDE SELECTORS WE WANT TO AVOID
 		        if ( grabConfig.hasOwnProperty('hideSelectors') ) {
@@ -153,7 +153,7 @@ function capturePageSelectors(url,grabConfigs,viewports,bitmaps_reference,bitmap
 					//casper.echo('remote capture to > '+filePath,'info');
 
 				});//end topLevelModules.forEach
-				
+
 			});
 
 		});//end casper.each viewports
@@ -174,7 +174,7 @@ if(!exists){isReference=true; console.log('CREATING NEW REFERENCE FILES')}
 
 capturePageSelectors(
 	'index.html'
-	,grabConfigs
+	,scenarios
 	,viewports
 	,bitmaps_reference
 	,bitmaps_test
