@@ -6,4 +6,6 @@ install:
   - npm install phantomjs -g
   - npm install casperjs -g
   - npm install
-script: gulp reference
+script:
+  - gulp reference
+  - gulp test
