@@ -67,19 +67,19 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
 
 
 
-	casper.each(scenarios,function(casper, grabConfig, grabConfig_index){
+	casper.each(scenarios,function(casper, scenario, scenario_index){
 
 
 		casper.each(viewports, function(casper, vp, viewport_index) {
 			this.then(function() {
 				this.viewport(vp.width, vp.height);
 			});
-			this.thenOpen(grabConfig.url, function() {
+			this.thenOpen(scenario.url, function() {
 
 				casper.waitFor(
 					function(){ //test
-						if(!grabConfig.readyEvent)return true;
-						var regExReadyFlag = new RegExp(grabConfig.readyEvent,'i');
+						if(!scenario.readyEvent)return true;
+						var regExReadyFlag = new RegExp(scenario.readyEvent,'i');
 						return consoleBuffer.search(regExReadyFlag)>=0;
 					}
 					,function(){//on done
@@ -89,11 +89,11 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
 					,function(){casper.echo('ERROR: casper timeout.')} //on timeout
 					,scriptTimeout
 				);
-				casper.wait(grabConfig.delay||1);
+				casper.wait(scenario.delay||1);
 
 			});
 			casper.then(function() {
-				this.echo('Current location is ' + grabConfig.url, 'info');
+				this.echo('Current location is ' + scenario.url, 'info');
 
 				//var src = this.evaluate(function() {return document.body.outerHTML; });
 				//this.echo(src);
@@ -104,8 +104,8 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
 				this.echo('Screenshots for ' + vp.name + ' (' + vp.width + 'x' + vp.height + ')', 'info');
 
 				//HIDE SELECTORS WE WANT TO AVOID
-		        if ( grabConfig.hasOwnProperty('hideSelectors') ) {
-		  				grabConfig.hideSelectors.forEach(function(o,i,a){
+		        if ( scenario.hasOwnProperty('hideSelectors') ) {
+		  				scenario.hideSelectors.forEach(function(o,i,a){
 		  					casper.evaluate(function(o){
 		  						Array.prototype.forEach.call(document.querySelectorAll(o), function(s, j){
 		  							s.style.visibility='hidden';
@@ -115,8 +115,8 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
 		        }
 
 				//REMOVE UNWANTED SELECTORS FROM RENDER TREE
-		        if ( grabConfig.hasOwnProperty('removeSelectors') ) {
-		  				grabConfig.removeSelectors.forEach(function(o,i,a){
+		        if ( scenario.hasOwnProperty('removeSelectors') ) {
+		  				scenario.removeSelectors.forEach(function(o,i,a){
 		  					casper.evaluate(function(o){
 		  						Array.prototype.forEach.call(document.querySelectorAll(o), function(s, j){
 		  							s.style.display='none';
@@ -127,13 +127,13 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
 
 				//CREATE SCREEN SHOTS AND TEST COMPARE CONFIGURATION (CONFIG FILE WILL BE SAVED WHEN THIS PROCESS RETURNS)
 		        // If no selectors are provided then set the default 'body'
-		        if ( !grabConfig.hasOwnProperty('selectors') ) {
-		          grabConfig.selectors = [ 'body' ];
+		        if ( !scenario.hasOwnProperty('selectors') ) {
+		          scenario.selectors = [ 'body' ];
 		        }
-				grabConfig.selectors.forEach(function(o,i,a){
+				scenario.selectors.forEach(function(o,i,a){
 					var cleanedSelectorName = o.replace(/[^a-zA-Z\d]/,'');//remove anything that's not a letter or a number
-					//var cleanedUrl = grabConfig.url.replace(/[^a-zA-Z\d]/,'');//remove anything that's not a letter or a number
-					var fileName = grabConfig_index + '_' + i + '_' + cleanedSelectorName + '_' + viewport_index + '_' + vp.name + '.png';;
+					//var cleanedUrl = scenario.url.replace(/[^a-zA-Z\d]/,'');//remove anything that's not a letter or a number
+					var fileName = scenario_index + '_' + i + '_' + cleanedSelectorName + '_' + viewport_index + '_' + vp.name + '.png';;
 
 					var reference_FP 	= bitmaps_reference + '/' + fileName;
 					var test_FP 			= bitmaps_test + '/' + screenshotDateTime + '/' + fileName;
@@ -146,7 +146,7 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
 							test:test_FP,
 							selector:o,
 							fileName:fileName,
-							testName:grabConfig.testName
+							label:scenario.label
 						})
 
 					casper.captureSelector(filePath, o);
@@ -158,7 +158,7 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
 
 		});//end casper.each viewports
 
-	});//end casper.each grabConfig
+	});//end casper.each scenario
 
 }
 
