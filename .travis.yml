@@ -1,0 +1,11 @@
+language: node_js
+node_js:
+  - "0.10"
+install:
+  - npm install gulp -g
+  - npm install phantomjs -g
+  - npm install casperjs -g
+  - npm install
+script:
+  - gulp reference
+  - gulp test
