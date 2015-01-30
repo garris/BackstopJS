@@ -2,20 +2,23 @@
 	"viewports" : [
 		{
 		 "name": "phone",
-		 "viewport": {"width": 320, "height": 480}
+		 "width": 320,
+     "height": 480
 		}
 		,{
 		 "name": "tablet_v",
-		 "viewport": {"width": 568, "height": 1024}
+		 "width": 568,
+     "height": 1024
 		}
 		,{
 		 "name": "tablet_h",
-		 "viewport": {"width": 1024, "height": 768}
+		 "width": 1024,
+     "height": 768
 		}
 	]
-	,"grabConfigs" : [
+	,"scenarios" : [
 		{
-			"testName":"http://getbootstrap.com"
+			"label":"http://getbootstrap.com"
 			,"url":"http://getbootstrap.com"
 			,"hideSelectors": [
 			]
