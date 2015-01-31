@@ -112,13 +112,3 @@ gulp.task('clean', function (cb) {
 	genDefaultCompareConfig();
 	console.log('bitmaps_reference was cleaned.');
 });
-
-
-
-
-//BLESS THE CURRENT CAPTURE CONFIG
-gulp.task('bless',function(){
-	return gulp.src(activeCaptureConfigPath)
-		.pipe(rename(captureConfigFileNameCache))
-		.pipe(gulp.dest('/'));
-});
