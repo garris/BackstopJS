@@ -1,6 +1,6 @@
-var gulp = require('gulp');
-var paths = require('../util/paths');
-var rename    = require("gulp-rename");
+var gulp   = require('gulp');
+var paths  = require('../util/paths');
+var rename = require("gulp-rename");
 
 
 

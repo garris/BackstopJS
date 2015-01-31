@@ -1,5 +1,5 @@
-var gulp = require('gulp');
-var spawn     = require('child_process').spawn;
+var gulp  = require('gulp');
+var spawn = require('child_process').spawn;
 
 
 gulp.task('echo',function(){
