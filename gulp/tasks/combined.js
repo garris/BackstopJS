@@ -285,22 +285,3 @@ gulp.task("start",function(){
 
 
 });
-
-
-
-gulp.task("stop",function(){
-
-	fs.readFile(serverPidFile, function(err,pid){
-		if(pid){
-			exec('kill '+pid,function(error, stdout, stderr){
-				console.log('Stopped PID:'+pid)
-				fs.unlinkSync(serverPidFile);
-			});
-		}
-	});
-
-});
-
-
-
-
