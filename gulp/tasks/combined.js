@@ -85,12 +85,3 @@ gulp.task('init',function(cb){
 	cb();
 
 });
-
-
-
-//GENERATE CAPTURE CONFIG
-gulp.task('genConfig',function(){
-	return gulp.src(captureConfigFileNameDefault)
-		.pipe(rename(backstopConfigFileName))
-		.pipe(gulp.dest('/'));
-});
