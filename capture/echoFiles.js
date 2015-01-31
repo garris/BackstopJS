@@ -13,7 +13,7 @@ var configJSON = fs.read(genConfigPath);
 var config = JSON.parse(configJSON);
 
 var viewports = config.viewports;
-var grabConfigs = config.grabConfigs;
+var scenarios = config.scenarios;
 
 var compareConfig = {testPairs:[]};
 
@@ -45,7 +45,7 @@ casper.on('resource.received', function(resource) {
 
 
 
-function capturePageSelectors(url,grabConfigs,viewports,bitmaps_reference,bitmaps_test,isReference){
+function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_test,isReference){
 
 	var 
 		gotErrors = [],
@@ -56,7 +56,7 @@ function capturePageSelectors(url,grabConfigs,viewports,bitmaps_reference,bitmap
 	// casper.viewport(1280,1024);
 
 
-	casper.each(grabConfigs,function(casper, grabConfig, grabConfig_index){
+	casper.each(scenarios,function(casper, scenario, scenario_index){
 
 
 		// casper.each(viewports, function(casper, vp, viewport_index) {
@@ -65,12 +65,12 @@ function capturePageSelectors(url,grabConfigs,viewports,bitmaps_reference,bitmap
 			// });
 
 			console.log('LOG> CASPER IS RUNNING')
-			casper.thenOpen(grabConfig.url, function() {
+			casper.thenOpen(scenario.url, function() {
 				console.log('LOG> PHANTOM IS RUNNING')
 				casper.wait(500);
 			});
 			casper.then(function() {
-				this.echo('\n==================\nCurrent location is ' + grabConfig.url +'\n==================\n', 'warn');
+				this.echo('\n==================\nCurrent location is ' + scenario.url +'\n==================\n', 'warn');
 
 				// var src = this.evaluate(function() {return document.body.outerHTML; });
 				var src = this.evaluate(function() {return document.all[0].outerHTML; });
@@ -82,24 +82,24 @@ function capturePageSelectors(url,grabConfigs,viewports,bitmaps_reference,bitmap
 			// 	this.echo('Screenshots for ' + vp.name + ' (' + vp.viewport.width + 'x' + vp.viewport.height + ')', 'info');
 
 			// 	//HIDE SELECTORS WE WANT TO AVOID
-			// 	grabConfig.hideSelectors.forEach(function(o,i,a){
+			// 	scenario.hideSelectors.forEach(function(o,i,a){
 			// 		casper.evaluate(function(o){
 			// 			document.querySelector(o).style.visibility='hidden';
 			// 		},o);
 			// 	});
 
 			// 	//REMOVE UNWANTED SELECTORS FROM RENDER TREE
-			// 	grabConfig.removeSelectors.forEach(function(o,i,a){
+			// 	scenario.removeSelectors.forEach(function(o,i,a){
 			// 		casper.evaluate(function(o){
 			// 			document.querySelector(o).style.display='none';
 			// 		},o);
 			// 	});
 
 			// 	//CREATE SCREEN SHOTS AND TEST COMPARE CONFIGURATION (CONFIG FILE WILL BE SAVED WHEN THIS PROCESS RETURNS)
-			// 	grabConfig.selectors.forEach(function(o,i,a){
+			// 	scenario.selectors.forEach(function(o,i,a){
 			// 		var cleanedSelectorName = o.replace(/[^a-zA-Z\d]/,'');//remove anything that's not a letter or a number 				
-			// 		//var cleanedUrl = grabConfig.url.replace(/[^a-zA-Z\d]/,'');//remove anything that's not a letter or a number
-			// 		var fileName = grabConfig_index + '_' + i + '_' + cleanedSelectorName + '_' + viewport_index + '_' + vp.name + '.png';;
+			// 		//var cleanedUrl = scenario.url.replace(/[^a-zA-Z\d]/,'');//remove anything that's not a letter or a number
+			// 		var fileName = scenario_index + '_' + i + '_' + cleanedSelectorName + '_' + viewport_index + '_' + vp.name + '.png';;
 
 			// 		var reference_FP 	= bitmaps_reference + '/' + fileName;
 			// 		var test_FP 			= bitmaps_test + '/' + screenshotDateTime + '/' + fileName;
@@ -112,7 +112,7 @@ function capturePageSelectors(url,grabConfigs,viewports,bitmaps_reference,bitmap
 			// 				test:test_FP,
 			// 				selector:o,
 			// 				fileName:fileName,
-			// 				testName:grabConfig.testName
+			// 				testName:scenario.testName
 			// 			})
 
 			// 		casper.captureSelector(filePath, o);
@@ -124,7 +124,7 @@ function capturePageSelectors(url,grabConfigs,viewports,bitmaps_reference,bitmap
 			
 		// });//end casper.each viewports
 
-	});//end casper.each grabConfig
+	});//end casper.each scenario
 
 }
 
@@ -153,7 +153,7 @@ if(!exists){isReference=true; console.log('CREATING NEW REFERENCE FILES')}
 
 capturePageSelectors(
 	'index.html'
-	,grabConfigs
+	,scenarios
 	,viewports
 	,bitmaps_reference
 	,bitmaps_test
