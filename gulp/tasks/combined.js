@@ -102,13 +102,3 @@ gulp.task('reference', ['clean','bless'], function() {
 		gulp.run('test');
 		console.log('reference has run.')
 });
-
-
-//CLEAN THE bitmaps_reference DIRECTORY
-gulp.task('clean', function (cb) {
-	del([
-		bitmaps_reference + '/**'
-	], cb);
-	genDefaultCompareConfig();
-	console.log('bitmaps_reference was cleaned.');
-});
