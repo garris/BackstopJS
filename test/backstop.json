@@ -15,8 +15,8 @@
 	]
 	,"grabConfigs" : [
 		{
-			"testName":"test script"
-			,"url":"test/ngAppTest.html"
+			"testName":"simple"
+			,"url":"test/simple.html"
 			,"hideSelectors": [
 			]
 			,"removeSelectors": [
@@ -25,33 +25,7 @@
 				"body"
 			]
 			,"readyEvent":"backstop.ready"
-			,"delay":100
-		}
-		,{
-			"testName":"test script"
-			,"url":"test/ngAppTest.html"
-			,"hideSelectors": [
-			]
-			,"removeSelectors": [
-			]
-			,"selectors":[
-				"body"
-			]
-			,"readyEvent":null
 			,"delay":0
-		}
-		,{
-			"testName":"test script"
-			,"url":"../../simplePage.html"
-			,"hideSelectors": [
-			]
-			,"removeSelectors": [
-			]
-			,"selectors":[
-				"body"
-			]
-			,"readyEvent":"backstop.ready"
-			,"delay":100
 		}
 	]
 }

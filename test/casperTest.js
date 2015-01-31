@@ -12,7 +12,7 @@ casper.on('remote.message', function(message) {
     consoleBuffer = consoleBuffer + '\n' + message;
 });
 
-casper.start('simplePage.html');
+casper.start('simple.html');
 
 casper.waitFor(
 	function(){return consoleBuffer.search(regExReadyFlag)>=0;} //test
