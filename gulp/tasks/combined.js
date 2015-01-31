@@ -302,9 +302,5 @@ gulp.task("stop",function(){
 });
 
 
-gulp.task('default',function(){});
-
-
-
 
 
