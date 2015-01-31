@@ -70,18 +70,3 @@ if(!config.testPairs||config.testPairs.length==0){
 }
 
 var watcher = null;
-
-
-
-//MANAGE DEPENDENCIES
-gulp.task('init',function(cb){
-
-	//load missing bower components
-	if(!fs.existsSync(comparePath+'/bower_components')){
-		console.log('\nBackstopJS needs to update bower_components, please hang on...\n');
-		var bowerProcess = (process.platform === "win32" ? "bower.cmd" : "bower");
-		spawn(bowerProcess,['install'],{cwd:comparePath}).on('error', function(){console.log('\nBower process fail. :(  Please report this bug on github.\n');});
-	}
-	cb();
-
-});
