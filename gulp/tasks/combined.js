@@ -94,11 +94,3 @@ gulp.task('genConfig',function(){
 		.pipe(rename(backstopConfigFileName))
 		.pipe(gulp.dest('/'));
 });
-
-
-
-//FIRST CLEAN REFERENCE DIR.  THEN TEST
-gulp.task('reference', ['clean','bless'], function() {
-		gulp.run('test');
-		console.log('reference has run.')
-});
