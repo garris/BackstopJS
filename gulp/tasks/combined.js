@@ -236,19 +236,3 @@ gulp.task('test',['init'], function () {
 gulp.task('report',['start'],function(){
 	setTimeout(function(){gulp.run('openReport')},100);
 })
-
-
-
-gulp.task("openReport", function(){
-
-	console.log('\nOpening report -> ',compareReportURL);
-
-	var options = {
-		url: compareReportURL
-		,app: isWin ? "chrome" : "Google Chrome"
-	};
-
-	gulp.src(compareConfigFileName)
-		.pipe(open("",options));
-
-});
