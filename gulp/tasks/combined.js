@@ -230,9 +230,3 @@ gulp.task('test',['init'], function () {
 
 
 });
-
-
-
-gulp.task('report',['start'],function(){
-	setTimeout(function(){gulp.run('openReport')},100);
-})
