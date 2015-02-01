@@ -30,7 +30,7 @@ node_modules
 
 *.sublime*
 
-bower_components
+compare/bower_components/**/.*
 
 bitmaps_test
 bitmaps_reference
