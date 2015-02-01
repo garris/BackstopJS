@@ -30,11 +30,9 @@ node_modules
 
 *.sublime*
 
-compare/bower_components/**/.*
+bower_components
 
 bitmaps_test
 bitmaps_reference
 compare/config.json
 capture/config.json
-
-
