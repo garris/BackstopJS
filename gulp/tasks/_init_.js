@@ -1,4 +1,5 @@
 var fs                      = require('fs');
+var fse                     = require('fs-extra');
 var paths                   = require('../util/paths');
 var genDefaultCompareConfig = require('../util/genDefaultCompareConfig');
 
