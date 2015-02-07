@@ -18,9 +18,9 @@ Learn more at [http://BackstopJS.org/](http://garris.github.io/BackstopJS/).
 3. Make some changes to your CSS or add new DOM components.
 4. Run a test. BackstopJS creates a set of *test* screenshots and any changes show up in a report!
 
-    
+
 ##Backstory:
-BackstopJS is basically a wrapper around the very fabulous [Resemble.js](https://github.com/Huddle/Resemble.js) component written by [James Cryer](https://github.com/jamescryer). Other implementations of Resemble.js, namely [PhantomCSS](https://github.com/Huddle/PhantomCSS) require writing long form [CasperJS](http://casperjs.org) tests. This is of course great for testing complex UI interactions – but kind of cumbersome for more simple applications like static CMS templates or other higher level sanity testing. 
+BackstopJS is basically a wrapper around the very fabulous [Resemble.js](https://github.com/Huddle/Resemble.js) component written by [James Cryer](https://github.com/jamescryer). Other implementations of Resemble.js, namely [PhantomCSS](https://github.com/Huddle/PhantomCSS) require writing long form [CasperJS](http://casperjs.org) tests. This is of course great for testing complex UI interactions – but kind of cumbersome for more simple applications like static CMS templates or other higher level sanity testing.
 
 BackstopJS may be just the thing if you develop custom Wordpress, Drupal or other CMS templates.  Tested on OSX.
 
@@ -40,25 +40,20 @@ BackstopJS was created by [Garris Shipon](expanded.me) at [Art.com labs](www.art
 
 ##Installation
 
-**BackstopJS package**  
+**BackstopJS package**
 
 You can add BackstopJS from the root directory of any project.
-    
-    $ bower install backstopjs
+
+    $ npm install --save-dev backstopjs
 
 
-This will create the folder structure `<root>/bower_components/backstopjs`.
-
-**Install NPM dependencies**
-
-    $ cd bower_components/backstopjs
-    $ npm install
+This will create the folder structure `./node_modules/backstopjs`.
 
 
 **If you don't already have a global Gulp instance...** http://gulpjs.com
-    
+
     $ sudo npm install -g gulp
-    
+
     //test for a correct install with...
     $ gulp -v
     > CLI version 3.8.10
@@ -68,16 +63,16 @@ This will create the folder structure `<root>/bower_components/backstopjs`.
 **If you don't already have a global PhantomJS install...** http://phantomjs.org/download.html
 
     $ sudo npm install -g phantomjs
-    
+
     //test for a correct install with...
     $ phantomjs -v
     > 1.9.8
 
 
 **If you don't already have a global CasperJS install...** http://docs.casperjs.org/en/latest/installation.html
-    
+
     $ sudo npm install -g casperjs
-    
+
     //test for a correct install with...
     $ casperjs --version
     > 1.1.0-beta3
@@ -90,7 +85,7 @@ Windows users who have trouble getting BackstopJS to run (e.g. Error: spawn ENOE
 
 ###Installing a develpment version
 
-    # bower install git://github.com/garris/BackstopJS/#master
+    $ npm install garris/backstopjs#master
 
 
 ##Configuration
@@ -98,59 +93,62 @@ Windows users who have trouble getting BackstopJS to run (e.g. Error: spawn ENOE
 
 **If you don't already have a BackstopJS config file.** The following command will create a config template file which you can modify in your root directory. *Note: this will overwrite any existing backstopjs config file.*
 
-*From the `bower_components/backstopjs` directory.*
+From `./node_modules/backstopjs` ...
 
     $ gulp genConfig
 
 
-
 `genConfig` will put `backstop.json` at the project root.
+
 
 **A step-by-step tutorial is at [css-tricks.com](http://css-tricks.com/automating-css-regression-testing/).**
 
 
+```json
+{
+  "viewports": [
+    {
+      "name": "phone",
+      "width": 320,
+      "height": 480
+    }, {
+      "name": "tablet_v",
+      "width": 568,
+      "height": 1024
+    }, {
+      "name": "tablet_h",
+      "width": 1024,
+      "height": 768
+    }
+  ],
+  "scenarios": [
+    {
+      "label": "http://getbootstrap.com",
+      "url": "http://getbootstrap.com",
+      "hideSelectors": [],
+      "removeSelectors": [
+        "#carbonads-container"
+      ],
+      "selectors": [
+        "header",
+        "main",
+        "body .bs-docs-featurette:nth-of-type(1)",
+        "body .bs-docs-featurette:nth-of-type(2)",
+        "footer",
+        "body"
+      ],
+      "readyEvent": null,
+      "delay": 500
+    }
+  ]
+}
+```
 
-	{
-		"viewports" : [
-			{
-			 "name": "phone",
-			 "viewport": {"width": 320, "height": 480}
-			}
-			,{
-			 "name": "tablet_v",
-			 "viewport": {"width": 568, "height": 1024}
-			}
-			,{
-			 "name": "tablet_h",
-			 "viewport": {"width": 1024, "height": 768}
-			}
-		]
-		,"grabConfigs" : [
-			{
-				"testName":"http://getbootstrap.com"
-				,"url":"http://getbootstrap.com"
-				,"hideSelectors": []
-				,"removeSelectors": [
-					"#carbonads-container"
-				]
-				,"selectors":[
-					"header"
-					,"main"
-					,"body .bs-docs-featurette:nth-of-type(1)"
-					,"body .bs-docs-featurette:nth-of-type(2)"
-					,"footer"
-					,"body"
-				]
-				,"readyEvent":null
-				,"delay": 500
-			}
-		]
-	}
 
 
 
-**DEV NOTE:** If `./backstop.json` is not present at the project root then BackstopJS will fallback to use the following config at... `bower_components/backstopjs/capture/config.default.json`
-    
+**DEV NOTE:** If `./backstop.json` is not present at the project root then BackstopJS will fallback to use the following config at... `./node_modules/backstopjs/capture/config.default.json`
+
 
 
 ## Usage Notes
@@ -210,10 +208,11 @@ There may also be elements which need to be completely removed during testing. F
 
 
 ### troubleshooting
+
 BackstopJS is fairly bare bones and there is not much in the way of guardrails to recover from things like an invalid config or a file not found. If something goes wrong it generally manifests in casperJS complaining about a missing selector.  If this happens you have the option of sending the configured URL(s) file contents to the console. From there you can at least verify that PhantomJS is indeed making a successful file request (and receiving the correct file back too.)
 
- *From the `bower_components/backstopjs` directory.*
- 
+From `./node_modules/backstopjs` ...
+
     $ gulp echo
 
 
@@ -221,15 +220,13 @@ BackstopJS is fairly bare bones and there is not much in the way of guardrails t
 
 The test comparison report was written in Angular.js and requires a running HTTP server instance.  This instance is auto-started after a test is run.  The server is also auto-stopped after 15 minutes so you don't have to go worrying about bloaty node processes running all over the place.
 
-To manually start the server...  *from the `bower_components/backstopjs` directory.*
+To manually start the server, from `./node_modules/backstopjs` ...
 
     $ gulp start
-    
-...and to manually stop there is...  *from the `bower_components/backstopjs` directory.*
+
+...and to manually stop there is, from `./node_modules/backstopjs` ...
 
     $ gulp stop
-    
-    
 
 
 
