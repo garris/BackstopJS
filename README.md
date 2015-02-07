@@ -85,7 +85,7 @@ Windows users who have trouble getting BackstopJS to run (e.g. Error: spawn ENOE
 
 ###Installing a develpment version
 
-    $ npm install --save-dev garris/backstopjs#master
+    $ npm install garris/backstopjs#master
 
 
 ##Configuration
