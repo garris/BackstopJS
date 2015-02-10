@@ -13,7 +13,7 @@ var configJSON = fs.read(genConfigPath);
 var config = JSON.parse(configJSON);
 
 var viewports = config.viewports;
-var scenarios = config.scenarios;
+var scenarios = config.scenarios||config.grabConfigs;
 
 var compareConfig = {testPairs:[]};
 

@@ -13,7 +13,7 @@ var configJSON = fs.read(genConfigPath);
 var config = JSON.parse(configJSON);
 
 var viewports = config.viewports;
-var scenarios = config.scenarios;
+var scenarios = config.scenarios||config.grabConfigs;
 
 var compareConfig = {testPairs:[]};
 
@@ -72,7 +72,7 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
 
 		casper.each(viewports, function(casper, vp, viewport_index) {
 			this.then(function() {
-				this.viewport(vp.width, vp.height);
+				this.viewport(vp.width||vp.viewport.width, vp.height||vp.viewport.height);
 			});
 			this.thenOpen(scenario.url, function() {
 
@@ -101,7 +101,7 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
 
 			this.then(function(){
 
-				this.echo('Screenshots for ' + vp.name + ' (' + vp.width + 'x' + vp.height + ')', 'info');
+				this.echo('Screenshots for ' + vp.name + ' (' + vp.width||vp.viewport.width + 'x' + vp.height||vp.viewport.height + ')', 'info');
 
 				//HIDE SELECTORS WE WANT TO AVOID
 		        if ( scenario.hasOwnProperty('hideSelectors') ) {
