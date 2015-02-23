@@ -45,11 +45,15 @@ gulp.task('test',['init'], function () {
 
   var tests = ['capture/genBitmaps.js'];
 
+  var args = ['--ssl-protocol=any'];
+
+  var casperArgs = tests.concat(args);
+
   // var args = ['test'].concat(tests); //this is required if using casperjs test option
 
   // var casperChild = spawn('casperjs', tests);//use args here to add test option to casperjs execute stmt
   var casperProcess = (process.platform === "win32" ? "casperjs.cmd" : "casperjs");
-  var casperChild = spawn(casperProcess, tests);
+  var casperChild = spawn(casperProcess, casperArgs);
 
 
   casperChild.stdout.on('data', function (data) {
