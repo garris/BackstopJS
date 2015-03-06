@@ -1,0 +1,14 @@
+{
+  "name": "visual-regression",
+  "version": "0.0.0",
+  "description": "Visual regression",
+  "dependencies": {
+    "gulp": "*",
+    "phantomjs": "*",
+    "casperjs" : "*",
+    "bower": "*",
+    "gulp-chug": "*"
+  },
+  "author": "shashikant.jagtap@aol.co.uk",
+  "license": "MIT"
+}
