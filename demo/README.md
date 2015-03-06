@@ -37,8 +37,8 @@ Install NodeJS framework and following packages.
 
 This will create 'bower_components/backstopjs' directory. Now cd into that directory and install node dependencies
 
-        $ cd bower_components/backstopJS
-        $ npm install
+         $ cd bower_components/backstopJS
+         $ npm install
 
 Now we have to run gulp tasks to create references and compare the image difference.
 
@@ -57,3 +57,28 @@ Once it finishes test. Google chrome will pop up with resluts.
 ### Gulp Chug
 
 As backstopJS has it's own gulfile.js so it's hard to run gulp from base of the project. We have gulp file referencing backstopJS gulp
+
+# Running from Node modules
+
+Run everything from the base of the project
+
+      $ npm install
+
+This will create 'node_modules' directory containing all the binaries.
+
+Run bower
+
+      $ ./node_modules/.bin/bower install
+
+This will create 'bower_components/backstopjs' directory. Now cd into that directory and install node dependencies
+
+              $ cd bower_components/backstopJS
+              $ npm install
+
+Now 'cd' back to base directory.
+
+Run gulp from base directory
+
+      $./node_modules/.bin/gulp reference 
+
+      $./node_modules/.bin/gulp test

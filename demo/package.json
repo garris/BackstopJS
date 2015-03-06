@@ -9,6 +9,5 @@
     "bower": "*",
     "gulp-chug": "*"
   },
-  "author": "shashikant.jagtap@aol.co.uk",
   "license": "MIT"
 }
