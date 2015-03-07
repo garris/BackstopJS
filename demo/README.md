@@ -25,6 +25,7 @@ Install NodeJS framework and following packages.
 
 ### Install Node packages from package.json
 
+        $ cd BackstopJS/demo
         $ npm install
 
 
@@ -46,6 +47,8 @@ This will generate base images to compare against. The images will be in the 'no
 This will test latest screenshots against the refence screnshots.The newly created images will be  in the 'node_modules/backstopjs/bitmaps_test' directory
 
 Once it finishes test. Google chrome will pop up with result.
+
+![alt tag](https://github.com/Shashikant86/Backstopjs/blob/master/google_report.png)
 
 
 
