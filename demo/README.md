@@ -48,7 +48,7 @@ This will test latest screenshots against the refence screnshots.The newly creat
 
 Once it finishes test. Google chrome will pop up with result.
 
-![alt tag](https://github.com/Shashikant86/Backstopjs/blob/master/google_report.png)
+![alt tag](https://github.com/Shashikant86/BackstopJS/blob/master/demo/google_report.png)
 
 
 
