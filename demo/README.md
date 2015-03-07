@@ -6,9 +6,6 @@ Setting up visual regression testing framework with backstopjs.
 
 Install NodeJS framework and following packages.
 
- * Bower
-
-         $ npm install -g bower
 
  * Gulp
 
@@ -24,39 +21,33 @@ Install NodeJS framework and following packages.
          $ npm install -g phanomjs
 
 
-
 ## Usage
 
 ### Install Node packages from package.json
 
         $ npm install
 
-### Install bower package for the 'backstopJS'
 
-        $ bower install
 
-This will create 'bower_components/backstopjs' directory. Now cd into that directory and install node dependencies
+This will create 'node_modules/backstopjs' directory. Now cd into that directory and install node dependencies
 
-         $ cd bower_components/backstopJS
-         $ npm install
+        $ cd node_modules/backstopJS
+        $ npm install
 
 Now we have to run gulp tasks to create references and compare the image difference.
 
 
        $ gulp reference
 
-This will generate base images to compare against. The images will be in the 'bower_components/backstopjs/bitmaps_reference' directory
+This will generate base images to compare against. The images will be in the 'node_modules/backstopjs/bitmaps_reference' directory
 
       $ gulp test
 
-This will test latest screenshots against the refence screnshots.The newly created images will be  in the 'bower_components/backstopjs/bitmaps_test' directory
+This will test latest screenshots against the refence screnshots.The newly created images will be  in the 'node_modules/backstopjs/bitmaps_test' directory
 
-Once it finishes test. Google chrome will pop up with resluts.
+Once it finishes test. Google chrome will pop up with result.
 
 
-### Gulp Chug
-
-As backstopJS has it's own gulfile.js so it's hard to run gulp from base of the project. We have gulp file referencing backstopJS gulp
 
 # Running from Node modules
 
@@ -64,21 +55,11 @@ Run everything from the base of the project
 
       $ npm install
 
-This will create 'node_modules' directory containing all the binaries.
+This will create 'node_modules/backstopjs' directory. Now cd into that directory and install node dependencies
 
-Run bower
-
-      $ ./node_modules/.bin/bower install
-
-This will create 'bower_components/backstopjs' directory. Now cd into that directory and install node dependencies
-
-              $ cd bower_components/backstopJS
+              $ cd node_modules/backstopJS
               $ npm install
 
-Now 'cd' back to base directory.
+              $./node_modules/.bin/gulp reference
 
-Run gulp from base directory
-
-      $./node_modules/.bin/gulp reference 
-
-      $./node_modules/.bin/gulp test
+              $./node_modules/.bin/gulp test
