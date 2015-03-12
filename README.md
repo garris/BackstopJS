@@ -21,7 +21,7 @@ Or learn more at [http://BackstopJS.org/](http://garris.github.io/BackstopJS/).
 1. Set up a test config file: specify screen sizes and DOM selectors.
 2. Use BackstopJS to create reference screenshots.
 3. Make some changes to your CSS or add new DOM components.
-4. Run a test. BackstopJS creates a set of *test* screenshots and any changes show up in a report!
+4. Run a test. BackstopJS creates a set of *test* screenshots and any changes show up in a nice report.
 
 
 ##Backstory:
