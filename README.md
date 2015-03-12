@@ -6,12 +6,14 @@
 
 BackstopJS automates CSS regression testing of your responsive web UI by comparing DOM screenshots at various viewport sizes.
 
-**Take your pick of step-by-step tutorials...**
-    [Basic automated regression testing on css-tricks.com](http://css-tricks.com/automating-css-regression-testing/)
-    [Automated regression testing for Angular apps on DWB](http://davidwalsh.name/visual-regression-testing-angular-applications)
+## Step-by-step tutorials
+
+- Basic automated regression testing on [css-tricks.com](http://css-tricks.com/automating-css-regression-testing/)
+    
+- Automated regression testing for AngularJS (and other) web-apps on [DWB](http://davidwalsh.name/visual-regression-testing-angular-applications)
     
 
-Learn more at [http://BackstopJS.org/](http://garris.github.io/BackstopJS/).
+Or learn more at [http://BackstopJS.org/](http://garris.github.io/BackstopJS/).
 
 
 ##Heres how it works:
