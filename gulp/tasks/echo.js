@@ -7,7 +7,7 @@ gulp.task('echo',function(){
 
   var tests = ['capture/echoFiles.js'];
 
-  var args = ['--ssl-protocol=any'];
+  var args = ['--ssl-protocol=any'];//added for https compatibility for older versions of phantom
 
   var casperArgs = tests.concat(args);
 
