@@ -72,7 +72,11 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
 
 		casper.each(viewports, function(casper, vp, viewport_index) {
 			this.then(function() {
-				this.viewport(vp.width||vp.viewport.width, vp.height||vp.viewport.height);
+				this.viewport(vp.width||vp.viewport.width, vp.height||vp.viewport.height);				
+				if(vp.userAgent && vp.userAgent !== '') {
+                    this.echo('User Agent is ' + vp.userAgent, 'info');
+                    this.userAgent(vp.userAgent);
+                }
 			});
 			this.thenOpen(scenario.url, function() {
 
