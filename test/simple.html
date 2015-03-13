@@ -10,6 +10,9 @@
     <link rel="stylesheet" href="bootstrap.min.css">
 
     <style type="text/css">
+
+    	p{padding: 10px}
+
 	    .graph{
 	    	margin-bottom: 30px;
 	    	background-color: #eee;
@@ -66,6 +69,14 @@
 
 		    </div>
 	    </div>
+
+	    <div class="row">
+	    	
+	    	<div class="col-sm-12">
+	    		<p><strong>User agent:</strong> {{userAgentStr}}</p>
+	    	</div>
+
+	    </div>
 	</div>
 
   </body>
@@ -83,6 +94,8 @@
 		$scope.allDone = function(){
 			console.log('backstop.ready');
 		}
+
+		$scope.userAgentStr = navigator.userAgent;
 
 	}]);
 
