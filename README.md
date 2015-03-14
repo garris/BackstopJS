@@ -6,7 +6,9 @@
 
 BackstopJS automates CSS regression testing of your responsive web UI by comparing DOM screenshots at various viewport sizes.
 
-## Step-by-step tutorials
+## Tutorials and Related Links
+
+- Grunt fans -- check out [grunt-backstop](https://github.com/ddluc/grunt-backstop)!
 
 - Basic automated regression testing on [css-tricks.com](http://css-tricks.com/automating-css-regression-testing/)
     
@@ -14,6 +16,8 @@ BackstopJS automates CSS regression testing of your responsive web UI by compari
     
 
 Or learn more at [http://BackstopJS.org/](http://garris.github.io/BackstopJS/).
+
+Many many thanks to [all the contributors](https://github.com/garris/BackstopJS/graphs/contributors) with special thanks to [Lewis Nyman](https://github.com/lewisnyman) and [Stoutie](https://github.com/jehoshua02) for thier help with 0.4.0 release!
 
 
 ##Heres how it works:
