@@ -10,9 +10,9 @@ BackstopJS automates CSS regression testing of your responsive web UI by compari
 
 - Grunt fans -- check out [grunt-backstop](https://github.com/ddluc/grunt-backstop)!
 
-- Basic automated regression testing on [css-tricks.com](http://css-tricks.com/automating-css-regression-testing/)
+- Basic automated regression testing article on [css-tricks.com](http://css-tricks.com/automating-css-regression-testing/)
     
-- Automated regression testing for AngularJS (and other) web-apps on [DWB](http://davidwalsh.name/visual-regression-testing-angular-applications)
+- Automated regression testing for AngularJS (and other) web-apps -- article on [DWB](http://davidwalsh.name/visual-regression-testing-angular-applications)
     
 
 Or learn more at [http://BackstopJS.org/](http://garris.github.io/BackstopJS/).
