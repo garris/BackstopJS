@@ -8,14 +8,14 @@ BackstopJS automates CSS regression testing of your responsive web UI by compari
 
 ## Tutorials and Related Links
 
-- Grunt fans -- check out [grunt-backstop](https://github.com/ddluc/grunt-backstop)!
+- Grunt fans -- check out [grunt-backstop](https://github.com/ddluc/grunt-backstop) and this [very nicely written article](http://joe-watkins.io/javascript/css-visual-regression-testing-with-grunt-backstopjs/)
 
 - Basic automated regression testing article on [css-tricks.com](http://css-tricks.com/automating-css-regression-testing/)
     
 - Automated regression testing for AngularJS (and other) web-apps -- article on [DWB](http://davidwalsh.name/visual-regression-testing-angular-applications)
     
 
-Or learn more at [http://BackstopJS.org/](http://garris.github.io/BackstopJS/).
+BackstopJS brochure at [http://BackstopJS.org/](http://garris.github.io/BackstopJS/).
 
 Many many thanks to [all the contributors](https://github.com/garris/BackstopJS/graphs/contributors) with special thanks to [Lewis Nyman](https://github.com/lewisnyman) and [Stoutie](https://github.com/jehoshua02) for thier help with 0.4.0 release!
 
@@ -161,6 +161,25 @@ From `./node_modules/backstopjs` ...
 
 
 ## Usage Notes
+
+-### generating (or updating) reference bitmaps 
+
+    $ gulp reference
+
+
+This task will create a (or update an existing) `bitmaps_reference` directory with screen captures from the current project build.
+
+
+
+-### generating test bitmaps
+
+    $ gulp test
+
+This task will create a new set of bitmaps in `bitmaps_test/<timestamp>/`
+ 
+Once the test bitmaps are generated, a report comparing the most recent test bitmaps against the current reference bitmaps will run. Significant differences will be detected and shown. 
+
+
 
 ### testing SPAs and AJAX content
 
