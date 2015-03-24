@@ -17,7 +17,7 @@ BackstopJS automates CSS regression testing of your responsive web UI by compari
 
 BackstopJS brochure at [http://BackstopJS.org/](http://garris.github.io/BackstopJS/).
 
-Many many thanks to [all the contributors](https://github.com/garris/BackstopJS/graphs/contributors) with special thanks to [Lewis Nyman](https://github.com/lewisnyman) and [Stoutie](https://github.com/jehoshua02) for thier help with 0.4.0 release!
+Many many thanks to [all the contributors](https://github.com/garris/BackstopJS/graphs/contributors) with special thanks to [Lewis Nyman](https://github.com/lewisnyman) and [Stoutie](https://github.com/jehoshua02) for their help with 0.4.0 release!
 
 
 ##Heres how it works:
