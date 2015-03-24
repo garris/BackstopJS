@@ -162,7 +162,7 @@ From `./node_modules/backstopjs` ...
 
 ## Usage Notes
 
--### generating (or updating) reference bitmaps 
+### generating (or updating) reference bitmaps 
 
     $ gulp reference
 
@@ -171,7 +171,7 @@ This task will create a (or update an existing) `bitmaps_reference` directory wi
 
 
 
--### generating test bitmaps
+### generating test bitmaps
 
     $ gulp test
 
