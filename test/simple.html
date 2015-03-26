@@ -74,6 +74,7 @@
 	    	
 	    	<div class="col-sm-12">
 	    		<p><strong>User agent:</strong> {{userAgentStr}}</p>
+	    		<p><strong>Cookie:</strong> {{cookieStr}}</p>
 	    	</div>
 
 	    </div>
@@ -96,6 +97,7 @@
 		}
 
 		$scope.userAgentStr = navigator.userAgent;
+		$scope.cookieStr = document.cookie||'No data found.';
 
 	}]);
 

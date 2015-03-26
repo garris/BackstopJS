@@ -29,7 +29,27 @@
 			],
 			"readyEvent":"backstop.ready",
 			"delay":0
+		},
+		{
+			"testName":"simple with cookies",
+			"url":"test/simple.html",
+			"hideSelectors": [
+			],
+			"removeSelectors": [
+			],
+			"selectors":[
+				"body"
+			],
+			"readyEvent":"backstop.ready",
+        	"delay":0,
+			"cookiesJsonFile":"cookies.json"
 		}
 	]
 }
+
+
+
+
+
+
 
