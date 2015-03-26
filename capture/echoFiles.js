@@ -58,7 +58,7 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
 
 	casper.each(scenarios,function(casper, scenario, scenario_index){
 
-		if (fs.isFile(scenario.cookiesJsonFile)) {
+		if (scenario.cookiesJsonFile && fs.isFile(scenario.cookiesJsonFile)) {
 			var cookiesJson = fs.read(scenario.cookiesJsonFile);
 			var cookies = JSON.parse(cookiesJson);
 			for (var i = 0; i < cookies.length; i++) {
