@@ -1,4 +1,5 @@
 {
+  "misMatchThreshold" : 1,
   "viewports": [
     {
       "name": "phone",

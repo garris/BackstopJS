@@ -16,6 +16,9 @@ var viewports = config.viewports;
 var scenarios = config.scenarios||config.grabConfigs;
 
 var compareConfig = {testPairs:[]};
+if (config.misMatchThreshold) {
+    compareConfig.misMatchThreshold = config.misMatchThreshold;
+}
 
 var casper = require("casper").create({
 	// clientScripts: ["jquery.js"] //lets try not to use this it's friggin 2014 already people...
