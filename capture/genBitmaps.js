@@ -16,9 +16,6 @@ var viewports = config.viewports;
 var scenarios = config.scenarios||config.grabConfigs;
 
 var compareConfig = {testPairs:[]};
-if (config.misMatchThreshold) {
-    compareConfig.misMatchThreshold = config.misMatchThreshold;
-}
 
 var casper = require("casper").create({
 	// clientScripts: ["jquery.js"] //lets try not to use this it's friggin 2014 already people...
@@ -156,7 +153,8 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
 							test:test_FP,
 							selector:o,
 							fileName:fileName,
-							label:scenario.label
+							label:scenario.label,
+              misMatchThreshold: scenario.misMatchThreshold
 						})
 
 					casper.captureSelector(filePath, o);

@@ -70,6 +70,7 @@
 			this.processing=true;
 			this.passed=false;
 			this.meta = o;
+      this.mismatchThreshold = o.mismatchThreshold;
 		};
 
 		$scope.$on("$routeChangeSuccess", function( $currentRoute, $previousRoute ){
@@ -99,13 +100,8 @@
 			$http.get('./'+(params.path||'config.json'))
 			.success(function(data, status) {
 				// console.log('got data!',status,data);
-        if(data.misMatchthreshold) {
-            $scope.misMatchThreshold = data.misMatchthreshold;
-        }
-        else {
-          $scope.misMatchThreshold = defaultMisMatchThreshold;
-        }
-				data.testPairs.forEach(function(o,i,a){
+        data.testPairs.forEach(function(o,i,a){
+          console.log(o);
 					$scope.testPairs.push(new testPairObj('../'+o.reference, '../'+o.test, null, o));
 				});
 				$scope.compareTestPairs($scope.testPairs);
@@ -160,7 +156,7 @@
 				testPair.report = JSON.stringify(diffData,null,2);
 				testPair.c.src = diffData.getImageDataUrl();
 				testPair.processing=false;
-				testPair.passed=(diffData.isSameDimensions && diffData.misMatchPercentage<$scope.misMatchThreshold)?true:false;
+				testPair.passed=(diffData.isSameDimensions && diffData.misMatchPercentage<testPair.misMatchThreshold)?true:false;
 				if(cb)cb(testPair);
 			});
 		};//scope.compareTestPair()
