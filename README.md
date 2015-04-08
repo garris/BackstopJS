@@ -212,6 +212,7 @@ In the following case, BackstopJS would wait for one second after the string `ba
     "delay": 1000 //delay in ms
     }
 
+<!-- 
 ####set HTTP cookie for login-required pages
 
 The `cookiesJsonFile` property enables you to add HTTP cookie for capturing login-required pages.
@@ -228,7 +229,7 @@ The `cookiesJsonFile` file should have this format.
         "path": "/"
       }
     ]
-
+ -->
 
 ### dealing with dynamic content
 
