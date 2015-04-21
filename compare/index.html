@@ -31,7 +31,7 @@
 			largeImageThreshold: 1200
 		}
 
-		var misMatchThresh = 1;
+		var defaultMisMatchThreshold = 1;
 
 		//A TEST PAIR ARE TWO IMAGE OBJECTS PLUS THEIR META DATA WHICH WILL BE COMPARED BY RESEMBLE
 		$scope.testPairs = [];
@@ -70,6 +70,7 @@
 			this.processing=true;
 			this.passed=false;
 			this.meta = o;
+      this.mismatchThreshold = o.mismatchThreshold;
 		};
 
 		$scope.$on("$routeChangeSuccess", function( $currentRoute, $previousRoute ){
@@ -98,8 +99,9 @@
 
 			$http.get('./'+(params.path||'config.json'))
 			.success(function(data, status) {
-				//console.log('got data!',status,data);
-				data.testPairs.forEach(function(o,i,a){
+				// console.log('got data!',status,data);
+        data.testPairs.forEach(function(o,i,a){
+          console.log(o);
 					$scope.testPairs.push(new testPairObj('../'+o.reference, '../'+o.test, null, o));
 				});
 				$scope.compareTestPairs($scope.testPairs);
@@ -154,7 +156,7 @@
 				testPair.report = JSON.stringify(diffData,null,2);
 				testPair.c.src = diffData.getImageDataUrl();
 				testPair.processing=false;
-				testPair.passed=(diffData.isSameDimensions && diffData.misMatchPercentage<misMatchThresh)?true:false;
+				testPair.passed=(diffData.isSameDimensions && diffData.misMatchPercentage<testPair.misMatchThreshold)?true:false;
 				if(cb)cb(testPair);
 			});
 		};//scope.compareTestPair()

@@ -153,7 +153,8 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
 							test:test_FP,
 							selector:o,
 							fileName:fileName,
-							label:scenario.label
+							label:scenario.label,
+              misMatchThreshold: scenario.misMatchThreshold
 						})
 
 					casper.captureSelector(filePath, o);

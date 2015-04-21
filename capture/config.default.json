@@ -33,7 +33,8 @@
         "body"
       ],
       "readyEvent": null,
-      "delay": 500
+      "delay": 500,
+      "misMatchThreshold" : 0.1
     }
   ]
 }

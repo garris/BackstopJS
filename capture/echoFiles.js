@@ -16,6 +16,9 @@ var viewports = config.viewports;
 var scenarios = config.scenarios||config.grabConfigs;
 
 var compareConfig = {testPairs:[]};
+if (config.misMatchThreshold) {
+    compareConfig.misMatchThreshold = config.misMatchThreshold;
+}
 
 var casper = require("casper").create({
 	// clientScripts: ["jquery.js"] //lets try not to use this it's friggin 2014 already people...
@@ -47,7 +50,7 @@ casper.on('resource.received', function(resource) {
 
 function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_test,isReference){
 
-	var 
+	var
 		gotErrors = [],
 		screenshotNow = new Date(),
 		screenshotDateTime = screenshotNow.getFullYear() + pad(screenshotNow.getMonth() + 1) + pad(screenshotNow.getDate()) + '-' + pad(screenshotNow.getHours()) + pad(screenshotNow.getMinutes()) + pad(screenshotNow.getSeconds());
@@ -104,7 +107,7 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
 
 			// 	//CREATE SCREEN SHOTS AND TEST COMPARE CONFIGURATION (CONFIG FILE WILL BE SAVED WHEN THIS PROCESS RETURNS)
 			// 	scenario.selectors.forEach(function(o,i,a){
-			// 		var cleanedSelectorName = o.replace(/[^a-zA-Z\d]/,'');//remove anything that's not a letter or a number 				
+			// 		var cleanedSelectorName = o.replace(/[^a-zA-Z\d]/,'');//remove anything that's not a letter or a number
 			// 		//var cleanedUrl = scenario.url.replace(/[^a-zA-Z\d]/,'');//remove anything that's not a letter or a number
 			// 		var fileName = scenario_index + '_' + i + '_' + cleanedSelectorName + '_' + viewport_index + '_' + vp.name + '.png';;
 
@@ -124,11 +127,11 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
 
 			// 		casper.captureSelector(filePath, o);
 			// 		//casper.echo('remote capture to > '+filePath,'info');
-				
+
 			// 	});//end topLevelModules.forEach
 			// });
-			
-			
+
+
 		// });//end casper.each viewports
 
 	});//end casper.each scenario
