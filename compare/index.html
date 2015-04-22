@@ -70,7 +70,7 @@
 			this.processing=true;
 			this.passed=false;
 			this.meta = o;
-      this.mismatchThreshold = o.mismatchThreshold;
+      		this.mismatchThreshold = (o.mismatchThreshold >= 0) ? o.mismatchThreshold : defaultMisMatchThreshold;
 		};
 
 		$scope.$on("$routeChangeSuccess", function( $currentRoute, $previousRoute ){
@@ -101,7 +101,6 @@
 			.success(function(data, status) {
 				// console.log('got data!',status,data);
         data.testPairs.forEach(function(o,i,a){
-          console.log(o);
 					$scope.testPairs.push(new testPairObj('../'+o.reference, '../'+o.test, null, o));
 				});
 				$scope.compareTestPairs($scope.testPairs);
@@ -156,7 +155,7 @@
 				testPair.report = JSON.stringify(diffData,null,2);
 				testPair.c.src = diffData.getImageDataUrl();
 				testPair.processing=false;
-				testPair.passed=(diffData.isSameDimensions && diffData.misMatchPercentage<testPair.misMatchThreshold)?true:false;
+				testPair.passed=(diffData.isSameDimensions && diffData.misMatchPercentage<testPair.meta.misMatchThreshold)?true:false;
 				if(cb)cb(testPair);
 			});
 		};//scope.compareTestPair()
@@ -294,7 +293,8 @@
 							<div class="indicator failed" ng-if="!thisTestPair.passed&&!thisTestPair.processing"><span class="dot red"></span>failed</div>
 							<div class="indicator passed" ng-if="thisTestPair.passed"><span class="dot green"></span>passed</span>
 						</div>
-						<span class="reportTxt">{{ thisTestPair.report }}</span>
+						<div class="reportTxt">Threshold: {{ thisTestPair.meta.misMatchThreshold}}</div>
+						<div class="reportTxt">Report: {{ thisTestPair.report }}</div>
 					</td>
 				</tr>
 			</table>
