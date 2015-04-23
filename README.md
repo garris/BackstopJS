@@ -8,7 +8,7 @@ BackstopJS automates CSS regression testing of your responsive web UI by compari
 
 ## Tutorials and Related Links
 
-- Grunt fans -- check out [grunt-backstop](https://github.com/ddluc/grunt-backstop) and this [very nicely written article](http://joe-watkins.io/css-visual-regression-testing-with-grunt-backstopjs/)
+- Good news for *Gulp fans*, BackstopJS is written on top of Gulp -- so you'll be right at home. *Grunt fans* -- check out [grunt-backstop](https://github.com/ddluc/grunt-backstop) and this [very nicely written article by Joe Watkins](http://joe-watkins.io/css-visual-regression-testing-with-grunt-backstopjs/)
 
 - Basic automated regression testing article on [css-tricks.com](http://css-tricks.com/automating-css-regression-testing/)
     
