@@ -70,7 +70,7 @@
 			this.processing=true;
 			this.passed=false;
 			this.meta = o;
-      		this.mismatchThreshold = (o.mismatchThreshold >= 0) ? o.mismatchThreshold : defaultMisMatchThreshold;
+      		this.meta.misMatchThreshold = (o && o.misMatchThreshold && o.misMatchThreshold >= 0) ? o.misMatchThreshold : defaultMisMatchThreshold;
 		};
 
 		$scope.$on("$routeChangeSuccess", function( $currentRoute, $previousRoute ){
@@ -100,7 +100,7 @@
 			$http.get('./'+(params.path||'config.json'))
 			.success(function(data, status) {
 				// console.log('got data!',status,data);
-        data.testPairs.forEach(function(o,i,a){
+        		data.testPairs.forEach(function(o,i,a){
 					$scope.testPairs.push(new testPairObj('../'+o.reference, '../'+o.test, null, o));
 				});
 				$scope.compareTestPairs($scope.testPairs);

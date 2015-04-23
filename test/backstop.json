@@ -28,7 +28,8 @@
 				"body"
 			],
 			"readyEvent":"backstop.ready",
-			"delay":0
+			"delay":0,
+			"misMatchThreshold" : 0.05
 		}
 	]
 }
