@@ -29,6 +29,7 @@ node_modules
 .lock-wscript
 
 *.sublime*
+.idea
 
 compare/bower_components/**/.*
 

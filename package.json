@@ -26,6 +26,7 @@
     "gulp-rename": "^1.2.0",
     "http-proxy": "~1.1.4",
     "require-dir": "^0.1.0",
-    "underscore": "~1.6.0"
+    "underscore": "~1.6.0",
+    "yargs": "~3.9.0"
   }
 }
