@@ -1,6 +1,5 @@
 var gulp  = require('gulp');
 var fs    = require('fs');
-var exec  = require('child_process').exec;
 var spawn = require('child_process').spawn;
 var isRunning = require('is-running');
 var paths = require('../util/paths');
