@@ -1,7 +1,7 @@
 var gulp  = require('gulp');
 var fs    = require('fs');
-var exec  = require('child_process').exec;
 var spawn = require('child_process').spawn;
+var isRunning = require('is-running');
 var paths = require('../util/paths');
 
 
@@ -13,11 +13,11 @@ gulp.task("start",function(){
   fs.readFile(paths.serverPidFile, function(err,data){
 
     if(data){
-      exec('kill -0 '+data,function(error, stdout, stderr){
-        if(/no such process/i.test(stderr))
-          start();
-      });
+      var pid = parseInt(data);
 
+      if(!isRunning(pid)) {
+        start();
+      }
     }else{
       start();
     }
