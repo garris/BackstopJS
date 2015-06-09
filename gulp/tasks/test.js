@@ -30,8 +30,8 @@ gulp.task('test',['init'], function () {
       var cache = fs.readFileSync(paths.captureConfigFileNameCache, 'utf8');
       if(config !== cache){
         console.log('\nIt looks like the reference configuration has been changed since last reference batch.');
-        console.log('Please run `$ gulp reference` to generate a fresh set of reference files')
-        console.log('or run `$ gulp bless` then `$ gulp test` to enable testing with this configuration.\n\n')
+        console.log('Please run `$ gulp reference` to generate a fresh set of reference files');
+        console.log('or run `$ gulp bless` then `$ gulp test` to enable testing with this configuration.\n\n');
         return;
       }
 
