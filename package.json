@@ -2,9 +2,7 @@
   "name": "backstopjs",
   "version": "0.4.3",
   "description": "",
-  "scripts": {
-
-  },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "https://github.com/garris/backstopjs.git"
@@ -26,6 +24,7 @@
     "gulp-rename": "^1.2.0",
     "http-proxy": "~1.1.4",
     "require-dir": "^0.1.0",
-    "underscore": "~1.6.0"
+    "underscore": "~1.6.0",
+    "is-running": "~1.0.5"
   }
 }
