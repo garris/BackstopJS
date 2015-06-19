@@ -263,13 +263,17 @@ From `./node_modules/backstopjs` ...
 
 ### running the report server
 
-The test comparison report was written in Angular.js and requires a running HTTP server instance.  This instance is auto-started after a test is run.  The server is also auto-stopped after 15 minutes so you don't have to go worrying about bloaty node processes running all over the place.
+The test comparison report was written in Angular.js and requires a running HTTP server instance.  This instance is auto-started after a test is run.  The server is also auto-stopped after 15 minutes so you don't have to go worrying about node processes running all over the place.
 
-To manually start the server, from `./node_modules/backstopjs` ...
+You can manually start the server optionally passing your own timeout parameter (in minutes). Passing 0 will disable the timeout feature and run the server until you manually stop it. 
 
-    $ gulp start
+From `./node_modules/backstopjs` ...
 
-...and to manually stop there is, from `./node_modules/backstopjs` ...
+    $ gulp start -t 0
+    
+    
+
+To manually stop the server, from `./node_modules/backstopjs` ...
 
     $ gulp stop
 
