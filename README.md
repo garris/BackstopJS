@@ -11,9 +11,9 @@ BackstopJS automates CSS regression testing of your responsive web UI by compari
 - Good news for *Gulp fans*, BackstopJS is written on top of Gulp -- so you'll be right at home. *Grunt fans* -- check out [grunt-backstop](https://github.com/ddluc/grunt-backstop) and this [very nicely written article by Joe Watkins](http://joe-watkins.io/css-visual-regression-testing-with-grunt-backstopjs/)
 
 - Basic automated regression testing article on [css-tricks.com](http://css-tricks.com/automating-css-regression-testing/)
-    
+
 - Automated regression testing for AngularJS (and other) web-apps -- article on [DWB](http://davidwalsh.name/visual-regression-testing-angular-applications)
-    
+
 
 BackstopJS brochure at [http://BackstopJS.org/](http://garris.github.io/BackstopJS/).
 
@@ -162,7 +162,7 @@ From `./node_modules/backstopjs` ...
 
 ## Usage Notes
 
-### generating (or updating) reference bitmaps 
+### generating (or updating) reference bitmaps
 
     $ gulp reference
 
@@ -176,8 +176,8 @@ This task will create a (or update an existing) `bitmaps_reference` directory wi
     $ gulp test
 
 This task will create a new set of bitmaps in `bitmaps_test/<timestamp>/`
- 
-Once the test bitmaps are generated, a report comparing the most recent test bitmaps against the current reference bitmaps will run. Significant differences will be detected and shown. 
+
+Once the test bitmaps are generated, a report comparing the most recent test bitmaps against the current reference bitmaps will run. Significant differences will be detected and shown.
 
 
 
@@ -212,7 +212,7 @@ In the following case, BackstopJS would wait for one second after the string `ba
     "delay": 1000 //delay in ms
     }
 
-<!-- 
+<!--
 ####set HTTP cookie for login-required pages
 
 The `cookiesJsonFile` property enables you to add HTTP cookie for capturing login-required pages.
