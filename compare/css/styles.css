@@ -1,0 +1,51 @@
+body{font-family: HelveticaNeue,Arial}
+footer{margin-bottom: 200px;}
+label span{display: block;}
+td,th{vertical-align: top;padding: 8px;width: 25%;}
+/*td:nth-child(4){background-color: #eee;}*/
+td img{width: 100%;}
+table{width: 100%;border-collapse: collapse;margin-bottom: 50px;}
+input{width: 55ex; display: none;}
+th{text-align: left;background: #ddd;padding: 10px;white-space: nowrap;}
+th.selector,th.filename{background-color: #666;color:#fff;}
+th.filename{text-align: right;}
+.reportTxt{white-space: pre-wrap;font-family: monospace; font-size: 11px;}
+.summaryList{padding: 0px;list-style: none;width: auto;}
+.summaryList td{width: auto; padding: 5px;}
+.summaryList tr:nth-child(2n-1){background-color: #f0f0f0;}
+.detailReport{ margin:50px 10px 10px;}
+.detailReport select{display: inline-block;width: auto;}
+.summaryBlock .fileName{font-style: italic;font-weight: 100;color: #999;}
+
+h2>.stat{white-space: nowrap;margin-right: 2em;display: inline-block;}
+.progressBarBlock{width:130px;display: inline-block;margin-right: 2em;}
+.progress{margin-bottom: -3px;}
+.progress-bar{transition:width 0ms;min-width:20%;}
+
+.filterGroup{padding: 7px; background-color: #eee;}
+.summaryList .statusInds{width: 15ex;}
+.detailReport .indicator{display: block;}
+.indicator{display: inline-block;font-style: italic;font-weight: 100;color: #999;}
+
+.circle{
+    padding: 3px;
+    border-radius: 2em;
+    color: white;
+    width: 1.7em;
+    display: inline-block;
+    text-align: center;
+}
+
+.dot{
+    width: 0.5em;
+    height: 0.5em;
+    border-radius: .5em;
+    display: inline-block;
+    margin-right: 0.8ex;
+}
+.yellow{background-color: #ffcc00; }
+.red{background: #c60000; }
+.green{background: #56e900; }
+.flash {animation: blink 350ms infinite alternate; -webkit-animation: blink 350ms infinite alternate; }
+@keyframes blink {to { opacity: 0; } }
+@-webkit-keyframes blink {to { opacity: 0; } }
