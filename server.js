@@ -1,8 +1,6 @@
 var express = require('express')
 	,app 	= express()
-	,bunyan = require('bunyan')
 	,_ = require('underscore')
-	,util 	= require('util')
 	,os 	= require('os')
 	,sys = require('sys')
 	,exec = require('child_process').exec;
@@ -36,7 +34,7 @@ console.log('Press Ctrl + C to stop.');
 
 
 if(autoShutDownMs>0){
-	
+
 	setTimeout(function(){
 		console.log('\n['+new Date()+'] Server is shutting down now. Bye!\n');
 		listenerHook.close();
@@ -51,7 +49,7 @@ if(autoShutDownMs>0){
 function getAddresses(){
 	var interfaces = os.networkInterfaces(),
 		addresses = [];
-	
+
 	_.each(interfaces,function(net){
 		_.each(net,function(address){
 			if (address.family == 'IPv4' && !address.internal) addresses.push(address.address);
