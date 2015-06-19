@@ -17,7 +17,6 @@ BackstopJS automates CSS regression testing of your responsive web UI by compari
 
 BackstopJS brochure at [http://BackstopJS.org/](http://garris.github.io/BackstopJS/).
 
-Many many thanks to [all the contributors](https://github.com/garris/BackstopJS/graphs/contributors) with special thanks to [Lewis Nyman](https://github.com/lewisnyman) and [Stoutie](https://github.com/jehoshua02) for their help with 0.4.0 release!
 
 
 ##Heres how it works:
@@ -25,7 +24,7 @@ Many many thanks to [all the contributors](https://github.com/garris/BackstopJS/
 1. Set up a test config file: specify screen sizes and DOM selectors.
 2. Use BackstopJS to create reference screenshots.
 3. Make some changes to your CSS or add new DOM components.
-4. Run a test. BackstopJS creates a set of *test* screenshots and any changes show up in a nice report.
+4. Run a test. BackstopJS creates a set of *test* screenshots and compares them with the *reference screenshots* you made in step 2 above. Any unwanted/unforeseen changes show up in a nice report.
 
 
 ##Backstory:
@@ -39,9 +38,11 @@ BackstopJS was created by [Garris Shipon](expanded.me) at [Art.com labs](www.art
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 
 
-
 ...
 
+## Many many thanks to [all the contributors](https://github.com/garris/BackstopJS/graphs/contributors) with special thanks to...
+- [Lewis Nyman](https://github.com/lewisnyman) and [Stoutie](https://github.com/jehoshua02) for help with 0.4.0 release
+- [Yulia Tsareva](https://github.com/YuliaTsareva) for help on the 0.5.0 release
 
 ---
 

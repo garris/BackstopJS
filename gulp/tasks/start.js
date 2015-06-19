@@ -11,12 +11,12 @@ var argv  = require('yargs').argv;
 //IF ALREADY STARTED IT WILL NOT TRY TO START AGAIN
 gulp.task("start",function(){
 
-  fs.readFile(paths.serverPidFile, function(err,data) {
+  fs.readFile(paths.serverPidFile, function(err,data){
 
     if(data){
       var pid = parseInt(data);
 
-    } else {
+      if(!isRunning(pid)) {
         start();
       }
     }else{
@@ -25,9 +25,9 @@ gulp.task("start",function(){
 
   });
 
+
   function start() {
     var time = (Number(argv.t) === argv.t && argv.t % 1 === 0) ? argv.t : 15;
-
     var serverHook = spawn('node', ['server.js', '-t ' + time],  {detached: true, stdio:'ignore'});
     serverHook.unref();
     fs.writeFileSync(paths.serverPidFile, serverHook.pid);
