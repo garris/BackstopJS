@@ -12,7 +12,10 @@
   "main": "",
   "devDependencies": {
     "mocha": "^1.21.5",
-    "chai": "^1.9.2"
+    "chai": "^1.9.2",
+    "gulp-jscs": "^1.6.x",
+    "gulp-jshint": "^1.11.x",
+    "gulp-jscs-stylish": "^1.1.x"
   },
   "dependencies": {
     "del": "^0.1.3",

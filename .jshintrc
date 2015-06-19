@@ -1,0 +1,18 @@
+{
+  "camelcase": false,
+  "laxcomma": true,
+  "curly": true,
+  "eqeqeq": true,
+  "freeze": true,
+  "indent": 4,
+  "newcap": false,
+  "quotmark": "single",
+  "maxdepth": 3,
+  "maxstatements": 50,
+  "eqnull": true,
+  "funcscope": true,
+  "undef": true,
+  "unused": false,
+  "node": true,
+  "predef": ["document"]
+}
