@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html>
 <head>
 	<title>BackstopJS Report</title>
 
@@ -247,7 +248,7 @@
 					<td class="statusInds">
 						<div class="indicator scanning" ng-if="thisTestPair.processing"><span class="dot yellow flash"></span>scanning</div>
 						<div class="indicator failed" ng-if="!thisTestPair.passed&&!thisTestPair.processing"><span class="dot red"></span>failed</div>
-						<div class="indicator passed" ng-if="thisTestPair.passed"><span class="dot green"></span>passed</span>
+						<div class="indicator passed" ng-if="thisTestPair.passed"><span class="dot green"></span>passed</div>
 					</td>
 					<td>
 						{{ thisTestPair.meta.label }} {{ thisTestPair.meta.selector }} <span class="fileName">{{ thisTestPair.meta.fileName }}</span>
@@ -291,7 +292,7 @@
 						<div class="statusInds">
 							<div class="indicator scanning" ng-if="thisTestPair.processing"><span class="dot yellow flash"></span>scanning</div>
 							<div class="indicator failed" ng-if="!thisTestPair.passed&&!thisTestPair.processing"><span class="dot red"></span>failed</div>
-							<div class="indicator passed" ng-if="thisTestPair.passed"><span class="dot green"></span>passed</span>
+							<div class="indicator passed" ng-if="thisTestPair.passed"><span class="dot green"></span>passed</div>
 						</div>
 						<div class="reportTxt">Threshold: {{ thisTestPair.meta.misMatchThreshold}}</div>
 						<div class="reportTxt">Report: {{ thisTestPair.report }}</div>
