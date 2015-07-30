@@ -1,24 +1,22 @@
 
 var fs = require('fs');
 
-
-
-var bitmaps_reference = 'bitmaps_reference';
-var bitmaps_test = 'bitmaps_test';
-var compareConfigFileName = 'compare/config.json'
 var genConfigPath = 'capture/config.json'
 
 
 var configJSON = fs.read(genConfigPath);
 var config = JSON.parse(configJSON);
 
+var bitmaps_reference = config.paths.bitmaps_reference;
+var bitmaps_test = config.paths.bitmaps_test;
+var compareConfigFileName = config.paths.compare_data;
 var viewports = config.viewports;
 var scenarios = config.scenarios||config.grabConfigs;
 
 var compareConfig = {testPairs:[]};
 
 var casper = require("casper").create({
-	// clientScripts: ["jquery.js"] //lets try not to use this it's friggin 2014 already people...
+	// clientScripts: ["jquery.js"] //lets try not to use this it's 2014 already people...
 });
 
 casper.on('resource.received', function(resource) {
@@ -154,7 +152,7 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
 							selector:o,
 							fileName:fileName,
 							label:scenario.label,
-              				misMatchThreshold: scenario.misMatchThreshold
+              misMatchThreshold: scenario.misMatchThreshold
 						})
 
 					casper.captureSelector(filePath, o);
@@ -196,6 +194,7 @@ casper.run(function(){
 
 function complete(){
 	var configData = JSON.stringify(compareConfig,null,2);
+  fs.touch(compareConfigFileName);
 	fs.write(compareConfigFileName, configData, 'w');
 	console.log(
 		'Comparison config file updated.'

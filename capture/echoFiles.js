@@ -1,19 +1,18 @@
 
 var fs = require('fs');
 
-
-
-var bitmaps_reference = 'bitmaps_reference';
-var bitmaps_test = 'bitmaps_test';
-var compareConfigFileName = 'compare/config.json'
 var genConfigPath = 'capture/config.json'
 
 
 var configJSON = fs.read(genConfigPath);
 var config = JSON.parse(configJSON);
 
+var bitmaps_reference = config.paths.bitmaps_reference;
+var bitmaps_test = config.paths.bitmaps_test;
+var compareConfigFileName = config.paths.compare_data;
 var viewports = config.viewports;
 var scenarios = config.scenarios||config.grabConfigs;
+
 
 var compareConfig = {testPairs:[]};
 if (config.misMatchThreshold) {

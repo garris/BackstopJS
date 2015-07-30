@@ -6,19 +6,16 @@ var fs = require('fs');
 var paths = {};
 
 // BACKSTOP MODULE PATH
-paths.backstop                      = __dirname + '/../..';
-
-// SERVER PID PATH
-paths.serverPidFile                 = paths.backstop + '/server.pid';
-
-// BITMAPS PATHS
-paths.bitmaps_reference             = paths.backstop + '/bitmaps_reference';
-paths.bitmaps_test                  = paths.backstop + '/bitmaps_test';
+paths.backstop                      = path.join(__dirname, '../..');
 
 // BACKSTOP CONFIG PATH
 paths.backstopConfigFileName        = path.join(paths.backstop, '../..', 'backstop.json');
 
-// COMPARE PATHS
+// BITMAPS PATHS -- note: this path is overwritten if config files exist.  see below.
+paths.bitmaps_reference             = paths.backstop + '/bitmaps_reference';
+paths.bitmaps_test                  = paths.backstop + '/bitmaps_test';
+
+// COMPARE PATHS -- note: compareConfigFileName is overwritten if config files exist.  see below.
 paths.comparePath                   = paths.backstop + '/compare';
 paths.compareConfigFileName         = paths.comparePath+'/config.json';
 paths.compareReportURL              = 'http://localhost:3001/compare/';
@@ -28,12 +25,14 @@ paths.captureConfigFileName         = paths.backstop + '/capture/config.json';
 paths.captureConfigFileNameCache    = paths.backstop + '/capture/.config.json.cache';
 paths.captureConfigFileNameDefault  = paths.backstop + '/capture/config.default.json';
 
+// SERVER PID PATH
+paths.serverPidFile                 = paths.backstop + '/server.pid';
+
 // ACTIVE CAPTURE CONFIG PATH
 paths.activeCaptureConfigPath       = '';
 
 if(!fs.existsSync(paths.backstopConfigFileName)){
-  // console.log('\nCould not find a valid config file.');
-  // console.log('\nUsing demo configuration.');
+  console.log('\nCould not find a valid config file.');
   console.log('\nTo run your own tests create a config here...\n ==> '+paths.backstopConfigFileName);
   console.log('\nRun `$ gulp genConfig` to generate a config template file in this location.\n')
   paths.activeCaptureConfigPath = paths.captureConfigFileNameDefault;
@@ -42,6 +41,14 @@ if(!fs.existsSync(paths.backstopConfigFileName)){
   paths.activeCaptureConfigPath = paths.backstopConfigFileName;
 }
 
+// overwrite default filepaths if config files exist
+if(fs.existsSync(paths.activeCaptureConfigPath)){
+  var configJSON = fs.readFileSync(paths.activeCaptureConfigPath, "utf8");
+  var config = JSON.parse(configJSON);
 
+  paths.bitmaps_reference = config.paths.bitmaps_reference;
+  paths.bitmaps_test = config.paths.bitmaps_test;
+  paths.compareConfigFileName = config.paths.compare_data;
+}
 
 module.exports = paths;

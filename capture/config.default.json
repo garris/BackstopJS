@@ -36,5 +36,10 @@
       "delay": 500,
       "misMatchThreshold" : 0.1
     }
-  ]
+  ],
+  "paths": {
+    "bitmaps_reference": "../../bitmaps_reference",
+    "bitmaps_test": "../../bitmaps_test",
+    "compare_data": "../../compare.json"
+  }
 }
