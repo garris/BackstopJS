@@ -13,11 +13,11 @@ var paths = require('../util/paths');
 gulp.task('init',function(cb){
 
   //load missing bower components
-  if(!fs.existsSync(paths.comparePath+'/bower_components')){
-    console.log('\nBackstopJS needs to update bower_components, please hang on...\n');
-    var bowerProcess = (process.platform === "win32" ? "bower.cmd" : "bower");
-    spawn(bowerProcess,['install'],{cwd:paths.comparePath}).on('error', function(){console.log('\nBower process fail. :(  Please report this bug on github.\n');});
-  }
+  // if(!fs.existsSync(paths.comparePath+'/bower_components')){
+  //   console.log('\nBackstopJS needs to update bower_components, please hang on...\n');
+  //   var bowerProcess = (process.platform === "win32" ? "bower.cmd" : "bower");
+  //   spawn(bowerProcess,['install'],{cwd:paths.comparePath}).on('error', function(){console.log('\nBower process fail. :(  Please report this bug on github.\n');});
+  // }
   cb();
 
 });

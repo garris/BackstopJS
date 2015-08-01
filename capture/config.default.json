@@ -38,8 +38,8 @@
     }
   ],
   "paths": {
-    "bitmaps_reference": "../../bitmaps_reference",
-    "bitmaps_test": "../../bitmaps_test",
-    "compare_data": "../../compare.json"
+    "bitmaps_reference": "../../backstopjs/bitmaps_reference",
+    "bitmaps_test": "../../backstopjs/bitmaps_test",
+    "compare_data": "../../backstopjs/compare.json"
   }
 }
