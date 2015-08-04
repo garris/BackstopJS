@@ -29,8 +29,8 @@ gulp.task("openReport", function(){
       json.testPairs.forEach(function(item){
         var rFile = referenceDir + item.reference.split('/').slice(-1)[0];
         var tFile = testDir + item.test.split('/').slice(-1)[0];
-        item.reference = rFile;
-        item.test = tFile;
+        item.local_reference = rFile;
+        item.local_test = tFile;
       })
       return json;
     }))

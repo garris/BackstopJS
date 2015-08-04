@@ -84,12 +84,11 @@ compareApp.controller('MainCtrl', function ($scope, $route, $routeParams, $q, $h
 
 	//READS CONFIG FROM FILE AND RUNS IMG DIFF TEST
 	$scope.runFileConfig = function(params){
-
-		$http.get('./'+(params.path||'config.json'))
+		$http.get('./config.json'))
 			.success(function(data, status) {
 				// console.log('got data!',status,data);
 				data.testPairs.forEach(function(o,i,a){
-					$scope.testPairs.push(new testPairObj('../'+o.reference, '../'+o.test, null, o));
+					$scope.testPairs.push(new testPairObj('../'+o.local_reference, '../'+o.local_test, null, o));
 				});
 				$scope.compareTestPairs($scope.testPairs);
 
