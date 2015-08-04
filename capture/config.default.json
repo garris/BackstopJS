@@ -40,6 +40,6 @@
   "paths": {
     "bitmaps_reference": "../../backstopjs/bitmaps_reference",
     "bitmaps_test": "../../backstopjs/bitmaps_test",
-    "compare_data": "../../backstopjs/compare.json"
+    "compare_data": "../../backstopjs/bitmaps_test/compare.json"
   }
 }

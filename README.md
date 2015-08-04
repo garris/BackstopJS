@@ -150,7 +150,12 @@ From `./node_modules/backstopjs` ...
       "readyEvent": null,
       "delay": 500
     }
-  ]
+  ],
+  "paths": {
+    "bitmaps_reference": "../../backstopjs/bitmaps_reference",
+    "bitmaps_test": "../../backstopjs/bitmaps_test",
+    "compare_data": "../../backstopjs/bitmaps_test/compare.json"
+  }
 }
 ```
 
@@ -250,6 +255,23 @@ There may also be elements which need to be completely removed during testing. F
     "removeSelectors": [
     	"#someUnpredictableSizedDomSelector"
     ]
+
+### moving the bitmap directories
+By default, BackstopJS saves it's screenshots into `./backstopjs/bitmaps_reference/` and `./backstopjs/bitmaps_test/` in parallel with your `./backstop.js` config file. The location of these directories are configurable so they can easily be moved inside or outside your source control or file sharing environment. 
+
+The `compare.json` file contains file mappings between reference and test files. This file tells the comparison module what comparisons to run. It is probably best kept inside the `bitmaps_test` directory.
+
+Please note: these file paths are relative to your `./node_modules/backstopjs/` directory. 
+
+
+
+```
+  "paths": {
+    "bitmaps_reference": "../../backstopjs/bitmaps_reference",
+    "bitmaps_test": "../../backstopjs/bitmaps_test",
+    "compare_data": "../../backstopjs/bitmaps_test/compare.json"
+  }
+```
 
 
 ### troubleshooting
