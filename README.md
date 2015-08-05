@@ -152,9 +152,9 @@ From `./node_modules/backstopjs` ...
     }
   ],
   "paths": {
-    "bitmaps_reference": "../../backstopjs/bitmaps_reference",
-    "bitmaps_test": "../../backstopjs/bitmaps_test",
-    "compare_data": "../../backstopjs/bitmaps_test/compare.json"
+    "bitmaps_reference": "../../backstop_data/bitmaps_reference",
+    "bitmaps_test": "../../backstop_data/bitmaps_test",
+    "compare_data": "../../backstop_data/bitmaps_test/compare.json"
   }
 }
 ```
@@ -267,9 +267,9 @@ Please note: these file paths are relative to your `./node_modules/backstopjs/` 
 
 ```
   "paths": {
-    "bitmaps_reference": "../../backstopjs/bitmaps_reference",
-    "bitmaps_test": "../../backstopjs/bitmaps_test",
-    "compare_data": "../../backstopjs/bitmaps_test/compare.json"
+    "bitmaps_reference": "../../backstop_data/bitmaps_reference",
+    "bitmaps_test": "../../backstop_data/bitmaps_test",
+    "compare_data": "../../backstop_data/bitmaps_test/compare.json"
   }
 ```
 
