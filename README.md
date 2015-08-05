@@ -6,6 +6,21 @@
 
 BackstopJS automates CSS regression testing of your responsive web UI by comparing DOM screenshots at various viewport sizes.
 
+
+## Version 0.6.0 Beta available now!
+
+Screenshot paths are now configurable! See *moving the bitmap directories* below.  This is a beta release so, as always, please [direct questions, comments or issues here](https://github.com/garris/BackstopJS/issues)...
+
+If installing fresh, then follow the install instructions below.  Then, from your root directory run...
+
+```
+$ npm install garris/backstopjs#master
+```
+
+If you are upgrading you can just run the above command without reinstalling anything else.  Move your `bitmaps_reference` and `bitmaps_test` from your BackstopJS folder to your root directory you want to keep your existing test data.
+
+
+
 ## Tutorials and Related Links
 
 - Good news for *Gulp fans*, BackstopJS is written on top of Gulp -- so you'll be right at home. *Grunt fans* -- check out [grunt-backstop](https://github.com/ddluc/grunt-backstop) and this [very nicely written article by Joe Watkins](http://joe-watkins.io/css-visual-regression-testing-with-grunt-backstopjs/)
