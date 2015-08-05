@@ -13,7 +13,7 @@ BackstopJS automates CSS regression testing of your responsive web UI by compari
 
 Screenshot paths are now configurable! See *moving the bitmap directories* below.  This is a beta release so, as always, please [direct questions, comments or issues here](https://github.com/garris/BackstopJS/issues)...
 
-If installing fresh, then follow the install instructions below.  Then, from your root directory run...
+If you have not installed BackstopJS in the past, follow the install instructions [here](https://github.com/garris/BackstopJS#installation).  Then, from your root directory run...
 
 ```
 $ npm install garris/backstopjs#master
@@ -273,7 +273,7 @@ There may also be elements which need to be completely removed during testing. F
     	"#someUnpredictableSizedDomSelector"
     ]
 
-### moving the bitmap directories
+### moving the bitmap directories (version 0.6.0+)
 By default, BackstopJS saves it's screenshots into `./backstopjs/bitmaps_reference/` and `./backstopjs/bitmaps_test/` in parallel with your `./backstop.js` config file. The location of these directories are configurable so they can easily be moved inside or outside your source control or file sharing environment. 
 
 The `compare.json` file contains file mappings between reference and test files. This file tells the comparison module what comparisons to run. It is probably best kept inside the `bitmaps_test` directory.
