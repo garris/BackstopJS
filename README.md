@@ -7,7 +7,9 @@
 BackstopJS automates CSS regression testing of your responsive web UI by comparing DOM screenshots at various viewport sizes.
 
 
-## Version 0.6.0 Beta available now!
+## News
+
+### Version 0.6.0 Beta available now!
 
 Screenshot paths are now configurable! See *moving the bitmap directories* below.  This is a beta release so, as always, please [direct questions, comments or issues here](https://github.com/garris/BackstopJS/issues)...
 
