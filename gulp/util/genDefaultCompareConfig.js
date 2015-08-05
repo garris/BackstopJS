@@ -1,4 +1,4 @@
-var fs = require('fs');
+var fsx = require('fs-extra');
 var paths = require('./paths');
 
 
@@ -6,13 +6,9 @@ var configDefault = {
   "testPairs": []
 };
 
-var genDefaultCompareConfig = function (cb) {
-  fs.writeFile(paths.compareConfigFileName, JSON.stringify(configDefault,null,2), function(err){
-    if (err) {
-      console.log('error: while genDefaultCompareConfig();')
-    }
-    if (typeof cb == 'object') cb();
-  });
+var genDefaultCompareConfig = function () {
+  fsx.ensureFileSync(paths.compareConfigFileName);
+  fsx.writeFileSync(paths.compareConfigFileName, JSON.stringify(configDefault,null,2));
 };
 
 module.exports = genDefaultCompareConfig;

@@ -45,10 +45,11 @@ if(!fs.existsSync(paths.backstopConfigFileName)){
 if(fs.existsSync(paths.activeCaptureConfigPath)){
   var configJSON = fs.readFileSync(paths.activeCaptureConfigPath, "utf8");
   var config = JSON.parse(configJSON);
-
-  paths.bitmaps_reference = config.paths.bitmaps_reference;
-  paths.bitmaps_test = config.paths.bitmaps_test;
-  paths.compareConfigFileName = config.paths.compare_data;
+  if (config.paths) {
+    paths.bitmaps_reference = config.paths.bitmaps_reference || paths.bitmaps_reference;
+    paths.bitmaps_test = config.paths.bitmaps_test || paths.bitmaps_test;
+    paths.compareConfigFileName = config.paths.compare_data || paths.compareConfigFileName;
+  }
 }
 
 module.exports = paths;
