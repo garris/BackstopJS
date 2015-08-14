@@ -50,6 +50,8 @@ if(fs.existsSync(paths.activeCaptureConfigPath)){
     paths.bitmaps_test = config.paths.bitmaps_test || paths.bitmaps_test;
     paths.compareConfigFileName = config.paths.compare_data || paths.compareConfigFileName;
   }
+
+  paths.engine = config.engine || null;
 }
 
 module.exports = paths;

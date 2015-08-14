@@ -45,7 +45,8 @@ gulp.task('test',['init'], function () {
 
   var tests = ['capture/genBitmaps.js'];
 
-  var args = ['--ssl-protocol=any'];//added for https compatibility for older versions of phantom
+  var args = ['--ssl-protocol=any'];// sent to casperjs (appended to cmd line)
+  if (paths.engine === "slimerjs") args.push('--engine=slimerjs');
 
   var casperArgs = tests.concat(args);
 
