@@ -28,7 +28,7 @@ gulp.task("openReport", function(){
     .pipe(jeditor(function(json) {
       json.testPairs.forEach(function(item){
         var rFile = referenceDir + item.reference.split('/').slice(-1)[0];
-        var tFile = testDir + item.test.split('/').slice(-1)[0];
+        var tFile = testDir + item.test.split('/').slice(-2).join('/');
         item.local_reference = rFile;
         item.local_test = tFile;
       })
