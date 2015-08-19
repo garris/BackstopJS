@@ -21,7 +21,7 @@ gulp.task("openReport", function(){
   gulp.src(paths.bitmaps_reference + '/**/*')
     .pipe(gulp.dest(referenceDir));
 
-  gulp.src(paths.bitmaps_reference + '/**/*')
+  gulp.src(paths.bitmaps_test + '/**/*')
     .pipe(gulp.dest(testDir));
 
   gulp.src(paths.compareConfigFileName)
