@@ -109,7 +109,7 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
 
 			this.then(function(){
 
-				this.echo('Screenshots for ' + vp.name + ' (' + vp.width||vp.viewport.width + 'x' + vp.height||vp.viewport.height + ')', 'info');
+        this.echo('Screenshots for ' + vp.name + ' (' + (vp.width||vp.viewport.width) + 'x' + (vp.height||vp.viewport.height) + ')', 'info');
 
 				//HIDE SELECTORS WE WANT TO AVOID
 		        if ( scenario.hasOwnProperty('hideSelectors') ) {
