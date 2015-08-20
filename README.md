@@ -9,9 +9,13 @@ BackstopJS automates CSS regression testing of your responsive web UI by compari
 
 ## News
 
-### Version 0.6.0 Beta available now!
+### Version 0.6.x Beta available now!
+**This is a beta release so, as always, please [direct questions, comments or issues here](https://github.com/garris/BackstopJS/issues).**
 
-Screenshot paths are now configurable! See *moving the bitmap directories* below.  This is a beta release so, as always, please [direct questions, comments or issues here](https://github.com/garris/BackstopJS/issues)...
+This version adds:
+- configurable screenshot locations. See *moving the bitmap directories* below.
+- SlimerJS support. See *changing the rendering engine* below.
+
 
 If you have not installed BackstopJS in the past, follow the install instructions [here](https://github.com/garris/BackstopJS#installation).  Then, from your root directory run...
 
@@ -58,8 +62,10 @@ BackstopJS was created by [Garris Shipon](expanded.me) at [Art.com labs](www.art
 ...
 
 ## Many many thanks to [all the contributors](https://github.com/garris/BackstopJS/graphs/contributors) with special thanks to...
-- [Lewis Nyman](https://github.com/lewisnyman) and [Stoutie](https://github.com/jehoshua02) for help with 0.4.0 release
+- [Benedikt Rötsch](https://github.com/axe312ger) for help on the 0.6.0 release
 - [Yulia Tsareva](https://github.com/YuliaTsareva) for help on the 0.5.0 release
+- [Lewis Nyman](https://github.com/lewisnyman) and [Stoutie](https://github.com/jehoshua02) for help with 0.4.0 release
+
 
 ---
 
@@ -172,7 +178,8 @@ From `./node_modules/backstopjs` ...
     "bitmaps_reference": "../../backstop_data/bitmaps_reference",
     "bitmaps_test": "../../backstop_data/bitmaps_test",
     "compare_data": "../../backstop_data/bitmaps_test/compare.json"
-  }
+  }  },
+  "engine": "phantomjs"
 }
 ```
 
@@ -274,11 +281,11 @@ There may also be elements which need to be completely removed during testing. F
     ]
 
 ### moving the bitmap directories (version 0.6.0+)
-By default, BackstopJS saves it's screenshots into `./backstopjs/bitmaps_reference/` and `./backstopjs/bitmaps_test/` in parallel with your `./backstop.js` config file. The location of these directories are configurable so they can easily be moved inside or outside your source control or file sharing environment. 
+By default, BackstopJS saves it's screenshots into `./backstopjs/bitmaps_reference/` and `./backstopjs/bitmaps_test/` in parallel with your `./backstop.js` config file. The location of these directories are configurable so they can easily be moved inside or outside your source control or file sharing environment.
 
 The `compare.json` file contains file mappings between reference and test files. This file tells the comparison module what comparisons to run. It is probably best kept inside the `bitmaps_test` directory.
 
-Please note: these file paths are relative to your `./node_modules/backstopjs/` directory. 
+Please note: these file paths are relative to your `./node_modules/backstopjs/` directory.
 
 
 
@@ -289,6 +296,25 @@ Please note: these file paths are relative to your `./node_modules/backstopjs/` 
     "compare_data": "../../backstop_data/bitmaps_test/compare.json"
   }
 ```
+
+### changing the rendering engine (version 0.6.0+)
+BackstopJS supports using PhantomJS or SlimerJS (With thanks to CasperJS for doing the heavy lifting here.) 
+
+PhantomJS, the default rendering engine, does not correctly interpret flexbox and web fonts -- so if you are using those things in your app you will be way more happy using SlimerJS. Here is how to do that...
+
+First, install SlimerJS. From your root directory run...
+```
+$ sudo npm install -g slimerjs
+```
+Then, in your `backstop.json` config file, update the engine property to...
+```
+  "engine": "slimerjs"
+```
+Thats it. 
+
+This is a new feature, so if you find any bugs, [please file an issue.](https://github.com/garris/BackstopJS/issues)
+
+
 
 
 ### troubleshooting
@@ -304,13 +330,13 @@ From `./node_modules/backstopjs` ...
 
 The test comparison report was written in Angular.js and requires a running HTTP server instance.  This instance is auto-started after a test is run.  The server is also auto-stopped after 15 minutes so you don't have to go worrying about node processes running all over the place.
 
-You can manually start the server optionally passing your own timeout parameter (in minutes). Passing 0 will disable the timeout feature and run the server until you manually stop it. 
+You can manually start the server optionally passing your own timeout parameter (in minutes). Passing 0 will disable the timeout feature and run the server until you manually stop it.
 
 From `./node_modules/backstopjs` ...
 
     $ gulp start -t 0
-    
-    
+
+
 
 To manually stop the server, from `./node_modules/backstopjs` ...
 

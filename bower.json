@@ -1,6 +1,6 @@
 {
   "name": "BackstopJS",
-  "version": "0.6.0",
+  "version": "0.6.2",
   "main": "/",
   "ignore": [
     "node_modules",
