@@ -178,7 +178,7 @@ From `./node_modules/backstopjs` ...
     "bitmaps_reference": "../../backstop_data/bitmaps_reference",
     "bitmaps_test": "../../backstop_data/bitmaps_test",
     "compare_data": "../../backstop_data/bitmaps_test/compare.json"
-  }  },
+  },
   "engine": "phantomjs"
 }
 ```
