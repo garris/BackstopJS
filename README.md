@@ -35,6 +35,8 @@ If you are upgrading you can just run the above command without reinstalling any
 
 - Automated regression testing for AngularJS (and other) web-apps -- article on [DWB](http://davidwalsh.name/visual-regression-testing-angular-applications)
 
+- Want to add BackstopJS to your existing gulp build?  Turns out to be pretty easy – use **gulp-chug**. Learn how in this article by [Filip Bartos](http://blog.bartos.me/css-regression-testing/)
+
 
 BackstopJS brochure at [http://BackstopJS.org/](http://garris.github.io/BackstopJS/).
 
