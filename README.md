@@ -23,7 +23,7 @@ If you have not installed BackstopJS in the past, follow the install instruction
 $ npm install garris/backstopjs#master
 ```
 
-If you are upgrading you can just run the above command without reinstalling anything else.  Move your `bitmaps_reference` and `bitmaps_test` from your BackstopJS folder to your root directory you want to keep your existing test data.
+If you are upgrading you can just run the above command without reinstalling anything else.  Move your `bitmaps_reference` and `bitmaps_test` from your BackstopJS folder to your root directory if you want to keep your existing test data.
 
 
 
