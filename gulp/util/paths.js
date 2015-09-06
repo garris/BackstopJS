@@ -1,7 +1,6 @@
 var path = require('path');
 var fs = require('fs');
-
-
+var argv = require('yargs').argv;
 
 var paths = {};
 
@@ -9,7 +8,7 @@ var paths = {};
 paths.backstop                      = path.join(__dirname, '../..');
 
 // BACKSTOP CONFIG PATH
-paths.backstopConfigFileName        = path.join(paths.backstop, '../..', 'backstop.json');
+paths.backstopConfigFileName        = path.join(paths.backstop, argv.backstopConfigFilePath || '../..', 'backstop.json');
 
 // BITMAPS PATHS -- note: this path is overwritten if config files exist.  see below.
 paths.bitmaps_reference             = paths.backstop + '/bitmaps_reference';
@@ -34,10 +33,10 @@ paths.activeCaptureConfigPath       = '';
 if(!fs.existsSync(paths.backstopConfigFileName)){
   console.log('\nCould not find a valid config file.');
   console.log('\nTo run your own tests create a config here...\n ==> '+paths.backstopConfigFileName);
-  console.log('\nRun `$ gulp genConfig` to generate a config template file in this location.\n')
+  console.log('\nRun `$ gulp genConfig` to generate a config template file in this location.\n');
   paths.activeCaptureConfigPath = paths.captureConfigFileNameDefault;
 }else{
-  // console.log('\nBackstopJS Config loaded.\n')
+  console.log('\nBackstopJS Config loaded at location', paths.backstopConfigFileName);
   paths.activeCaptureConfigPath = paths.backstopConfigFileName;
 }
 

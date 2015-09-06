@@ -133,7 +133,7 @@ From `./node_modules/backstopjs` ...
     $ gulp genConfig
 
 
-`genConfig` will put `backstop.json` at the project root. Also by default, a directory `backstop_data` will be created at this same location (location of this directory is configurable, see below...)
+`genConfig` will put `backstop.json` at the project root. The location of the `backstop.json` file can be specified by passing a `backstopConfigFilePath` argument to the backstop tasks. E.g. by passing `--backstopConfigFilePath=../../src/test/` backstop looks for a `backstop.json` at `../../src/test/backstop.json` before looking for a `backstop.json` at the project root. Also by default, a directory `backstop_data` will be created at this same location (location of this directory is configurable, see below...)
 
 
 **A step-by-step tutorial is at [css-tricks.com](http://css-tricks.com/automating-css-regression-testing/).**
@@ -300,7 +300,7 @@ Please note: these file paths are relative to your `./node_modules/backstopjs/` 
 ```
 
 ### changing the rendering engine (version 0.6.0+)
-BackstopJS supports using PhantomJS or SlimerJS (With thanks to CasperJS for doing the heavy lifting here.) 
+BackstopJS supports using PhantomJS or SlimerJS (With thanks to CasperJS for doing the heavy lifting here.)
 
 PhantomJS, the default rendering engine, does not correctly interpret flexbox and web fonts -- so if you are using those things in your app you will be way more happy using SlimerJS. Here is how to do that...
 
@@ -312,7 +312,7 @@ Then, in your `backstop.json` config file, update the engine property to...
 ```
   "engine": "slimerjs"
 ```
-Thats it. 
+Thats it.
 
 This is a new feature, so if you find any bugs, [please file an issue.](https://github.com/garris/BackstopJS/issues)
 
