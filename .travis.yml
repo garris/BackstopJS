@@ -9,3 +9,4 @@ install:
 script:
   - gulp reference
   - gulp test
+  - npm run test
