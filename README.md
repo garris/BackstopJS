@@ -9,21 +9,13 @@ BackstopJS automates CSS regression testing of your responsive web UI by compari
 
 ## News
 
-### Version 0.6.x Beta available now!
-**This is a beta release so, as always, please [direct questions, comments or issues here](https://github.com/garris/BackstopJS/issues).**
+### Latest release version is 0.6.2
+[Please direct questions, comments or issues here](https://github.com/garris/BackstopJS/issues).
 
 This version adds:
 - configurable screenshot locations. See *moving the bitmap directories* below.
 - SlimerJS support. See *changing the rendering engine* below.
 
-
-If you have not installed BackstopJS in the past, follow the install instructions [here](https://github.com/garris/BackstopJS#installation).  Then, from your root directory run...
-
-```
-$ npm install garris/backstopjs#master
-```
-
-If you are upgrading you can just run the above command without reinstalling anything else.  Move your `bitmaps_reference` and `bitmaps_test` from your BackstopJS folder to your root directory if you want to keep your existing test data.
 
 
 
