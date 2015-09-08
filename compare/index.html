@@ -1,100 +1,100 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>BackstopJS Report</title>
+  <title>BackstopJS Report</title>
 
-	<link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="css/styles.css">
+  <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="css/styles.css">
 
-	<script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
-	<script type="text/javascript" src="bower_components/angular-route/angular-route.min.js"></script>
-	<script type="text/javascript" src="bower_components/resemblejs/resemble.js"></script>
-	<script type="text/javascript" src="bower_components/async/lib/async.js"></script>
+  <script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
+  <script type="text/javascript" src="bower_components/angular-route/angular-route.min.js"></script>
+  <script type="text/javascript" src="bower_components/resemblejs/resemble.js"></script>
+  <script type="text/javascript" src="bower_components/async/lib/async.js"></script>
 
-	<script type="text/javascript" src="js/compare.js"></script>
+  <script type="text/javascript" src="js/compare.js"></script>
 </head>
 
 <body ng-app="compareApp">
-	<div id="root" ng-controller="MainCtrl">
-		<div class="container"><h1>BackstopJS Report</h1></div>
-		<div class="container summaryBlock">
-			<h2 class='lead'>
-				<div class="stat">Passed <strong class='green circle'>{{passedCount}}</strong>&nbsp;&nbsp; Failed <strong class='red circle'>{{testPairsCompleted-passedCount}}</strong></div>
-				<div class="stat">{{testPairsCompleted}} of {{testPairs.length}}</div>
-				<div class="stat">{{testDuration/1000 | number : 2}}s</div>
-				<div class="progressBarBlock" ng-if="testIsRunning">
-					<div class="progress">
-					  <div class="progress-bar progress-bar-striped active"  role="progressbar" aria-valuenow="{{testPairsCompleted}}" aria-valuemin="0" aria-valuemax="{{testPairs.length}}" style="width: {{testPairsCompleted/testPairs.length*100| number : 0}}%">
-					    <span class="sr-only">{{testPairsCompleted}} of {{testPairs.length}}</span>
-					  </div>
-					</div>
-				</div>
-			</h2>
-			<table class="summaryList">
-				<tr ng-repeat="thisTestPair in testPairs">
-					<td class="statusInds">
-						<div class="indicator scanning" ng-if="thisTestPair.processing"><span class="dot yellow flash"></span>scanning</div>
-						<div class="indicator failed" ng-if="!thisTestPair.passed&&!thisTestPair.processing"><span class="dot red"></span>failed</div>
-						<div class="indicator passed" ng-if="thisTestPair.passed"><span class="dot green"></span>passed</div>
-					</td>
-					<td>
-						{{ thisTestPair.meta.label }} {{ thisTestPair.meta.selector }} <span class="fileName">{{ thisTestPair.meta.fileName }}</span>
-					</td>
-				</tr>
-			</table>
-		</div> <!-- end summaryBlock -->
+  <div id="root" ng-controller="MainCtrl">
+    <div class="container"><h1>BackstopJS Report</h1></div>
+    <div class="container summaryBlock">
+      <h2 class='lead'>
+        <div class="stat">Passed <strong class='green circle'>{{passedCount}}</strong>&nbsp;&nbsp; Failed <strong class='red circle'>{{testPairsCompleted-passedCount}}</strong></div>
+        <div class="stat">{{testPairsCompleted}} of {{testPairs.length}}</div>
+        <div class="stat">{{testDuration/1000 | number : 2}}s</div>
+        <div class="progressBarBlock" ng-if="testIsRunning">
+          <div class="progress">
+            <div class="progress-bar progress-bar-striped active"  role="progressbar" aria-valuenow="{{testPairsCompleted}}" aria-valuemin="0" aria-valuemax="{{testPairs.length}}" style="width: {{testPairsCompleted/testPairs.length*100| number : 0}}%">
+              <span class="sr-only">{{testPairsCompleted}} of {{testPairs.length}}</span>
+            </div>
+          </div>
+        </div>
+      </h2>
+      <table class="summaryList">
+        <tr ng-repeat="thisTestPair in testPairs">
+          <td class="statusInds">
+            <div class="indicator scanning" ng-if="thisTestPair.processing"><span class="dot yellow flash"></span>scanning</div>
+            <div class="indicator failed" ng-if="!thisTestPair.passed&&!thisTestPair.processing"><span class="dot red"></span>failed</div>
+            <div class="indicator passed" ng-if="thisTestPair.passed"><span class="dot green"></span>passed</div>
+          </td>
+          <td>
+            {{ thisTestPair.meta.label }} {{ thisTestPair.meta.selector }} <span class="fileName">{{ thisTestPair.meta.fileName }}</span>
+          </td>
+        </tr>
+      </table>
+    </div> <!-- end summaryBlock -->
 
-		<div class="detailReport">
+    <div class="detailReport">
 
-			<div class='filterGroup form-group'>
-				<label for="statusFilter" class="control-label">status filter</label>
-				<select id="statusFilter" class="form-control" ng-model="statusFilter" ng-options="status for status in detailFilterOptions"></select>
+      <div class='filterGroup form-group'>
+        <label for="statusFilter" class="control-label">status filter</label>
+        <select id="statusFilter" class="form-control" ng-model="statusFilter" ng-options="status for status in detailFilterOptions"></select>
 
-			</div>
+      </div>
 
-			<table ng-repeat="thisTestPair in testPairs | filter : displayOnStatusFilter ">
-				<thead>
-					<tr>
-						<th class="selector" colspan="2">{{ thisTestPair.meta.label }} {{ thisTestPair.meta.selector }}</th>
-						<th class="filename" colspan="2">{{ thisTestPair.meta.fileName }}</th>
-					</tr>
-					<tr>
-						<th>Reference</th>
-						<th>Test</th>
-						<th>Diff</th>
-						<th>Report</th>
-					</tr>
-				</thead>
-				<tr>
-					<td>
-						<img ng-src="{{ thisTestPair.a.src }}">
-					</td>
-					<td>
-						<img ng-src="{{ thisTestPair.b.src }}">
-					</td>
-					<td>
-						<img ng-src="{{ thisTestPair.c.src }}" image-name="c">
-					</td>
-					<td>
-						<div class="statusInds">
-							<div class="indicator scanning" ng-if="thisTestPair.processing"><span class="dot yellow flash"></span>scanning</div>
-							<div class="indicator failed" ng-if="!thisTestPair.passed&&!thisTestPair.processing"><span class="dot red"></span>failed</div>
-							<div class="indicator passed" ng-if="thisTestPair.passed"><span class="dot green"></span>passed</div>
-						</div>
-						<div class="reportTxt">Threshold: {{ thisTestPair.meta.misMatchThreshold}}</div>
-						<div class="reportTxt">Report: {{ thisTestPair.report }}</div>
-					</td>
-				</tr>
-			</table>
-
-
-		</div> <!-- end detailReport -->
+      <table ng-repeat="thisTestPair in testPairs | filter : displayOnStatusFilter ">
+        <thead>
+          <tr>
+            <th class="selector" colspan="2">{{ thisTestPair.meta.label }} {{ thisTestPair.meta.selector }}</th>
+            <th class="filename" colspan="2">{{ thisTestPair.meta.fileName }}</th>
+          </tr>
+          <tr>
+            <th>Reference</th>
+            <th>Test</th>
+            <th>Diff</th>
+            <th>Report</th>
+          </tr>
+        </thead>
+        <tr>
+          <td>
+            <img ng-src="{{ thisTestPair.a.src }}">
+          </td>
+          <td>
+            <img ng-src="{{ thisTestPair.b.src }}">
+          </td>
+          <td>
+            <img ng-src="{{ thisTestPair.c.src }}" image-name="c">
+          </td>
+          <td>
+            <div class="statusInds">
+              <div class="indicator scanning" ng-if="thisTestPair.processing"><span class="dot yellow flash"></span>scanning</div>
+              <div class="indicator failed" ng-if="!thisTestPair.passed&&!thisTestPair.processing"><span class="dot red"></span>failed</div>
+              <div class="indicator passed" ng-if="thisTestPair.passed"><span class="dot green"></span>passed</div>
+            </div>
+            <div class="reportTxt">Threshold: {{ thisTestPair.meta.misMatchThreshold}}</div>
+            <div class="reportTxt">Report: {{ thisTestPair.report }}</div>
+          </td>
+        </tr>
+      </table>
 
 
-	<footer></footer>
+    </div> <!-- end detailReport -->
 
 
-	</div> <!-- end #root -->
+  <footer></footer>
+
+
+  </div> <!-- end #root -->
 
 </body>
 </html>
