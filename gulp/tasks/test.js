@@ -46,7 +46,7 @@ gulp.task('test',['init'], function () {
   var tests = ['capture/genBitmaps.js'];
 
   var args = ['--ssl-protocol=any'];// sent to casperjs (appended to cmd line)
-  if (paths.engine === "slimerjs") args.push('--engine=slimerjs');
+  if (paths.engine === 'slimerjs') args = ['--engine=slimerjs'];
 
   var casperArgs = tests.concat(args);
 
