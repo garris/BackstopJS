@@ -319,11 +319,13 @@ From `./node_modules/backstopjs` ...
 
     $ gulp echo
 
-### Compare images with gulp
+### Command line reporting with gulp (experimental 0.6.3+)
 
-There is also a gulp task to compare the reference bitmaps with the latest test bitmaps.
+The default behavior of `$ gulp test` is to run a new comparison report of the latest `test_bitmaps` against `reference_bitmaps` in the browser. The following **experimental** config option allows you to run a comparison in the browser, entirely server side or both. 
 
-	gulp compare
+    "report": ["SSR"]  // arguments ["browser", "SSR", "all"]
+
+
 
 ### running the report server
 
