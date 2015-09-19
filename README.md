@@ -323,8 +323,9 @@ From `./node_modules/backstopjs` ...
 
 The default behavior of `$ gulp test` is to run a new comparison report of the latest `test_bitmaps` against `reference_bitmaps` in the browser. The following **experimental** config option allows you to run a comparison in the browser, entirely server side or both. 
 
-    "report": ["SSR"]  // arguments ["browser", "SSR", "all"]
+Add the following to `backstop.json` removing `"browser"` for server-side-only reporting and remove "SSR" for browser-only reporting...
 
+    "report": ["browser", "SSR"]
 
 
 ### running the report server
