@@ -9,10 +9,29 @@ BackstopJS automates CSS regression testing of your responsive web UI by compari
 
 ## News
 
-### Latest release version is 0.6.2
+
+### Version 0.7.0 beta available now
+**Fast command line reports are here!**
+
 [Please direct questions, comments or issues here](https://github.com/garris/BackstopJS/issues).
 
-This version adds:
+BackstopJS now enables you to run a comparison in the browser, entirely server-side or both. 
+
+Using the report property in `backstop.json` enable or disable browser or server-side-reporting by including/excluding the respective properties... 
+
+    "report": ["browser", "SSR"]
+
+Try using the SSR option and run the browser report when there is an issue.  Run the browser report on demand with...
+
+    $ gulp openReport
+
+Try out the beta version – install here...
+
+    $ npm install garris/backstopjs#master
+
+---
+
+Version 0.6.+ new features...
 - configurable screenshot locations. See *moving the bitmap directories* below.
 - SlimerJS support. See *changing the rendering engine* below.
 
@@ -56,6 +75,7 @@ BackstopJS was created by [Garris Shipon](expanded.me) at [Art.com labs](www.art
 ...
 
 ## Many many thanks to [all the contributors](https://github.com/garris/BackstopJS/graphs/contributors) with special thanks to...
+- [Klaus Bayrhammer](https://github.com/klausbayrhammer) for help on the 0.7.0 release
 - [Benedikt Rötsch](https://github.com/axe312ger) for help on the 0.6.0 release
 - [Yulia Tsareva](https://github.com/YuliaTsareva) for help on the 0.5.0 release
 - [Lewis Nyman](https://github.com/lewisnyman) and [Stoutie](https://github.com/jehoshua02) for help with 0.4.0 release
@@ -173,7 +193,8 @@ From `./node_modules/backstopjs` ...
     "bitmaps_test": "../../backstop_data/bitmaps_test",
     "compare_data": "../../backstop_data/bitmaps_test/compare.json"
   },
-  "engine": "phantomjs"
+  "engine": "phantomjs",
+  "report": ["browser", "SSR"]
 }
 ```
 
@@ -319,13 +340,7 @@ From `./node_modules/backstopjs` ...
 
     $ gulp echo
 
-### Command line reporting with gulp (experimental 0.6.3+)
 
-The default behavior of `$ gulp test` is to run a new comparison report of the latest `test_bitmaps` against `reference_bitmaps` in the browser. The following **experimental** config option allows you to run a comparison in the browser, entirely server side or both. 
-
-Add the following to `backstop.json` removing `"browser"` for server-side-only reporting and remove "SSR" for browser-only reporting...
-
-    "report": ["browser", "SSR"]
 
 
 ### running the report server
