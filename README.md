@@ -238,9 +238,9 @@ Once the test bitmaps are generated, a report comparing the most recent test bit
 
 ### testing SPAs and AJAX content
 
-It is very common for client-side web apps is to initially download a small chunk of important content and render it to the screen as soon as it arrives at the browser. Once this has completed, various JS components often take over to progressively load more, less important content (e.g. ads, feeds or other supporting content/features) over some relatively short amount of time.
+It is very common for client-side web apps is to initially download a small chunk of bootstrapping code/content and render it to the screen as soon as it arrives at the browser. Once this has completed, various JS components often take over to progressively load more content.
 
-The problem testing these apps is knowing _when_ to take the screenshot.  BackstopJS solves this problem with two config properties: `readyEvent` and `delay`.
+The problem testing these scenarios is knowing _when_ to take the screenshot.  BackstopJS solves this problem with two config properties: `readyEvent` and `delay`.
 
 ####trigger screen capture via console.log()
 
