@@ -17,13 +17,15 @@ BackstopJS automates CSS regression testing of your responsive web UI by compari
 
 BackstopJS now enables you to run a comparison in the browser, entirely server-side or both. 
 
-
-![](homepage/img/CLI_report.png)
 _CLI Report_
 
+![](homepage/img/CLI_report.png)
+
+
+_Browser Report_
 
 ![](homepage/img/browserReport.png)
-_Browser Report_
+
 
 Using the report property in `backstop.json` enable or disable browser or server-side-reporting by including/excluding the respective properties... 
 
