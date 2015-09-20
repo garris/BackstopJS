@@ -52,6 +52,8 @@ if(fs.existsSync(paths.activeCaptureConfigPath)){
   }
 
   paths.engine = config.engine || null;
+  paths.report = config.report || null;
+
 }
 
 module.exports = paths;
