@@ -15,7 +15,7 @@ BackstopJS automates CSS regression testing of your responsive web UI by compari
 
 [Please direct questions, comments or issues here](https://github.com/garris/BackstopJS/issues).
 
-BackstopJS now enables you to run a comparison in the browser, entirely server-side or both. 
+BackstopJS now enables you to run a comparison in the browser, entirely server-side or both.
 
 _CLI Report_
 
@@ -27,11 +27,11 @@ _Browser Report_
 ![](homepage/img/browserReport.png)
 
 
-Using the report property in `backstop.json` enable or disable browser or server-side-reporting by including/excluding the respective properties... 
+Using the report property in `backstop.json` enable or disable browser or server-side-reporting by including/excluding the respective properties...
 
-    "report": ["browser", "SSR"]
+    "report": ["browser", "CLI"]
 
-Try using the SSR option and run the browser report when there is an issue.  Run the browser report on demand with...
+Try using the CLI option and run the browser report when there is an issue.  Run the browser report on demand with...
 
     $ gulp openReport
 
@@ -204,7 +204,7 @@ From `./node_modules/backstopjs` ...
     "compare_data": "../../backstop_data/bitmaps_test/compare.json"
   },
   "engine": "phantomjs",
-  "report": ["browser", "SSR"]
+  "report": ["browser", "CLI"]
 }
 ```
 

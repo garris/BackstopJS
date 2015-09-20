@@ -7,7 +7,7 @@ gulp.task('report',['start'],function(){
     setTimeout(function(){gulp.run('openReport')},100);
   }
 
-  if (!paths.report || paths.report.indexOf( 'SSR' ) > -1 ){
+  if (!paths.report || paths.report.indexOf( 'CLI' ) > -1 ){
     setTimeout(function(){gulp.run('compare')},1000);
   }
 });
