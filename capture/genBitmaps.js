@@ -148,7 +148,9 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
 
           var filePath      = (isReference)?reference_FP:test_FP;
 
-          if(!isReference)
+          casper.captureSelector(filePath, o);
+
+          if (!isReference && fs.exists(filePath)) {
             compareConfig.testPairs.push({
               reference:reference_FP,
               test:test_FP,
@@ -156,9 +158,8 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
               fileName:fileName,
               label:scenario.label,
               misMatchThreshold: scenario.misMatchThreshold
-            })
-
-          casper.captureSelector(filePath, o);
+            });
+          }
           //casper.echo('remote capture to > '+filePath,'info');
 
         });//end topLevelModules.forEach
