@@ -1,6 +1,7 @@
 
-var fs = require('fs');
+var fs = require('fs-extra');
 
+var selectorNotFoundPath = 'capture/resources/selectorNotFound_noun_47569.png'
 var genConfigPath = 'capture/config.json'
 
 
@@ -150,7 +151,11 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
 
           casper.captureSelector(filePath, o);
 
-          if (!isReference && fs.exists(filePath)) {
+          if (!fs.exists(filePath)) {
+            copySync(selectorNotFoundPath, filePath);
+          }
+
+          if (!isReference) {
             compareConfig.testPairs.push({
               reference:reference_FP,
               test:test_FP,
