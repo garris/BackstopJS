@@ -153,19 +153,19 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
           if (casper.exists(o)) {
             casper.captureSelector(filePath, o);
           } else {
-            console.log('SELECTOR NOT FOUND: ' + o);
-            // fs.copy(selectorNotFoundPath, "testNotFoundFile.png");
+            var assetData = fs.read(selectorNotFoundPath, 'b')
+            fs.write(filePath, assetData, 'b')
+          }
 
-            if (!isReference) {
-              compareConfig.testPairs.push({
-                reference:reference_FP,
-                test:test_FP,
-                selector:o,
-                fileName:fileName,
-                label:scenario.label,
-                misMatchThreshold: scenario.misMatchThreshold
-              });
-            }
+          if (!isReference) {
+            compareConfig.testPairs.push({
+              reference:reference_FP,
+              test:test_FP,
+              selector:o,
+              fileName:fileName,
+              label:scenario.label,
+              misMatchThreshold: scenario.misMatchThreshold
+            });
           }
           //casper.echo('remote capture to > '+filePath,'info');
 
