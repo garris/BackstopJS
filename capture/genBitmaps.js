@@ -1,6 +1,7 @@
 
 var fs = require('fs');
 
+var selectorNotFoundPath = 'capture/resources/selectorNotFound_noun_47569.png'
 var genConfigPath = 'capture/config.json'
 
 
@@ -148,17 +149,23 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
 
           var filePath      = (isReference)?reference_FP:test_FP;
 
-          casper.captureSelector(filePath, o);
 
-          if (!isReference && fs.exists(filePath)) {
-            compareConfig.testPairs.push({
-              reference:reference_FP,
-              test:test_FP,
-              selector:o,
-              fileName:fileName,
-              label:scenario.label,
-              misMatchThreshold: scenario.misMatchThreshold
-            });
+          if (casper.exists(o)) {
+            casper.captureSelector(filePath, o);
+          } else {
+            console.log('SELECTOR NOT FOUND: ' + o);
+            // fs.copy(selectorNotFoundPath, "testNotFoundFile.png");
+
+            if (!isReference) {
+              compareConfig.testPairs.push({
+                reference:reference_FP,
+                test:test_FP,
+                selector:o,
+                fileName:fileName,
+                label:scenario.label,
+                misMatchThreshold: scenario.misMatchThreshold
+              });
+            }
           }
           //casper.echo('remote capture to > '+filePath,'info');
 
