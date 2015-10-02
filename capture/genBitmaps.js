@@ -1,7 +1,8 @@
 
 var fs = require('fs');
 
-var selectorNotFoundPath = 'capture/resources/selectorNotFound_noun_47569.png'
+var selectorNotFoundPath = 'capture/resources/selectorNotFound_noun_164558_cc.png'
+var hiddenSelectorPath = 'capture/resources/hiddenSelector_noun_63405.png'
 var genConfigPath = 'capture/config.json'
 
 
@@ -151,11 +152,17 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
 
 
           if (casper.exists(o)) {
-            casper.captureSelector(filePath, o);
+            if (casper.visible(o)) {
+              casper.captureSelector(filePath, o);
+            } else {
+              var assetData = fs.read(hiddenSelectorPath, 'b');
+              fs.write(filePath, assetData, 'b');
+            }
           } else {
-            var assetData = fs.read(selectorNotFoundPath, 'b')
-            fs.write(filePath, assetData, 'b')
+            var assetData = fs.read(selectorNotFoundPath, 'b');
+            fs.write(filePath, assetData, 'b');
           }
+
 
           if (!isReference) {
             compareConfig.testPairs.push({
