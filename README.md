@@ -348,7 +348,20 @@ This is a new feature, so if you find any bugs, [please file an issue.](https://
 
 ### troubleshooting
 
-BackstopJS is fairly bare bones and there is not much in the way of guardrails to recover from things like an invalid config or a file not found. If something goes wrong it generally manifests in casperJS complaining about a missing selector.  If this happens you have the option of sending the configured URL(s) file contents to the console. From there you can at least verify that PhantomJS is indeed making a successful file request (and receiving the correct file back too.)
+####Sometimes users run into this gulp-not-found error...
+
+    Local gulp not found in ~/path-to-your-project-root/
+    Try running: npm install gulp
+
+If this happens then you may not be in the right directory – try...
+
+    cd node_modules/backstopjs/
+
+Then try running BackstopJS again.
+
+#### Sometimes users need to make sure they are hitting the right files...
+
+To verify that BackstopJS is making a successful file request you can run the following command and  your file contents will be displayed in your terminal.
 
 From `./node_modules/backstopjs` ...
 
