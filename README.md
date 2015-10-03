@@ -90,6 +90,10 @@ BackstopJS was created by [Garris Shipon](expanded.me) at [Art.com labs](www.art
 - [Yulia Tsareva](https://github.com/YuliaTsareva) for help on the 0.5.0 release
 - [Lewis Nyman](https://github.com/lewisnyman) and [Stoutie](https://github.com/jehoshua02) for help with 0.4.0 release
 
+BackstopJS uses icons from [the Noun Project](http://thenounproject.com/)
+
+* [Tag](https://thenounproject.com/term/tag/164558/) by  [Straw Dog Design](https://thenounproject.com/StrawDogDesign)
+* [Hidden](https://thenounproject.com/term/hidden/63405/) by [Roberto Chiaveri](https://thenounproject.com/robertochiaveri/)
 
 ---
 
