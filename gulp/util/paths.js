@@ -7,8 +7,22 @@ var paths = {};
 // BACKSTOP MODULE PATH
 paths.backstop                      = path.join(__dirname, '../..');
 
+function getBackstopConfigFileName() {
+	if(argv.backstopConfigFilePath) {
+		if(!argv.backstopConfigFilePath.endsWith('.json')) {
+			throw new Error('Backstop config file has to be a .json file');
+		}
+		var isAbsolutePath = argv.backstopConfigFilePath.startsWith('/');
+		var configPath = isAbsolutePath ? argv.backstopConfigFilePath : path.join(paths.backstop, argv.backstopConfigFilePath);
+		if(!fs.existsSync(configPath)) {
+			throw new Error('Couldn\'t resolve backstop config file');
+		}
+		return configPath;
+	}
+	return path.join(paths.backstop, '../../backstop.json');
+}
 // BACKSTOP CONFIG PATH
-paths.backstopConfigFileName        = path.join(paths.backstop, argv.backstopConfigFilePath || '../..', 'backstop.json');
+paths.backstopConfigFileName = getBackstopConfigFileName();
 
 // BITMAPS PATHS -- note: this path is overwritten if config files exist.  see below.
 paths.bitmaps_reference             = paths.backstop + '/bitmaps_reference';
