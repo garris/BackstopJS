@@ -9,21 +9,42 @@ BackstopJS automates CSS regression testing of your responsive web UI by compari
 
 ## News
 
-### Version 0.6.x Beta available now!
-**This is a beta release so, as always, please [direct questions, comments or issues here](https://github.com/garris/BackstopJS/issues).**
 
-This version adds:
+### Version 0.7.0 beta available now
+**Fast command line reports are here!**
+
+[Please direct questions, comments or issues here](https://github.com/garris/BackstopJS/issues).
+
+BackstopJS now enables you to run a comparison in the browser, entirely server-side or both.
+
+_CLI Report_
+
+![](homepage/img/CLI_report.png)
+
+
+_Browser Report_
+
+![](homepage/img/browserReport.png)
+
+
+Using the report property in `backstop.json` enable or disable browser or server-side-reporting by including/excluding the respective properties...
+
+    "report": ["browser", "CLI"]
+
+Try using the CLI option and run the browser report when there is an issue.  Run the browser report on demand with...
+
+    $ gulp openReport
+
+Try out the beta version – install here...
+
+    $ npm install garris/backstopjs#master
+
+---
+
+Version 0.6.+ new features...
 - configurable screenshot locations. See *moving the bitmap directories* below.
 - SlimerJS support. See *changing the rendering engine* below.
 
-
-If you have not installed BackstopJS in the past, follow the install instructions [here](https://github.com/garris/BackstopJS#installation).  Then, from your root directory run...
-
-```
-$ npm install garris/backstopjs#master
-```
-
-If you are upgrading you can just run the above command without reinstalling anything else.  Move your `bitmaps_reference` and `bitmaps_test` from your BackstopJS folder to your root directory if you want to keep your existing test data.
 
 
 
@@ -64,10 +85,15 @@ BackstopJS was created by [Garris Shipon](expanded.me) at [Art.com labs](www.art
 ...
 
 ## Many many thanks to [all the contributors](https://github.com/garris/BackstopJS/graphs/contributors) with special thanks to...
+- [Klaus Bayrhammer](https://github.com/klausbayrhammer) for help on the 0.7.0 release
 - [Benedikt Rötsch](https://github.com/axe312ger) for help on the 0.6.0 release
 - [Yulia Tsareva](https://github.com/YuliaTsareva) for help on the 0.5.0 release
 - [Lewis Nyman](https://github.com/lewisnyman) and [Stoutie](https://github.com/jehoshua02) for help with 0.4.0 release
 
+BackstopJS uses icons from [the Noun Project](http://thenounproject.com/)
+
+* [Tag](https://thenounproject.com/term/tag/164558/) by  [Straw Dog Design](https://thenounproject.com/StrawDogDesign)
+* [Hidden](https://thenounproject.com/term/hidden/63405/) by [Roberto Chiaveri](https://thenounproject.com/robertochiaveri/)
 
 ---
 
@@ -181,7 +207,8 @@ From `./node_modules/backstopjs` ...
     "bitmaps_test": "../../backstop_data/bitmaps_test",
     "compare_data": "../../backstop_data/bitmaps_test/compare.json"
   },
-  "engine": "phantomjs"
+  "engine": "phantomjs",
+  "report": ["browser", "CLI"]
 }
 ```
 
@@ -215,9 +242,9 @@ Once the test bitmaps are generated, a report comparing the most recent test bit
 
 ### testing SPAs and AJAX content
 
-It is very common for client-side web apps is to initially download a small chunk of important content and render it to the screen as soon as it arrives at the browser. Once this has completed, various JS components often take over to progressively load more, less important content (e.g. ads, feeds or other supporting content/features) over some relatively short amount of time.
+It is very common for client-side web apps is to initially download a small chunk of bootstrapping code/content and render it to the screen as soon as it arrives at the browser. Once this has completed, various JS components often take over to progressively load more content.
 
-The problem testing these apps is knowing _when_ to take the screenshot.  BackstopJS solves this problem with two config properties: `readyEvent` and `delay`.
+The problem testing these scenarios is knowing _when_ to take the screenshot.  BackstopJS solves this problem with two config properties: `readyEvent` and `delay`.
 
 ####trigger screen capture via console.log()
 
@@ -321,11 +348,26 @@ This is a new feature, so if you find any bugs, [please file an issue.](https://
 
 ### troubleshooting
 
-BackstopJS is fairly bare bones and there is not much in the way of guardrails to recover from things like an invalid config or a file not found. If something goes wrong it generally manifests in casperJS complaining about a missing selector.  If this happens you have the option of sending the configured URL(s) file contents to the console. From there you can at least verify that PhantomJS is indeed making a successful file request (and receiving the correct file back too.)
+####Sometimes users run into this gulp-not-found error...
+
+    Local gulp not found in ~/path-to-your-project-root/
+    Try running: npm install gulp
+
+If this happens then you may not be in the right directory – try...
+
+    cd node_modules/backstopjs/
+
+Then try running BackstopJS again.
+
+#### Sometimes users need to make sure they are hitting the right files...
+
+To verify that BackstopJS is making a successful file request you can run the following command and  your file contents will be displayed in your terminal.
 
 From `./node_modules/backstopjs` ...
 
     $ gulp echo
+
+
 
 
 ### running the report server

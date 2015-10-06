@@ -1,6 +1,6 @@
 {
   "name": "backstopjs",
-  "version": "0.6.2",
+  "version": "0.7.0",
   "description": "BackstopJS: Catch CSS curveballs.",
   "scripts": {
     "test": "mocha --reporter spec test/**/*spec*.js"
@@ -30,6 +30,7 @@
     "gulp-rename": "^1.2.0",
     "http-proxy": "~1.1.4",
     "is-running": "~1.0.5",
+    "node-resemble-js": "0.0.4",
     "require-dir": "^0.1.0",
     "underscore": "~1.6.0",
     "yargs": "~3.9.0"

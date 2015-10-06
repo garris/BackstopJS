@@ -18,11 +18,14 @@ gulp.task("openReport", function(){
     ,app: isWin ? "chrome" : "Google Chrome"
   };
 
+  // cache bitmaps_reference files locally
   gulp.src(paths.bitmaps_reference + '/**/*')
     .pipe(gulp.dest(referenceDir));
 
+  // cache bitmaps_test files locally
   gulp.src(paths.bitmaps_test + '/**/*')
     .pipe(gulp.dest(testDir));
+
 
   gulp.src(paths.compareConfigFileName)
     .pipe(jeditor(function(json) {
