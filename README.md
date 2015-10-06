@@ -10,7 +10,7 @@ BackstopJS automates CSS regression testing of your responsive web UI by compari
 ## News
 
 
-### Version 0.7.0 beta available now
+### Version 0.7.0 available now
 **Fast command line reports are here!**
 
 [Please direct questions, comments or issues here](https://github.com/garris/BackstopJS/issues).
