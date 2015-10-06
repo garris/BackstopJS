@@ -35,9 +35,6 @@ Try using the CLI option and run the browser report when there is an issue.  Run
 
     $ gulp openReport
 
-Try out the beta version – install here...
-
-    $ npm install garris/backstopjs#master
 
 ---
 
