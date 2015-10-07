@@ -89,7 +89,7 @@ describe("setting the backstop.json location", function () {
 		}
 	});
 
-	it('should throw an exception if the custom backstop location is not pointing to a valid file', function () {
+	it('should throw an exception if the custom backstop location is not pointing to a .json file', function () {
 		var customBackstopConfigPath = '/backstop/config.txt';
 
 		mockery.registerMock('yargs', {

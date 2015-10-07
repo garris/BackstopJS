@@ -9,10 +9,10 @@ paths.backstop                      = path.join(__dirname, '../..');
 
 function getBackstopConfigFileName() {
 	if(argv.backstopConfigFilePath) {
-		if(!argv.backstopConfigFilePath.endsWith('.json')) {
+		if(argv.backstopConfigFilePath.substr(-5) !== '.json') {
 			throw new Error('Backstop config file has to be a .json file');
 		}
-		var isAbsolutePath = argv.backstopConfigFilePath.startsWith('/');
+		var isAbsolutePath = argv.backstopConfigFilePath.charAt(0) === '/';
 		var configPath = isAbsolutePath ? argv.backstopConfigFilePath : path.join(paths.backstop, argv.backstopConfigFilePath);
 		if(!fs.existsSync(configPath)) {
 			throw new Error('Couldn\'t resolve backstop config file');
