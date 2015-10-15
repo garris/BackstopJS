@@ -82,12 +82,12 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
     }
 
     // Prepare onReadyScript array
-    scenario.onReadyScript = scenario.onReadyScript || [];
-    if (scenario.onReadyScript.constructor !== Array){
-      scenario.onReadyScript = [ scenario.onReadyScript ];
+    scenario.onReadyScripts = scenario.onReadyScripts || [];
+    if (scenario.onReadyScripts.constructor !== Array){
+      scenario.onReadyScripts = [ scenario.onReadyScripts ];
     }
     // Add any built-in Casperjs scripts based on other scenario options here
-    // scenario.onReadyScript.push( './scripts/crawlSelectors' );
+    // scenario.onReadyScripts.push( './scripts/crawlSelectors' );
 
     casper.each(viewports, function(casper, vp, viewport_index) {
       this.then(function() {
@@ -120,17 +120,17 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
 
       // Custom casperjs scripting after ready event and delay
       casper.then(function() {
-        if (scenario.onReadyScript) {
+        if (scenario.onReadyScripts.length) {
 
           casper.echo('Running custom scripts.');
 
-          // onReadyScript files should export a module like so:
+          // onReadyScripts files should export a module like so:
           //
           // module.exports = function(casper, scenario) {
           //   // run custom casperjs code
           // };
 
-          casper.each(scenario.onReadyScript, function(casper, script) {
+          casper.each(scenario.onReadyScripts, function(casper, script) {
             if ( script.match(/^[a-z0-9_-]/i) ) {
               script = scripts_path + '/' + script;
             }
