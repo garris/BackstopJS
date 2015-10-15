@@ -14,6 +14,7 @@ if (!config.paths) {
 
 var bitmaps_reference = config.paths.bitmaps_reference || 'bitmaps_reference';
 var bitmaps_test = config.paths.bitmaps_test || 'bitmaps_test';
+var scripts_path = config.paths.scripts || 'scripts';
 var compareConfigFileName = config.paths.compare_data || 'compare/config.json';
 var viewports = config.viewports;
 var scenarios = config.scenarios||config.grabConfigs;
@@ -80,6 +81,14 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
       }
     }
 
+    // Prepare onReadyScript array
+    scenario.onReadyScript = scenario.onReadyScript || [];
+    if (scenario.onReadyScript.constructor !== Array){
+      scenario.onReadyScript = [ scenario.onReadyScript ];
+    }
+    // Add any built-in Casperjs scripts based on other scenario options here
+    // scenario.onReadyScript.push( './scripts/crawlSelectors' );
+
     casper.each(viewports, function(casper, vp, viewport_index) {
       this.then(function() {
         this.viewport(vp.width||vp.viewport.width, vp.height||vp.viewport.height);
@@ -107,6 +116,33 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
 
         //var src = this.evaluate(function() {return document.body.outerHTML; });
         //this.echo(src);
+      });
+
+      // Custom casperjs scripting after ready event and delay
+      casper.then(function() {
+        if (scenario.onReadyScript) {
+
+          casper.echo('Running custom scripts.');
+
+          // Force it to use an array if a string is given
+          if (scenario.onReadyScript.constructor !== Array){
+            scenario.onReadyScript = [ scenario.onReadyScript ];
+          }
+
+          // onReadyScript files should export a module like so:
+          //
+          // module.exports = function(casper, scenario) {
+          //   // run custom casperjs code
+          // };
+
+          casper.each(scenario.onReadyScript, function(casper, script) {
+            if ( script.match(/^[a-z0-9_-]/i) ) {
+              script = scripts_path + '/' + script;
+            }
+            require(script)(casper, scenario);
+          });
+
+        }
       });
 
       this.then(function(){
