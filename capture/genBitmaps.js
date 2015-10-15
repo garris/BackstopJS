@@ -124,11 +124,6 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
 
           casper.echo('Running custom scripts.');
 
-          // Force it to use an array if a string is given
-          if (scenario.onReadyScript.constructor !== Array){
-            scenario.onReadyScript = [ scenario.onReadyScript ];
-          }
-
           // onReadyScript files should export a module like so:
           //
           // module.exports = function(casper, scenario) {
