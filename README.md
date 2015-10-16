@@ -196,16 +196,19 @@ From `./node_modules/backstopjs` ...
         "body"
       ],
       "readyEvent": null,
-      "delay": 500
+      "delay": 500,
+      "onReadyScript": null
     }
   ],
   "paths": {
     "bitmaps_reference": "../../backstop_data/bitmaps_reference",
     "bitmaps_test": "../../backstop_data/bitmaps_test",
-    "compare_data": "../../backstop_data/bitmaps_test/compare.json"
+    "compare_data": "../../backstop_data/bitmaps_test/compare.json",
+    "scripts": "../../backstop_data/scripts"
   },
   "engine": "phantomjs",
-  "report": ["browser", "CLI"]
+  "report": ["browser", "CLI"],
+  "debug": false
 }
 ```
 
@@ -305,6 +308,36 @@ There may also be elements which need to be completely removed during testing. F
     "removeSelectors": [
     	"#someUnpredictableSizedDomSelector"
     ]
+    
+### running custom CasperJS scripts
+
+It can be desirable to maniuplate or in interact with the page in some way before the screenshot is taken. BackstopJS allows you to specify a js file to be included and run with each scenario.
+
+    "onReadyScript": "../../scripts/toggleButton"
+
+The file `toggleButton.js` should look like the example below:
+
+```js
+module.exports = function(casper, scenario) {
+  casper.echo( 'Clicking button' );
+  casper.click( '.toggle' );
+  // scenario is the current scenario object being run from your backstop.json file
+}
+```
+
+#### setting the base path for custom CasperJS scripts
+
+By default the base path is a folder called `scripts` inside your backstopjs installation directory. You can override this by setting the `scripts` property in your `backstop.json` file to point to somewhere in your project directory (recommended).
+
+```
+  "paths": {
+    "scripts": "../../backstop_data/scripts"
+  }
+```
+
+You can then reference your custom scripts from scenarios without a prefix.
+
+    "onReadyScript": "toggleButton"
 
 ### moving the bitmap directories (version 0.6.0+)
 By default, BackstopJS saves it's screenshots into `./backstopjs/bitmaps_reference/` and `./backstopjs/bitmaps_test/` in parallel with your `./backstop.js` config file. The location of these directories are configurable so they can easily be moved inside or outside your source control or file sharing environment.
@@ -341,7 +374,12 @@ Thats it.
 This is a new feature, so if you find any bugs, [please file an issue.](https://github.com/garris/BackstopJS/issues)
 
 
+### debugging
+To enable extra debugging information when running your tests set the `debug` property to `true` in `backstop.json`. This will provide more information on page errors when they occur and is particularly useful if you run into problems with custom CasperJS scripts.
 
+```
+  "debug": true
+```
 
 ### troubleshooting
 

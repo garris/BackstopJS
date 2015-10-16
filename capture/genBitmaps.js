@@ -30,10 +30,12 @@ casper.on('resource.received', function(resource) {
 });
 
 casper.on("page.error", function(msg, trace) {
-  // this.echo("Remote Error >    " + msg, "error");
-  // this.echo("file:     " + trace[0].file, "WARNING");
-  // this.echo("line:     " + trace[0].line, "WARNING");
-  // this.echo("function: " + trace[0]["function"], "WARNING");
+  if (config.debug) {
+    this.echo("Remote Error >    " + msg, "error");
+    this.echo("file:     " + trace[0].file, "WARNING");
+    this.echo("line:     " + trace[0].line, "WARNING");
+    this.echo("function: " + trace[0]["function"], "WARNING");
+  }
 });
 
 casper.on('remote.message', function(message) {
@@ -81,14 +83,6 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
       }
     }
 
-    // Prepare onReadyScript array
-    scenario.onReadyScripts = scenario.onReadyScripts || [];
-    if (scenario.onReadyScripts.constructor !== Array){
-      scenario.onReadyScripts = [ scenario.onReadyScripts ];
-    }
-    // Add any built-in Casperjs scripts based on other scenario options here
-    // scenario.onReadyScripts.push( './scripts/crawlSelectors' );
-
     casper.each(viewports, function(casper, vp, viewport_index) {
       this.then(function() {
         this.viewport(vp.width||vp.viewport.width, vp.height||vp.viewport.height);
@@ -120,22 +114,30 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
 
       // Custom casperjs scripting after ready event and delay
       casper.then(function() {
-        if (scenario.onReadyScripts.length) {
+        if ( scenario.onReadyScript ) {
+
+          var script = scenario.onReadyScript;
 
           casper.echo('Running custom scripts.');
 
-          // onReadyScripts files should export a module like so:
+          // onReadyScript files should export a module like so:
           //
           // module.exports = function(casper, scenario) {
           //   // run custom casperjs code
           // };
 
-          casper.each(scenario.onReadyScripts, function(casper, script) {
-            if ( script.match(/^[a-z0-9_-]/i) ) {
-              script = scripts_path + '/' + script;
-            }
-            require(script)(casper, scenario);
-          });
+          // Append scripts path to files starting without . or /
+          if ( script.match(/^[a-z0-9_-]/i) ) {
+            script = scripts_path + '/' + script;
+          }
+
+          // Check validity
+          if ( !fs.isFile((script + '.js').replace(/(\.js){2}$/, '.js')) ) {
+            casper.echo('ERROR: onReadyScript path is invalid.');
+            return;
+          }
+
+          require(script)(casper, scenario);
 
         }
       });
