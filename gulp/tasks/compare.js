@@ -45,10 +45,10 @@ gulp.task('compare', function (done) {
 
       if (imageComparisonFailed) {
         pair.testStatus = "fail";
-        console.log('ERROR:', pair.fileName);
+        console.log('ERROR:', pair.label, pair.fileName);
       } else {
         pair.testStatus = "pass";
-        console.log('OK:', pair.fileName);
+        console.log('OK:', pair.label, pair.fileName);
       }
       updateProgress();
     });
