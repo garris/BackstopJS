@@ -311,7 +311,7 @@ There may also be elements which need to be completely removed during testing. F
     
 ### running custom CasperJS scripts
 
-It can be desirable to maniuplate or in interact with the page in some way before the screenshot is taken. BackstopJS allows you to specify a js file to be included and run with each scenario.
+It can be desirable to manipulate or in interact with the page in some way before the screenshot is taken. BackstopJS allows you to specify a js file to be included and run with each scenario.
 
     "onReadyScript": "../../scripts/toggleButton"
 
@@ -327,7 +327,7 @@ module.exports = function(casper, scenario) {
 
 #### setting the base path for custom CasperJS scripts
 
-By default the base path is a folder called `scripts` inside your backstopjs installation directory. You can override this by setting the `scripts` property in your `backstop.json` file to point to somewhere in your project directory (recommended).
+By default the base path is a folder called `scripts` inside your BackstopJS installation directory. You can override this by setting the `paths.scripts` property in your `backstop.json` file to point to somewhere in your project directory (recommended).
 
 ```
   "paths": {
@@ -340,7 +340,7 @@ You can then reference your custom scripts from scenarios without a prefix.
     "onReadyScript": "toggleButton"
 
 ### moving the bitmap directories (version 0.6.0+)
-By default, BackstopJS saves it's screenshots into `./backstopjs/bitmaps_reference/` and `./backstopjs/bitmaps_test/` in parallel with your `./backstop.js` config file. The location of these directories are configurable so they can easily be moved inside or outside your source control or file sharing environment.
+By default, BackstopJS saves its screenshots into `./backstopjs/bitmaps_reference/` and `./backstopjs/bitmaps_test/` in parallel with your `./backstop.js` config file. The location of these directories are configurable so they can easily be moved inside or outside your source control or file sharing environment.
 
 The `compare.json` file contains file mappings between reference and test files. This file tells the comparison module what comparisons to run. It is probably best kept inside the `bitmaps_test` directory.
 
