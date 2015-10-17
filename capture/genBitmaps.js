@@ -14,7 +14,7 @@ if (!config.paths) {
 
 var bitmaps_reference = config.paths.bitmaps_reference || 'bitmaps_reference';
 var bitmaps_test = config.paths.bitmaps_test || 'bitmaps_test';
-var scripts_path = config.paths.scripts || 'scripts';
+var casper_scripts = config.paths.casper_scripts || null;
 var compareConfigFileName = config.paths.compare_data || 'compare/config.json';
 var viewports = config.viewports;
 var scenarios = config.scenarios||config.grabConfigs;
@@ -22,21 +22,21 @@ var scenarios = config.scenarios||config.grabConfigs;
 var compareConfig = {testPairs:[]};
 
 var casper = require("casper").create({
-  // clientScripts: ["jquery.js"] //lets try not to use this it's 2014 already people...
+  // clientScripts: ["jquery.js"] // injects jQuery if you need that.
 });
 
-casper.on('resource.received', function(resource) {
-    //casper.echo(resource.url);
-});
 
-casper.on("page.error", function(msg, trace) {
-  if (config.debug) {
-    this.echo("Remote Error >    " + msg, "error");
-    this.echo("file:     " + trace[0].file, "WARNING");
-    this.echo("line:     " + trace[0].line, "WARNING");
-    this.echo("function: " + trace[0]["function"], "WARNING");
-  }
-});
+if (config.debug) {
+  casper.on('resource.received', function(resource) {
+      casper.echo("resource.received > ", resource.url);
+  });
+  casper.on("page.error", function(msg, trace) {
+      this.echo("Remote Error >    " + msg, "error");
+      this.echo("file:     " + trace[0].file, "WARNING");
+      this.echo("line:     " + trace[0].line, "WARNING");
+      this.echo("function: " + trace[0]["function"], "WARNING");
+  });
+}
 
 casper.on('remote.message', function(message) {
   this.echo('remote console > ' + message);
@@ -114,25 +114,26 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
 
       // Custom casperjs scripting after ready event and delay
       casper.then(function() {
-        if ( scenario.onReadyScript ) {
 
-          var script = scenario.onReadyScript;
+        // onReadyScript files should export a module like so:
+        //
+        // module.exports = function(casper, scenario) {
+        //   // run custom casperjs code
+        // };
+        //
+        if ( scenario.onReadyScript ) {
 
           casper.echo('Running custom scripts.');
 
-          // onReadyScript files should export a module like so:
-          //
-          // module.exports = function(casper, scenario) {
-          //   // run custom casperjs code
-          // };
+          var script = scenario.onReadyScript;
 
-          // Append scripts path to files starting without . or /
-          if ( script.match(/^[a-z0-9_-]/i) ) {
-            script = scripts_path + '/' + script;
+          // if a casper_scripts path exists, append the onReadyScript soft-enforcing a single slash between them.
+          if ( casper_scripts ) ) {
+            script = casper_scripts.replace(/\/$/, '') + '/' + script.replace(/^\//, '');
           }
 
-          // Check validity
-          if ( !fs.isFile((script + '.js').replace(/(\.js){2}$/, '.js')) ) {
+          // Ensure a `.js` file suffix and check validity
+          if ( !fs.isFile( script.replace(/\.js$/, '') + '.js' ) ) {
             casper.echo('ERROR: onReadyScript path is invalid.');
             return;
           }

@@ -35,14 +35,14 @@
       "readyEvent": null,
       "delay": 500,
       "misMatchThreshold" : 0.1,
-      "onReadyScript": null
+      "onReadyScript": ""
     }
   ],
   "paths": {
     "bitmaps_reference": "../../backstop_data/bitmaps_reference",
     "bitmaps_test": "../../backstop_data/bitmaps_test",
     "compare_data": "../../backstop_data/bitmaps_test/compare.json",
-    "scripts": "../../backstop_data/scripts"
+    "casper_scripts": "../../backstop_data/casper_scripts"
   },
   "engine": "phantomjs",
   "report": ["CLI", "browser"],
