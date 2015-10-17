@@ -14,6 +14,7 @@ if (!config.paths) {
 
 var bitmaps_reference = config.paths.bitmaps_reference || 'bitmaps_reference';
 var bitmaps_test = config.paths.bitmaps_test || 'bitmaps_test';
+var scripts_path = config.paths.scripts || 'scripts';
 var compareConfigFileName = config.paths.compare_data || 'compare/config.json';
 var viewports = config.viewports;
 var scenarios = config.scenarios||config.grabConfigs;
@@ -29,10 +30,12 @@ casper.on('resource.received', function(resource) {
 });
 
 casper.on("page.error", function(msg, trace) {
-  // this.echo("Remote Error >    " + msg, "error");
-  // this.echo("file:     " + trace[0].file, "WARNING");
-  // this.echo("line:     " + trace[0].line, "WARNING");
-  // this.echo("function: " + trace[0]["function"], "WARNING");
+  if (config.debug) {
+    this.echo("Remote Error >    " + msg, "error");
+    this.echo("file:     " + trace[0].file, "WARNING");
+    this.echo("line:     " + trace[0].line, "WARNING");
+    this.echo("function: " + trace[0]["function"], "WARNING");
+  }
 });
 
 casper.on('remote.message', function(message) {
@@ -107,6 +110,36 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
 
         //var src = this.evaluate(function() {return document.body.outerHTML; });
         //this.echo(src);
+      });
+
+      // Custom casperjs scripting after ready event and delay
+      casper.then(function() {
+        if ( scenario.onReadyScript ) {
+
+          var script = scenario.onReadyScript;
+
+          casper.echo('Running custom scripts.');
+
+          // onReadyScript files should export a module like so:
+          //
+          // module.exports = function(casper, scenario) {
+          //   // run custom casperjs code
+          // };
+
+          // Append scripts path to files starting without . or /
+          if ( script.match(/^[a-z0-9_-]/i) ) {
+            script = scripts_path + '/' + script;
+          }
+
+          // Check validity
+          if ( !fs.isFile((script + '.js').replace(/(\.js){2}$/, '.js')) ) {
+            casper.echo('ERROR: onReadyScript path is invalid.');
+            return;
+          }
+
+          require(script)(casper, scenario);
+
+        }
       });
 
       this.then(function(){
