@@ -27,9 +27,8 @@ var casper = require("casper").create({
 
 
 if (config.debug) {
-  casper.on('resource.received', function(resource) {
-      casper.echo("resource.received > ", resource.url);
-  });
+  this.echo('Debug is enabled!', "WARNING");
+
   casper.on("page.error", function(msg, trace) {
       this.echo("Remote Error >    " + msg, "error");
       this.echo("file:     " + trace[0].file, "WARNING");
@@ -105,11 +104,14 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
         casper.wait(scenario.delay||1);
 
       });
+
       casper.then(function() {
         this.echo('Current location is ' + scenario.url, 'info');
 
-        //var src = this.evaluate(function() {return document.body.outerHTML; });
-        //this.echo(src);
+        if (config.debug) {
+          var src = this.evaluate(function() {return document.body.outerHTML; });
+          this.echo(src);
+        }
       });
 
       // Custom casperjs scripting after ready event and delay
@@ -128,7 +130,7 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
           var script = scenario.onReadyScript;
 
           // if a casper_scripts path exists, append the onReadyScript soft-enforcing a single slash between them.
-          if ( casper_scripts ) ) {
+          if ( casper_scripts ) {
             script = casper_scripts.replace(/\/$/, '') + '/' + script.replace(/^\//, '');
           }
 
