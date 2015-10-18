@@ -26,8 +26,8 @@ paths.captureConfigFileNameCache    = paths.backstop + '/capture/.config.json.ca
 paths.captureConfigFileNameDefault  = paths.backstop + '/capture/config.default.json';
 
 // SCRIPTS PATHS -- note: scripts is overwritten if config file exists.
-paths.scripts                       = paths.backstop + '/scripts';
-paths.scriptsDefault                = paths.backstop + '/capture/scripts';
+paths.casper_scripts                = null;
+paths.casper_scripts_default        = paths.backstop + '/capture/scripts';
 
 // SERVER PID PATH
 paths.serverPidFile                 = paths.backstop + '/server.pid';
@@ -53,7 +53,7 @@ if(fs.existsSync(paths.activeCaptureConfigPath)){
     paths.bitmaps_reference = config.paths.bitmaps_reference || paths.bitmaps_reference;
     paths.bitmaps_test = config.paths.bitmaps_test || paths.bitmaps_test;
     paths.compareConfigFileName = config.paths.compare_data || paths.compareConfigFileName;
-    paths.scripts = config.paths.scripts || null;
+    paths.casper_scripts = config.paths.casper_scripts || null;
   }
 
   paths.engine = config.engine || null;
