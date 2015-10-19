@@ -27,7 +27,7 @@ paths.captureConfigFileNameDefault  = paths.backstop + '/capture/config.default.
 
 // SCRIPTS PATHS -- note: scripts is overwritten if config file exists.
 paths.casper_scripts                = null;
-paths.casper_scripts_default        = paths.backstop + '/capture/scripts';
+paths.casper_scripts_default        = paths.backstop + '/capture/casper_scripts';
 
 // SERVER PID PATH
 paths.serverPidFile                 = paths.backstop + '/server.pid';
