@@ -1,13 +1,7 @@
 module.exports = function(casper, scenario) {
-  casper.echo('Opening nav menu');
-
-  //casper.mouse.move('.navbar-toggle');
-  //casper.click('.navbar-toggle');
-
   casper.evaluate(function(){
-    var navbar = document.getElementById('bs-navbar');
-    navbar.className += ' in';
+    console.log('This custom script is running inside your web app!');
+    console.log('Add your own casper commands here to simulate user interacions or logging in.');
   });
-
-  casper.wait(1000);
+  casper.wait(50);
 };
