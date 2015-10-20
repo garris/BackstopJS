@@ -21,13 +21,14 @@ var scenarios = config.scenarios||config.grabConfigs;
 
 var compareConfig = {testPairs:[]};
 
-var casper = require("casper").create({
-  // clientScripts: ["jquery.js"] // injects jQuery if you need that.
-});
+// // Uncomment this to add jQuery to your app env during execution
+// var casper = require("casper").create({
+//   clientScripts: ["jquery.js"] // injects jQuery if you need that.
+// });
 
 
 if (config.debug) {
-  this.echo('Debug is enabled!', "WARNING");
+  console.log('Debug is enabled!');
 
   casper.on("page.error", function(msg, trace) {
       this.echo("Remote Error >    " + msg, "error");
@@ -66,11 +67,7 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
       consoleBuffer = consoleBuffer + '\n' + message;
   });
 
-
   casper.start();
-  // casper.viewport(1280,1024);
-
-
 
   casper.each(scenarios,function(casper, scenario, scenario_index){
 
@@ -127,20 +124,23 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
 
           casper.echo('Running custom scripts.');
 
-          var script = scenario.onReadyScript;
-
+          // Ensure a `.js` file suffix
+          var script_path = scenario.onReadyScript.replace(/\.js$/, '') + '.js';
           // if a casper_scripts path exists, append the onReadyScript soft-enforcing a single slash between them.
           if ( casper_scripts ) {
-            script = casper_scripts.replace(/\/$/, '') + '/' + script.replace(/^\//, '');
+            script_path = casper_scripts.replace(/\/$/, '') + '/' + script_path.replace(/^\//, '');
           }
 
-          // Ensure a `.js` file suffix and check validity
-          if ( !fs.isFile( script.replace(/\.js$/, '') + '.js' ) ) {
-            casper.echo('ERROR: onReadyScript path is invalid.');
+          // make sure it's there...
+          if ( !fs.isFile( script_path ) ) {
+            casper.echo('Warning: onReadyScript path is invalid. File will be ignored.');
             return;
           }
 
-          require(script)(casper, scenario);
+          // the require() call below is relative to this file `genBitmaps.js` (not CWD) -- therefore relative paths need shimmimg
+          var require_script_path = script_path.replace(/^\.\.\//, '../../../').replace(/^\.\//, '../../');
+
+          require(require_script_path)(casper, scenario);
 
         }
       });
