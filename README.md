@@ -10,33 +10,22 @@ BackstopJS automates CSS regression testing of your responsive web UI by compari
 ## News
 
 
-### Version 0.7.0 available now
-**Fast command line reports are here!**
+### Version 0.8.0 beta available now
+**Simulate user interactions -- Run your own casper scripts before each test-case!**
+
+For more info see... **Running custom CasperJS scripts** below.
 
 [Please direct questions, comments or issues here](https://github.com/garris/BackstopJS/issues).
 
-BackstopJS now enables you to run a comparison in the browser, entirely server-side or both.
+This feature is in beta, run this to try it out...
 
-_CLI Report_
-
-![](homepage/img/CLI_report.png)
-
-
-_Browser Report_
-
-![](homepage/img/browserReport.png)
-
-
-Using the report property in `backstop.json` enable or disable browser or server-side-reporting by including/excluding the respective properties...
-
-    "report": ["browser", "CLI"]
-
-Try using the CLI option and run the browser report when there is an issue.  Run the browser report on demand with...
-
-    $ gulp openReport
+    $ npm install garris/backstopjs#master
 
 
 ---
+
+Version 0.7.0
+- Fast CLI reporting
 
 Version 0.6.+ new features...
 - configurable screenshot locations. See *moving the bitmap directories* below.
@@ -221,7 +210,7 @@ From `./node_modules/backstopjs` ...
 
 ## Usage Notes
 
-### generating (or updating) reference bitmaps
+### Generating (or updating) reference bitmaps
 
     $ gulp reference
 
@@ -230,7 +219,7 @@ This task will create a (or update an existing) `bitmaps_reference` directory wi
 
 
 
-### generating test bitmaps
+### Generating test bitmaps
 
     $ gulp test
 
@@ -240,13 +229,13 @@ Once the test bitmaps are generated, a report comparing the most recent test bit
 
 
 
-### testing SPAs and AJAX content
+### Testing SPAs and AJAX content
 
 It is very common for client-side web apps is to initially download a small chunk of bootstrapping code/content and render it to the screen as soon as it arrives at the browser. Once this has completed, various JS components often take over to progressively load more content.
 
 The problem testing these scenarios is knowing _when_ to take the screenshot.  BackstopJS solves this problem with two config properties: `readyEvent` and `delay`.
 
-####trigger screen capture via console.log()
+####Trigger screen capture via console.log()
 
 The `readyEvent` property enables you to trigger the screen capture by logging a predefined string to the console. For example, the following line will delay screen capture until your web app calls `console.log("backstopjs_ready")`...
 
@@ -255,7 +244,7 @@ The `readyEvent` property enables you to trigger the screen capture by logging a
 In the above case it would be up to you to wait for all dependencies to complete before calling logging `"backstopjs_ready"` string to the console.
 
 
-####delay screen capture
+####Delay screen capture
 
 The `delay` property enables you to pause screen capturing for a specified duration of time. This delay is applied after `readyEvent` (if also applied).
 
@@ -290,11 +279,11 @@ The `cookiesJsonFile` file should have this format.
     ]
  -->
 
-### dealing with dynamic content
+### Dealing with dynamic content
 
 For obvious reasons, this screenshot approach is not optimal for testing live dynamic content. The best way to test a dynamic app would be to use a known static content data stub – or ideally many content stubs of varying lengths which, regardless of input length, should produce certain specific bitmap output.
 
-####hiding selectors
+#### Hiding selectors
 
 That said, for a use case where you are testing a DOM with say an ad banner or a block of dynamic content which retains static dimensions, we have the `hideSelectors` property in `capture/config.json` which will set the corresponding DOM to `visibility:hidden`, thus hiding the content from our Resemble.js analysis but retaining the original layout flow.
 
@@ -302,47 +291,81 @@ That said, for a use case where you are testing a DOM with say an ad banner or a
     	"#someFixedSizeDomSelector"
     ]
 
-####removing selectors
+#### Removing selectors
 There may also be elements which need to be completely removed during testing. For that we have `removeSelectors` which sets elements to `display:none`.
 
     "removeSelectors": [
     	"#someUnpredictableSizedDomSelector"
     ]
     
-### running custom CasperJS scripts
+### Running custom CasperJS scripts (version 0.8.0+)
 
-It can be desirable to manipulate or in interact with the page in some way before the screenshot is taken. BackstopJS allows you to specify a js file to be included and run with each scenario.
+Simulate user actions (click, scroll, hover, wait, etc.) by running your own Casper.js script on ready. For each scenario, the custom .js file you specify is imported and run when the BackstopJS ready event is fired.
 
-    "onReadyScript": "../../scripts/toggleButton"
+From your project root, place your scripts in...
 
-The file `toggleButton.js` should look like the example below:
+    ./backstop_data/casper_scripts
+    
+And in your scenario...
+
+    "onReadyScript": "filename.js"   // the .js suffix is optional
+                                     // empty filenames are ignored
+
+Inside `filename.js`, structure it like this:
 
 ```js
 module.exports = function(casper, scenario) {
   casper.echo( 'Clicking button' );
   casper.click( '.toggle' );
+  // do other cool stuff here, see Casperjs.org for a full API and many ideas.
   // scenario is the current scenario object being run from your backstop.json file
 }
 ```
 
-#### setting the base path for custom CasperJS scripts
+#### Setting the base path for custom CasperJS scripts
 
 By default the base path is a folder called `scripts` inside your BackstopJS installation directory. You can override this by setting the `paths.scripts` property in your `backstop.json` file to point to somewhere in your project directory (recommended).
 
 ```
   "paths": {
-    "scripts": "../../backstop_data/scripts"
+    "casper_scripts": "../../backstop_data/scripts"
   }
 ```
 
-You can then reference your custom scripts from scenarios without a prefix.
 
-    "onReadyScript": "toggleButton"
 
-### moving the bitmap directories (version 0.6.0+)
+### Reporting workflow tips (version 0.7.0+)
+There are two reporting options.  The fastest and least obtrusive is the CLI report which gives you a subdued thumbs up or thumbs down for your layout on each run.  The other report runs in the in-browser -- this gives you detailed visual feedback for each test case so you can validate why your screen diffs score the way they do.
+
+One testing approach to consider is incorporating BackstopJS into your build process and just let the CLI report run on each build.  It's natural for your layout to break while you're in feature development -- refer back to the report when you feel things should be shaping up. Check the in-browser version of the report occasionally as needed when you need deeper information about what's happening in a test case.
+
+_CLI Report_
+
+![](homepage/img/CLI_report.png)
+
+
+_Browser Report_
+
+![](homepage/img/browserReport.png)
+
+
+Using the report property in `backstop.json` enable or disable browser or server-side-reporting by including/excluding the respective properties. The following settings will run both reports at the same time.
+
+    "report": ["browser", "CLI"]
+
+If you choose the CLI-only reporting you can always enter the following command to see the latest test run report in the browser.
+
+    $ gulp openReport
+
+
+
+
+### moving the bitmap and script directories (version 0.6.0+)
 By default, BackstopJS saves its screenshots into `./backstopjs/bitmaps_reference/` and `./backstopjs/bitmaps_test/` in parallel with your `./backstop.js` config file. The location of these directories are configurable so they can easily be moved inside or outside your source control or file sharing environment.
 
 The `compare.json` file contains file mappings between reference and test files. This file tells the comparison module what comparisons to run. It is probably best kept inside the `bitmaps_test` directory.
+
+If you are using custom casper_scripts -- that directory can be specified too.
 
 Please note: these file paths are relative to your `./node_modules/backstopjs/` directory.
 
@@ -352,7 +375,8 @@ Please note: these file paths are relative to your `./node_modules/backstopjs/` 
   "paths": {
     "bitmaps_reference": "../../backstop_data/bitmaps_reference",
     "bitmaps_test": "../../backstop_data/bitmaps_test",
-    "compare_data": "../../backstop_data/bitmaps_test/compare.json"
+    "compare_data": "../../backstop_data/bitmaps_test/compare.json",
+    "casper_scripts": "../../backstop_data/scripts"
   }
 ```
 
@@ -374,14 +398,14 @@ Thats it.
 This is a new feature, so if you find any bugs, [please file an issue.](https://github.com/garris/BackstopJS/issues)
 
 
-### debugging
+### Debugging
 To enable extra debugging information when running your tests set the `debug` property to `true` in `backstop.json`. This will provide more information on page errors when they occur and is particularly useful if you run into problems with custom CasperJS scripts.
 
 ```
   "debug": true
 ```
 
-### troubleshooting
+### Troubleshooting
 
 ####Sometimes users run into this gulp-not-found error...
 
@@ -405,7 +429,7 @@ From `./node_modules/backstopjs` ...
 
 
 
-### running the report server
+### Running the report server
 
 The test comparison report was written in Angular.js and requires a running HTTP server instance.  This instance is auto-started after a test is run.  The server is also auto-stopped after 15 minutes so you don't have to go worrying about node processes running all over the place.
 
