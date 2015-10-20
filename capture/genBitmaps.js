@@ -131,7 +131,7 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
 
           // make sure it's there...
           if ( !fs.isFile( script_path ) ) {
-            casper.echo('Warning: onReadyScript path is invalid. File will be ignored.');
+            casper.echo("FYI: onReadyScript was not found.");
             return;
           }
 
