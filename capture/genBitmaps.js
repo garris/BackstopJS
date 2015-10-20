@@ -21,11 +21,9 @@ var scenarios = config.scenarios||config.grabConfigs;
 
 var compareConfig = {testPairs:[]};
 
-// // Uncomment this to add jQuery to your app env during execution
-// var casper = require("casper").create({
-//   clientScripts: ["jquery.js"] // injects jQuery if you need that.
-// });
-
+var casper = require("casper").create({
+  // clientScripts: ["jquery.js"] // uncomment to add jQuery if you need that.
+});
 
 if (config.debug) {
   console.log('Debug is enabled!');

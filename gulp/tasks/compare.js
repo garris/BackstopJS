@@ -25,7 +25,9 @@ gulp.task('compare', function (done) {
       if (results.fail) {
         console.log ("*** Mismatch errors found ***")
         console.log ("For a detailed report run `gulp openReport`\n")
-        // done(new Error('Mismatch errors found.')); //uncomment this line to have gulp pass an error back.
+        if (path.cliExitOnFail) {
+          done(new Error('Mismatch errors found.'));
+        }
       } else {
         done();
       }
