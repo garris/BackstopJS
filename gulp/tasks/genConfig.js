@@ -4,7 +4,7 @@ var paths  = require('../util/paths');
 
 
 //GENERATE CAPTURE CONFIG
-gulp.task('genConfig',function(){
+gulp.task('genConfig', ['genScripts'], function(){
   return gulp.src(paths.captureConfigFileNameDefault)
     .pipe(rename(paths.backstopConfigFileName))
     .pipe(gulp.dest('/'));

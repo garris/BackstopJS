@@ -35,7 +35,7 @@
       "readyEvent": null,
       "delay": 500,
       "misMatchThreshold" : 0.1,
-      "onReadyScript": ""
+      "onReadyScript": "onReady.js"
     }
   ],
   "paths": {
