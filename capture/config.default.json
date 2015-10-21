@@ -46,6 +46,6 @@
   },
   "engine": "phantomjs",
   "report": ["CLI", "browser"],
-  "cliExitOnFail": "false",
+  "cliExitOnFail": false,
   "debug": false
 }
