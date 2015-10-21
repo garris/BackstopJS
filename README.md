@@ -71,6 +71,7 @@ BackstopJS was created by [Garris Shipon](expanded.me) at [Art.com labs](www.art
 ...
 
 ## Many many thanks to [all the contributors](https://github.com/garris/BackstopJS/graphs/contributors) with special thanks to...
+- [Robert O'Rourke](https://github.com/sanchothefat) for help on the 0.8.0 release
 - [Klaus Bayrhammer](https://github.com/klausbayrhammer) for help on the 0.7.0 release
 - [Benedikt Rötsch](https://github.com/axe312ger) for help on the 0.6.0 release
 - [Yulia Tsareva](https://github.com/YuliaTsareva) for help on the 0.5.0 release
