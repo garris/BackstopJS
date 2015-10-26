@@ -56,6 +56,7 @@ if(fs.existsSync(paths.activeCaptureConfigPath)){
     paths.casper_scripts = config.paths.casper_scripts || null;
   }
 
+  paths.casperFlags = config.casperFlags || null;
   paths.cliExitOnFail = config.cliExitOnFail || false;
   paths.engine = config.engine || null;
   paths.report = config.report || null;

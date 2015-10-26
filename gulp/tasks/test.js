@@ -49,6 +49,12 @@ gulp.task('test',['init'], function () {
 
   // if (paths.engine === "slimerjs") args.push('--engine=slimerjs');
   if (paths.engine === 'slimerjs') args = ['--engine=slimerjs'];//'--ssl-protocol=any' failed in casper on windows when using slimerjs see PR#91
+  if (paths.casperFlags) {
+    for (var i in paths.casperFlags) {
+      var joiner = i.slice(0, 2) === "--" ? "=" : " ";
+      args.push([i, joiner, paths.casperFlags[i]].join(""));
+    }
+  }
 
   var casperArgs = tests.concat(args);
 
