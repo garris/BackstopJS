@@ -13,7 +13,7 @@ BackstopJS automates CSS regression testing of your responsive web UI by compari
 ### Version 0.8.0 beta available now
 **Simulate user interactions -- Run your own casper scripts before each test-case!**
 
-For more info see... **Running custom CasperJS scripts** below.
+For more info see... **[Running custom CasperJS scripts](https://github.com/garris/BackstopJS#running-custom-casperjs-scripts-version-080)** below.
 
 [Please direct questions, comments or issues here](https://github.com/garris/BackstopJS/issues).
 
