@@ -47,13 +47,21 @@ gulp.task('test',['init'], function () {
 
   var args = ['--ssl-protocol=any'];// sent to casperjs (appended to cmd line)
 
-  // if (paths.engine === "slimerjs") args.push('--engine=slimerjs');
-  if (paths.engine === 'slimerjs') args = ['--engine=slimerjs'];//'--ssl-protocol=any' failed in casper on windows when using slimerjs see PR#91
   if (paths.casperFlags) {
-    for (var i in paths.casperFlags) {
-      var joiner = i.slice(0, 2) === "--" ? "=" : " ";
-      args.push([i, joiner, paths.casperFlags[i]].join(""));
+    if (paths.casperFlags.indexOf('--engine=slimerjs') != -1) {
+      args = paths.casperFlags;
+    } else {
+      if (
+          paths.engine === 'slimerjs' &&
+          paths.casperFlags.indexOf('--engine=phantomjs') == -1
+      ) {
+        args = ['--engine=slimerjs'];
+      }
+      args = args.concat(paths.casperFlags);
     }
+  } else {
+    // if (paths.engine === "slimerjs") args.push('--engine=slimerjs');
+    if (paths.engine === 'slimerjs') args = ['--engine=slimerjs'];//'--ssl-protocol=any' failed in casper on windows when using slimerjs see PR#91
   }
 
   var casperArgs = tests.concat(args);
