@@ -45,16 +45,21 @@ gulp.task('test',['init'], function () {
 
   var tests = ['capture/genBitmaps.js'];
 
-  var args = ['--ssl-protocol=any'];// sent to casperjs (appended to cmd line)
+  var args = [];
 
-  // if (paths.engine === "slimerjs") args.push('--engine=slimerjs');
-  if (paths.engine === 'slimerjs') args = ['--engine=slimerjs'];//'--ssl-protocol=any' failed in casper on windows when using slimerjs see PR#91
+  if (/slimer/.test(paths.engine)) {
+    args = ['--engine=slimerjs'];
+  }
+
+  if (paths.casperFlags) {
+    if (/--engine=/.test(paths.casperFlags.toString())) {
+      args = paths.casperFlags; // casperFlags --engine setting takes presidence -- replace if found.
+    } else {
+      args.concat(paths.casperFlags)
+    }
+  }
 
   var casperArgs = tests.concat(args);
-
-  // var args = ['test'].concat(tests); //this is required if using casperjs test option
-
-  // var casperChild = spawn('casperjs', tests);//use args here to add test option to casperjs execute stmt
   var casperProcess = (process.platform === "win32" ? "casperjs.cmd" : "casperjs");
   var casperChild = spawn(casperProcess, casperArgs);
 
