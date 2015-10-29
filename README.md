@@ -10,24 +10,25 @@ BackstopJS automates CSS regression testing of your responsive web UI by compari
 ## News
 
 
-### Version 0.8.0 beta available now
-**Simulate user interactions -- Run your own casper scripts before each test-case!**
+### Version 0.8.0 available now
+**Simulate user interactions -- Run your own casper scripts before each test-case**
 
-For more info see... **[Running custom CasperJS scripts](https://github.com/garris/BackstopJS#running-custom-casperjs-scripts-version-080)** below.
-
+For more info see... **Running custom CasperJS scripts** below.
+<!--
 [Please direct questions, comments or issues here](https://github.com/garris/BackstopJS/issues).
+
 
 This feature is in beta, run this to try it out...
 
     $ npm install garris/backstopjs#master
 
-
 ---
+-->
 
-Version 0.7.0
+####Version 0.7.0
 - Fast CLI reporting
 
-Version 0.6.+ new features...
+####Version 0.6.0
 - configurable screenshot locations. See *moving the bitmap directories* below.
 - SlimerJS support. See *changing the rendering engine* below.
 
@@ -198,6 +199,7 @@ From `./node_modules/backstopjs` ...
   },
   "engine": "phantomjs",
   "report": ["browser", "CLI"],
+  "cliExitOnFail": false,
   "debug": false
 }
 ```
@@ -327,6 +329,8 @@ module.exports = function(casper, scenario) {
 
 By default the base path is a folder called `scripts` inside your BackstopJS installation directory. You can override this by setting the `paths.scripts` property in your `backstop.json` file to point to somewhere in your project directory (recommended).
 
+_**NOTE:** SlimerJS currently requires an absolute path -- so be sure to include the full path when using the `"engine": "slimer"` configuration option._
+
 ```
   "paths": {
     "casper_scripts": "../../backstop_data/scripts"
@@ -359,9 +363,16 @@ If you choose the CLI-only reporting you can always enter the following command 
     $ gulp openReport
 
 
+####CLI error handling 
+
+When a layout error is found in CLI mode, BackstopJS will let you know in a general report displayed in the console. Optionally, BackstopJS can throw an error that can be passed to calling process. For this behavior enable `cliExitOnFail` in your config... 
+
+```
+"cliExitOnFail": true,
+```
 
 
-### moving the bitmap and script directories (version 0.6.0+)
+### Moving the bitmap and script directories (version 0.6.0+)
 By default, BackstopJS saves its screenshots into `./backstopjs/bitmaps_reference/` and `./backstopjs/bitmaps_test/` in parallel with your `./backstop.js` config file. The location of these directories are configurable so they can easily be moved inside or outside your source control or file sharing environment.
 
 The `compare.json` file contains file mappings between reference and test files. This file tells the comparison module what comparisons to run. It is probably best kept inside the `bitmaps_test` directory.
@@ -381,7 +392,7 @@ Please note: these file paths are relative to your `./node_modules/backstopjs/` 
   }
 ```
 
-### changing the rendering engine (version 0.6.0+)
+### Changing the rendering engine (version 0.6.0+)
 BackstopJS supports using PhantomJS or SlimerJS (With thanks to CasperJS for doing the heavy lifting here.)
 
 PhantomJS, the default rendering engine, does not correctly interpret flexbox and web fonts -- so if you are using those things in your app you will be way more happy using SlimerJS. Here is how to do that...
@@ -399,14 +410,9 @@ Thats it.
 This is a new feature, so if you find any bugs, [please file an issue.](https://github.com/garris/BackstopJS/issues)
 
 
-### Debugging
-To enable extra debugging information when running your tests set the `debug` property to `true` in `backstop.json`. This will provide more information on page errors when they occur and is particularly useful if you run into problems with custom CasperJS scripts.
-
-```
-  "debug": true
-```
 
 ### Troubleshooting
+
 
 ####Sometimes users run into this gulp-not-found error...
 
@@ -419,9 +425,19 @@ If this happens then you may not be in the right directory – try...
 
 Then try running BackstopJS again.
 
-#### Sometimes users need to make sure they are hitting the right files...
 
-To verify that BackstopJS is making a successful file request you can run the following command and  your file contents will be displayed in your terminal.
+####Debugging
+To enable verbose console output when running your tests set the `debug` property to `true` in `backstop.json`.
+
+```
+  "debug": true
+```
+
+#### View file contents
+
+Sometimes it also helps to verify that BackstopJS is receiving the correct file contents. Enabling the `debug` property (above) will output this data to the console whenever a test is run. 
+
+You can also use the following command -- it will output your file contents to the console.
 
 From `./node_modules/backstopjs` ...
 
