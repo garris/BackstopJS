@@ -240,11 +240,11 @@ The problem testing these scenarios is knowing _when_ to take the screenshot.  B
 
 ####Trigger screen capture via console.log()
 
-The `readyEvent` property enables you to trigger the screen capture by logging a predefined string to the console. For example, the following line will delay screen capture until your web app calls `console.log("backstopjs_ready")`...
+The `readyEvent` property enables you to trigger the screen capture by logging a predefined string to the console. For example, the following line will delay screen capture until your web app calls `console.log("backstop.ready")`...
 
-    "readyEvent": "backstopjs_ready"
+    "readyEvent": "backstop.ready"
 
-In the above case it would be up to you to wait for all dependencies to complete before calling logging `"backstopjs_ready"` string to the console.
+In the above case it would be up to you to wait for all dependencies to complete before calling logging `"backstop.ready"` string to the console.
 
 
 ####Delay screen capture
@@ -255,11 +255,11 @@ The `delay` property enables you to pause screen capturing for a specified durat
 
 In the above case, BackstopJS would wait for one second before taking a screenshot.
 
-In the following case, BackstopJS would wait for one second after the string `backstopjs_ready` is logged to the console.
+In the following case, BackstopJS would wait for one second after the string `backstop.ready` is logged to the console.
 
     {
     ...
-    "readyEvent": "backstopjs_ready",
+    "readyEvent": "backstop.ready",
     "delay": 1000 //delay in ms
     }
 
