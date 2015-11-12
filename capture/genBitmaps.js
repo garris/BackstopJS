@@ -138,7 +138,7 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
           // the require() call below is relative to this file `genBitmaps.js` (not CWD) -- therefore relative paths need shimmimg
           var require_script_path = script_path.replace(/^\.\.\//, '../../../').replace(/^\.\//, '../../');
 
-          require(require_script_path)(casper, scenario);
+          require(require_script_path)(casper, scenario, vp);
 
         }
       });
