@@ -1,4 +1,4 @@
-module.exports = function(casper, scenario) {
+module.exports = function(casper, scenario, vp) {
   casper.echo('Opening nav menu');
 
   //casper.mouse.move('.navbar-toggle');
@@ -10,5 +10,13 @@ module.exports = function(casper, scenario) {
     navbar.className += ' in';
   });
 
+  if (vp.name === 'phone') {
+    console.log('on the phone breakpoint');
+  }
+
+  if (vp.name === 'tablet_h') {
+    console.log('on the tablet_h breakpoint');
+  }
+  
   casper.wait(1000);
 };
