@@ -2,7 +2,9 @@
   "name": "backstopjs",
   "version": "0.8.0",
   "description": "BackstopJS: Catch CSS curveballs.",
-  "scripts": {},
+  "scripts": {
+    "test": "mocha --reporter spec test/**/*spec*.js"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/garris/backstopjs.git"
@@ -11,8 +13,9 @@
   "license": "MIT",
   "main": "",
   "devDependencies": {
+    "chai": "^1.9.2",
     "mocha": "^1.21.5",
-    "chai": "^1.9.2"
+    "mockery": "^1.4.0"
   },
   "dependencies": {
     "del": "^0.1.3",

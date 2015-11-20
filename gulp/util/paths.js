@@ -1,15 +1,28 @@
 var path = require('path');
 var fs = require('fs');
-
-
+var argv = require('yargs').argv;
 
 var paths = {};
 
 // BACKSTOP MODULE PATH
 paths.backstop                      = path.join(__dirname, '../..');
 
+function getBackstopConfigFileName() {
+	if(argv.backstopConfigFilePath) {
+		if(argv.backstopConfigFilePath.substr(-5) !== '.json') {
+			throw new Error('Backstop config file has to be a .json file');
+		}
+		var isAbsolutePath = argv.backstopConfigFilePath.charAt(0) === '/';
+		var configPath = isAbsolutePath ? argv.backstopConfigFilePath : path.join(paths.backstop, argv.backstopConfigFilePath);
+		if(!fs.existsSync(configPath)) {
+			throw new Error('Couldn\'t resolve backstop config file');
+		}
+		return configPath;
+	}
+	return path.join(paths.backstop, '../../backstop.json');
+}
 // BACKSTOP CONFIG PATH
-paths.backstopConfigFileName        = path.join(paths.backstop, '../..', 'backstop.json');
+paths.backstopConfigFileName = getBackstopConfigFileName();
 
 // BITMAPS PATHS -- note: this path is overwritten if config files exist.  see below.
 paths.bitmaps_reference             = paths.backstop + '/bitmaps_reference';
@@ -41,7 +54,7 @@ if(!fs.existsSync(paths.backstopConfigFileName)){
   console.log('\n`$ gulp genConfig` generates a configuration boilerplate file in `' + paths.backstopConfigFileName + '`. (Will overwrite existing files.)\n')
   paths.activeCaptureConfigPath = paths.captureConfigFileNameDefault;
 }else{
-  // console.log('\nBackstopJS Config loaded.\n')
+  console.log('\nBackstopJS Config loaded at location', paths.backstopConfigFileName);
   paths.activeCaptureConfigPath = paths.backstopConfigFileName;
 }
 
