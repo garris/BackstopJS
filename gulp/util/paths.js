@@ -65,12 +65,11 @@ function getBackstopConfig() {
 	  // console.log('\nCould not find a valid config file.');
 	  console.log('\nCurrent config file location...\n ==> '+paths.backstopConfigFileName);
 	  console.log('\n`$ gulp genConfig` generates a configuration boilerplate file in `' + paths.backstopConfigFileName + '`. (Will overwrite existing files.)\n')
-	  paths.activeCaptureConfigPath = paths.captureConfigFileNameDefault;
+	  return paths.captureConfigFileNameDefault;
 	}else{
 	  console.log('\nBackstopJS Config loaded at location', paths.backstopConfigFileName);
-	  paths.activeCaptureConfigPath = paths.backstopConfigFileName;
+	  return paths.backstopConfigFileName;
 	}
-	return paths.captureConfigFileNameDefault;
 }
 // ACTIVE CAPTURE CONFIG PATH
 paths.activeCaptureConfigPath       = getBackstopConfig();
