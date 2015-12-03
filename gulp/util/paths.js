@@ -70,16 +70,6 @@ function getBackstopConfig() {
 // ACTIVE CAPTURE CONFIG PATH
 paths.activeCaptureConfigPath       = getBackstopConfig();
 
-// if(!fs.existsSync(paths.backstopConfigFileName)){
-//   // console.log('\nCould not find a valid config file.');
-//   console.log('\nCurrent config file location...\n ==> '+paths.backstopConfigFileName);
-//   console.log('\n`$ gulp genConfig` generates a configuration boilerplate file in `' + paths.backstopConfigFileName + '`. (Will overwrite existing files.)\n')
-//   paths.activeCaptureConfigPath = paths.captureConfigFileNameDefault;
-// }else{
-//   console.log('\nBackstopJS Config loaded at location', paths.backstopConfigFileName);
-//   paths.activeCaptureConfigPath = paths.backstopConfigFileName;
-// }
-
 // overwrite default filepaths if config files exist
 if(fs.existsSync(paths.activeCaptureConfigPath)){
   var configJSON = fs.readFileSync(paths.activeCaptureConfigPath, "utf8");
