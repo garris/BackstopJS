@@ -45,18 +45,34 @@ paths.casper_scripts_default        = paths.backstop + '/capture/casper_scripts'
 // SERVER PID PATH
 paths.serverPidFile                 = paths.backstop + '/server.pid';
 
-// ACTIVE CAPTURE CONFIG PATH
-paths.activeCaptureConfigPath       = '';
-
-if(!fs.existsSync(paths.backstopConfigFileName)){
-  // console.log('\nCould not find a valid config file.');
-  console.log('\nCurrent config file location...\n ==> '+paths.backstopConfigFileName);
-  console.log('\n`$ gulp genConfig` generates a configuration boilerplate file in `' + paths.backstopConfigFileName + '`. (Will overwrite existing files.)\n')
-  paths.activeCaptureConfigPath = paths.captureConfigFileNameDefault;
-}else{
-  console.log('\nBackstopJS Config loaded at location', paths.backstopConfigFileName);
-  paths.activeCaptureConfigPath = paths.backstopConfigFileName;
+// Get different backstop.json if it is passed in as an option
+function getBackstopConfig() {
+	if(argv.backstopConfig) {
+		if(argv.backstopConfig.substr(-5) !== '.json') {
+			throw new Error('Backstop config file has to be a .json file');
+		}
+		var isAbsolutePath = argv.backstopConfig.charAt(0) === '/';
+		var configPath = isAbsolutePath ? argv.backstopConfig : path.join(paths.backstop, argv.backstopConfig);
+		if(!fs.existsSync(configPath)) {
+			throw new Error('Couldn\'t resolve backstop config file');
+		}
+		// Passed in different config, use passed in file
+		console.log('\nBackstopJS Config loaded at location', paths.backstopConfig);
+		return configPath;
+	}
+	// Did not pass in a different config, use default
+	if(!fs.existsSync(paths.backstopConfigFileName)){
+	  // console.log('\nCould not find a valid config file.');
+	  console.log('\nCurrent config file location...\n ==> '+paths.backstopConfigFileName);
+	  console.log('\n`$ gulp genConfig` generates a configuration boilerplate file in `' + paths.backstopConfigFileName + '`. (Will overwrite existing files.)\n')
+	  return paths.captureConfigFileNameDefault;
+	}else{
+	  console.log('\nBackstopJS Config loaded at location', paths.backstopConfigFileName);
+	  return paths.backstopConfigFileName;
+	}
 }
+// ACTIVE CAPTURE CONFIG PATH
+paths.activeCaptureConfigPath       = getBackstopConfig();
 
 // overwrite default filepaths if config files exist
 if(fs.existsSync(paths.activeCaptureConfigPath)){

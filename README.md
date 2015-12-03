@@ -300,7 +300,7 @@ There may also be elements which need to be completely removed during testing. F
     "removeSelectors": [
     	"#someUnpredictableSizedDomSelector"
     ]
-    
+
 ### Running custom CasperJS scripts (version 0.8.0+)
 
 Simulate user actions (click, scroll, hover, wait, etc.) by running your own Casper.js script on ready. For each scenario, the custom .js file you specify is imported and run when the BackstopJS ready event is fired.
@@ -308,7 +308,7 @@ Simulate user actions (click, scroll, hover, wait, etc.) by running your own Cas
 From your project root, place your scripts in...
 
     ./backstop_data/casper_scripts
-    
+
 And in your scenario...
 
     "onReadyScript": "filename.js"   // the .js suffix is optional
@@ -366,9 +366,9 @@ If you choose the CLI-only reporting you can always enter the following command 
     $ gulp openReport
 
 
-####CLI error handling 
+####CLI error handling
 
-When a layout error is found in CLI mode, BackstopJS will let you know in a general report displayed in the console. Optionally, BackstopJS can throw an error that can be passed to calling process. For this behavior enable `cliExitOnFail` in your config... 
+When a layout error is found in CLI mode, BackstopJS will let you know in a general report displayed in the console. Optionally, BackstopJS can throw an error that can be passed to calling process. For this behavior enable `cliExitOnFail` in your config...
 
 ```
 "cliExitOnFail": true,
@@ -412,7 +412,14 @@ Thats it.
 
 This is a new feature, so if you find any bugs, [please file an issue.](https://github.com/garris/BackstopJS/issues)
 
+### Specifying which backstop.json configuration file to use on the CLI
+If you have multiple backstop.json configuration files you would like to use you can specify which one you should run when running the gulp task
 
+The location of the configuration file can be specified by passing a backstopConfig argument to the gulp tasks.
+```
+$ gulp reference --backstopConfig=test/backstop2.json
+$ gulp test --backstopConfig=test/backstop2.json
+```
 
 ### Troubleshooting
 
@@ -438,7 +445,7 @@ To enable verbose console output when running your tests set the `debug` propert
 
 #### View file contents
 
-Sometimes it also helps to verify that BackstopJS is receiving the correct file contents. Enabling the `debug` property (above) will output this data to the console whenever a test is run. 
+Sometimes it also helps to verify that BackstopJS is receiving the correct file contents. Enabling the `debug` property (above) will output this data to the console whenever a test is run.
 
 You can also use the following command -- it will output your file contents to the console.
 
