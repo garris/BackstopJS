@@ -12,7 +12,7 @@ BackstopJS automates CSS regression testing of your responsive web UI by compari
 
 ### Version 0.9.0 beta available now
 **Set your config file path from the CLI**
-For more info see... **[Setting the config file path](#Settin-the-config-file-path-version-090)** below.
+For more info see... **[Setting the config file path](#Setting-the-config-file-path-version-090)** below.
 
 This feature is in beta, run this to try it out...
 
@@ -149,7 +149,7 @@ From `./node_modules/backstopjs` ...
 
 By default, `genConfig` will put `backstop.json` at the project root. Also by default, a `backstop_data` directory will be created at this same location.
 
-The location of the `backstop.json` file as well as all resource directories can be specified -- see [Setting the config file path](#Settin-the-config-file-path-version-090) below.
+The location of the `backstop.json` file as well as all resource directories can be specified -- see [Setting the config file path](#Setting-the-config-file-path-version-090) below.
 
 **A step-by-step tutorial is at [css-tricks.com](http://css-tricks.com/automating-css-regression-testing/).**
 
