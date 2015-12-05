@@ -1,6 +1,6 @@
 {
   "name": "backstopjs",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "description": "BackstopJS: Catch CSS curveballs.",
   "scripts": {
     "test": "mocha --reporter spec test/**/*spec*.js"
