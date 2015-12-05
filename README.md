@@ -10,20 +10,20 @@ BackstopJS automates CSS regression testing of your responsive web UI by compari
 ## News
 
 
-### Version 0.8.0 available now
-**Simulate user interactions -- Run your own casper scripts before each test-case**
-
-For more info see... **Running custom CasperJS scripts** below.
-<!--
-[Please direct questions, comments or issues here](https://github.com/garris/BackstopJS/issues).
-
+### Version 0.9.0 beta available now
+**Set your config file path from the CLI**
+For more info see... **[Setting the config file path](#Settin-the-config-file-path-version-090)** below.
 
 This feature is in beta, run this to try it out...
 
     $ npm install garris/backstopjs#master
 
----
--->
+[Please direct questions, comments or issues here](https://github.com/garris/BackstopJS/issues).
+
+
+
+####Version 0.8.0
+- Simulate user interactions with CasperJS scripts
 
 ####Version 0.7.0
 - Fast CLI reporting
@@ -147,8 +147,9 @@ From `./node_modules/backstopjs` ...
     $ gulp genConfig
 
 
-`genConfig` will put `backstop.json` at the project root. The location of the `backstop.json` file can be specified by passing a `backstopConfigFilePath` argument to the backstop tasks. E.g. by passing `--backstopConfigFilePath=../../src/test/` backstop looks for a `backstop.json` at `../../src/test/backstop.json` before looking for a `backstop.json` at the project root. Also by default, a directory `backstop_data` will be created at this same location (location of this directory is configurable, see below...)
+By default, `genConfig` will put `backstop.json` at the project root. Also by default, a `backstop_data` directory will be created at this same location.
 
+The location of the `backstop.json` file as well as all resource directories can be specified -- see [Setting the config file path](#Settin-the-config-file-path-version-090) below.
 
 **A step-by-step tutorial is at [css-tricks.com](http://css-tricks.com/automating-css-regression-testing/).**
 
@@ -374,8 +375,28 @@ When a layout error is found in CLI mode, BackstopJS will let you know in a gene
 "cliExitOnFail": true,
 ```
 
+###Setting the config file path (version 0.9.0+)
+Often, users have multiple config files to test various different scenarios or even different projects. By default, BackstopJS looks for `backstop.json` in your project's root directory (in parallel with your `node_modules` directory). You can override this by passing a `--backstopConfigFilePath` argument when running any command. e.g.
+```
+// example 1
+$ gulp reference --backstopConfigFilePath=~/backstopTests/someTest.json
+// Will capture reference files using scenarios from `someTest.json` inside `backstopTests` inside your home folder.
 
-### Moving the bitmap and script directories (version 0.6.0+)
+// example 2
+$ gulp test --backstopConfigFilePath=~/backstopTests/someTest.json
+// Will run tests using scenarios from `someTest.json` inside `backstopTests` inside your home folder.
+
+// example 3
+$ gulp test --backstopConfigFilePath=../../backstopTests/someTest.json
+// Will run tests using scenarios from `someTest.json` inside `backstopTests` inside your project root folder.
+
+```
+
+NOTE: all paths are relative to the location of the BackstopJS install directory _(which is either inside your project's `node_modules` or `bower_components` depending on how BackstopJS was installed)_
+
+
+
+### Setting the bitmap and script directory paths (version 0.6.0+)
 By default, BackstopJS saves its screenshots into `./backstopjs/bitmaps_reference/` and `./backstopjs/bitmaps_test/` in parallel with your `./backstop.js` config file. The location of these directories are configurable so they can easily be moved inside or outside your source control or file sharing environment.
 
 The `compare.json` file contains file mappings between reference and test files. This file tells the comparison module what comparisons to run. It is probably best kept inside the `bitmaps_test` directory.
@@ -410,8 +431,19 @@ Then, in your `backstop.json` config file, update the engine property to...
 ```
 Thats it.
 
-This is a new feature, so if you find any bugs, [please file an issue.](https://github.com/garris/BackstopJS/issues)
 
+
+### Setting Casper command-line flags (version 0.9.0+)
+This is for you if for some reason you find yourself needing advanced configuration access to CasperJS.  You can set CasperJS flags via `casperFlags` like so...
+
+```
+"casperFlags": [
+  "--engine=slimerjs", 
+  "--proxy-type=http",
+  "--proxy=proxyIp:port", 
+  "--proxy-auth=user:pass"
+]
+```
 
 
 ### Troubleshooting
