@@ -62,7 +62,7 @@ BackstopJS brochure at [http://BackstopJS.org/](http://garris.github.io/Backstop
 
 
 ##Backstory:
-BackstopJS is basically a wrapper around the very fabulous [Resemble.js](https://github.com/Huddle/Resemble.js) component written by [James Cryer](https://github.com/jamescryer). Other implementations of Resemble.js, namely [PhantomCSS](https://github.com/Huddle/PhantomCSS) require writing long form [CasperJS](http://casperjs.org) tests. This is of course great for testing complex UI interactions – but kind of cumbersome for more simple applications like static CMS templates or other higher level sanity testing.
+BackstopJS is a useful wrapper around the very fabulous [Resemble.js](https://github.com/Huddle/Resemble.js) component written by [James Cryer](https://github.com/jamescryer). Other implementations of Resemble.js, namely [PhantomCSS](https://github.com/Huddle/PhantomCSS) require writing long form [CasperJS](http://casperjs.org) tests -- which is of course great for testing complex UI interactions –- but kind of cumbersome for more simple applications like static CMS templates or lots and lots of app states at different screen sizes.
 
 BackstopJS may be just the thing if you develop custom WordPress, Drupal or other CMS templates.  Tested on OSX.
 
