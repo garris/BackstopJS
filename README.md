@@ -6,20 +6,23 @@
 
 BackstopJS automates CSS regression testing of your responsive web UI by comparing DOM screenshots at various viewport sizes.
 
+**Features:** Plays nice with multiple config files – Simulate user interactions with CasperJS scripts – Fast inline-CLI reports – detailed in-browser reports – Test html5 elements like webfonts and flexbox – also plays nice with source control.
+
+
+
 
 ## News
 
 
 ### Version 0.9.0 beta available now
-**Set your config file path from the CLI**
+**Now plays nice with multiple config files!**
 For more info see... **[Setting the config file path](#setting-the-config-file-path-version-090)** below.
 
-This feature is in beta, run this to try it out...
+To try the new feature, install the beta version...
 
     $ npm install garris/backstopjs#master
 
-[Please direct questions, comments or issues here](https://github.com/garris/BackstopJS/issues).
-
+[Please file questions, comments or issues here](https://github.com/garris/BackstopJS/issues).
 
 
 ####Version 0.8.0
@@ -72,6 +75,7 @@ BackstopJS was created by [Garris Shipon](expanded.me) at [Art.com labs](www.art
 ...
 
 ## Many many thanks to [all the contributors](https://github.com/garris/BackstopJS/graphs/contributors) with special thanks to...
+- [Evan Lovely](https://github.com/EvanLovely) and [Klaus Bayrhammer](https://github.com/klausbayrhammer) for help on the 0.9.0 release
 - [Robert O'Rourke](https://github.com/sanchothefat) for help on the 0.8.0 release
 - [Klaus Bayrhammer](https://github.com/klausbayrhammer) for help on the 0.7.0 release
 - [Benedikt Rötsch](https://github.com/axe312ger) for help on the 0.6.0 release
@@ -84,8 +88,6 @@ BackstopJS uses icons from [the Noun Project](http://thenounproject.com/)
 * [Hidden](https://thenounproject.com/term/hidden/63405/) by [Roberto Chiaveri](https://thenounproject.com/robertochiaveri/)
 
 ---
-
-
 
 ##Installation
 
