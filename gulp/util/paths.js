@@ -61,7 +61,6 @@ if(!fs.existsSync(paths.backstopConfigFileName)){
 // overwrite default filepaths if config files exist
 if(fs.existsSync(paths.activeCaptureConfigPath)){
   var config = require(paths.activeCaptureConfigPath);
-
   if (config.paths) {
     paths.bitmaps_reference = config.paths.bitmaps_reference || paths.bitmaps_reference;
     paths.bitmaps_test = config.paths.bitmaps_test || paths.bitmaps_test;
