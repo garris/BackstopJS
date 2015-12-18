@@ -30,6 +30,8 @@ describe("setting the backstop.json location", function () {
 				return "{}";
 			}
 		});
+		// Mock require(expectedBackstopPath).
+		mockery.registerMock(expectedBackstopPath, {});
 		var paths = require('../../gulp/util/paths.js');
 		assert.equal(paths.activeCaptureConfigPath, expectedBackstopPath);
 	});
