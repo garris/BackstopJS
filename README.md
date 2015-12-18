@@ -396,6 +396,16 @@ $ gulp test --backstopConfigFilePath=../../backstopTests/someTest.json
 
 NOTE: all paths are relative to the location of the BackstopJS install directory _(which is either inside your project's `node_modules` or `bower_components` depending on how BackstopJS was installed)_
 
+###Using a js based config file
+
+For advanced configuration, you can use a js based config file rather than plain JSON. Using JavaScript in the config file makes it possible to use comments and variables etc. in the configuration.
+
+To use a js based config file, simply use [`--backstopConfigFilePath`](#setting-the-config-file-path-version-090) and point to a js file, e.g.
+```
+$ gulp reference --backstopConfigFilePath=someTest.js
+```
+
+See [configExample.js](test/configExample.js) for a simple example on how to specify a js based config.
 
 
 ### Setting the bitmap and script directory paths (version 0.6.0+)
