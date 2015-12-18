@@ -88,18 +88,4 @@ describe("setting the backstop.json location", function () {
 			assert.equal(err.message, 'Couldn\'t resolve backstop config file');
 		}
 	});
-
-	it('should throw an exception if the custom backstop location is not pointing to a .json file', function () {
-		var customBackstopConfigPath = '/backstop/config.txt';
-
-		mockery.registerMock('yargs', {
-			argv: {backstopConfigFilePath: customBackstopConfigPath}
-		});
-		try {
-			require('../../gulp/util/paths.js');
-			assert.fail();
-		} catch(err) {
-			assert.equal(err.message, 'Backstop config file has to be a .json file');
-		}
-	});
 });

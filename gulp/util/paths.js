@@ -9,9 +9,6 @@ paths.backstop                      = path.join(__dirname, '../..');
 
 function getBackstopConfigFileName() {
 	if(argv.backstopConfigFilePath) {
-		if(!/\.js(on)?$/.test(argv.backstopConfigFilePath)) {
-			throw new Error('Backstop config file has to be a .js or .json file');
-		}
 		var isAbsolutePath = argv.backstopConfigFilePath.charAt(0) === '/';
 		var configPath = isAbsolutePath ? argv.backstopConfigFilePath : path.join(paths.backstop, argv.backstopConfigFilePath);
 		if(!fs.existsSync(configPath)) {
