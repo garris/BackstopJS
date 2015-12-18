@@ -9,9 +9,6 @@ paths.backstop                      = path.join(__dirname, '../..');
 
 function getBackstopConfigFileName() {
 	if(argv.backstopConfigFilePath) {
-		if(argv.backstopConfigFilePath.substr(-5) !== '.json') {
-			throw new Error('Backstop config file has to be a .json file');
-		}
 		var isAbsolutePath = argv.backstopConfigFilePath.charAt(0) === '/';
 		var configPath = isAbsolutePath ? argv.backstopConfigFilePath : path.join(paths.backstop, argv.backstopConfigFilePath);
 		if(!fs.existsSync(configPath)) {
@@ -60,8 +57,7 @@ if(!fs.existsSync(paths.backstopConfigFileName)){
 
 // overwrite default filepaths if config files exist
 if(fs.existsSync(paths.activeCaptureConfigPath)){
-  var configJSON = fs.readFileSync(paths.activeCaptureConfigPath, "utf8");
-  var config = JSON.parse(configJSON);
+  var config = require(paths.activeCaptureConfigPath);
   if (config.paths) {
     paths.bitmaps_reference = config.paths.bitmaps_reference || paths.bitmaps_reference;
     paths.bitmaps_test = config.paths.bitmaps_test || paths.bitmaps_test;

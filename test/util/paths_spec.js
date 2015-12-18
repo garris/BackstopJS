@@ -30,6 +30,8 @@ describe("setting the backstop.json location", function () {
 				return "{}";
 			}
 		});
+		// Mock require(expectedBackstopPath).
+		mockery.registerMock(expectedBackstopPath, {});
 		var paths = require('../../gulp/util/paths.js');
 		assert.equal(paths.activeCaptureConfigPath, expectedBackstopPath);
 	});
@@ -48,6 +50,8 @@ describe("setting the backstop.json location", function () {
 				return "{}";
 			}
 		});
+		// Mock require(expectedBackstopPath).
+		mockery.registerMock(expectedBackstopPath, {});
 		var paths = require('../../gulp/util/paths.js');
 		assert.equal(paths.activeCaptureConfigPath, expectedBackstopPath);
 	});
@@ -66,6 +70,8 @@ describe("setting the backstop.json location", function () {
 				return "{}";
 			}
 		});
+		// Mock require(customBackstopConfigPath).
+		mockery.registerMock(customBackstopConfigPath, {});
 		var paths = require('../../gulp/util/paths.js');
 		assert.equal(paths.activeCaptureConfigPath, customBackstopConfigPath);
 	});
@@ -86,20 +92,6 @@ describe("setting the backstop.json location", function () {
 			assert.fail();
 		} catch(err) {
 			assert.equal(err.message, 'Couldn\'t resolve backstop config file');
-		}
-	});
-
-	it('should throw an exception if the custom backstop location is not pointing to a .json file', function () {
-		var customBackstopConfigPath = '/backstop/config.txt';
-
-		mockery.registerMock('yargs', {
-			argv: {backstopConfigFilePath: customBackstopConfigPath}
-		});
-		try {
-			require('../../gulp/util/paths.js');
-			assert.fail();
-		} catch(err) {
-			assert.equal(err.message, 'Backstop config file has to be a .json file');
 		}
 	});
 });

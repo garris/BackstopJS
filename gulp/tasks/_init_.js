@@ -1,4 +1,6 @@
 var paths                   = require('../util/paths');
-var fse                     = require('fs-extra');
+var fs                     = require('fs');
 
-fse.copySync(paths.activeCaptureConfigPath,paths.captureConfigFileName);
+var config = require(paths.activeCaptureConfigPath);
+// Serialize config as JSON into capture config.
+fs.writeFileSync(paths.captureConfigFileName, JSON.stringify(config));
