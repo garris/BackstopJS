@@ -65,7 +65,7 @@ gulp.task('compare', function (done) {
   }
 
   function getFailedDiffFilename(testPath) {
-    var lastSlash = testPath.lastIndexOf('/');
+    var lastSlash = testPath.lastIndexOf(path.sep);
     return testPath.slice(0, lastSlash + 1) + 'failed_diff_' + testPath.slice(lastSlash + 1, testPath.length);
   }
 });
