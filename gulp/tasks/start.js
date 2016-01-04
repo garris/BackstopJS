@@ -33,7 +33,8 @@ gulp.task("start",function(){
     var serverHook = spawn('node', ['server.js', '-t ' + time + ' -p ' + port],  {detached: true, stdio:'ignore'});
     serverHook.unref();
     fs.writeFileSync(paths.serverPidFile, serverHook.pid);
-    console.log('\nServer launched in background with PID: '+serverHook.pid);
+    console.log('\nServer launched in background with PID: ' + serverHook.pid);
+    console.log('Listening on port: ' + port);
 
     if (time > 0) {
       console.log('NOTE: Sever will auto-shutdown in ' + time + ' mins.\n');
