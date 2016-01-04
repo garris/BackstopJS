@@ -7,7 +7,7 @@ var _ = require('underscore');
 
 
 gulp.task('compare', function (done) {
-  var compareConfig = JSON.parse(fs.readFileSync(paths.compareConfigFileName, 'utf8'));
+  var compareConfig = JSON.parse(fs.readFileSync(paths.compareConfigFileName, 'utf8')).compareConfig;
 
   function updateProgress() {
     var results = {};

@@ -178,8 +178,11 @@ casper.run(function(){
 });
 
 function complete(){
-  var configData = JSON.stringify(compareConfig,null,2);
-  fs.write(compareConfigFileName, configData, 'w');
+  fs.touch(compareConfigFileName);
+  var compareConfigFile = fs.read(compareConfigFileName);
+  var compareConfigJSON = JSON.parse(compareConfigFile || '{}');
+  compareConfigJSON.compareConfig = compareConfig;
+  fs.write(compareConfigFileName, JSON.stringify(compareConfigJSON,null,2), 'w');
   console.log(
     '\n======================\nechoFiles has completed \n=======================\n'
     //,configData
