@@ -5,6 +5,7 @@ var isRunning = require('is-running');
 var paths = require('../util/paths');
 var argv  = require('yargs').argv;
 
+var defaultPort = paths.portNumber || 3001;
 
 
 //THIS WILL START THE LOCAL WEBSERVER
@@ -28,7 +29,8 @@ gulp.task("start",function(){
 
   function start() {
     var time = (Number(argv.t) === argv.t && argv.t % 1 === 0) ? argv.t : 15;
-    var serverHook = spawn('node', ['server.js', '-t ' + time],  {detached: true, stdio:'ignore'});
+    var port = argv.p || defaultPort;
+    var serverHook = spawn('node', ['server.js', '-t ' + time + ' -p ' + port],  {detached: true, stdio:'ignore'});
     serverHook.unref();
     fs.writeFileSync(paths.serverPidFile, serverHook.pid);
     console.log('\nServer launched in background with PID: '+serverHook.pid);

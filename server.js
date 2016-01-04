@@ -8,7 +8,7 @@ var express = require('express'),
 
 var autoShutDownMs = (Number(argv.t) === argv.t && argv.t % 1 === 0) ? 1000 * 60 * argv.t : 1000 * 60 * 15;
 var rootDir = __dirname;
-var port  = 3001;
+var port  = argv.p || 3001;
 
 app.use(express.json());
 app.use(express.urlencoded());

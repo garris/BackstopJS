@@ -2,7 +2,10 @@ var path = require('path');
 var fs = require('fs');
 var argv = require('yargs').argv;
 
+var defaultPort = 3001;
+
 var paths = {};
+paths.portNumber = defaultPort;
 
 // BACKSTOP MODULE PATH
 paths.backstop                      = path.join(__dirname, '../..');
@@ -28,7 +31,6 @@ paths.bitmaps_test                  = paths.backstop + '/bitmaps_test';
 // COMPARE PATHS -- note: compareConfigFileName is overwritten if config files exist.  see below.
 paths.comparePath                   = paths.backstop + '/compare';
 paths.compareConfigFileName         = paths.comparePath+'/config.json';
-paths.compareReportURL              = 'http://localhost:3001/compare/';
 
 // CAPTURE CONFIG PATHS
 paths.captureConfigFileName         = paths.backstop + '/capture/config.json';
@@ -65,11 +67,14 @@ if(fs.existsSync(paths.activeCaptureConfigPath)){
     paths.casper_scripts = config.paths.casper_scripts || null;
   }
 
+  paths.portNumber = config.port || defaultPort;
   paths.cliExitOnFail = config.cliExitOnFail || false;
   paths.casperFlags = config.casperFlags || null;
   paths.engine = config.engine || null;
   paths.report = config.report || null;
 
 }
+
+paths.compareReportURL = 'http://localhost:' + paths.portNumber + '/compare/';
 
 module.exports = paths;
