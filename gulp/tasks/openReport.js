@@ -29,16 +29,15 @@ gulp.task("openReport", function(){
 
   gulp.src(paths.compareConfigFileName)
     .pipe(jeditor(function(json) {
-      json.testPairs.forEach(function(item){
+      json.compareConfig.testPairs.forEach(function(item){
         var rFile = referenceDir + item.reference.split('/').slice(-1)[0];
         var tFile = testDir + item.test.split('/').slice(-2).join('/');
         item.local_reference = rFile;
         item.local_test = tFile;
-      })
-      return json;
+      });
+      return json.compareConfig;
     }))
     .pipe(rename('compare/config.json'))
     .pipe(gulp.dest('.'))
     .pipe(open("",options));
-
 });

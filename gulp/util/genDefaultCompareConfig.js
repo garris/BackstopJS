@@ -1,14 +1,13 @@
-var fsx = require('fs-extra');
-var paths = require('./paths');
-
+var updateCompareConfigs = require('./updateCompareConfig');
 
 var configDefault = {
   "testPairs": []
 };
 
 var genDefaultCompareConfig = function () {
-  fsx.ensureFileSync(paths.compareConfigFileName);
-  fsx.writeFileSync(paths.compareConfigFileName, JSON.stringify(configDefault,null,2));
+  updateCompareConfigs(function(compareConfigFile) {
+    compareConfigFile.compareConfig = JSON.stringify(configDefault,null,2);
+  });
 };
 
 module.exports = genDefaultCompareConfig;

@@ -1,7 +1,9 @@
 var gulp  = require('gulp');
 var fs    = require('fs');
+var fsx    = require('fs-extra');
 var spawn = require('child_process').spawn;
 var paths = require('../util/paths');
+var checksum = require('checksum');
 
 
 
@@ -23,12 +25,12 @@ gulp.task('test',['init'], function () {
   if(!genReferenceMode){
 
     // TEST FOR CAPTURE CONFIG CACHE -- CREATE IF ONE DOESN'T EXIST (If a .cache file does not exist it is likely a scenario where the user is testing shared reference files in a new context. e.g different dev env.).
-    if(fs.existsSync(paths.captureConfigFileNameCache)){
+    var compareConfigFile = fsx.readJsonSync(paths.compareConfigFileName, {throws: false});
+    if(compareConfigFile && compareConfigFile.lastConfigHash){
 
       //COMPARE CAPTURE CONFIG AGAINST THE CACHED VERSION. PROMPT IF DIFFERENT.
       var config = fs.readFileSync(paths.activeCaptureConfigPath, 'utf8');
-      var cache = fs.readFileSync(paths.captureConfigFileNameCache, 'utf8');
-      if(config !== cache){
+      if(checksum(config) !== compareConfigFile.lastConfigHash){
         console.log('\nIt looks like the reference configuration has been changed since last reference batch.');
         console.log('Please run `$ gulp reference` to generate a fresh set of reference files');
         console.log('or run `$ gulp bless` then `$ gulp test` to enable testing with this configuration.\n\n');
@@ -79,11 +81,9 @@ gulp.task('test',['init'], function () {
     if(code!=0){
       console.log('\nLooks like an error occured. You may want to try running `$ gulp echo`. This will echo the requested test URL output to the console. You can check this output to verify that the file requested is indeed being received in the expected format.');
       return false;
-    };
+    }
 
-
-    var resultConfig = JSON.parse(fs.readFileSync(paths.compareConfigFileName, 'utf8'));
-    if(genReferenceMode || !resultConfig.testPairs||resultConfig.testPairs.length==0){
+    if(genReferenceMode){
       console.log('\nRun `$ gulp test` to generate diff report.\n')
     }else{
       gulp.run('report');

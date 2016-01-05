@@ -245,9 +245,11 @@ casper.run(function(){
 });
 
 function complete(){
-  var configData = JSON.stringify(compareConfig,null,2);
   fs.touch(compareConfigFileName);
-  fs.write(compareConfigFileName, configData, 'w');
+  var compareConfigFile = fs.read(compareConfigFileName);
+  var compareConfigJSON = JSON.parse(compareConfigFile || '{}');
+  compareConfigJSON.compareConfig = compareConfig;
+  fs.write(compareConfigFileName, JSON.stringify(compareConfigJSON,null,2), 'w');
   console.log(
     'Comparison config file updated.'
     //,configData
