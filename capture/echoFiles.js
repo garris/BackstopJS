@@ -1,9 +1,6 @@
-
 var fs = require('fs');
 
 var genConfigPath = 'capture/config.json'
-
-
 var configJSON = fs.read(genConfigPath);
 var config = JSON.parse(configJSON);
 if (!config.paths) {
@@ -15,7 +12,6 @@ var bitmaps_test = config.paths.bitmaps_test || 'bitmaps_test';
 var compareConfigFileName = config.paths.compare_data || 'compare/config.json';
 var viewports = config.viewports;
 var scenarios = config.scenarios||config.grabConfigs;
-
 
 var compareConfig = {testPairs:[]};
 if (config.misMatchThreshold) {
@@ -48,21 +44,15 @@ casper.on('resource.received', function(resource) {
   }
 });
 
-
-
 function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_test,isReference){
-
   var
     gotErrors = [],
     screenshotNow = new Date(),
     screenshotDateTime = screenshotNow.getFullYear() + pad(screenshotNow.getMonth() + 1) + pad(screenshotNow.getDate()) + '-' + pad(screenshotNow.getHours()) + pad(screenshotNow.getMinutes()) + pad(screenshotNow.getSeconds());
 
   casper.start();
-  // casper.viewport(1280,1024);
 
-
-  casper.each(scenarios,function(casper, scenario, scenario_index){
-
+  casper.each(scenarios,function(casper, scenario, scenario_index) {
     if (scenario.cookiesJsonFile && fs.isFile(scenario.cookiesJsonFile)) {
       var cookiesJson = fs.read(scenario.cookiesJsonFile);
       var cookies = JSON.parse(cookiesJson);
@@ -71,75 +61,21 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
       }
     }
 
-    // casper.each(viewports, function(casper, vp, viewport_index) {
-      // this.then(function() {
-      //  this.viewport(vp.viewport.width, vp.viewport.height);
-      // });
-
-      console.log('LOG> CASPER IS RUNNING')
-      casper.thenOpen(scenario.url, function() {
-        console.log('LOG> PHANTOM IS RUNNING')
-        casper.wait(500);
-      });
-      casper.then(function() {
-        this.echo('\n==================\nCurrent location is ' + scenario.url +'\n==================\n', 'warn');
-
-        // var src = this.evaluate(function() {return document.body.outerHTML; });
-        var src = this.evaluate(function() {return document.all[0].outerHTML; });
-        this.echo('\n\n'+src);
-      });
-
-      // this.then(function(){
-
-      //  this.echo('Screenshots for ' + vp.name + ' (' + vp.viewport.width + 'x' + vp.viewport.height + ')', 'info');
-
-      //  //HIDE SELECTORS WE WANT TO AVOID
-      //  scenario.hideSelectors.forEach(function(o,i,a){
-      //    casper.evaluate(function(o){
-      //      document.querySelector(o).style.visibility='hidden';
-      //    },o);
-      //  });
-
-      //  //REMOVE UNWANTED SELECTORS FROM RENDER TREE
-      //  scenario.removeSelectors.forEach(function(o,i,a){
-      //    casper.evaluate(function(o){
-      //      document.querySelector(o).style.display='none';
-      //    },o);
-      //  });
-
-      //  //CREATE SCREEN SHOTS AND TEST COMPARE CONFIGURATION (CONFIG FILE WILL BE SAVED WHEN THIS PROCESS RETURNS)
-      //  scenario.selectors.forEach(function(o,i,a){
-      //    var cleanedSelectorName = o.replace(/[^a-zA-Z\d]/,'');//remove anything that's not a letter or a number
-      //    //var cleanedUrl = scenario.url.replace(/[^a-zA-Z\d]/,'');//remove anything that's not a letter or a number
-      //    var fileName = scenario_index + '_' + i + '_' + cleanedSelectorName + '_' + viewport_index + '_' + vp.name + '.png';;
-
-      //    var reference_FP  = bitmaps_reference + '/' + fileName;
-      //    var test_FP       = bitmaps_test + '/' + screenshotDateTime + '/' + fileName;
-
-      //    var filePath      = (isReference)?reference_FP:test_FP;
-
-      //    if(!isReference)
-      //      compareConfig.testPairs.push({
-      //        reference:reference_FP,
-      //        test:test_FP,
-      //        selector:o,
-      //        fileName:fileName,
-      //        testName:scenario.testName
-      //      })
-
-      //    casper.captureSelector(filePath, o);
-      //    //casper.echo('remote capture to > '+filePath,'info');
-
-      //  });//end topLevelModules.forEach
-      // });
-
-
-    // });//end casper.each viewports
-
+    console.log('LOG> CASPER IS RUNNING');
+    
+    casper.thenOpen(scenario.url, function() {
+      console.log('LOG> PHANTOM IS RUNNING');
+      casper.wait(100);
+    });
+    
+    casper.then(function() {
+      this.echo('\n==================\nCurrent location is ' + scenario.url +'\n==================\n', 'warn');
+      // var src = this.evaluate(function() {return document.body.outerHTML; });
+      var src = this.evaluate(function() {return document.all[0].outerHTML; });
+      this.echo('\n\n'+src);
+    });
   });//end casper.each scenario
-
 }
-
 
 //========================
 //this query should be moved to the prior process
@@ -148,19 +84,6 @@ var exists = fs.exists(bitmaps_reference);
 var isReference = false;
 if(!exists){isReference=true; console.log('CREATING NEW REFERENCE FILES')}
 //========================
-
-
-
-// ==== NOTE -- want to test for page existence and then run this against all selectors
-// ==== if pass then run the next blocks capturePageSelectors() && casper.run()
-// casper.test.begin('assertExists() tests', 1, function(test) {
-//     casper.start().then(function() {
-//         this.setContent('<div class="heaven">beer</div>');
-//         test.assertExists('.heaven');
-//     }).run(function() {
-//         test.done();
-//     });
-// });
 
 
 capturePageSelectors(
@@ -188,4 +111,3 @@ function pad(number) {
   }
   return r;
 }
-
