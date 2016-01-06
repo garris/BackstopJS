@@ -3,6 +3,7 @@ var fs = require('fs');
 var argv = require('yargs').argv;
 
 var defaultPort = 3001;
+var defaultConfigPath = '../../backstop.json';
 
 var paths = {};
 paths.portNumber = defaultPort;
@@ -19,7 +20,7 @@ function getBackstopConfigFileName() {
 		}
 		return configPath;
 	}
-	return path.join(paths.backstop, '../../backstop.json');
+	return path.join(paths.backstop, defaultConfigPath);
 }
 // BACKSTOP CONFIG PATH
 paths.backstopConfigFileName = getBackstopConfigFileName();
@@ -47,14 +48,13 @@ paths.serverPidFile                 = paths.backstop + '/server.pid';
 // ACTIVE CAPTURE CONFIG PATH
 paths.activeCaptureConfigPath       = '';
 
-if(!fs.existsSync(paths.backstopConfigFileName)){
-  // console.log('\nCould not find a valid config file.');
-  console.log('\nCurrent config file location...\n ==> '+paths.backstopConfigFileName);
-  console.log('\n`$ gulp genConfig` generates a configuration boilerplate file in `' + paths.backstopConfigFileName + '`. (Will overwrite existing files.)\n')
-  paths.activeCaptureConfigPath = paths.captureConfigFileNameDefault;
-}else{
+if(fs.existsSync(paths.backstopConfigFileName)){
   console.log('\nBackstopJS Config loaded at location', paths.backstopConfigFileName);
   paths.activeCaptureConfigPath = paths.backstopConfigFileName;
+}else{
+  console.log('\nConfig file not found.');
+  console.log('\n`$ gulp genConfig` generates a handy configuration boilerplate file at: `' + paths.backstopConfigFileName + '`. (Will overwrite existing files.)\n')
+  paths.activeCaptureConfigPath = paths.captureConfigFileNameDefault;
 }
 
 // overwrite default filepaths if config files exist

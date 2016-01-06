@@ -2,7 +2,6 @@ var gulp   = require('gulp');
 var rename = require('gulp-rename');
 var paths  = require('../util/paths');
 
-
 //GENERATE CAPTURE CONFIG
 gulp.task('genConfig', ['genScripts'], function(){
   return gulp.src(paths.captureConfigFileNameDefault)

@@ -203,7 +203,8 @@ The location of the `backstop.json` file as well as all resource directories can
   "engine": "phantomjs",
   "report": ["browser", "CLI"],
   "cliExitOnFail": false,
-  "debug": false
+  "debug": false,
+  "port": 3001
 }
 ```
 
@@ -377,35 +378,43 @@ When a layout error is found in CLI mode, BackstopJS will let you know in a gene
 "cliExitOnFail": true,
 ```
 
+
+###Using a js based config file (version 1.0.0+)
+
+JSON-based configs getting you down? Well, here's some good news -- BackstopJS allows you to import all config parameters as a node module (instead JSON) which allows you to use comments, variables and logic etc. inside of your config.
+
+To use a js module based config file, explicitly specify your config filepath when running a command. e.g. 
+```
+$ gulp test --backstopConfigFilePath=../../backstopTests/someTest.js
+```
+_See the next section for more info on setting the config file path._
+
+Be sure to export your config object as a node module. See [test/configExample.js](test/configExample.js) for a simple example.
+
+
+
 ###Setting the config file path (version 0.9.0+)
 Often, users have multiple config files to test various different scenarios or even different projects. By default, BackstopJS looks for `backstop.json` in your project's root directory (in parallel with your `node_modules` directory). You can override this by passing a `--backstopConfigFilePath` argument when running any command. e.g.
 ```
-// example 1
+// example 1: run reference generation with absolute path
 $ gulp reference --backstopConfigFilePath=~/backstopTests/someTest.json
 // Will capture reference files using scenarios from `someTest.json` inside `backstopTests` inside your home folder.
 
-// example 2
+// example 2: run test with absolute path
 $ gulp test --backstopConfigFilePath=~/backstopTests/someTest.json
 // Will run tests using scenarios from `someTest.json` inside `backstopTests` inside your home folder.
 
-// example 3
+// example 3: run test with relative path
 $ gulp test --backstopConfigFilePath=../../backstopTests/someTest.json
 // Will run tests using scenarios from `someTest.json` inside `backstopTests` inside your project root folder.
+
+// example 4: run test with relative path and JS module
+$ gulp test --backstopConfigFilePath=../../backstopTests/someTest.js
+// You can also specify your config parameters as a node module. This will import `someTest.js` from `backstopTests` inside your project root folder.
 
 ```
 
 NOTE: all paths are relative to the location of the BackstopJS install directory _(which is either inside your project's `node_modules` or `bower_components` depending on how BackstopJS was installed)_
-
-###Using a js based config file
-
-For advanced configuration, you can use a js based config file rather than plain JSON. Using JavaScript in the config file makes it possible to use comments and variables etc. in the configuration.
-
-To use a js based config file, simply use [`--backstopConfigFilePath`](#setting-the-config-file-path-version-090) and point to a js file, e.g.
-```
-$ gulp reference --backstopConfigFilePath=someTest.js
-```
-
-See [configExample.js](test/configExample.js) for a simple example on how to specify a js based config.
 
 
 ### Setting the bitmap and script directory paths (version 0.6.0+)
@@ -442,6 +451,12 @@ Then, in your `backstop.json` config file, update the engine property to...
   "engine": "slimerjs"
 ```
 Thats it.
+
+
+
+### Changing the reporting server port
+
+The default port used by BackstopJS is 3001.   You can change it by setting the `port` parameter in the `backstop.json` file.
 
 
 
