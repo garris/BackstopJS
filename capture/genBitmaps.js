@@ -85,9 +85,12 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
 
         casper.waitFor(
           function(){ //test
-            if(!scenario.readyEvent)return true;
-            var regExReadyFlag = new RegExp(scenario.readyEvent,'i');
-            return consoleBuffer.search(regExReadyFlag)>=0;
+            var readyEvent = scenario.readyEvent || config.readyEvent;
+            if(!readyEvent) {
+              return true;
+            }
+            var regExReadyFlag = new RegExp(readyEvent,'i');
+            return consoleBuffer.search(regExReadyFlag) >= 0;
           }
           ,function(){//on done
             consoleBuffer = '';
@@ -205,7 +208,7 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
               selector:o,
               fileName:fileName,
               label:scenario.label,
-              misMatchThreshold: scenario.misMatchThreshold
+              misMatchThreshold: scenario.misMatchThreshold || config.misMatchThreshold
             });
           }
           //casper.echo('remote capture to > '+filePath,'info');
