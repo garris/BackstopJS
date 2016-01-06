@@ -30,7 +30,7 @@ gulp.task("start",function(){
   function start() {
     var time = (Number(argv.t) === argv.t && argv.t % 1 === 0) ? argv.t : 15;
     var port = argv.p || defaultPort;
-    var serverHook = spawn('node', ['server.js', '-t ' + time + ' -p ' + port],  {detached: true, stdio:'ignore'});
+    var serverHook = spawn('node', ['server.js', '-t', time, '-p', port],  {detached: true, stdio:'ignore'});
     serverHook.unref();
     fs.writeFileSync(paths.serverPidFile, serverHook.pid);
     console.log('\nServer launched in background with PID: ' + serverHook.pid);
