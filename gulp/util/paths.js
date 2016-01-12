@@ -72,8 +72,6 @@ if(fs.existsSync(paths.activeCaptureConfigPath)){
   paths.casperFlags = config.casperFlags || null;
   paths.engine = config.engine || null;
   paths.report = config.report || null;
-  paths.misMatchThreshold = config.misMatchThreshold || null;
-  paths.readyEvent = config.readyEvent || null;
 }
 
 paths.compareReportURL = 'http://localhost:' + paths.portNumber + '/compare/';
