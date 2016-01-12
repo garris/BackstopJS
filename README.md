@@ -14,16 +14,26 @@ BackstopJS automates CSS regression testing of your responsive web UI by compari
 ## News
 
 
-### Version 0.9.0 beta available now
-**Now plays nice with multiple config files!**
-For more info see... **[Setting the config file path](#setting-the-config-file-path-version-090)** below.
-
-To try the new feature, install the beta version...
-
-    $ npm install garris/backstopjs#master
-
+### Version 1.0.1 available now
 [Please file questions, comments or issues here](https://github.com/garris/BackstopJS/issues).
 
+**Version 1.0 includes reliability fixes plus a handful of improvements to close out the original roadmap.**
+- now add comments to your configs (optional JS based configs)
+- plays nice with other local services (change the BackstopJS port)
+
+
+<!--
+To try the new feature, install the beta version...
+$ npm install garris/backstopjs#master
+-->
+
+
+
+
+
+
+####Version 0.9.0
+- Plays nice with multiple config files (setting the config file path)
 
 ####Version 0.8.0
 - Simulate user interactions with CasperJS scripts
@@ -66,7 +76,7 @@ BackstopJS is a useful wrapper around the very fabulous [Resemble.js](https://gi
 
 BackstopJS may be just the thing if you develop custom WordPress, Drupal or other CMS templates.  Tested on OSX.
 
-BackstopJS was created by [Garris Shipon](expanded.me) at [Art.com labs](www.art.com).
+BackstopJS was created by [Garris Shipon](expanded.me) during the [Art.com labs](www.art.com) years.
 
 <strong><a href="https://twitter.com/garris" class="twitter-follow-button" data-show-count="false">Follow @garris</a></strong>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
@@ -75,12 +85,13 @@ BackstopJS was created by [Garris Shipon](expanded.me) at [Art.com labs](www.art
 ...
 
 ## Many many thanks to [all the contributors](https://github.com/garris/BackstopJS/graphs/contributors) with special thanks to...
+- [Klaus Bayrhammer](https://github.com/klausbayrhammer) for all the incredible effort leading up to 1.0 -- the cli reports and compatibility fixes are awesome!
 - [Evan Lovely](https://github.com/EvanLovely) and [Klaus Bayrhammer](https://github.com/klausbayrhammer) for help on the 0.9.0 release
 - [Robert O'Rourke](https://github.com/sanchothefat) for help on the 0.8.0 release
 - [Klaus Bayrhammer](https://github.com/klausbayrhammer) for help on the 0.7.0 release
 - [Benedikt Rötsch](https://github.com/axe312ger) for help on the 0.6.0 release
 - [Yulia Tsareva](https://github.com/YuliaTsareva) for help on the 0.5.0 release
-- [Lewis Nyman](https://github.com/lewisnyman) and [Stoutie](https://github.com/jehoshua02) for help with 0.4.0 release
+- [Lewis Nyman](https://github.com/lewisnyman) and [Stoutie](https://github.com/jehoshua02) for help with 0.4.0 release -- you guys are responsible for really getting the ball rolling!
 
 BackstopJS uses icons from [the Noun Project](http://thenounproject.com/)
 
@@ -381,7 +392,7 @@ When a layout error is found in CLI mode, BackstopJS will let you know in a gene
 
 ###Using a js based config file (version 1.0.0+)
 
-JSON-based configs getting you down? Well, here's some good news -- BackstopJS allows you to import all config parameters as a node module (instead JSON) which allows you to use comments, variables and logic etc. inside of your config.
+JSON-based configs cramping your style? Well, here's some good news -- BackstopJS allows you to import all config parameters as a node module (as an option instead of JSON) which allows you to use comments, variables and logic etc. inside of your config.
 
 To use a js module based config file, explicitly specify your config filepath when running a command. e.g. 
 ```
