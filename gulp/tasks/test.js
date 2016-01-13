@@ -21,23 +21,22 @@ gulp.task('test',['init'], function () {
     genReferenceMode = true;
   }
 
-  //IF WE ARE IN TEST GENERATION MODE -- LOOK FOR CHANGES IN THE 'CAPTURE CONFIG'.
+//IF WE ARE IN TEST GENERATION MODE -- LOOK FOR CHANGES IN THE CONFIG.
   if(!genReferenceMode){
 
-    // TEST FOR CAPTURE CONFIG CACHE -- CREATE IF ONE DOESN'T EXIST (If a .cache file does not exist it is likely a scenario where the user is testing shared reference files in a new context. e.g different dev env.).
-    var compareConfigFile = fsx.readJsonSync(paths.compareConfigFileName, {throws: false});
-    if(compareConfigFile && compareConfigFile.lastConfigHash){
+    // TEST WHETHER THERE IS A CONFIG-CONFIG HASH IN THE COMPARE-CONFIG-FILE - IF IT DOESN'T CREATE A NEW ONE (It is likely a scenario where the user is testing shared reference files in a new context. e.g different dev env).
+    var compareConfigLastConfigHash = getLastConfigHash();
+    if(compareConfigLastConfigHash) {
 
-      //COMPARE CAPTURE CONFIG AGAINST THE CACHED VERSION. PROMPT IF DIFFERENT.
-      var config = fs.readFileSync(paths.activeCaptureConfigPath, 'utf8');
-      if(checksum(config) !== compareConfigFile.lastConfigHash){
-        console.log('\nIt looks like the reference configuration has been changed since last reference batch.');
-        console.log('Please run `$ gulp reference` to generate a fresh set of reference files');
-        console.log('or run `$ gulp bless` then `$ gulp test` to enable testing with this configuration.\n\n');
-        return false;
-      }
-
-    }else{
+        //COMPARE CAPTURE CONFIG'S HASH AGAINST THE STORED HASH. PROMPT IF DIFFERENT.
+        var config = fs.readFileSync(paths.activeCaptureConfigPath, 'utf8');
+        if (checksum(config) !== compareConfigLastConfigHash) {
+          console.log('\nIt looks like the reference configuration has been changed since last reference batch.');
+          console.log('Please run `$ gulp reference` to generate a fresh set of reference files');
+          console.log('or run `$ gulp bless` then `$ gulp test` to enable testing with this configuration.\n\n');
+          return false;
+        }
+    } else{
       gulp.run('bless');
     }
   }
@@ -91,5 +90,12 @@ gulp.task('test',['init'], function () {
 
   });
 
+  function getLastConfigHash() {
+    if(!fs.existsSync(paths.compareConfigFileName))
+      return false;
+
+    var compareConfigFile = fsx.readJsonSync(paths.compareConfigFileName, {throws: false});
+    return compareConfigFile ? compareConfigFile.lastConfigHash : false;
+  }
 
 });
