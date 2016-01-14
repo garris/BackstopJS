@@ -18,6 +18,8 @@ var casper_scripts = config.paths.casper_scripts || null;
 var compareConfigFileName = config.paths.compare_data || 'compare/config.json';
 var viewports = config.viewports;
 var scenarios = config.scenarios||config.grabConfigs;
+var default_file_name = '__scenario_index__' + '_' + '__counter__' + '__cleanedSelectorName__' + '__viewport_index__' + '_' + '__vp.name__'  + '.png';
+var file_names = scenarios.map(function(x){ return x.fileName || default_file_name; });
 
 var compareConfig = {testPairs:[]};
 
@@ -162,7 +164,14 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
         scenario.selectors.forEach(function(o,i,a){
           var cleanedSelectorName = o.replace(/[^a-z0-9_\-]/gi,'');//remove anything that's not a letter or a number
           //var cleanedUrl = scenario.url.replace(/[^a-zA-Z\d]/,'');//remove anything that's not a letter or a number
-          var fileName = scenario_index + '_' + i + '_' + cleanedSelectorName + '_' + viewport_index + '_' + vp.name + '.png';;
+          //var fileName = scenario_index + '_' + i + '_' + cleanedSelectorName + '_' + viewport_index + '_' + vp.name + '.png';
+          var cleanFileName = file_names[scenario_index];
+          cleanFileName = cleanFileName.replace(/[^a-z0-9_\-\.]/gi,'');//remove anything that's not a letter, a number or a period
+          cleanFileName = cleanFileName.replace(/__scenario_index__/gi, scenario_index);
+          cleanFileName = cleanFileName.replace(/__counter__/gi, i);
+          cleanFileName = cleanFileName.replace(/__cleanedSelectorName__/gi, cleanedSelectorName);
+          cleanFileName = cleanFileName.replace(/__viewport_index__/gi, viewport_index);
+          var fileName = cleanFileName.replace(/__vp\.name__/gi, vp.name);
 
           var reference_FP  = bitmaps_reference + '/' + fileName;
           var test_FP       = bitmaps_test + '/' + screenshotDateTime + '/' + fileName;

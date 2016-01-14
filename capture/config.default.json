@@ -36,7 +36,8 @@
       "delay": 500,
       "misMatchThreshold" : 0.1,
       "onBeforeScript": "onBefore.js",
-      "onReadyScript": "onReady.js"
+      "onReadyScript": "onReady.js",
+      "fileName": null
     }
   ],
   "paths": {
