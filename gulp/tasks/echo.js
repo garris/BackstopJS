@@ -1,5 +1,6 @@
 var gulp  = require('gulp');
 var spawn = require('child_process').spawn;
+var paths = require('../util/paths');
 
 
 gulp.task('echo',function(){
@@ -7,19 +8,29 @@ gulp.task('echo',function(){
 
   var tests = ['capture/echoFiles.js'];
 
-  var args = ['--ssl-protocol=any'];//added for https compatibility for older versions of phantom
+  var args = [];
+
+  if (/slimer/.test(paths.engine)) {
+    args = ['--engine=slimerjs'];
+  }
+
+  if (paths.casperFlags) {
+    if (/--engine=/.test(paths.casperFlags.toString())) {
+      args = paths.casperFlags; // casperFlags --engine setting takes presidence -- replace if found.
+    } else {
+      args.concat(paths.casperFlags)
+    }
+  }
 
   var casperArgs = tests.concat(args);
-
-  // var args = ['test'].concat(tests); //this is required if using casperjs test option
-
+  console.log("\nRunning CasperJS with: ", casperArgs)
+  console.log("");
   var casperProcess = (process.platform === "win32" ? "casperjs.cmd" : "casperjs");
-  var casperChild = spawn(casperProcess, casperArgs); //use args here to add test option to casperjs execute stmt
+  var casperChild = spawn(casperProcess, casperArgs);
 
   casperChild.stdout.on('data', function (data) {
     console.log('CasperJS:', data.toString().slice(0, -1)); // Remove \n
   });
-
 
   casperChild.on('close', function (code) {
     var success = code === 0; // Will be 1 in the event of failure

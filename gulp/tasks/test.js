@@ -61,6 +61,8 @@ gulp.task('test',['init'], function () {
   }
 
   var casperArgs = tests.concat(args);
+  console.log("\nRunning CasperJS with: ", casperArgs)
+  console.log("");
   var casperProcess = (process.platform === "win32" ? "casperjs.cmd" : "casperjs");
   var casperChild = spawn(casperProcess, casperArgs);
 

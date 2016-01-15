@@ -19,19 +19,37 @@ if (config.misMatchThreshold) {
 }
 
 var casper = require("casper").create({
-  // clientScripts: ["jquery.js"] //lets try not to use this it's friggin 2014 already people...
+  // clientScripts: ["jquery.js"] //smoke em if you got em...
 });
 
-casper.on('resource.received', function(resource) {
-    //casper.echo(resource.url);
-});
+casper.echo("-------");
+
+casper.echo('test file: ' + casper.cli.get(0));
+
+casper.echo("Casper CLI passed args vvv");
+require("utils").dump(casper.cli.args);
+
+casper.echo("Casper CLI passed options vvv");
+require("utils").dump(casper.cli.options);
+
+casper.echo("-------");
+
+
+
+// casper.on('resource.received', function(resource) {
+//     casper.echo('resource.received > ' + resource.url);
+// });
 
 casper.on("page.error", function(msg, trace) {
-  // this.echo("Remote Error >    " + msg, "error");
-  // this.echo("file:     " + trace[0].file, "WARNING");
-  // this.echo("line:     " + trace[0].line, "WARNING");
-  // this.echo("function: " + trace[0]["function"], "WARNING");
+  this.echo('---');
+  this.echo("vvv Remote Error  " + msg, "error");
+  this.echo("file:     " + trace[0].file, "WARNING");
+  this.echo("line:     " + trace[0].line, "WARNING");
+  this.echo("function: " + trace[0]["function"], "WARNING");
+  this.echo('---');
 });
+
+
 
 casper.on('remote.message', function(message) {
   this.echo('remote console > ' + message);
@@ -40,7 +58,7 @@ casper.on('remote.message', function(message) {
 casper.on('resource.received', function(resource) {
   var status = resource.status;
   if(status >= 400) {
-    casper.log('remote error > ' + resource.url + ' failed to load (' + status + ')', 'error');
+    casper.log('vvv remote error ' + resource.url + ' failed to load (' + status + ')', 'error');
   }
 });
 
@@ -62,12 +80,12 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
     }
 
     console.log('LOG> CASPER IS RUNNING');
-    
+
     casper.thenOpen(scenario.url, function() {
       console.log('LOG> PHANTOM IS RUNNING');
       casper.wait(100);
     });
-    
+
     casper.then(function() {
       this.echo('\n==================\nCurrent location is ' + scenario.url +'\n==================\n', 'warn');
       // var src = this.evaluate(function() {return document.body.outerHTML; });
