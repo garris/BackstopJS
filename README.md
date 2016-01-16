@@ -209,7 +209,7 @@ The location of the `backstop.json` file as well as all resource directories can
     "bitmaps_reference": "../../backstop_data/bitmaps_reference",
     "bitmaps_test": "../../backstop_data/bitmaps_test",
     "compare_data": "../../backstop_data/bitmaps_test/compare.json",
-    "scripts": "../../backstop_data/scripts"
+    "casper_scripts": "../../backstop_data/casper_scripts"
   },
   "engine": "phantomjs",
   "report": ["browser", "CLI"],
@@ -220,9 +220,7 @@ The location of the `backstop.json` file as well as all resource directories can
 ```
 
 
-
-
-**DEV NOTE:** If `./backstop.json` is not present at the project root then BackstopJS will fallback to use the following config at... `./node_modules/backstopjs/capture/config.default.json`
+**DEV NOTE:** If a valid config is not present at the project root (or at the path [specified on your CLI](#setting-the-config-file-path-version-090)), BackstopJS will go into **Demo** mode and run the default config at... `./node_modules/backstopjs/capture/config.default.json`
 
 
 
