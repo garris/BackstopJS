@@ -56,13 +56,12 @@ gulp.task('test',['init'], function () {
     if (/--engine=/.test(paths.casperFlags.toString())) {
       args = paths.casperFlags; // casperFlags --engine setting takes presidence -- replace if found.
     } else {
-      args.concat(paths.casperFlags)
+      args = args.concat(paths.casperFlags);
     }
   }
 
   var casperArgs = tests.concat(args);
   console.log("\nRunning CasperJS with: ", casperArgs)
-  console.log("");
   var casperProcess = (process.platform === "win32" ? "casperjs.cmd" : "casperjs");
   var casperChild = spawn(casperProcess, casperArgs);
 
