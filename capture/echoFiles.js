@@ -24,8 +24,6 @@ var casper = require("casper").create({
 
 casper.echo("-------");
 
-casper.echo('test file: ' + casper.cli.get(0));
-
 casper.echo("Casper CLI passed args vvv");
 require("utils").dump(casper.cli.args);
 
