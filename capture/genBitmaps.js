@@ -81,7 +81,11 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
       this.then(function() {
         this.viewport(vp.width||vp.viewport.width, vp.height||vp.viewport.height);
       });
-      this.thenOpen(scenario.url, function() {
+      var url = scenario.url;
+      if (isReference && scenario.referenceUrl) {
+        url = scenario.referenceUrl;
+      }
+      this.thenOpen(url, function() {
 
         casper.waitFor(
           function(){ //test
