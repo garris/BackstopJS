@@ -313,7 +313,24 @@ There may also be elements which need to be completely removed during testing. F
     "removeSelectors": [
     	"#someUnpredictableSizedDomSelector"
     ]
-    
+
+
+### Grabbing screens from different environments 
+Comparing against different environments is easy. (e.g. compare a production environment against a staging environment). 
+
+To do this, add a `referenceUrl` to your scenario configuration. When running `$ gulp test` BackstopJS will use the `url` for screen grabs.  When running `$ gulp reference` BackstopJS will check for `referenceUrl` and use that if it's there. Otherwise it will use `url` for both.
+
+```
+  "scenarios": [
+    {
+      "label": "cat meme feed sanity check",
+      "url": "http://www.moreCatMemes.com",
+      "referenceUrl": "http://staging.moreCatMemes.com:81",
+       ...
+    }
+```
+
+
 ### Running custom CasperJS scripts (version 0.8.0+)
 
 Simulate user actions (click, scroll, hover, wait, etc.) by running your own Casper.js script on ready. For each scenario, the custom .js file you specify is imported and run when the BackstopJS ready event is fired.
@@ -480,7 +497,6 @@ This is for you if for some reason you find yourself needing advanced configurat
   "--proxy-auth=user:pass"
 ]
 ```
-
 
 ### Troubleshooting
 
