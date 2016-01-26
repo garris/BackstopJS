@@ -14,11 +14,11 @@ BackstopJS automates CSS regression testing of your responsive web UI by compari
 ## News
 
 
-### Version 1.0.1 available now
+### Version 1.0.3 available now
 [Please file questions, comments or issues here](https://github.com/garris/BackstopJS/issues).
 
 **Version 1.0 includes reliability fixes plus a handful of improvements to close out the original roadmap.**
-- now add comments to your configs (optional JS based configs)
+- now add logic and comments to your configs (optional JS based configs)
 - plays nice with other local services (change the BackstopJS port)
 
 
@@ -339,10 +339,16 @@ From your project root, place your scripts in...
 
     ./backstop_data/casper_scripts
     
-And in your scenario...
+at the root of your config or in your scenario...
 
-    "onReadyScript": "filename.js"   // the .js suffix is optional
-                                     // empty filenames are ignored
+    "onReadyScript": "filename.js"   // Runs on all scenarios (the .js suffix is optional)
+    "scenarios": [
+    {
+      "label": "cat meme feed sanity check",
+      "onReadyScript": "filename.js"   //  If found will run instead of onReadyScript set at the root (the .js suffix is optional)
+       ...
+    }
+
 
 Inside `filename.js`, structure it like this:
 
