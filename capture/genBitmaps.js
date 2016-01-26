@@ -257,7 +257,7 @@ function getScriptPath(scriptFilePath) {
 
   // make sure it's there...
   if (!fs.isFile(script_path)) {
-    casper.echo('FYI: ' + script_path + ' was not found.');
+    casper.echo(script_path + ' was not found.', 'ERROR');
     return;
   }
 
