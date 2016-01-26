@@ -106,7 +106,9 @@ BackstopJS uses icons from [the Noun Project](http://thenounproject.com/)
 
 You can add BackstopJS from the root directory of any project.
 
-    $ npm install --save-dev backstopjs
+```sh
+$ npm install --save-dev backstopjs
+```
 
 
 This will create the folder structure `./node_modules/backstopjs`.
@@ -114,30 +116,37 @@ This will create the folder structure `./node_modules/backstopjs`.
 
 **If you don't already have a global Gulp instance...** http://gulpjs.com
 
-    $ sudo npm install -g gulp
+```sh
+$ sudo npm install -g gulp
+```
 
-    //test for a correct install with...
-    $ gulp -v
-    > CLI version 3.8.10
-    > Local version 3.8.10
-
+```sh
+# test for a correct install with...
+$ gulp -v
+> CLI version 3.8.10
+> Local version 3.8.10
+```
 
 **If you don't already have a global PhantomJS install...** http://phantomjs.org/download.html
 
-    $ sudo npm install -g phantomjs
+```sh
+$ sudo npm install -g phantomjs
 
-    //test for a correct install with...
-    $ phantomjs -v
-    > 1.9.8
+# test for a correct install with...
+$ phantomjs -v
+> 1.9.8
+```
 
 
 **If you don't already have a global CasperJS install...** http://docs.casperjs.org/en/latest/installation.html
 
-    $ sudo npm install -g casperjs
+```sh
+$ sudo npm install -g casperjs
 
-    //test for a correct install with...
-    $ casperjs --version
-    > 1.1.0-beta3
+# test for a correct install with...
+$ casperjs --version
+> 1.1.0-beta3
+```
 
 
 ###Note for windows installation
@@ -147,7 +156,9 @@ Windows users who have trouble getting BackstopJS to run (e.g. Error: spawn ENOE
 
 ###Installing a develpment version
 
-    $ npm install garris/backstopjs#master
+```sh
+$ npm install garris/backstopjs#master
+```
 
 
 ##Configuration
@@ -157,7 +168,9 @@ Windows users who have trouble getting BackstopJS to run (e.g. Error: spawn ENOE
 
 From `./node_modules/backstopjs` ...
 
-    $ gulp genConfig
+```sh
+$ gulp genConfig
+```
 
 
 By default, `genConfig` will put `backstop.json` at the project root. Also by default, a `backstop_data` directory will be created at this same location.
@@ -228,7 +241,9 @@ The location of the `backstop.json` file as well as all resource directories can
 
 ### Generating (or updating) reference bitmaps
 
-    $ gulp reference
+```sh
+$ gulp reference
+```
 
 
 This task will create a (or update an existing) `bitmaps_reference` directory with screen captures from the current project build.
@@ -237,7 +252,9 @@ This task will create a (or update an existing) `bitmaps_reference` directory wi
 
 ### Generating test bitmaps
 
-    $ gulp test
+```sh
+$ gulp test
+```
 
 This task will create a new set of bitmaps in `bitmaps_test/<timestamp>/`
 
@@ -255,7 +272,9 @@ The problem testing these scenarios is knowing _when_ to take the screenshot.  B
 
 The `readyEvent` property enables you to trigger the screen capture by logging a predefined string to the console. For example, the following line will delay screen capture until your web app calls `console.log("backstopjs_ready")`...
 
-    "readyEvent": "backstopjs_ready"
+```json
+"readyEvent": "backstopjs_ready"
+```
 
 In the above case it would be up to you to wait for all dependencies to complete before calling logging `"backstopjs_ready"` string to the console.
 
@@ -264,35 +283,43 @@ In the above case it would be up to you to wait for all dependencies to complete
 
 The `delay` property enables you to pause screen capturing for a specified duration of time. This delay is applied after `readyEvent` (if also applied).
 
-    "delay": 1000 //delay in ms
+```js
+"delay": 1000 //delay in ms
+```
 
 In the above case, BackstopJS would wait for one second before taking a screenshot.
 
 In the following case, BackstopJS would wait for one second after the string `backstopjs_ready` is logged to the console.
 
-    {
-    ...
-    "readyEvent": "backstopjs_ready",
-    "delay": 1000 //delay in ms
-    }
+```js
+{
+  ...
+  "readyEvent": "backstopjs_ready",
+  "delay": 1000 //delay in ms
+}
+```
 
 <!--
 ####set HTTP cookie for login-required pages
 
 The `cookiesJsonFile` property enables you to add HTTP cookie for capturing login-required pages.
 
-    "cookiesJsonFile": "./path/to/cookies.json"
+```json
+"cookiesJsonFile": "./path/to/cookies.json"
+```
 
 The `cookiesJsonFile` file should have this format.
 
-    [
-      {
-        "name": "mycookie",
-        "value": "1",
-        "domain": "localhost",
-        "path": "/"
-      }
-    ]
+```json
+[
+  {
+    "name": "mycookie",
+    "value": "1",
+    "domain": "localhost",
+    "path": "/"
+  }
+]
+```
  -->
 
 ### Dealing with dynamic content
@@ -303,16 +330,20 @@ For obvious reasons, this screenshot approach is not optimal for testing live dy
 
 That said, for a use case where you are testing a DOM with say an ad banner or a block of dynamic content which retains static dimensions, we have the `hideSelectors` property in `capture/config.json` which will set the corresponding DOM to `visibility:hidden`, thus hiding the content from our Resemble.js analysis but retaining the original layout flow.
 
-    "hideSelectors": [
-    	"#someFixedSizeDomSelector"
-    ]
+```json
+  "hideSelectors": [
+	"#someFixedSizeDomSelector"
+]
+```
 
 #### Removing selectors
 There may also be elements which need to be completely removed during testing. For that we have `removeSelectors` which sets elements to `display:none`.
 
-    "removeSelectors": [
-    	"#someUnpredictableSizedDomSelector"
-    ]
+```json
+"removeSelectors": [
+    "#someUnpredictableSizedDomSelector"
+]
+```
 
 
 ### Grabbing screens from different environments 
@@ -320,7 +351,7 @@ Comparing against different environments is easy. (e.g. compare a production env
 
 To do this, add a `referenceUrl` to your scenario configuration. When running `$ gulp test` BackstopJS will use the `url` for screen grabs.  When running `$ gulp reference` BackstopJS will check for `referenceUrl` and use that if it's there. Otherwise it will use `url` for both.
 
-```
+```json
   "scenarios": [
     {
       "label": "cat meme feed sanity check",
@@ -337,18 +368,21 @@ Simulate user actions (click, scroll, hover, wait, etc.) by running your own Cas
 
 From your project root, place your scripts in...
 
-    ./backstop_data/casper_scripts
+```sh
+./backstop_data/casper_scripts
+```
     
 at the root of your config or in your scenario...
 
-    "onReadyScript": "filename.js"   // Runs on all scenarios (the .js suffix is optional)
-    "scenarios": [
+```js
+"onReadyScript": "filename.js"   // Runs on all scenarios (the .js suffix is optional)
+"scenarios": [
     {
       "label": "cat meme feed sanity check",
       "onReadyScript": "filename.js"   //  If found will run instead of onReadyScript set at the root (the .js suffix is optional)
        ...
     }
-
+```
 
 Inside `filename.js`, structure it like this:
 
@@ -370,12 +404,11 @@ By default the base path is a folder called `scripts` inside your BackstopJS ins
 
 _**NOTE:** SlimerJS currently requires an absolute path -- so be sure to include the full path when using the `"engine": "slimer"` configuration option._
 
-```
+```json
   "paths": {
     "casper_scripts": "../../backstop_data/scripts"
   }
 ```
-
 
 
 ### Reporting workflow tips (version 0.7.0+)
@@ -395,18 +428,22 @@ _Browser Report_
 
 Using the report property in `backstop.json` enable or disable browser or server-side-reporting by including/excluding the respective properties. The following settings will run both reports at the same time.
 
-    "report": ["browser", "CLI"]
+```json
+"report": ["browser", "CLI"]
+```
 
 If you choose the CLI-only reporting you can always enter the following command to see the latest test run report in the browser.
 
-    $ gulp openReport
+```sh
+$ gulp openReport
+```
 
 
 ####CLI error handling 
 
 When a layout error is found in CLI mode, BackstopJS will let you know in a general report displayed in the console. Optionally, BackstopJS can throw an error that can be passed to calling process. For this behavior enable `cliExitOnFail` in your config... 
 
-```
+```json
 "cliExitOnFail": true,
 ```
 
@@ -416,9 +453,11 @@ When a layout error is found in CLI mode, BackstopJS will let you know in a gene
 JSON-based configs cramping your style? Well, here's some good news -- BackstopJS allows you to import all config parameters as a node module (as an option instead of JSON) which allows you to use comments, variables and logic etc. inside of your config.
 
 To use a js module based config file, explicitly specify your config filepath when running a command. e.g. 
-```
+
+```sh
 $ gulp test --backstopConfigFilePath=../../backstopTests/someTest.js
 ```
+
 _See the next section for more info on setting the config file path._
 
 Be sure to export your config object as a node module. See [test/configExample.js](test/configExample.js) for a simple example.
@@ -427,23 +466,23 @@ Be sure to export your config object as a node module. See [test/configExample.j
 
 ###Setting the config file path (version 0.9.0+)
 Often, users have multiple config files to test various different scenarios or even different projects. By default, BackstopJS looks for `backstop.json` in your project's root directory (in parallel with your `node_modules` directory). You can override this by passing a `--backstopConfigFilePath` argument when running any command. e.g.
-```
-// example 1: run reference generation with absolute path
+
+```sh
+# example 1: run reference generation with absolute path
 $ gulp reference --backstopConfigFilePath=~/backstopTests/someTest.json
-// Will capture reference files using scenarios from `someTest.json` inside `backstopTests` inside your home folder.
+# Will capture reference files using scenarios from `someTest.json` inside `backstopTests` inside your home folder.
 
-// example 2: run test with absolute path
+# example 2: run test with absolute path
 $ gulp test --backstopConfigFilePath=~/backstopTests/someTest.json
-// Will run tests using scenarios from `someTest.json` inside `backstopTests` inside your home folder.
+# Will run tests using scenarios from `someTest.json` inside `backstopTests` inside your home folder.
 
-// example 3: run test with relative path
+# example 3: run test with relative path
 $ gulp test --backstopConfigFilePath=../../backstopTests/someTest.json
-// Will run tests using scenarios from `someTest.json` inside `backstopTests` inside your project root folder.
+# Will run tests using scenarios from `someTest.json` inside `backstopTests` inside your project root folder.
 
-// example 4: run test with relative path and JS module
+# example 4: run test with relative path and JS module
 $ gulp test --backstopConfigFilePath=../../backstopTests/someTest.js
-// You can also specify your config parameters as a node module. This will import `someTest.js` from `backstopTests` inside your project root folder.
-
+# You can also specify your config parameters as a node module. This will import `someTest.js` from `backstopTests` inside your project root folder.
 ```
 
 NOTE: all paths are relative to the location of the BackstopJS install directory _(which is either inside your project's `node_modules` or `bower_components` depending on how BackstopJS was installed)_
@@ -458,9 +497,7 @@ If you are using custom casper_scripts -- that directory can be specified too.
 
 Please note: these file paths are relative to your `./node_modules/backstopjs/` directory.
 
-
-
-```
+```json
   "paths": {
     "bitmaps_reference": "../../backstop_data/bitmaps_reference",
     "bitmaps_test": "../../backstop_data/bitmaps_test",
@@ -475,27 +512,27 @@ BackstopJS supports using PhantomJS or SlimerJS (With thanks to CasperJS for doi
 PhantomJS, the default rendering engine, does not correctly interpret flexbox and web fonts -- so if you are using those things in your app you will be way more happy using SlimerJS. Here is how to do that...
 
 First, install SlimerJS. From your root directory run...
-```
+
+```sh
 $ sudo npm install -g slimerjs
 ```
+
 Then, in your `backstop.json` config file, update the engine property to...
-```
+
+```json
   "engine": "slimerjs"
 ```
+
 Thats it.
-
-
 
 ### Changing the reporting server port
 
 The default port used by BackstopJS is 3001.   You can change it by setting the `port` parameter in the `backstop.json` file.
 
-
-
 ### Setting Casper command-line flags (version 0.9.0+)
 This is for you if for some reason you find yourself needing advanced configuration access to CasperJS.  You can set CasperJS flags via `casperFlags` like so...
 
-```
+```json
 "casperFlags": [
   "--engine=slimerjs", 
   "--proxy-type=http",
@@ -509,12 +546,16 @@ This is for you if for some reason you find yourself needing advanced configurat
 
 ####Sometimes users run into this gulp-not-found error...
 
-    Local gulp not found in ~/path-to-your-project-root/
-    Try running: npm install gulp
+```sh
+Local gulp not found in ~/path-to-your-project-root/
+Try running: npm install gulp
+```
 
 If this happens then you may not be in the right directory – try...
 
-    cd node_modules/backstopjs/
+```sh
+cd node_modules/backstopjs/
+```
 
 Then try running BackstopJS again.
 
@@ -522,7 +563,7 @@ Then try running BackstopJS again.
 ####Debugging
 To enable verbose console output when running your tests set the `debug` property to `true` in `backstop.json`.
 
-```
+```json
   "debug": true
 ```
 
@@ -534,10 +575,9 @@ You can also use the following command -- it will output your file contents to t
 
 From `./node_modules/backstopjs` ...
 
-    $ gulp echo
-
-
-
+```sh
+$ gulp echo
+```
 
 ### Running the report server
 
@@ -547,15 +587,15 @@ You can manually start the server optionally passing your own timeout parameter 
 
 From `./node_modules/backstopjs` ...
 
-    $ gulp start -t 0
-
-
+```sh
+$ gulp start -t 0
+```
 
 To manually stop the server, from `./node_modules/backstopjs` ...
 
-    $ gulp stop
-
-
+```sh
+$ gulp stop
+```
 
 
 
