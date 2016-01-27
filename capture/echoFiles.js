@@ -69,14 +69,6 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
   casper.start();
 
   casper.each(scenarios,function(casper, scenario, scenario_index) {
-    if (scenario.cookiesJsonFile && fs.isFile(scenario.cookiesJsonFile)) {
-      var cookiesJson = fs.read(scenario.cookiesJsonFile);
-      var cookies = JSON.parse(cookiesJson);
-      for (var i = 0; i < cookies.length; i++) {
-        phantom.addCookie(cookies[i]);
-      }
-    }
-
     console.log('LOG> CASPER IS RUNNING');
 
     casper.thenOpen(scenario.url, function() {
