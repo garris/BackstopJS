@@ -38,6 +38,8 @@
       "onReadyScript": "onReady.js"
     }
   ],
+  "onBeforeStartScript": "onBeforeStart.global.js",
+  "onReadyScript": "onReady.global.js",
   "paths": {
     "bitmaps_reference": "../../backstop_data/bitmaps_reference",
     "bitmaps_test": "../../backstop_data/bitmaps_test",
