@@ -315,8 +315,8 @@ There may also be elements which need to be completely removed during testing. F
     ]
 
 
-### Grabbing screens from different environments 
-Comparing against different environments is easy. (e.g. compare a production environment against a staging environment). 
+### Grabbing screens from different environments
+Comparing against different environments is easy. (e.g. compare a production environment against a staging environment).
 
 To do this, add a `referenceUrl` to your scenario configuration. When running `$ gulp test` BackstopJS will use the `url` for screen grabs.  When running `$ gulp reference` BackstopJS will check for `referenceUrl` and use that if it's there. Otherwise it will use `url` for both.
 
@@ -338,7 +338,7 @@ Simulate user actions (click, scroll, hover, wait, etc.) by running your own Cas
 From your project root, place your scripts in...
 
     ./backstop_data/casper_scripts
-    
+
 at the root of your config or in your scenario...
 
     "onReadyScript": "filename.js"   // Runs on all scenarios (the .js suffix is optional)
@@ -402,9 +402,9 @@ If you choose the CLI-only reporting you can always enter the following command 
     $ gulp openReport
 
 
-####CLI error handling 
+####CLI error handling
 
-When a layout error is found in CLI mode, BackstopJS will let you know in a general report displayed in the console. Optionally, BackstopJS can throw an error that can be passed to calling process. For this behavior enable `cliExitOnFail` in your config... 
+When a layout error is found in CLI mode, BackstopJS will let you know in a general report displayed in the console. Optionally, BackstopJS can throw an error that can be passed to calling process. For this behavior enable `cliExitOnFail` in your config...
 
 ```
 "cliExitOnFail": true,
@@ -415,7 +415,7 @@ When a layout error is found in CLI mode, BackstopJS will let you know in a gene
 
 JSON-based configs cramping your style? Well, here's some good news -- BackstopJS allows you to import all config parameters as a node module (as an option instead of JSON) which allows you to use comments, variables and logic etc. inside of your config.
 
-To use a js module based config file, explicitly specify your config filepath when running a command. e.g. 
+To use a js module based config file, explicitly specify your config filepath when running a command. e.g.
 ```
 $ gulp test --backstopConfigFilePath=../../backstopTests/someTest.js
 ```
@@ -497,9 +497,9 @@ This is for you if for some reason you find yourself needing advanced configurat
 
 ```
 "casperFlags": [
-  "--engine=slimerjs", 
+  "--engine=slimerjs",
   "--proxy-type=http",
-  "--proxy=proxyIp:port", 
+  "--proxy=proxyIp:port",
   "--proxy-auth=user:pass"
 ]
 ```
@@ -507,7 +507,7 @@ This is for you if for some reason you find yourself needing advanced configurat
 ### Troubleshooting
 
 
-####Sometimes users run into this gulp-not-found error...
+####The dreaded _gulp-not-found_ error...
 
     Local gulp not found in ~/path-to-your-project-root/
     Try running: npm install gulp
@@ -516,7 +516,7 @@ If this happens then you may not be in the right directory – try...
 
     cd node_modules/backstopjs/
 
-Then try running BackstopJS again.
+Then try running your BackstopJS command again.
 
 
 ####Debugging
@@ -526,11 +526,13 @@ To enable verbose console output when running your tests set the `debug` propert
   "debug": true
 ```
 
-#### View file contents
+#### Viewing response contents
 
-Sometimes it also helps to verify that BackstopJS is receiving the correct file contents. Enabling the `debug` property (above) will output this data to the console whenever a test is run. 
+Sometimes it also helps to verify that BackstopJS is receiving the correct response. Enabling the `debug` property (see _Debugging_ above) will output this data to the console whenever a test is run.
 
-You can also use the following command -- it will output your file contents to the console.
+For a sanity check you can also use the following command -- it will output your requested file contents to the console.
+
+_Please note: this will check your scenario `url` only.  It does not check for a `referenceUrl` property._
 
 From `./node_modules/backstopjs` ...
 
