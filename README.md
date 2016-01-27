@@ -358,7 +358,7 @@ Comparing against different environments is easy. (e.g. compare a production env
 
 To do this, add a `referenceUrl` to your scenario configuration. When running `$ gulp test` BackstopJS will use the `url` for screen grabs.  When running `$ gulp reference` BackstopJS will check for `referenceUrl` and use that if it's there. Otherwise it will use `url` for both.
 
-```json
+```js
   "scenarios": [
     {
       "label": "cat meme feed sanity check",
