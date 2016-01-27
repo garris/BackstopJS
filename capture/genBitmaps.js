@@ -108,7 +108,7 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
       });
 
       casper.then(function() {
-        this.echo('Current location is ' + scenario.url, 'info');
+        this.echo('Current location is ' + url, 'info');
 
         if (config.debug) {
           var src = this.evaluate(function() {return document.body.outerHTML; });
