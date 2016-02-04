@@ -73,12 +73,13 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
       this.then(function() {
         this.viewport(vp.width||vp.viewport.width, vp.height||vp.viewport.height);
       });
+
       var url = scenario.url;
       if (isReference && scenario.referenceUrl) {
         url = scenario.referenceUrl;
       }
-      this.thenOpen(url, function() {
 
+      this.thenOpen(url, function() {
         casper.waitFor(
           function(){ //test
             var readyEvent = scenario.readyEvent || config.readyEvent;
@@ -96,7 +97,6 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
           ,scriptTimeout
         );
         casper.wait(scenario.delay||1);
-
       });
 
       casper.then(function() {
@@ -113,32 +113,12 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
 
         // onReadyScript files should export a module like so:
         //
-        // module.exports = function(casper, scenario) {
+        // module.exports = function(casper, scenario, vp) {
         //   // run custom casperjs code
         // };
         //
-        if ( scenario.onReadyScript ) {
-
-          casper.echo('Running custom scripts.');
-
-          // Ensure a `.js` file suffix
-          var script_path = scenario.onReadyScript.replace(/\.js$/, '') + '.js';
-          // if a casper_scripts path exists, append the onReadyScript soft-enforcing a single slash between them.
-          if ( casper_scripts ) {
-            script_path = casper_scripts.replace(/\/$/, '') + '/' + script_path.replace(/^\//, '');
-          }
-
-          // make sure it's there...
-          if ( !fs.isFile( script_path ) ) {
-            casper.echo("FYI: onReadyScript was not found.");
-            return;
-          }
-
-          // the require() call below is relative to this file `genBitmaps.js` (not CWD) -- therefore relative paths need shimmimg
-          var require_script_path = script_path.replace(/^\.\.\//, '../../../').replace(/^\.\//, '../../');
-
-          require(require_script_path)(casper, scenario, vp);
-
+        if (scenario.onReadyScript) {
+          require(getScriptPath(scenario.onReadyScript))(casper, scenario, vp);
         }
       });
 
@@ -261,4 +241,36 @@ function pad(number) {
     r = '0' + r;
   }
   return r;
+}
+
+function getScriptPath(scriptFilePath) {
+  var script_path = ensureFileSuffix(scriptFilePath, 'js');
+
+  if (casper_scripts) {
+    script_path = glueStringsWithSlash(casper_scripts, script_path);
+  }
+
+  // make sure it's there...
+  if (!fs.isFile(script_path)) {
+    casper.echo(script_path + ' was not found.', 'ERROR');
+    return;
+  }
+
+  return shimRelativePath(script_path);
+}
+
+function ensureFileSuffix(filename, suffix) {
+  var re = new RegExp('\.' + suffix + '$', '');
+
+  return filename.replace(re, '') + '.' + suffix;
+}
+
+// merge both strings while soft-enforcing a single slash between them
+function glueStringsWithSlash(stringA, stringB) {
+  return stringA.replace(/\/$/, '') + '/' + stringB.replace(/^\//, '');
+}
+
+// require() calls are relative to this file `genBitmaps.js` (not CWD) -- therefore relative paths need shimmimg
+function shimRelativePath(path) {
+  return path.replace(/^\.\.\//, '../../../').replace(/^\.\//, '../../');
 }
