@@ -79,8 +79,9 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
         url = scenario.referenceUrl;
       }
 
-      if (scenario.onBeforeScript) {
-        require(getScriptPath(scenario.onBeforeScript))(casper, scenario, vp);
+      var onBeforeScript = scenario.onBeforeScript || config.onBeforeScript;
+      if (onBeforeScript) {
+        require(getScriptPath(onBeforeScript))(casper, scenario, vp);
       }
 
       this.thenOpen(url, function() {
@@ -120,8 +121,9 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
         //   // run custom casperjs code
         // };
         //
-        if (scenario.onReadyScript) {
-          require(getScriptPath(scenario.onReadyScript))(casper, scenario, vp);
+        var onReadyScript = scenario.onReadyScript || config.onReadyScript;
+        if (onReadyScript) {
+          require(getScriptPath(onReadyScript))(casper, scenario, vp);
         }
       });
 
