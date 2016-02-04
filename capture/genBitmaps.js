@@ -79,6 +79,10 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
         url = scenario.referenceUrl;
       }
 
+      if (scenario.onBeforeScript) {
+        require(getScriptPath(scenario.onBeforeScript))(casper, scenario, vp);
+      }
+
       this.thenOpen(url, function() {
         casper.waitFor(
           function(){ //test
@@ -110,7 +114,6 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
 
       // Custom casperjs scripting after ready event and delay
       casper.then(function() {
-
         // onReadyScript files should export a module like so:
         //
         // module.exports = function(casper, scenario, vp) {
