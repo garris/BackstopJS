@@ -222,7 +222,8 @@ The location of the `backstop.json` file as well as all resource directories can
       ],
       "readyEvent": null,
       "delay": 500,
-      "onReadyScript": null
+      "onReadyScript": null,
+      "onBeforeScript": null
     }
   ],
   "paths": {
@@ -351,7 +352,25 @@ There may also be elements which need to be completely removed during testing. F
     "#someUnpredictableSizedDomSelector"
 ]
 ```
+#### Normalization using custom CasperJS scripts
+If static content stubs are not an option you could opt for the normalization of dynamic content using custom scripts. See example `onReady.js` (replacing of images with a placeholder):
 
+```js
+module.exports = function (casper) {
+    casper.then(function() {
+        this.evaluate(function() {
+			var imagesNodeList = document.querySelectorAll('img.dynamic');
+			var imagesArray = Array.prototype.slice.call(images);
+			images.forEach(function(img) {
+                if (imgDim.width === 0 && imgDim.height === 0) {
+                    return true;
+                }
+				img.src = '/dummyImg?width=' + img.width + 'height=' + img.height;  
+            });
+		});
+    });
+};
+```
 
 ### Grabbing screens from different environments
 Comparing against different environments is easy. (e.g. compare a production environment against a staging environment).
@@ -382,11 +401,13 @@ From your project root, place your scripts in...
 at the root of your config or in your scenario...
 
 ```js
-"onReadyScript": "filename.js"   // Runs on all scenarios (the .js suffix is optional)
+"onReadyScript": "filename.js"   // Runs after onReady event on all scenarios (.js suffix is optional)
+"onBeforeScript": "filename.js"  // Runs before each scenario (.js suffix is optional)
 "scenarios": [
     {
       "label": "cat meme feed sanity check",
-      "onReadyScript": "filename.js"   //  If found will run instead of onReadyScript set at the root (the .js suffix is optional)
+      "onReadyScript": "filename.js"   //  If found will run instead of onReadyScript set at the root (.js suffix is optional)
+      "onBeforeScript": "filename.js" // If found will run instead of onBeforeScript at the root (.js suffix is optional)
        ...
     }
 ```
