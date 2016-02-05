@@ -353,7 +353,7 @@ There may also be elements which need to be completely removed during testing. F
 ]
 ```
 #### Normalization using custom CasperJS scripts
-If static content stubs are not an option you could opt for the normalization of dynamic content using custom scripts. See example `onReady.js` (replacing of images with a placeholder):
+If static content stubs are not an option you could opt for the normalization of dynamic content using custom scripts. See example `onReady.js` (replacing images with a placeholder):
 
 ```js
 module.exports = function (casper) {
