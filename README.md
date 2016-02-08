@@ -352,25 +352,6 @@ There may also be elements which need to be completely removed during testing. F
     "#someUnpredictableSizedDomSelector"
 ]
 ```
-#### Normalization using custom CasperJS scripts
-If static content stubs are not an option you could opt for the normalization of dynamic content using custom scripts. See example `onReady.js` (replacing images with a placeholder):
-
-```js
-module.exports = function (casper) {
-    casper.then(function() {
-        this.evaluate(function() {
-			var imagesNodeList = document.querySelectorAll('img.dynamic');
-			var imagesArray = Array.prototype.slice.call(images);
-			images.forEach(function(img) {
-                if (imgDim.width === 0 && imgDim.height === 0) {
-                    return true;
-                }
-				img.src = '/dummyImg?width=' + img.width + 'height=' + img.height;  
-            });
-		});
-    });
-};
-```
 
 ### Grabbing screens from different environments
 Comparing against different environments is easy. (e.g. compare a production environment against a staging environment).
@@ -397,7 +378,7 @@ From your project root, place your scripts in...
 ```sh
 ./backstop_data/casper_scripts
 ```
-    
+
 at the root of your config or in your scenario...
 
 ```js
