@@ -206,7 +206,7 @@ The location of the `backstop.json` file as well as all resource directories can
   ],
   "scenarios": [
     {
-      "label": "http://getbootstrap.com",
+      "label": "My Homepage",
       "url": "http://getbootstrap.com",
       "hideSelectors": [],
       "removeSelectors": [
