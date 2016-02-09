@@ -102,7 +102,7 @@ BackstopJS uses icons from [the Noun Project](http://thenounproject.com/)
 
 ##Installation
 
-**BackstopJS package**
+###**BackstopJS package**
 
 You can add BackstopJS from the root directory of any project.
 
