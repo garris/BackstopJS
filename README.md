@@ -114,13 +114,13 @@ $ npm install --save-dev backstopjs
 This will create the folder structure `./node_modules/backstopjs`.
 
 
-**If you don't already have a global Gulp instance...** http://gulpjs.com
+###**If you don't already have a global Gulp instance...** http://gulpjs.com
 
 ```sh
 $ sudo npm install -g gulp
 ```
 
-# test for a correct install with...
+#### test for a correct install with...
 
 ```sh
 $ gulp -v
@@ -128,13 +128,13 @@ $ gulp -v
 > Local version 3.8.10
 ```
 
-**If you don't already have a global PhantomJS install...** http://phantomjs.org/download.html
+###**If you don't already have a global PhantomJS install...** http://phantomjs.org/download.html
 
 ```sh
 $ sudo npm install -g phantomjs
 ```
 
-# test for a correct install with...
+#### test for a correct install with...
 
 ```sh
 $ phantomjs -v
@@ -142,13 +142,13 @@ $ phantomjs -v
 ```
 
 
-**If you don't already have a global CasperJS install...** http://docs.casperjs.org/en/latest/installation.html
+###**If you don't already have a global CasperJS install...** http://docs.casperjs.org/en/latest/installation.html
 
 ```sh
 $ sudo npm install -g casperjs
 ```
 
-# test for a correct install with...
+#### test for a correct install with...
 
 ```sh
 $ casperjs --version
