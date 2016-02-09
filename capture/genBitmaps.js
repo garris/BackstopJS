@@ -23,6 +23,7 @@ var compareConfig = {testPairs:[]};
 
 var casper = require("casper").create({
   // clientScripts: ["jquery.js"] // uncomment to add jQuery if you need that.
+  // TODO: if (config.debug) { add prop debug true }
 });
 
 if (config.debug) {
