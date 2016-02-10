@@ -18,14 +18,9 @@ if (config.misMatchThreshold) {
     compareConfig.misMatchThreshold = config.misMatchThreshold;
 }
 
-var casperConfig = {}
-
-if (config.debug) {
-  casperConfig.logLevel = "debug";
-  casperConfig.verbose = true;
-}
-// casperConfig.clientScripts: ["jquery.js"] // uncomment to add jQuery if you need that.
-var casper = require("casper").create(casperConfig);
+var casper = require("casper").create({
+  // clientScripts: ["jquery.js"] //smoke em if you got em...
+});
 
 casper.echo("-------");
 

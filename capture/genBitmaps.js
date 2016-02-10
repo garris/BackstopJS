@@ -19,23 +19,19 @@ var compareConfigFileName = config.paths.compare_data || 'compare/config.json';
 var viewports = config.viewports;
 var scenarios = config.scenarios||config.grabConfigs;
 
-fs.touch(compareConfigFileName);
-var compareConfigFile = fs.read(compareConfigFileName);
-var compareConfigJSON = JSON.parse(compareConfigFile || '{}');
+  fs.touch(compareConfigFileName);
+  var compareConfigFile = fs.read(compareConfigFileName);
+  var compareConfigJSON = JSON.parse(compareConfigFile || '{}');
 
 
 
-var compareConfig = {testPairs: []};
+var compareConfig = {testPairs: [], content: {}};
 var selectors = {};
 
-var casperConfig = {}
-
-if (config.debug) {
-  casperConfig.logLevel = "debug";
-  casperConfig.verbose = true;
-}
-// casperConfig.clientScripts: ["jquery.js"] // uncomment to add jQuery if you need that.
-var casper = require("casper").create(casperConfig);
+var casper = require("casper").create({
+  // clientScripts: ["jquery.js"] // uncomment to add jQuery if you need that.
+  // TODO: if (config.debug) { add prop debug true }
+});
 
 if (config.debug) {
   console.log('Debug is enabled!');
@@ -120,7 +116,7 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
         this.echo('Current location is ' + url, 'info');
 
         if (config.debug) {
-          var src = this.evaluate(function() {return document.body.innerHTML; });
+          var src = this.evaluate(function() {return document.body.outerHTML; });
           this.echo(src);
         }
       });
@@ -141,7 +137,12 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
 
       this.then(function(){
 
-
+        if ( !isReference && scenario.domReplay && casper.exists(o)) {
+          this.evaluate(function() {
+           //document.querySelector(o).innerHTML = compareConfigJSON;
+          });
+        }
+      
         this.echo('Screenshots for ' + vp.name + ' (' + (vp.width||vp.viewport.width) + 'x' + (vp.height||vp.viewport.height) + ')', 'info');
 
         //HIDE SELECTORS WE WANT TO AVOID
@@ -173,19 +174,6 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
         }
 
         scenario.selectors.forEach(function(o,i,a){
-
-          if (!isReference && scenario.domReplay && casper.exists(o)) {
-            console.log('instantReplay: using cached DOM for "' + o + '"')
-            casper.evaluate(function(o, compareConfigJSON) {
-              document.querySelector(o).innerHTML = compareConfigJSON.domReplay[o] || '';
-            }, {
-              o: o,
-              compareConfigJSON: compareConfigJSON
-            });
-            console.log('v')
-            casper.wait(1000);
-          }
-
           var cleanedSelectorName = o.replace(/[^a-z0-9_\-]/gi,'');//remove anything that's not a letter or a number
           //var cleanedUrl = scenario.url.replace(/[^a-zA-Z\d]/,'');//remove anything that's not a letter or a number
           var fileName = scenario_index + '_' + i + '_' + cleanedSelectorName + '_' + viewport_index + '_' + vp.name + '.png';;
@@ -195,48 +183,36 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
 
           var filePath      = (isReference)?reference_FP:test_FP;
           var selectorContent = "";
+       
 
-          casper.then(function(){
-            console.log('^')
-            if (casper.exists(o)) {
-              if (isReference) {
-                selectorContent = casper.evaluate(function(o) {
-                  var selection = document.querySelectorAll(o);
-                  if (selection.length) {
-                    return selection[0].innerHTML;
-                  } else {
-                    return null;
-                  }
-                }, {o: o});
-              }
-              if (casper.visible(o)) {
-                casper.captureSelector(filePath, o);
-              } else {
-                var assetData = fs.read(hiddenSelectorPath, 'b');
-                fs.write(filePath, assetData, 'b');
-              }
+          if (casper.exists(o)) {
+            selectorContent = this.evaluate(function() {return document.querySelector(o).outerHTML;});
+
+            if (casper.visible(o)) {
+              casper.captureSelector(filePath, o);
             } else {
-              var assetData = fs.read(selectorNotFoundPath, 'b');
+              var assetData = fs.read(hiddenSelectorPath, 'b');
               fs.write(filePath, assetData, 'b');
             }
+          } else {
+            var assetData = fs.read(selectorNotFoundPath, 'b');
+            fs.write(filePath, assetData, 'b');
+          }
 
 
-            if (isReference) {
-              selectors[o] = selectorContent;
-            } else {
-              compareConfig.testPairs.push({
-                reference:reference_FP,
-                test:test_FP,
-                selector:o,
-                fileName:fileName,
-                label:scenario.label,
-                misMatchThreshold: scenario.misMatchThreshold || config.misMatchThreshold
-              });
-            }
-            //casper.echo('remote capture to > '+filePath,'info');
-
-          });
-
+          if (!isReference) {
+            compareConfig.testPairs.push({
+              reference:reference_FP,
+              test:test_FP,
+              selector:o,
+              fileName:fileName,
+              label:scenario.label,
+              misMatchThreshold: scenario.misMatchThreshold || config.misMatchThreshold
+            });
+          } else {
+            selectors[o] = selectorContent;
+          }
+          //casper.echo('remote capture to > '+filePath,'info');
 
         });//end topLevelModules.forEach
 
@@ -274,9 +250,12 @@ casper.run(function(){
 
 function complete(){
   compareConfigJSON.compareConfig = compareConfig;
-  if (isReference) { compareConfigJSON.domReplay = selectors; };
-  fs.write(compareConfigFileName, JSON.stringify(compareConfigJSON, null, 2), 'w');
-  console.log('Comparison config file updated.'/*, configData*/ );
+  if (!isReference) { compareConfigJSON.content = selectors };
+  fs.write(compareConfigFileName, JSON.stringify(compareConfigJSON,null,2), 'w');
+  console.log(
+    'Comparison config file updated.'
+    //,configData
+  );
 }
 
 function pad(number) {
