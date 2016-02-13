@@ -59,7 +59,7 @@ gulp.task('compare', function (done) {
 
   function storeFailedDiffImage(testPath, data) {
     var failedDiffFilename = getFailedDiffFilename(testPath);
-    console.log('Storing diff image in', failedDiffFilename);
+    console.log(' See:', failedDiffFilename);
     var failedDiffStream = fs.createWriteStream(failedDiffFilename);
     data.getDiffImage().pack().pipe(failedDiffStream)
   }
