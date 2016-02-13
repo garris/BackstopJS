@@ -421,9 +421,9 @@ _**NOTE:** SlimerJS currently requires an absolute path -- so be sure to include
 
 
 ### Reporting workflow tips (version 0.7.0+)
-There are two reporting options.  The fastest and least obtrusive is the CLI report which gives you a subdued thumbs up or thumbs down for your layout on each run.  The other report runs in the in-browser -- this gives you detailed visual feedback for each test case so you can validate why your screen diffs score the way they do.
+There are two types of reports. The fastest and least obtrusive is the CLI report which gives you a subdued thumbs up or thumbs down for your layout on each run.  The other report, displayed in the browser, gives you detailed visual feedback for each test case so you can validate why your screen diffs score the way they do.
 
-One testing approach to consider is incorporating BackstopJS into your build process and just let the CLI report run on each build.  It's natural for your layout to break while you're in feature development -- refer back to the report when you feel things should be shaping up. Check the in-browser version of the report occasionally as needed when you need deeper information about what's happening in a test case.
+One testing approach to consider is incorporating BackstopJS into your build process and just let the CLI report run on each build. It's natural for your layout to break while you're in feature development -- refer back to the report when you feel things should be shaping up. Check the in-browser version of the report occasionally as needed when you need deeper information about what's happening in a test case.
 
 _CLI Report_
 
@@ -440,6 +440,11 @@ Using the report property in `backstop.json` enable or disable browser or server
 ```json
 "report": ["browser", "CLI"]
 ```
+
+There are three different report options:
+- `CLI` displays test results in the console.
+- `browser` prepares the test data, starts a server, and opens the report in the browser.
+- `prepare` only prepares the test data for the html report. (This is useful if you are running headless and/or would like to view the html report through an alternate server you are running separately.)
 
 If you choose the CLI-only reporting you can always enter the following command to see the latest test run report in the browser.
 
