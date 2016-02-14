@@ -19,8 +19,7 @@ var compareConfigFileName = config.paths.compare_data || 'compare/config.json';
 var viewports = config.viewports;
 var scenarios = config.scenarios||config.grabConfigs;
 
-var compareConfig = {testPairs: [], content: {}};
-var selectors = {};
+var compareConfig = {testPairs:[]};
 
 var casper = require("casper").create({
   // clientScripts: ["jquery.js"] // uncomment to add jQuery if you need that.
@@ -156,11 +155,10 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
             }
 
         //CREATE SCREEN SHOTS AND TEST COMPARE CONFIGURATION (CONFIG FILE WILL BE SAVED WHEN THIS PROCESS RETURNS)
-        // If no selectors are provided then set the default 'body'
-        if ( !scenario.hasOwnProperty('selectors') ) {
-          scenario.selectors = [ 'body' ];
-        }
-
+            // If no selectors are provided then set the default 'body'
+            if ( !scenario.hasOwnProperty('selectors') ) {
+              scenario.selectors = [ 'body' ];
+            }
         scenario.selectors.forEach(function(o,i,a){
           var cleanedSelectorName = o.replace(/[^a-z0-9_\-]/gi,'');//remove anything that's not a letter or a number
           //var cleanedUrl = scenario.url.replace(/[^a-zA-Z\d]/,'');//remove anything that's not a letter or a number
@@ -170,12 +168,9 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
           var test_FP       = bitmaps_test + '/' + screenshotDateTime + '/' + fileName;
 
           var filePath      = (isReference)?reference_FP:test_FP;
-          var selectorContent = "";
-       
+
 
           if (casper.exists(o)) {
-            selectorContent = this.evaluate(function() {return document.querySelector(o).outerHTML;});
-
             if (casper.visible(o)) {
               casper.captureSelector(filePath, o);
             } else {
@@ -197,8 +192,6 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
               label:scenario.label,
               misMatchThreshold: scenario.misMatchThreshold || config.misMatchThreshold
             });
-          } else {
-            selectors[o] = selectorContent;
           }
           //casper.echo('remote capture to > '+filePath,'info');
 
@@ -241,7 +234,6 @@ function complete(){
   var compareConfigFile = fs.read(compareConfigFileName);
   var compareConfigJSON = JSON.parse(compareConfigFile || '{}');
   compareConfigJSON.compareConfig = compareConfig;
-  if (!isReference) { compareConfigJSON.content = selectors };
   fs.write(compareConfigFileName, JSON.stringify(compareConfigJSON,null,2), 'w');
   console.log(
     'Comparison config file updated.'
