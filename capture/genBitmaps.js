@@ -1,4 +1,3 @@
-
 var fs = require('fs');
 
 var selectorNotFoundPath = 'capture/resources/selectorNotFound_noun_164558_cc.png'
@@ -12,14 +11,25 @@ if (!config.paths) {
   config.paths = {};
 }
 
+String.prototype.hashCode = function () {
+    var hash = 0, i, chr, len;
+    if (this.length === 0) return hash;
+    for (i = 0, len = this.length; i < len; i++) {
+        chr = this.charCodeAt(i);
+        hash = ((hash << 5) - hash) + chr;
+        hash |= 0; // Convert to 32bit integer
+    }
+    return hash;
+};
+
 var bitmaps_reference = config.paths.bitmaps_reference || 'bitmaps_reference';
 var bitmaps_test = config.paths.bitmaps_test || 'bitmaps_test';
 var casper_scripts = config.paths.casper_scripts || null;
 var compareConfigFileName = config.paths.compare_data || 'compare/config.json';
 var viewports = config.viewports;
 var scenarios = config.scenarios||config.grabConfigs;
-var default_file_name = '__scenario_index__' + '_' + '__counter__' + '__cleanedSelectorName__' + '__viewport_index__' + '_' + '__vp.name__'  + '.png';
-var file_names = scenarios.map(function(x){ return x.fileName || default_file_name; });
+var config_name = config.name || genConfigPath.hashCode();
+var fileNameTemplate = config.fileNameTemplate || "{configFile}_{scenarioIndex}_{scenarioLabel}_{selectorIndex}_{selectorLabel}_{viewportIndex}_{viewportLabel}";
 
 var compareConfig = {testPairs:[]};
 
@@ -49,7 +59,6 @@ casper.on('resource.received', function(resource) {
     casper.log('remote error > ' + resource.url + ' failed to load (' + status + ')', 'error');
   }
 });
-
 
 
 function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_test,isReference){
@@ -131,6 +140,7 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
       });
 
       this.then(function(){
+        var that = this;
 
         this.echo('Screenshots for ' + vp.name + ' (' + (vp.width||vp.viewport.width) + 'x' + (vp.height||vp.viewport.height) + ')', 'info');
 
@@ -165,13 +175,19 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
           var cleanedSelectorName = o.replace(/[^a-z0-9_\-]/gi,'');//remove anything that's not a letter or a number
           //var cleanedUrl = scenario.url.replace(/[^a-zA-Z\d]/,'');//remove anything that's not a letter or a number
           //var fileName = scenario_index + '_' + i + '_' + cleanedSelectorName + '_' + viewport_index + '_' + vp.name + '.png';
-          var cleanFileName = file_names[scenario_index];
-          cleanFileName = cleanFileName.replace(/[^a-z0-9_\-\.]/gi,'');//remove anything that's not a letter, a number or a period
-          cleanFileName = cleanFileName.replace(/__scenario_index__/gi, scenario_index);
-          cleanFileName = cleanFileName.replace(/__counter__/gi, i);
-          cleanFileName = cleanFileName.replace(/__cleanedSelectorName__/gi, cleanedSelectorName);
-          cleanFileName = cleanFileName.replace(/__viewport_index__/gi, viewport_index);
-          var fileName = cleanFileName.replace(/__vp\.name__/gi, vp.name);
+          var fileName = fileNameTemplate.replace(/\{configFile}/, config_name)
+            .replace(/\{scenarioIndex}/, scenario_index)
+            .replace(/\{scenarioLabel}/, scenario.label)
+            .replace(/\{selectorIndex}/, i)
+            .replace(/\{selectorLabel}/, cleanedSelectorName)
+            .replace(/\{viewportIndex}/, viewport_index)
+            .replace(/\{viewportLabel}/, vp.name)
+            .replace(/[^a-z0-9_\-]/gi, '');//remove anything that's not a letter or a number
+
+          if (!~fileName.search(/\.png$/)) {
+              fileName = fileName + ".png";
+          }
+          that.echo('Using filename pattern: ' + fileName);
 
           var reference_FP  = bitmaps_reference + '/' + fileName;
           var test_FP       = bitmaps_test + '/' + screenshotDateTime + '/' + fileName;

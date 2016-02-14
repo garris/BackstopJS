@@ -56,6 +56,9 @@ paths.serverPidFile                 = paths.backstop + '/server.pid';
 // ACTIVE CAPTURE CONFIG PATH
 paths.activeCaptureConfigPath       = '';
 
+// DEFAULT FILENAME PATTERN
+paths.fileNameTemplate              = "{configFile}_{scenarioIndex}_{scenarioLabel}_{selectorIndex}_{selectorLabel}_{viewportIndex}_{viewportLabel}";
+
 if(fs.existsSync(paths.backstopConfigFileName)){
   console.log('\nBackstopJS Config loaded at location', paths.backstopConfigFileName);
   paths.activeCaptureConfigPath = paths.backstopConfigFileName;
@@ -76,6 +79,7 @@ if(fs.existsSync(paths.activeCaptureConfigPath)){
     paths.ci_report = config.paths.ci_report || paths.ci_report;
   }
 
+  paths.fileNameTemplate = config.fileNameTemplate || paths.fileNameTemplate;
   paths.portNumber = config.port || defaultPort;
   paths.casperFlags = config.casperFlags || null;
   paths.engine = config.engine || null;
