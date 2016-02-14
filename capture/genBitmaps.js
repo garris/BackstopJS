@@ -19,12 +19,6 @@ var compareConfigFileName = config.paths.compare_data || 'compare/config.json';
 var viewports = config.viewports;
 var scenarios = config.scenarios||config.grabConfigs;
 
-  fs.touch(compareConfigFileName);
-  var compareConfigFile = fs.read(compareConfigFileName);
-  var compareConfigJSON = JSON.parse(compareConfigFile || '{}');
-
-
-
 var compareConfig = {testPairs: [], content: {}};
 var selectors = {};
 
@@ -137,12 +131,6 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
 
       this.then(function(){
 
-        if ( !isReference && scenario.domReplay && casper.exists(o)) {
-          this.evaluate(function() {
-           //document.querySelector(o).innerHTML = compareConfigJSON;
-          });
-        }
-      
         this.echo('Screenshots for ' + vp.name + ' (' + (vp.width||vp.viewport.width) + 'x' + (vp.height||vp.viewport.height) + ')', 'info');
 
         //HIDE SELECTORS WE WANT TO AVOID
@@ -249,6 +237,9 @@ casper.run(function(){
 });
 
 function complete(){
+  fs.touch(compareConfigFileName);
+  var compareConfigFile = fs.read(compareConfigFileName);
+  var compareConfigJSON = JSON.parse(compareConfigFile || '{}');
   compareConfigJSON.compareConfig = compareConfig;
   if (!isReference) { compareConfigJSON.content = selectors };
   fs.write(compareConfigFileName, JSON.stringify(compareConfigJSON,null,2), 'w');
