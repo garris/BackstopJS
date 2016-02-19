@@ -18,12 +18,12 @@ gulp.task('compare', function (done) {
       !results[pair.testStatus]++;
     });
     if (!results.running) {
-      console.log ("\nTest completed...");
-      console.log ((results.pass || 0) + " Passed");
-      console.log ((results.fail || 0) + " Failed\n");
+      console.log ('\nTest completed...');
+      console.log ('\x1b[32m', (results.pass || 0) + ' Passed', '\x1b[0m');
+      console.log ('\x1b[31m', (results.fail || 0) + ' Failed\n', '\x1b[0m');
 
       if (results.fail) {
-        console.log ("*** Mismatch errors found ***");
+        console.log ('\x1b[31m', '*** Mismatch errors found ***', '\x1b[0m');
         console.log ("For a detailed report run `gulp openReport`\n");
         if (paths.cliExitOnFail) {
           done(new Error('Mismatch errors found.'));
@@ -47,11 +47,11 @@ gulp.task('compare', function (done) {
 
       if (imageComparisonFailed) {
         pair.testStatus = "fail";
-        console.log('ERROR:', pair.label, pair.fileName);
+        console.log('\x1b[31m', 'ERROR:', pair.label, pair.fileName, '\x1b[0m');
         storeFailedDiffImage(testPath, data);
       } else {
         pair.testStatus = "pass";
-        console.log('OK:', pair.label, pair.fileName);
+        console.log('\x1b[32m', 'OK:', pair.label, pair.fileName, '\x1b[0m');
       }
       updateProgress();
     });
@@ -59,7 +59,7 @@ gulp.task('compare', function (done) {
 
   function storeFailedDiffImage(testPath, data) {
     var failedDiffFilename = getFailedDiffFilename(testPath);
-    console.log('Storing diff image in ', failedDiffFilename);
+    console.log('   See:', failedDiffFilename);
     var failedDiffStream = fs.createWriteStream(failedDiffFilename);
     data.getDiffImage().pack().pipe(failedDiffStream)
   }
