@@ -52,30 +52,28 @@
 
       </div>
 
-      <table ng-repeat="thisTestPair in testPairs | filter : displayOnStatusFilter ">
-        <thead>
-          <tr>
-            <th class="selector" colspan="2">{{ thisTestPair.meta.label }} {{ thisTestPair.meta.selector }}</th>
-            <th class="filename" colspan="2">{{ thisTestPair.meta.fileName }}</th>
-          </tr>
-          <tr>
-            <th>Reference</th>
-            <th>Test</th>
-            <th>Diff</th>
-            <th>Report</th>
-          </tr>
-        </thead>
-        <tr>
-          <td>
+      <div class="results" ng-repeat="thisTestPair in testPairs | filter : displayOnStatusFilter">
+        <div class="flex-container">
+            <div class="selector">{{ thisTestPair.meta.label }} {{ thisTestPair.meta.selector }}</div>
+            <div class="filename">{{ thisTestPair.meta.fileName }}</div>
+        </div>
+        <div class="flex-container">
+            <div>Reference</div>
+            <div>Test</div>
+            <div>Diff</div>
+            <div>Report</div>
+        </div>
+        <div class="flex-container">
+          <div>
             <img ng-src="{{ thisTestPair.a.src }}">
-          </td>
-          <td>
+          </div>
+          <div>
             <img ng-src="{{ thisTestPair.b.src }}">
-          </td>
-          <td>
+          </div>
+          <div>
             <img ng-src="{{ thisTestPair.c.src }}" image-name="c">
-          </td>
-          <td>
+          </div>
+          <div>
             <div class="statusInds">
               <div class="indicator scanning" ng-if="thisTestPair.processing"><span class="dot yellow flash"></span>scanning</div>
               <div class="indicator failed" ng-if="!thisTestPair.passed&&!thisTestPair.processing"><span class="dot red"></span>failed</div>
@@ -83,10 +81,9 @@
             </div>
             <div class="reportTxt">Threshold: {{ thisTestPair.meta.misMatchThreshold}}</div>
             <div class="reportTxt">Report: {{ thisTestPair.report }}</div>
-          </td>
-        </tr>
-      </table>
-
+          </div>
+        </div>
+      </div>
 
     </div> <!-- end detailReport -->
 
