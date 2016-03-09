@@ -170,14 +170,11 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
           var filePath      = (isReference)?reference_FP:test_FP;
 
 
-          if (casper.exists(o)) {
+          if(o === "body:noclip") {
+            casper.capture(filePath);
+          } else if (casper.exists(o)) {
             if (casper.visible(o)) {
-              if(o=="body") {
-                casper.capture(filePath);
-              }
-              else {
-                casper.captureSelector(filePath, o);
-              }
+              casper.captureSelector(filePath, o);
             } else {
               var assetData = fs.read(hiddenSelectorPath, 'b');
               fs.write(filePath, assetData, 'b');
