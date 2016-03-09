@@ -172,7 +172,12 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
 
           if (casper.exists(o)) {
             if (casper.visible(o)) {
-              casper.captureSelector(filePath, o);
+              if(o=="body") {
+                casper.capture(filePath);
+              }
+              else {
+                casper.captureSelector(filePath, o);
+              }
             } else {
               var assetData = fs.read(hiddenSelectorPath, 'b');
               fs.write(filePath, assetData, 'b');
