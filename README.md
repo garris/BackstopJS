@@ -14,10 +14,12 @@ BackstopJS automates CSS regression testing of your responsive web UI by compari
 ## News
 
 
-### Version 1.0.3 available now
+### Version 1.1.0 available now
 [Please file questions, comments or issues here](https://github.com/garris/BackstopJS/issues).
 
-**Version 1.0 includes reliability fixes plus a handful of improvements to close out the original roadmap.**
+**Version 1.1 includes reliability fixes plus a handful of improvements to close out the original roadmap.**
+- Simplified installation -- just `npm install backstopjs` and you're ready to go!
+- All `Gulp` commands have been migrated to `npm run <command>` format for better compatibility!
 - now add logic and comments to your configs (optional JS based configs)
 - plays nice with other local services (change the BackstopJS port)
 
@@ -108,22 +110,6 @@ You can add BackstopJS from the root directory of any project.
 
 ```sh
 $ npm install --save-dev backstopjs
-```
-
-
-This will create the folder structure `./node_modules/backstopjs`.
-
-###**If you don't already have a global PhantomJS install...** http://phantomjs.org/download.html
-
-```sh
-$ sudo npm install -g phantomjs
-```
-
-#### test for a correct install with...
-
-```sh
-$ phantomjs -v
-> 1.9.8
 ```
 
 ###Installing a develpment version
