@@ -12,6 +12,16 @@
   "author": "https://github.com/garris/BackstopJS/graphs/contributors",
   "license": "MIT",
   "main": "",
+  "scripts": {
+    "genConfig": "gulp genConfig",
+    "reference": "gulp reference",
+    "test": "gulp test",
+    "bless": "gulp bless",
+    "start": "gulp start",
+    "stop": "gulp stop",
+    "openReport": "gulp openReport",
+    "echo": "gulp echo"
+  },
   "devDependencies": {
     "chai": "^1.9.2",
     "mocha": "^1.21.5",

@@ -12,15 +12,16 @@ paths.portNumber = defaultPort;
 paths.backstop                      = path.join(__dirname, '../..');
 
 function getBackstopConfigFileName() {
-	if(argv.backstopConfigFilePath) {
-		var isAbsolutePath = argv.backstopConfigFilePath.charAt(0) === '/';
-		var configPath = isAbsolutePath ? argv.backstopConfigFilePath : path.join(paths.backstop, argv.backstopConfigFilePath);
-		if(!fs.existsSync(configPath)) {
-			throw new Error('Couldn\'t resolve backstop config file');
-		}
-		return configPath;
-	}
-	return path.join(paths.backstop, defaultConfigPath);
+  var configPathArg = argv.backstopConfigFilePath || argv.configPath || null;
+  if(configPathArg) {
+    var isAbsolutePath = configPathArg.charAt(0) === '/';
+    var configPath = isAbsolutePath ? configPathArg : path.join(paths.backstop, configPathArg);
+    if(!fs.existsSync(configPath)) {
+      throw new Error('Couldn\'t resolve backstop config file');
+    }
+    return configPath;
+  }
+  return path.join(paths.backstop, defaultConfigPath);
 }
 // BACKSTOP CONFIG PATH
 paths.backstopConfigFileName = getBackstopConfigFileName();

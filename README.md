@@ -50,13 +50,13 @@ $ npm install garris/backstopjs#master
 
 ## Tutorials and Related Links
 
-- Good news for *Gulp fans*, BackstopJS is written on top of Gulp -- so you'll be right at home. *Grunt fans* -- check out [grunt-backstop](https://github.com/ddluc/grunt-backstop) and this [very nicely written article by Joe Watkins](http://joe-watkins.io/css-visual-regression-testing-with-grunt-backstopjs/)
-
-- Basic automated regression testing article on [css-tricks.com](http://css-tricks.com/automating-css-regression-testing/)
+- Visual regression testing article on [css-tricks.com](http://css-tricks.com/automating-css-regression-testing/)
 
 - Automated regression testing for AngularJS (and other) web-apps -- article on [DWB](http://davidwalsh.name/visual-regression-testing-angular-applications)
 
-- Want to add BackstopJS to your existing gulp build?  Turns out to be pretty easy – use **gulp-chug**. Learn how in this article by [Filip Bartos](http://blog.bartos.me/css-regression-testing/)
+- Want to add BackstopJS to your existing *gulp* build?  Turns out to be pretty easy – use **gulp-chug**. Learn how in this article by [Filip Bartos](http://blog.bartos.me/css-regression-testing/).
+
+- *Grunt fans* -- check out [grunt-backstop](https://github.com/ddluc/grunt-backstop) and this [very nicely written article by Joe Watkins](http://joe-watkins.io/css-visual-regression-testing-with-grunt-backstopjs/)
 
 
 BackstopJS brochure at [http://BackstopJS.org/](http://garris.github.io/BackstopJS/).
@@ -113,21 +113,6 @@ $ npm install --save-dev backstopjs
 
 This will create the folder structure `./node_modules/backstopjs`.
 
-
-###**If you don't already have a global Gulp instance...** http://gulpjs.com
-
-```sh
-$ sudo npm install -g gulp
-```
-
-#### test for a correct install with...
-
-```sh
-$ gulp -v
-> CLI version 3.8.10
-> Local version 3.8.10
-```
-
 ###**If you don't already have a global PhantomJS install...** http://phantomjs.org/download.html
 
 ```sh
@@ -176,7 +161,7 @@ $ npm install garris/backstopjs#master
 From `./node_modules/backstopjs` ...
 
 ```sh
-$ gulp genConfig
+$ npm run genConfig
 ```
 
 
@@ -250,7 +235,7 @@ The location of the `backstop.json` file as well as all resource directories can
 ### Generating (or updating) reference bitmaps
 
 ```sh
-$ gulp reference
+$ npm run reference
 ```
 
 
@@ -261,7 +246,7 @@ This task will create a (or update an existing) `bitmaps_reference` directory wi
 ### Generating test bitmaps
 
 ```sh
-$ gulp test
+$ npm run test
 ```
 
 This task will create a new set of bitmaps in `bitmaps_test/<timestamp>/`
@@ -356,7 +341,7 @@ There may also be elements which need to be completely removed during testing. F
 ### Grabbing screens from different environments
 Comparing against different environments is easy. (e.g. compare a production environment against a staging environment).
 
-To do this, add a `referenceUrl` to your scenario configuration. When running `$ gulp test` BackstopJS will use the `url` for screen grabs.  When running `$ gulp reference` BackstopJS will check for `referenceUrl` and use that if it's there. Otherwise it will use `url` for both.
+To do this, add a `referenceUrl` to your scenario configuration. When running `$ npm run test` BackstopJS will use the `url` for screen grabs.  When running `$ npm run reference` BackstopJS will check for `referenceUrl` and use that if it's there. Otherwise it will use `url` for both.
 
 ```js
   "scenarios": [
@@ -444,7 +429,7 @@ Using the report property in `backstop.json` enable or disable browser or server
 If you choose the CLI-only reporting you can always enter the following command to see the latest test run report in the browser.
 
 ```sh
-$ gulp openReport
+$ npm run openReport
 ```
 
 
@@ -464,9 +449,9 @@ JSON-based configs cramping your style? Well, here's some good news -- BackstopJ
 To use a js module based config file, explicitly specify your config filepath when running a command. e.g.
 
 ```sh
-$ gulp test --backstopConfigFilePath=../../backstopTests/someTest.js
+$ npm run test -- --configPath=../../backstopTests/someTest.js
 ```
-
+_Remember to add that extra `--` after the `test` command._
 _See the next section for more info on setting the config file path._
 
 Be sure to export your config object as a node module. See [test/configExample.js](test/configExample.js) for a simple example.
@@ -474,28 +459,29 @@ Be sure to export your config object as a node module. See [test/configExample.j
 
 
 ###Setting the config file path (version 0.9.0+)
-Often, users have multiple config files to test various different scenarios or even different projects. By default, BackstopJS looks for `backstop.json` in your project's root directory (in parallel with your `node_modules` directory). You can override this by passing a `--backstopConfigFilePath` argument when running any command. e.g.
+Often, users have multiple config files to test various different scenarios or even different projects. By default, BackstopJS looks for `backstop.json` in your project's root directory (in parallel with your `node_modules` directory). You can override this by passing a `--configPath` argument when running any command. e.g.
 
 ```sh
 # example 1: run reference generation with absolute path
-$ gulp reference --backstopConfigFilePath=~/backstopTests/someTest.json
+$ npm run reference -- --configPath=~/backstopTests/someTest.json
 # Will capture reference files using scenarios from someTest.json inside backstopTests inside your home folder.
 
 # example 2: run test with absolute path
-$ gulp test --backstopConfigFilePath=~/backstopTests/someTest.json
+$ npm run test -- --configPath=~/backstopTests/someTest.json
 # Will run tests using scenarios from `someTest.json` inside `backstopTests` inside your home folder.
 
 # example 3: run test with relative path
-$ gulp test --backstopConfigFilePath=../../backstopTests/someTest.json
+$ npm run test -- --configPath=../../backstopTests/someTest.json
 # Will run tests using scenarios from `someTest.json` inside `backstopTests` inside your project root folder.
 
 # example 4: run test with relative path and JS module
-$ gulp test --backstopConfigFilePath=../../backstopTests/someTest.js
+$ npm run test -- --configPath=../../backstopTests/someTest.js
 # You can also specify your config parameters as a node module. This will import `someTest.js` from `backstopTests` inside your project root folder.
 ```
 
-NOTE: all paths are relative to the location of the BackstopJS install directory _(which is either inside your project's `node_modules` or `bower_components` depending on how BackstopJS was installed)_
-
+NOTES:
+- all paths are relative to the location of the BackstopJS install directory _(which is either inside your project's `node_modules` or `bower_components` depending on how BackstopJS was installed)._
+- _Remember to add that extra `--` after the `npm run test` and `npm run reference` commands._
 
 ### Setting the bitmap and script directory paths (version 0.6.0+)
 By default, BackstopJS saves its screenshots into `./backstopjs/bitmaps_reference/` and `./backstopjs/bitmaps_test/` in parallel with your `./backstop.js` config file. The location of these directories are configurable so they can easily be moved inside or outside your source control or file sharing environment.
@@ -553,12 +539,7 @@ This is for you if for some reason you find yourself needing advanced configurat
 ### Troubleshooting
 
 
-####The dreaded _gulp-not-found_ error...
-
-```sh
-Local gulp not found in ~/path-to-your-project-root/
-Try running: npm install gulp
-```
+####The dreaded _command-not-found_ error...
 
 If this happens then you may not be in the right directory – try...
 
@@ -587,7 +568,7 @@ _Please note: this will check your scenario `url` only.  It does not check for a
 From `./node_modules/backstopjs` ...
 
 ```sh
-$ gulp echo
+$ npm run echo
 ```
 
 ### Running the report server
@@ -599,13 +580,13 @@ You can manually start the server optionally passing your own timeout parameter 
 From `./node_modules/backstopjs` ...
 
 ```sh
-$ gulp start -t 0
+$ npm run start -- -t 0
 ```
 
 To manually stop the server, from `./node_modules/backstopjs` ...
 
 ```sh
-$ gulp stop
+$ npm run stop
 ```
 
 
