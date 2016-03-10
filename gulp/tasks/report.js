@@ -8,6 +8,6 @@ gulp.task('report',['start'],function(){
   }
 
   if (!paths.report || paths.report.indexOf( 'CLI' ) > -1 ){
-    setTimeout(function(){gulp.run('compare')},1000);
+    setTimeout(function(){gulp.run('compare')},500);
   }
 });

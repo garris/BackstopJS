@@ -10,7 +10,7 @@ var defaultPort = paths.portNumber || 3001;
 
 //THIS WILL START THE LOCAL WEBSERVER
 //IF ALREADY STARTED IT WILL NOT TRY TO START AGAIN
-gulp.task("start",function(){
+gulp.task("start",function(done){
 
   fs.readFile(paths.serverPidFile, function(err,data){
 
@@ -23,7 +23,7 @@ gulp.task("start",function(){
     }else{
       start();
     }
-
+    setTimeout(done, 1000);
   });
 
 

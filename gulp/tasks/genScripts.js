@@ -2,6 +2,11 @@ var gulp   = require('gulp');
 var rename = require('gulp-rename');
 var paths  = require('../util/paths');
 
+
+/**
+ * Called by genConfig.
+ * Copies boilerplate scripts to the current casper_scripts directory.
+ */
 gulp.task('genScripts', function () {
     if (paths.casper_scripts) {
       return gulp.src([paths.casper_scripts_default + '/*.js'])
