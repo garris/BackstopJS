@@ -54,7 +54,7 @@ if(fs.existsSync(paths.backstopConfigFileName)){
   paths.activeCaptureConfigPath = paths.backstopConfigFileName;
 }else{
   console.log('\nConfig file not found.');
-  console.log('\n`$ gulp genConfig` generates a handy configuration boilerplate file at: `' + paths.backstopConfigFileName + '`. (Will overwrite existing files.)\n')
+  console.log('\n`$ npm run genConfig` generates a handy configuration boilerplate file at: `' + paths.backstopConfigFileName + '`. (Will overwrite existing files.)\n')
   paths.activeCaptureConfigPath = paths.captureConfigFileNameDefault;
 }
 

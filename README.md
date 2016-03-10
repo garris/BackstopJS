@@ -126,26 +126,6 @@ $ phantomjs -v
 > 1.9.8
 ```
 
-
-###**If you don't already have a global CasperJS install...** http://docs.casperjs.org/en/latest/installation.html
-
-```sh
-$ sudo npm install -g casperjs
-```
-
-#### test for a correct install with...
-
-```sh
-$ casperjs --version
-> 1.1.0-beta3
-```
-
-
-###Note for windows installation
-
-Windows users who have trouble getting BackstopJS to run (e.g. Error: spawn ENOENT) may want to look at [ENOENT error #2](https://github.com/garris/BackstopJS/issues/2). Also, please check that PhantomJS, CasperJS and Python are installed and added to your console PATH.
-
-
 ###Installing a develpment version
 
 ```sh

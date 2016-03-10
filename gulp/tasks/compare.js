@@ -24,7 +24,7 @@ gulp.task('compare', function (done) {
 
       if (results.fail) {
         console.log ('\x1b[31m', '*** Mismatch errors found ***', '\x1b[0m');
-        console.log ("For a detailed report run `gulp openReport`\n");
+        console.log ("For a detailed report run `npm run openReport`\n");
         if (paths.cliExitOnFail) {
           done(new Error('Mismatch errors found.'));
         }

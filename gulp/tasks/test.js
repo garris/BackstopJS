@@ -32,8 +32,8 @@ gulp.task('test',['init'], function () {
         var config = fs.readFileSync(paths.activeCaptureConfigPath, 'utf8');
         if (checksum(config) !== compareConfigLastConfigHash) {
           console.log('\nIt looks like the reference configuration has been changed since last reference batch.');
-          console.log('Please run `$ gulp reference` to generate a fresh set of reference files');
-          console.log('or run `$ gulp bless` then `$ gulp test` to enable testing with this configuration.\n\n');
+          console.log('Please run `$ npm run reference` to generate a fresh set of reference files');
+          console.log('or run `$ npm run bless` then `$ npm run test` to enable testing with this configuration.\n\n');
           return false;
         }
     } else{
@@ -79,12 +79,12 @@ gulp.task('test',['init'], function () {
 
     //exit if there was some kind of failure in the casperChild process
     if(code!=0){
-      console.log('\nLooks like an error occured. You may want to try running `$ gulp echo`. This will echo the requested test URL output to the console. You can check this output to verify that the file requested is indeed being received in the expected format.');
+      console.log('\nLooks like an error occured. You may want to try running `$ npm run echo`. This will echo the requested test URL output to the console. You can check this output to verify that the file requested is indeed being received in the expected format.');
       return false;
     }
 
     if(genReferenceMode){
-      console.log('\nRun `$ gulp test` to generate diff report.\n')
+      console.log('\nRun `$ npm run test` to generate diff report.\n')
     }else{
       gulp.run('report');
     }
