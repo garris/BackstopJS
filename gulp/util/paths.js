@@ -69,7 +69,6 @@ if(fs.existsSync(paths.activeCaptureConfigPath)){
   }
 
   paths.portNumber = config.port || defaultPort;
-  paths.cliExitOnFail = config.cliExitOnFail || false;
   paths.casperFlags = config.casperFlags || null;
   paths.engine = config.engine || null;
   paths.report = config.report || null;

@@ -185,7 +185,6 @@ The location of the `backstop.json` file as well as all resource directories can
   },
   "engine": "phantomjs",
   "report": ["browser", "CLI"],
-  "cliExitOnFail": false,
   "debug": false,
   "port": 3001
 }
@@ -401,12 +400,7 @@ $ npm run openReport
 
 ####CLI error handling
 
-When a layout error is found in CLI mode, BackstopJS will let you know in a general report displayed in the console. Optionally, BackstopJS can throw an error that can be passed to calling process. For this behavior enable `cliExitOnFail` in your config...
-
-```json
-"cliExitOnFail": true,
-```
-
+When a layout error is found in CLI mode, BackstopJS will let you know in a general report displayed in the console. In addition, BackstopJS will throw an error that will be passed to calling process.
 
 ###Using a js based config file (version 1.0.0+)
 
