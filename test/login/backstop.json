@@ -43,7 +43,6 @@
   },
   "engine": "phantomjs",
   "report": ["CLI", "browser"],
-  "cliExitOnFail": false,
   "casperFlags": [
     "--cookies-file=../../cookieFile.txt",
     "--ignore-ssl-errors=true",
