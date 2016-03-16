@@ -3,7 +3,7 @@ node_js:
   - "0.10"
 install:
   - npm install gulp -g
-  - npm install phantomjs -g
+  - npm install phantomjs2 -g
   - npm install casperjs -g
   - npm install
 script:

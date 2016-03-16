@@ -183,7 +183,7 @@ The location of the `backstop.json` file as well as all resource directories can
     "compare_data": "../../backstop_data/bitmaps_test/compare.json",
     "casper_scripts": "../../backstop_data/casper_scripts"
   },
-  "engine": "phantomjs",
+  "engine": "phantomjs2",,
   "report": ["browser", "CLI"],
   "debug": false,
   "port": 3001
