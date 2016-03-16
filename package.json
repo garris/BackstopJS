@@ -1,9 +1,16 @@
 {
   "name": "backstopjs",
-  "version": "1.1.0",
+  "version": "1.2.1",
   "description": "BackstopJS: Catch CSS curveballs.",
   "scripts": {
-    "test": "mocha --reporter spec test/**/*spec*.js"
+    "genConfig": "gulp genConfig",
+    "reference": "gulp reference",
+    "test": "gulp test",
+    "bless": "gulp bless",
+    "start": "gulp start",
+    "stop": "gulp stop",
+    "openReport": "gulp openReport",
+    "echo": "gulp echo"
   },
   "repository": {
     "type": "git",
