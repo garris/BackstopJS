@@ -345,12 +345,15 @@ at the root of your config or in your scenario...
     }
 ```
 
+When simulating actions that involve showing or hiding elements, you may find it necessary to include a delay after the action, so that the screen shot captures the state of the page after any transitions.
+
 Inside `filename.js`, structure it like this:
 
 ```js
 module.exports = function(casper, scenario, vp) {
   casper.echo( 'Clicking button' );
   casper.click( '.toggle' );
+  casper.wait( 250 );
   if (vp.name === 'phone') {
     // do stuff for just phone viewport here
   }
