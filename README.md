@@ -323,7 +323,7 @@ To do this, add a `referenceUrl` to your scenario configuration. When running `$
 
 ### Running custom CasperJS scripts (version 0.8.0+)
 
-Simulate user actions (click, scroll, hover, wait, etc.) by running your own Casper.js script on ready. For each scenario, the custom .js file you specify is imported and run when the BackstopJS ready event is fired.
+Simulate user actions (click, scroll, hover, wait, etc.) or states (cookie values) by running your own Casper.js script on ready. For each scenario, the custom .js file you specify is imported and run when the BackstopJS ready event is fired.
 
 From your project root, place your scripts in...
 
@@ -334,8 +334,8 @@ From your project root, place your scripts in...
 at the root of your config or in your scenario...
 
 ```js
-"onReadyScript": "filename.js"   // Runs after onReady event on all scenarios (.js suffix is optional)
-"onBeforeScript": "filename.js"  // Runs before each scenario (.js suffix is optional)
+"onReadyScript": "filename.js"   // Runs after onReady event on all scenarios -- use for simulating interactions (.js suffix is optional)
+"onBeforeScript": "filename.js"  // Runs before each scenario -- use for setting cookies or other env state (.js suffix is optional)
 "scenarios": [
     {
       "label": "cat meme feed sanity check",
@@ -345,20 +345,34 @@ at the root of your config or in your scenario...
     }
 ```
 
-When simulating actions that involve showing or hiding elements, you may find it necessary to include a delay after the action, so that the screen shot captures the state of the page after any transitions.
 
 Inside `filename.js`, structure it like this:
 
 ```js
 module.exports = function(casper, scenario, vp) {
+  // scenario is the current scenario object being run from your backstop config
+  // vp is the current viewport object being run from your backstop config
+  
+  // Example: setting cookies
+  casper.echo("Setting cookies");
+  casper.then(function(){
+    casper.page.addCookie({some: 'cookie'});
+  });
+  // `casper.thenOpen()` demonstrates a redirect to the original page with your new cookie value.
+  // this step is not required if used with _onBeforeScript_
+  casper.thenOpen(scenario.url);
+  
+  // Example: Adding script delays to allow for things like CSS transitions to complete.
   casper.echo( 'Clicking button' );
   casper.click( '.toggle' );
   casper.wait( 250 );
+  
+  // Example: changing behaivior based on config values
   if (vp.name === 'phone') {
-    // do stuff for just phone viewport here
+    casper.echo( 'doing stuff for just phone viewport here' );
   }
-  // do other cool stuff here, see Casperjs.org for a full API and many ideas.
-  // scenario is the current scenario object being run from your backstop.json file
+  
+  // ...do other cool stuff here, see Casperjs.org for a full API and many ideas.
 }
 ```
 
