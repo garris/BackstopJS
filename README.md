@@ -174,7 +174,8 @@ The location of the `backstop.json` file as well as all resource directories can
       "readyEvent": null,
       "delay": 500,
       "onReadyScript": null,
-      "onBeforeScript": null
+      "onBeforeScript": null,
+      "onBeforeSelector": null
     }
   ],
   "paths": {
@@ -336,11 +337,14 @@ at the root of your config or in your scenario...
 ```js
 "onReadyScript": "filename.js"   // Runs after onReady event on all scenarios -- use for simulating interactions (.js suffix is optional)
 "onBeforeScript": "filename.js"  // Runs before each scenario -- use for setting cookies or other env state (.js suffix is optional)
+"onBeforeSelector": "filename.js"  // Runs before each captured css selector -- used to change state of document (.js suffix is optional)
+
 "scenarios": [
     {
       "label": "cat meme feed sanity check",
-      "onReadyScript": "filename.js"   //  If found will run instead of onReadyScript set at the root (.js suffix is optional)
-      "onBeforeScript": "filename.js" // If found will run instead of onBeforeScript at the root (.js suffix is optional)
+      "onReadyScript": "filename.js",   //  If found will run instead of onReadyScript set at the root (.js suffix is optional)
+      "onBeforeScript": "filename.js", // If found will run instead of onBeforeScript at the root (.js suffix is optional)
+      "onBeforeSelector": "filename.js", // If found will run instead of onBeforeSelector at the root (.js suffix is optional)
        ...
     }
 ```
@@ -375,6 +379,12 @@ module.exports = function(casper, scenario, vp) {
   // ...do other cool stuff here, see Casperjs.org for a full API and many ideas.
 }
 ```
+If you use onBeforeSelector case:
+```js
+module.exports = function(casper, scenario, vp, selector) {
+  ...
+}  
+```  
 
 #### Setting the base path for custom CasperJS scripts
 
