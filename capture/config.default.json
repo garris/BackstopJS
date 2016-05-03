@@ -22,7 +22,7 @@
       "url": "http://getbootstrap.com",
       "hideSelectors": [],
       "removeSelectors": [
-        "#carbonads-container"
+        "#carbonads"
       ],
       "selectors": [
         "header",
