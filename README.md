@@ -517,6 +517,9 @@ This is for you if for some reason you find yourself needing advanced configurat
 
 ### Troubleshooting
 
+####Windows users...
+Please make sure you have Python installed.
+_see https://github.com/garris/BackstopJS/issues/185_
 
 ####The dreaded _command-not-found_ error...
 
