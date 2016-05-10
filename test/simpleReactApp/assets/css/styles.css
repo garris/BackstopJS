@@ -1,0 +1,115 @@
+.container {
+	max-width: 980px;
+	text-align: center;
+	margin: 20px auto;
+}
+
+h1 {
+	margin-bottom: 20px;
+}
+
+#geocoding_form {
+	margin: 40px auto 60px;
+}
+
+#address {
+	border-radius: 3px;
+}
+
+.input-group {
+	margin-left: 4%;
+}
+
+.glyphicon {
+	font-size: 18px;
+	z-index: 20;
+	cursor: pointer;
+}
+
+.glyphicon-search{
+	position: relative;
+	right: 30px;
+}
+
+.current-location {
+	margin-top: 30px;
+}
+
+#save-location {
+	display: inline;
+	margin: 10px auto;
+	line-height: 1.4;
+}
+
+.current-location .glyphicon-star, 
+.current-location .glyphicon-star-empty {
+	display: inline-block;
+	margin-left: 10px;
+	font-size: 22px;
+	vertical-align: text-bottom;
+}
+
+.glyphicon-menu-right {
+	position: absolute;
+	top: 50%;
+	right: 10px;
+	margin-top: -9px;
+}
+
+.map-holder {
+	max-width: 500px;
+	height: 350px;
+	margin: 0 auto;
+	background-color: #FCFCFC;
+	position: relative;
+	border-radius: 2px;
+}
+
+.map-holder p {
+	position: absolute;
+	width: 84px;
+	height: 22px;
+	left: 50%;
+	top: 50%;
+	margin: -11px auto 0 -42px;
+	font-size: 20px;
+	color: #969FA8;
+}
+
+#map {
+	max-width: 500px;
+	height: 350px;
+	margin: 0 auto;
+}
+
+.list-group {
+	padding: 0 15px;
+	margin-top: 50px;
+}
+
+.list-group-item {
+	position: relative;
+	padding: 10px 20px;
+}
+
+a.list-group-item {
+	cursor: pointer;
+}
+
+a.list-group-item:hover {
+	background-color: #F7FBFF;
+}
+
+a.active-location {
+	background-color: #EEF6FF;
+}
+
+a.active-location:hover {
+	background-color: #EBF3FC;
+}
+
+a.list-group-item span.createdAt {
+	display: block;
+	color: #969FA8;
+	z-index: -1;
+}
