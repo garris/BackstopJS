@@ -174,6 +174,7 @@ The location of the `backstop.json` file as well as all resource directories can
       "readyEvent": null,
       "delay": 500,
       "onReadyScript": null,
+      "ignoreAntialiasing": false,
       "onBeforeScript": null
     }
   ],
@@ -320,6 +321,9 @@ To do this, add a `referenceUrl` to your scenario configuration. When running `$
     }
 ```
 
+### Compare images
+
+Set ignoreAntialiasing: true if you want to use ignoreAntialiasing() of resemble.js. See example here https://huddle.github.io/Resemble.js/
 
 ### Running custom CasperJS scripts (version 0.8.0+)
 
@@ -352,7 +356,7 @@ Inside `filename.js`, structure it like this:
 module.exports = function(casper, scenario, vp) {
   // scenario is the current scenario object being run from your backstop config
   // vp is the current viewport object being run from your backstop config
-  
+
   // Example: setting cookies
   casper.echo("Setting cookies");
   casper.then(function(){
@@ -361,17 +365,17 @@ module.exports = function(casper, scenario, vp) {
   // `casper.thenOpen()` demonstrates a redirect to the original page with your new cookie value.
   // this step is not required if used with _onBeforeScript_
   casper.thenOpen(scenario.url);
-  
+
   // Example: Adding script delays to allow for things like CSS transitions to complete.
   casper.echo( 'Clicking button' );
   casper.click( '.toggle' );
   casper.wait( 250 );
-  
+
   // Example: changing behaivior based on config values
   if (vp.name === 'phone') {
     casper.echo( 'doing stuff for just phone viewport here' );
   }
-  
+
   // ...do other cool stuff here, see Casperjs.org for a full API and many ideas.
 }
 ```
