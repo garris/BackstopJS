@@ -40,7 +40,11 @@ gulp.task('compare', function (done) {
     var referencePath = path.join(paths.backstop, pair.reference);
     var testPath = path.join(paths.backstop, pair.test);
 
-    resemble(referencePath).compareTo(testPath).onComplete(function (data) {
+    var compare = resemble(referencePath).compareTo(testPath);
+    if (pair.ignoreAntialiasing) {
+      compare.ignoreAntialiasing();
+    }
+    compare.onComplete(function (data) {
       var imageComparisonFailed = !data.isSameDimensions || data.misMatchPercentage > pair.misMatchThreshold;
 
       if (imageComparisonFailed) {

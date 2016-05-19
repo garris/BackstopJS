@@ -190,6 +190,7 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
               selector:o,
               fileName:fileName,
               label:scenario.label,
+              ignoreAntialiasing: scenario.ignoreAntialiasing,
               misMatchThreshold: scenario.misMatchThreshold || config.misMatchThreshold
             });
           }

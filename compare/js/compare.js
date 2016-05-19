@@ -138,7 +138,11 @@ compareApp.controller('MainCtrl', function ($scope, $route, $routeParams, $q, $h
 
     resemble.outputSettings(resembleTestConfig);
 
-    var diff = resemble(testPair.a.src).compareTo(testPair.b.src).onComplete(function(diffData){
+    var diff = resemble(testPair.a.src).compareTo(testPair.b.src)
+    if(testPair.ignoreAntialiasing) {
+      diff.ignoreAntialiasing();
+    }
+    diff.onComplete(function(diffData){
       testPair.report = JSON.stringify(diffData,null,2);
       testPair.c.src = diffData.getImageDataUrl();
       testPair.processing=false;
