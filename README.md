@@ -352,7 +352,7 @@ Inside `filename.js`, structure it like this:
 module.exports = function(casper, scenario, vp) {
   // scenario is the current scenario object being run from your backstop config
   // vp is the current viewport object being run from your backstop config
-  
+
   // Example: setting cookies
   casper.echo("Setting cookies");
   casper.then(function(){
@@ -361,17 +361,17 @@ module.exports = function(casper, scenario, vp) {
   // `casper.thenOpen()` demonstrates a redirect to the original page with your new cookie value.
   // this step is not required if used with _onBeforeScript_
   casper.thenOpen(scenario.url);
-  
+
   // Example: Adding script delays to allow for things like CSS transitions to complete.
   casper.echo( 'Clicking button' );
   casper.click( '.toggle' );
   casper.wait( 250 );
-  
+
   // Example: changing behaivior based on config values
   if (vp.name === 'phone') {
     casper.echo( 'doing stuff for just phone viewport here' );
   }
-  
+
   // ...do other cool stuff here, see Casperjs.org for a full API and many ideas.
 }
 ```
@@ -479,6 +479,27 @@ Please note: these file paths are relative to your `./node_modules/backstopjs/` 
     "casper_scripts": "../../backstop_data/scripts"
   }
 ```
+
+### Setting custom reference file names (version 1.3.0+)
+By default, BackstopJS saves its screenshots using the next file name template
+
+```
+{scenarioIndex}_{selectorIndex}_{selectorLabel}_{viewportIndex}_{viewportLabel}.png
+```
+
+You can add your own template in config file
+
+```json
+  "fileNameTemplate": "{configFile}_{scenarioIndex}_{scenarioLabel}_{selectorIndex}_{selectorLabel}_{viewportIndex}_{viewportLabel}"
+```
+
+You can also set human name for your config which will replace name (or hash) of your `configFile`
+
+```json
+  "name": "Default"
+```
+
+NB! All symbols except `0-9`, `a-Z`, `-` and `_` will be removed in reference file names.
 
 ### Changing the rendering engine (version 0.6.0+)
 BackstopJS supports using PhantomJS or SlimerJS (With thanks to CasperJS for doing the heavy lifting here.)
