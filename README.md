@@ -416,6 +416,27 @@ If you choose the CLI-only reporting you can always enter the following command 
 $ npm run openReport
 ```
 
+#### Test report integration with a build system like Jenkins/Travis
+
+The following config would enable the CI - report (*default: junit format*)
+
+```json
+"report" : [ "CLI" ,  "CI" ],
+```
+
+The regression test report will be generated in the JUnit format and the report will be placed in the given directory (*default: [backstopjs dir]/test/ci_report/xunit.xml*).
+
+You may customize the testsuite name and/or a report file (xunit.xml) path to your build report directory by using the below configuration overrides,
+
+```json
+"paths": {
+       "ci_report" :  "../../tests/ci_report"
+},
+"ci": {
+      "format" :  "junit" ,
+      "testSuiteName" :  "backstopJS"
+},
+```
 
 ####CLI error handling
 
