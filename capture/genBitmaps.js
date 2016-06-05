@@ -28,8 +28,8 @@ var casper_scripts = config.paths.casper_scripts || null;
 var compareConfigFileName = config.paths.compare_data || 'compare/config.json';
 var viewports = config.viewports;
 var scenarios = config.scenarios||config.grabConfigs;
-var config_name = config.name || genConfigPath.hashCode();
-var fileNameTemplate = config.fileNameTemplate || "{configFile}_{scenarioIndex}_{scenarioLabel}_{selectorIndex}_{selectorLabel}_{viewportIndex}_{viewportLabel}";
+var config_name = config.name || config.configFilePath.hashCode();
+var fileNameTemplate = config.fileNameTemplate || "{scenarioIndex}_{selectorIndex}_{selectorLabel}_{viewportIndex}_{viewportLabel}";
 
 var compareConfig = {testPairs:[]};
 
@@ -140,7 +140,6 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
       });
 
       this.then(function(){
-        var that = this;
 
         this.echo('Screenshots for ' + vp.name + ' (' + (vp.width||vp.viewport.width) + 'x' + (vp.height||vp.viewport.height) + ')', 'info');
 
@@ -173,8 +172,6 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
             }
         scenario.selectors.forEach(function(o,i,a){
           var cleanedSelectorName = o.replace(/[^a-z0-9_\-]/gi,'');//remove anything that's not a letter or a number
-          //var cleanedUrl = scenario.url.replace(/[^a-zA-Z\d]/,'');//remove anything that's not a letter or a number
-          //var fileName = scenario_index + '_' + i + '_' + cleanedSelectorName + '_' + viewport_index + '_' + vp.name + '.png';
           var fileName = fileNameTemplate.replace(/\{configFile}/, config_name)
             .replace(/\{scenarioIndex}/, scenario_index)
             .replace(/\{scenarioLabel}/, scenario.label)
@@ -187,7 +184,6 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
           if (!~fileName.search(/\.png$/)) {
               fileName = fileName + ".png";
           }
-          that.echo('Using filename pattern: ' + fileName);
 
           var reference_FP  = bitmaps_reference + '/' + fileName;
           var test_FP       = bitmaps_test + '/' + screenshotDateTime + '/' + fileName;
