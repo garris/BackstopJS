@@ -1,5 +1,4 @@
 {
-  "name": "Default",
   "viewports": [
     {
       "name": "phone",
@@ -46,7 +45,6 @@
     "compare_data": "../../backstop_data/bitmaps_test/compare.json",
     "casper_scripts": "../../backstop_data/casper_scripts"
   },
-  "fileNameTemplate": "{configFile}_{scenarioIndex}_{scenarioLabel}_{selectorIndex}_{selectorLabel}_{viewportIndex}_{viewportLabel}",
   "engine": "phantomjs",
   "report": ["CLI", "browser"],
   "casperFlags": [],
