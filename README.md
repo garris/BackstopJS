@@ -430,7 +430,7 @@ You may customize the testsuite name and/or a report file (xunit.xml) path to yo
 
 ```json
 "paths": {
-       "ci_report" :  "../../tests/ci_report"
+       "ci_report" :  "../../backstop_data/ci_report"
 },
 "ci": {
       "format" :  "junit" ,
