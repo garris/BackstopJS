@@ -170,7 +170,7 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
           var filePath      = (isReference)?reference_FP:test_FP;
 
 
-          if(o === "body:noclip" || o === "viewport") {
+          if(o === "body:noclip" || o === "document") {
             casper.capture(filePath);
           } else if (casper.exists(o)) {
             if (casper.visible(o)) {
