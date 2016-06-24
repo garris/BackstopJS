@@ -218,6 +218,7 @@ This task will create a new set of bitmaps in `bitmaps_test/<timestamp>/`
 
 Once the test bitmaps are generated, a report comparing the most recent test bitmaps against the current reference bitmaps will run. Significant differences will be detected and shown.
 
+For change mismatch threshold set `misMatchThreshold` property in config file. *Note: it is equal 1 precent by default.*
 
 
 ### Testing SPAs and AJAX content
