@@ -574,6 +574,11 @@ From `./node_modules/backstopjs` ...
 $ npm run echo
 ```
 
+#### Body capture is clipped  
+
+Some stylesheets include a `height:100%` rule on the `<body>` element. When you use the `body` selector in this scenario, the resulting image will be clipped to the viewport. A special `body:noclip` selector is availble to force casper to use `casper.capture()` instead of `casper.captureSelector()`. Simply replace any `body` selectors in your scenarios config with `body:noclip` and this should ensure that the entire document is captured.
+
+
 ### Running the report server
 
 The test comparison report was written in Angular.js and requires a running HTTP server instance.  This instance is auto-started after a test is run.  The server is also auto-stopped after 15 minutes so you don't have to go worrying about node processes running all over the place.
