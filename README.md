@@ -305,6 +305,21 @@ There may also be elements which need to be completely removed during testing. F
 ]
 ```
 
+### Capturing the entire viewport
+There is a magic selector called `viewport`.  Use it to capture the entire page (regardless of the height specified in your `viewports` object)...
+```js
+  "scenarios": [
+    {
+      "selectors": [
+        "viewport",
+        ...
+      ],
+       ...
+    }
+```
+
+
+
 ### Grabbing screens from different environments
 Comparing against different environments is easy. (e.g. compare a production environment against a staging environment).
 
@@ -574,9 +589,9 @@ From `./node_modules/backstopjs` ...
 $ npm run echo
 ```
 
-#### Body capture is clipped  
+<!-- #### Body capture is clipped
 
-Some stylesheets include a `height:100%` rule on the `<body>` element. When you use the `body` selector in this scenario, the resulting image will be clipped to the viewport. A special `body:noclip` selector is availble to force casper to use `casper.capture()` instead of `casper.captureSelector()`. Simply replace any `body` selectors in your scenarios config with `body:noclip` and this should ensure that the entire document is captured.
+Some stylesheets include a `height:100%` rule on the `<body>` element. When you use the `body` selector in this scenario, the resulting image will be clipped to the viewport. A special `body:noclip` selector is availble to force casper to use `casper.capture()` instead of `casper.captureSelector()`. Simply replace any `body` selectors in your scenarios config with `body:noclip` and this should ensure that the entire document is captured. -->
 
 
 ### Running the report server
