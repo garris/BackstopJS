@@ -305,13 +305,13 @@ There may also be elements which need to be completely removed during testing. F
 ]
 ```
 
-### Capturing the entire viewport
-There is a magic selector called `viewport`.  Use it to capture the entire page (regardless of the height specified in your `viewports` object)...
+### Capturing the entire document
+There is a magic selector called `document`.  Use it to capture the entire document (regardless of the height specified in your `viewports` object)...
 ```js
   "scenarios": [
     {
       "selectors": [
-        "viewport",
+        "document",
         ...
       ],
        ...
