@@ -8,7 +8,7 @@ var junitWriter = new (require('junitwriter'))();
 
 gulp.task('compare', function (done) {
     var compareConfig = JSON.parse(fs.readFileSync(paths.compareConfigFileName, 'utf8')).compareConfig,
-    testSuite = paths.report && paths.report.indexOf( 'CI' ) > -1 && paths.ciReport.format === 'junit' && junitWriter.addTestsuite(paths.ci.testSuiteName),
+    testSuite = paths.report && paths.report.indexOf( 'CI' ) > -1 && paths.ciReport.format === 'junit' && junitWriter.addTestsuite(paths.ciReport.testSuiteName),
     testPairsLength;
 
     function updateProgress() {
