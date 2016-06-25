@@ -14,16 +14,6 @@ BackstopJS automates CSS regression testing of your responsive web UI by compari
 ## News
 
 
-### Version 1.2.0 available now
-[Please file questions, comments or issues here](https://github.com/garris/BackstopJS/issues).
-
-**Version 1.1 includes reliability fixes plus a handful of improvements to close out the original roadmap.**
-- Simplified installation -- just `npm install backstopjs` and you're ready to go!
-- All `Gulp` commands have been migrated to `npm run <command>` format for better compatibility!
-- now add logic and comments to your configs (optional JS based configs)
-- plays nice with other local services (change the BackstopJS port)
-
-
 <!--
 To try the new feature, install the beta version...
 $ npm install garris/backstopjs#master
@@ -33,6 +23,19 @@ $ npm install garris/backstopjs#master
 
 
 
+### Version 1.3.2 available now
+[Please file questions, comments or issues here](https://github.com/garris/BackstopJS/issues).
+
+**Version 1.3.2 adds CI Integration with junit reports and some nice to haves...**
+- take screenshots of your entire document
+- React app integration [check out the example](https://github.com/garris/BackstopJS/tree/master/test/simpleReactApp).
+
+
+####Version 1.1 includes reliability fixes plus a handful of improvements to close out the original roadmap.
+- Simplified installation -- just `npm install backstopjs` and you're ready to go!
+- All `Gulp` commands have been migrated to `npm run <command>` format for better compatibility!
+- now add logic and comments to your configs (optional JS based configs)
+- plays nice with other local services (change the BackstopJS port)
 
 ####Version 0.9.0
 - Plays nice with multiple config files (setting the config file path)
@@ -50,7 +53,9 @@ $ npm install garris/backstopjs#master
 
 
 
-## Tutorials and Related Links
+## Tutorials and Commentary
+
+- A lovely article on [Making Visual Regression Useful](https://medium.com/@philgourley/making-visual-regression-useful-acfae27e5031#.y3mw9tnxt) by [Phillip Gourley](https://medium.com/@philgourley?source=post_header_lockup)
 
 - Visual regression testing article on [css-tricks.com](http://css-tricks.com/automating-css-regression-testing/)
 
@@ -87,6 +92,7 @@ BackstopJS was created by [Garris Shipon](expanded.me) during the [Art.com labs]
 ...
 
 ## Many many thanks to [all the contributors](https://github.com/garris/BackstopJS/graphs/contributors) with special thanks to...
+- [Shuresh KM](https://github.com/garris/BackstopJS/commits/master?author=nobso) for help on the 1.3.2 release
 - [Klaus Bayrhammer](https://github.com/klausbayrhammer) for all the incredible effort leading up to 1.0 -- the cli reports and compatibility fixes are awesome!
 - [Evan Lovely](https://github.com/EvanLovely) and [Klaus Bayrhammer](https://github.com/klausbayrhammer) for help on the 0.9.0 release
 - [Robert O'Rourke](https://github.com/sanchothefat) for help on the 0.8.0 release
@@ -305,10 +311,8 @@ There may also be elements which need to be completely removed during testing. F
 ]
 ```
 
-### Capturing the entire document (this is an experimental feature)
-There is a magic selector called `document`.  Use it to capture the entire document (regardless of the height specified in your `viewports` object).
-
-_Note: This is requred only if you have `height:100%` rule specified on the `<body>` element._
+### Capturing the entire document
+BackstopJS recognizes a magic selector called `document`.  Use it to capture your entire HTML document (regardless of the height specified in your `viewports` object).
 
 ```js
   "scenarios": [
@@ -320,6 +324,7 @@ _Note: This is requred only if you have `height:100%` rule specified on the `<bo
        ...
     }
 ```
+_Note: This is requred if you want to test an entire document layout with a `height: 100%` rule specified on the `<body>` element._
 
 
 
