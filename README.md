@@ -305,8 +305,11 @@ There may also be elements which need to be completely removed during testing. F
 ]
 ```
 
-### Capturing the entire document
-There is a magic selector called `document`.  Use it to capture the entire document (regardless of the height specified in your `viewports` object)...
+### Capturing the entire document (this is an experimental feature)
+There is a magic selector called `document`.  Use it to capture the entire document (regardless of the height specified in your `viewports` object).
+
+_Note: This is requred only if you have `height:100%` rule specified on the `<body>` element._
+
 ```js
   "scenarios": [
     {
