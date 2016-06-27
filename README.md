@@ -26,7 +26,7 @@ $ npm install garris/backstopjs#master
 ### Version 1.3.2 available now
 [Please file questions, comments or issues here](https://github.com/garris/BackstopJS/issues).
 
-####Version 1.3.2 adds CI Integration with junit reports and some nice to haves...**
+####Version 1.3.2 adds CI Integration with junit reports and some nice to haves
 - take screenshots of your entire document
 - React app integration [check out the example](https://github.com/garris/BackstopJS/tree/master/test/simpleReactApp).
 
