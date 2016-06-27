@@ -66,11 +66,8 @@ gulp.task('compare', function (done) {
                 error = 'Design deviation ›› ' + pair.label + ' (' + pair.selector + ') component';
                 testCase.addError(error, 'CSS component');
                 testCase.addFailure(error, 'CSS component');
-            }
-
-            if (testSuite && testPairsLength === key + 1) {
                 junitWriter.save(path.join(paths.ci_report, 'xunit.xml'), function() {
-                    console.log('\x1b[32m', 'Regression test report file (xunit.xml) is successfully created.', '\x1b[0m');
+                  console.log('\x1b[32m', 'Regression test report file (xunit.xml) is successfully created.', '\x1b[0m');
                 });
             }
 
