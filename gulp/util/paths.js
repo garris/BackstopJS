@@ -7,6 +7,10 @@ var defaultConfigPath = '../../backstop.json';
 
 var paths = {};
 paths.portNumber = defaultPort;
+paths.ci = {
+    format: 'junit',
+    testSuiteName: 'BackstopJS'
+};
 
 // BACKSTOP MODULE PATH
 paths.backstop                      = path.join(__dirname, '../..');
@@ -29,6 +33,9 @@ paths.backstopConfigFileName = getBackstopConfigFileName();
 // BITMAPS PATHS -- note: this path is overwritten if config files exist.  see below.
 paths.bitmaps_reference             = paths.backstop + '/bitmaps_reference';
 paths.bitmaps_test                  = paths.backstop + '/bitmaps_test';
+
+// Continuous Integration (CI) report
+paths.ci_report                     = paths.backstop + '/ci_report';
 
 // COMPARE PATHS -- note: compareConfigFileName is overwritten if config files exist.  see below.
 paths.comparePath                   = paths.backstop + '/compare';
@@ -66,12 +73,14 @@ if(fs.existsSync(paths.activeCaptureConfigPath)){
     paths.bitmaps_test = config.paths.bitmaps_test || paths.bitmaps_test;
     paths.compareConfigFileName = config.paths.compare_data || paths.compareConfigFileName;
     paths.casper_scripts = config.paths.casper_scripts || null;
+    paths.ci_report = config.paths.ci_report || paths.ci_report;
   }
 
   paths.portNumber = config.port || defaultPort;
   paths.casperFlags = config.casperFlags || null;
   paths.engine = config.engine || null;
   paths.report = config.report || null;
+  paths.ciReport = config.ci || paths.ci;
 }
 
 paths.compareReportURL = 'http://localhost:' + paths.portNumber + '/compare/';

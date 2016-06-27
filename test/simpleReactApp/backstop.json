@@ -18,22 +18,16 @@
   ],
   "scenarios": [
     {
-      "label": "My Homepage",
-      "url": "http://getbootstrap.com",
+      "label": "a react app",
+      "url": "../../index.html",
       "hideSelectors": [],
       "removeSelectors": [
-        "#carbonads"
       ],
       "selectors": [
-        "header",
-        "main",
-        "body .bs-docs-featurette:nth-of-type(1)",
-        "body .bs-docs-featurette:nth-of-type(2)",
-        "footer",
-        "body"
+        "#main"
       ],
-      "readyEvent": null,
-      "delay": 500,
+      "readyEvent": "backstopjs_componentDidMount",
+      "delay": 100,
       "misMatchThreshold" : 0.1,
       "onBeforeScript": "onBefore.js",
       "onReadyScript": "onReady.js"
@@ -47,6 +41,7 @@
   },
   "engine": "phantomjs",
   "report": ["CLI", "browser"],
+  "cliExitOnFail": false,
   "casperFlags": [],
   "debug": false,
   "port": 3001

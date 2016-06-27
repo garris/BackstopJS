@@ -171,6 +171,7 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
 
           var filePath      = (isReference)?reference_FP:test_FP;
 
+
           
           casper.waitFor(function(){
             if (onSelectorScript) {
@@ -179,9 +180,12 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
               return true;
             }
           }, function(){
-            if (casper.exists(o)) {
+            
+            if(o === "body:noclip" || o === "document") {
+              casper.capture(filePath);
+            } else if (casper.exists(o)) {
               if (casper.visible(o)) {
-                  casper.captureSelector(filePath, o);  
+                casper.captureSelector(filePath, o);
               } else {
                 var assetData = fs.read(hiddenSelectorPath, 'b');
                 fs.write(filePath, assetData, 'b');
