@@ -37,7 +37,10 @@ gulp.task('compare', function (done) {
 
     _.each(compareConfig.testPairs, function (pair, key) {
         pair.testStatus = "running";
-        testPairsLength = !testPairsLength && compareConfig.testPairs.length;
+
+        if (!testPairsLength) {
+            testPairsLength = Object.keys(compareConfig.testPairs).length;
+        }
 
 
         var referencePath = path.join(paths.backstop, pair.reference);
