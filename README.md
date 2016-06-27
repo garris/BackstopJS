@@ -26,12 +26,13 @@ $ npm install garris/backstopjs#master
 ### Version 1.3.2 available now
 [Please file questions, comments or issues here](https://github.com/garris/BackstopJS/issues).
 
-**Version 1.3.2 adds CI Integration with junit reports and some nice to haves...**
+####Version 1.3.2 adds CI Integration with junit reports and some nice to haves...**
 - take screenshots of your entire document
 - React app integration [check out the example](https://github.com/garris/BackstopJS/tree/master/test/simpleReactApp).
 
 
-####Version 1.1 includes reliability fixes plus a handful of improvements to close out the original roadmap.
+####Version 1.1
+- reliability fixes plus a handful of improvements to close out the original roadmap.
 - Simplified installation -- just `npm install backstopjs` and you're ready to go!
 - All `Gulp` commands have been migrated to `npm run <command>` format for better compatibility!
 - now add logic and comments to your configs (optional JS based configs)
@@ -66,45 +67,15 @@ $ npm install garris/backstopjs#master
 - *Grunt fans* -- check out [grunt-backstop](https://github.com/ddluc/grunt-backstop) and this [very nicely written article by Joe Watkins](http://joe-watkins.io/css-visual-regression-testing-with-grunt-backstopjs/)
 
 
-BackstopJS brochure at [http://BackstopJS.org/](http://garris.github.io/BackstopJS/).
+- BackstopJS brochure at [http://BackstopJS.org/](http://garris.github.io/BackstopJS/).
 
-
-
-##Heres how it works:
+## The BackstopJS workflow
 
 1. Set up a test config file: specify screen sizes and DOM selectors.
 2. Use BackstopJS to create reference screenshots.
 3. Make some changes to your CSS or add new DOM components.
 4. Run a test. BackstopJS creates a set of *test* screenshots and compares them with the *reference screenshots* you made in step 2 above. Any unwanted/unforeseen changes show up in a nice report.
 
-
-##Backstory:
-BackstopJS is a useful wrapper around the very fabulous [Resemble.js](https://github.com/Huddle/Resemble.js) component written by [James Cryer](https://github.com/jamescryer). Other implementations of Resemble.js, namely [PhantomCSS](https://github.com/Huddle/PhantomCSS) require writing long form [CasperJS](http://casperjs.org) tests -- which is of course great for testing complex UI interactions –- but kind of cumbersome for more simple applications like static CMS templates or lots and lots of app states at different screen sizes.
-
-BackstopJS may be just the thing if you develop custom WordPress, Drupal or other CMS templates.  Tested on OSX.
-
-BackstopJS was created by [Garris Shipon](expanded.me) during the [Art.com labs](www.art.com) years.
-
-<strong><a href="https://twitter.com/garris" class="twitter-follow-button" data-show-count="false">Follow @garris</a></strong>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
-
-...
-
-## Many many thanks to [all the contributors](https://github.com/garris/BackstopJS/graphs/contributors) with special thanks to...
-- [Shuresh KM](https://github.com/garris/BackstopJS/commits/master?author=nobso) for help on the 1.3.2 release
-- [Klaus Bayrhammer](https://github.com/klausbayrhammer) for all the incredible effort leading up to 1.0 -- the cli reports and compatibility fixes are awesome!
-- [Evan Lovely](https://github.com/EvanLovely) and [Klaus Bayrhammer](https://github.com/klausbayrhammer) for help on the 0.9.0 release
-- [Robert O'Rourke](https://github.com/sanchothefat) for help on the 0.8.0 release
-- [Klaus Bayrhammer](https://github.com/klausbayrhammer) for help on the 0.7.0 release
-- [Benedikt Rötsch](https://github.com/axe312ger) for help on the 0.6.0 release
-- [Yulia Tsareva](https://github.com/YuliaTsareva) for help on the 0.5.0 release
-- [Lewis Nyman](https://github.com/lewisnyman) and [Stoutie](https://github.com/jehoshua02) for help with 0.4.0 release -- you guys are responsible for really getting the ball rolling!
-
-BackstopJS uses icons from [the Noun Project](http://thenounproject.com/)
-
-* [Tag](https://thenounproject.com/term/tag/164558/) by  [Straw Dog Design](https://thenounproject.com/StrawDogDesign)
-* [Hidden](https://thenounproject.com/term/hidden/63405/) by [Roberto Chiaveri](https://thenounproject.com/robertochiaveri/)
 
 ---
 
@@ -620,6 +591,34 @@ To manually stop the server, from `./node_modules/backstopjs` ...
 $ npm run stop
 ```
 
+---
+
+##Backstory:
+BackstopJS is a useful wrapper around the very fabulous [Resemble.js](https://github.com/Huddle/Resemble.js) component written by [James Cryer](https://github.com/jamescryer). Other implementations of Resemble.js, namely [PhantomCSS](https://github.com/Huddle/PhantomCSS) require writing long form [CasperJS](http://casperjs.org) tests -- which is of course great for testing complex UI interactions –- but kind of cumbersome for more simple applications like static CMS templates or lots and lots of app states at different screen sizes.
+
+BackstopJS may be just the thing if you develop custom WordPress, Drupal or other CMS templates.  Tested on OSX.
+
+BackstopJS was created by [Garris Shipon](expanded.me) during the [Art.com labs](www.art.com) years.
+
+<strong><a href="https://twitter.com/garris" class="twitter-follow-button" data-show-count="false">Follow @garris</a></strong>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 
 
-**fin.**
+...
+
+## Many many thanks to [all the contributors](https://github.com/garris/BackstopJS/graphs/contributors) with special thanks to...
+- [Shuresh KM](https://github.com/garris/BackstopJS/commits/master?author=nobso) for help on the 1.3.2 release
+- [Klaus Bayrhammer](https://github.com/klausbayrhammer) for all the incredible effort leading up to 1.0 -- the cli reports and compatibility fixes are awesome!
+- [Evan Lovely](https://github.com/EvanLovely) and [Klaus Bayrhammer](https://github.com/klausbayrhammer) for help on the 0.9.0 release
+- [Robert O'Rourke](https://github.com/sanchothefat) for help on the 0.8.0 release
+- [Klaus Bayrhammer](https://github.com/klausbayrhammer) for help on the 0.7.0 release
+- [Benedikt Rötsch](https://github.com/axe312ger) for help on the 0.6.0 release
+- [Yulia Tsareva](https://github.com/YuliaTsareva) for help on the 0.5.0 release
+- [Lewis Nyman](https://github.com/lewisnyman) and [Stoutie](https://github.com/jehoshua02) for help with 0.4.0 release -- you guys are responsible for really getting the ball rolling!
+
+BackstopJS uses icons from [the Noun Project](http://thenounproject.com/)
+
+* [Tag](https://thenounproject.com/term/tag/164558/) by  [Straw Dog Design](https://thenounproject.com/StrawDogDesign)
+* [Hidden](https://thenounproject.com/term/hidden/63405/) by [Roberto Chiaveri](https://thenounproject.com/robertochiaveri/)
+
+---
