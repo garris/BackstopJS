@@ -150,6 +150,7 @@ The location of the `backstop.json` file as well as all resource directories can
       ],
       "readyEvent": null,
       "delay": 500,
+      "misMatchThreshold" : 0.1,
       "onReadyScript": null,
       "onBeforeScript": null
     }
