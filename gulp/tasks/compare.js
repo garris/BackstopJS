@@ -60,12 +60,13 @@ gulp.task('compare', function (done) {
                 console.log('\x1b[32m', 'OK:', pair.label, pair.fileName, '\x1b[0m');
             }
 
-            // add testcase only when there is a design deviation
-            if (testSuite && imageComparisonFailed) {
+            if (testSuite) {
                 testCase = testSuite.addTestcase(' ›› ' + pair.label, pair.selector);
-                error = 'Design deviation ›› ' + pair.label + ' (' + pair.selector + ') component';
-                testCase.addError(error, 'CSS component');
-                testCase.addFailure(error, 'CSS component');
+                if(imageComparisonFailed) {
+                    error = 'Design deviation ›› ' + pair.label + ' (' + pair.selector + ') component';
+                    testCase.addError(error, 'CSS component');
+                    testCase.addFailure(error, 'CSS component');
+                }
             }
 
             if (testSuite && testPairsLength === key + 1) {
