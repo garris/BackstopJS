@@ -283,6 +283,10 @@ There may also be elements which need to be completely removed during testing. F
 ]
 ```
 
+### Changing test sensitivity
+`"misMatchThreshold"` will change the amount of difference BackstopJS will tollerate before marking a test screenshot as "failed".  The default setting is `0.1`, this may need to be increased as the dimentions of your screenshot increases.
+
+
 ### Capturing the entire document
 BackstopJS recognizes a magic selector called `document`.  Use it to capture your entire HTML document (regardless of the height specified in your `viewports` object).
 
