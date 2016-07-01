@@ -24,6 +24,13 @@ gulp.task('compare', function (done) {
             console.log ('\x1b[32m', (results.pass || 0) + ' Passed', '\x1b[0m');
             console.log ('\x1b[31m', (results.fail || 0) + ' Failed\n', '\x1b[0m');
 
+            // if the test report is enabled in the config
+            if (testSuite) {
+                junitWriter.save(path.join(paths.ci_report, 'xunit.xml'), function() {
+                    console.log('\x1b[32m', 'Regression test report file (xunit.xml) is successfully created.', '\x1b[0m');
+                });
+            }
+
             if (results.fail) {
                 console.log ('\x1b[31m', '*** Mismatch errors found ***', '\x1b[0m');
                 console.log ("For a detailed report run `npm run openReport`\n");
@@ -33,7 +40,7 @@ gulp.task('compare', function (done) {
     }
 
 
-    _.each(compareConfig.testPairs, function (pair, key) {
+    _.each(compareConfig.testPairs, function (pair) {
         pair.testStatus = "running";
 
         if (!testPairsLength) {
@@ -65,12 +72,6 @@ gulp.task('compare', function (done) {
                     testCase.addError(error, 'CSS component');
                     testCase.addFailure(error, 'CSS component');
                 }
-            }
-
-            if (testSuite && testPairsLength === key + 1) {
-                junitWriter.save(path.join(paths.ci_report, 'xunit.xml'), function() {
-                    console.log('\x1b[32m', 'Regression test report file (xunit.xml) is successfully created.', '\x1b[0m');
-                });
             }
 
             updateProgress();
