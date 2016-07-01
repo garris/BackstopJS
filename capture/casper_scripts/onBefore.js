@@ -6,10 +6,12 @@ module.exports = function(casper, scenario, vp) {
 
 // // EXAMPLE: LOGIN BEFORE RUNNING TESTS
 // module.exports = function(casper, scenario, vp) {
-//   casper.thenOpen('http://127.0.0.1:8000/accounts/login/', function(){
-//       this.fill('form#loginForm',{
-//           'username': 'name',
-//           'password': 'pass'
-//       }, true);
+//   casper.thenOpen(scenario.url, function(){
+//      if (this.exists('form#user-login-form')) {
+//        this.fill('form#loginForm',{
+//           'username': 'test',
+//           'password': 'changeme'
+//        }, true);
+//      }
 //   });
 // };

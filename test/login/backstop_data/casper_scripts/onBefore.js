@@ -8,10 +8,12 @@ module.exports = function(casper, scenario, vp) {
 
   if (vp.name === "phone") {
     casper.thenOpen(logInObj.url);
-    casper.wait(pause_time);// TODO: this should be wait-for-selector
+    casper.wait(pause_time);// TODO: this should be wait-for-selector with continue on timeout
     casper.then(function() {
-      this.echo("AUTHENTICATING", 'INFO');
-      this.fill(logInObj.form_id, logInObj.creds, true);
+      if (casper.exists(logInObj.form_id)) {
+        this.echo("AUTHENTICATING", 'INFO');
+        this.fill(logInObj.form_id, logInObj.creds, true);
+      }
     });
     casper.wait(pause_time);
   }
