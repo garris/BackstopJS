@@ -237,28 +237,6 @@ In the following case, BackstopJS would wait for one second after the string `ba
 }
 ```
 
-<!--
-####set HTTP cookie for login-required pages
-
-The `cookiesJsonFile` property enables you to add HTTP cookie for capturing login-required pages.
-
-```json
-"cookiesJsonFile": "./path/to/cookies.json"
-```
-
-The `cookiesJsonFile` file should have this format.
-
-```json
-[
-  {
-    "name": "mycookie",
-    "value": "1",
-    "domain": "localhost",
-    "path": "/"
-  }
-]
-```
- -->
 
 ### Dealing with dynamic content
 
@@ -304,7 +282,7 @@ _Note: This is requred if you want to test an entire document layout with a `hei
 
 
 
-### Grabbing screens from different environments
+### Testing across different environments
 Comparing against different environments is easy. (e.g. compare a production environment against a staging environment).
 
 To do this, add a `referenceUrl` to your scenario configuration. When running `$ npm run test` BackstopJS will use the `url` for screen grabs.  When running `$ npm run reference` BackstopJS will check for `referenceUrl` and use that if it's there. Otherwise it will use `url` for both.
@@ -501,11 +479,9 @@ Please note: these file paths are relative to your `./node_modules/backstopjs/` 
 ```
 
 ### Changing the rendering engine (version 0.6.0+)
-BackstopJS supports using PhantomJS or SlimerJS (With thanks to CasperJS for doing the heavy lifting here.)
+BackstopJS supports using PhantomJS or SlimerJS for web app rendering. (With thanks to CasperJS for doing the heavy lifting here.)
 
-PhantomJS, the default rendering engine, does not correctly interpret flexbox and web fonts -- so if you are using those things in your app you will be way more happy using SlimerJS. Here is how to do that...
-
-First, install SlimerJS. From your root directory run...
+First, be sure to have SlimerJS installed. From your root directory run...
 
 ```sh
 $ sudo npm install -g slimerjs
