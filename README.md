@@ -9,6 +9,15 @@ BackstopJS automates CSS regression testing of your responsive web UI by compari
 **Features:** Plays nice with multiple config files – Simulate user interactions with CasperJS scripts – Fast inline-CLI reports – detailed in-browser reports – CI Integration with junit reports – Test html5 elements like webfonts and flexbox – also plays nice with source control.
 
 
+## The BackstopJS workflow
+
+1. Set up a test config file: specify screen sizes and DOM selectors.
+2. Use BackstopJS to create reference screenshots.
+3. Make some changes to your CSS or add new DOM components.
+4. Run a test. BackstopJS creates a set of *test* screenshots and compares them with the *reference screenshots* you made in step 2 above. Any unwanted/unforeseen changes show up in a nice report.
+
+
+
 
 ## Tutorials and Commentary
 
@@ -25,15 +34,7 @@ BackstopJS automates CSS regression testing of your responsive web UI by compari
 
 - BackstopJS brochure at [http://BackstopJS.org/](http://garris.github.io/BackstopJS/).
 
-## The BackstopJS workflow
 
-1. Set up a test config file: specify screen sizes and DOM selectors.
-2. Use BackstopJS to create reference screenshots.
-3. Make some changes to your CSS or add new DOM components.
-4. Run a test. BackstopJS creates a set of *test* screenshots and compares them with the *reference screenshots* you made in step 2 above. Any unwanted/unforeseen changes show up in a nice report.
-
-
----
 
 ##Installation
 
