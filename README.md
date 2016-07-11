@@ -362,12 +362,13 @@ The regression test report will be generated in the JUnit format and the report 
 
 You may customize the testsuite name and/or a report file (xunit.xml) path to your build report directory by using the below configuration overrides,
 
-```json
+```js
 "paths": {
        "ci_report" :  "../../backstop_data/ci_report"
 },
 "ci": {
       "format" :  "junit" ,
+      "testReportFileName": "myproject-xunit", // in case if you want to override the default filename (xunit.xml)
       "testSuiteName" :  "backstopJS"
 },
 ```
@@ -591,7 +592,7 @@ BackstopJS was created by [Garris Shipon](expanded.me) during the [Art.com labs]
 ...
 
 ## Many many thanks to [all the contributors](https://github.com/garris/BackstopJS/graphs/contributors) with special thanks to...
-- [Shuresh KM](https://github.com/garris/BackstopJS/commits/master?author=nobso) for help on the 1.3.2 release
+- [Suresh Kumar. M](https://github.com/garris/BackstopJS/commits/master?author=nobso) for help on the 1.3.2 release
 - [Klaus Bayrhammer](https://github.com/klausbayrhammer) for all the incredible effort leading up to 1.0 -- the cli reports and compatibility fixes are awesome!
 - [Evan Lovely](https://github.com/EvanLovely) and [Klaus Bayrhammer](https://github.com/klausbayrhammer) for help on the 0.9.0 release
 - [Robert O'Rourke](https://github.com/sanchothefat) for help on the 0.8.0 release

@@ -9,6 +9,7 @@ var paths = {};
 paths.portNumber = defaultPort;
 paths.ci = {
     format: 'junit',
+    testReportFileName: 'xunit',
     testSuiteName: 'BackstopJS'
 };
 
@@ -80,7 +81,11 @@ if(fs.existsSync(paths.activeCaptureConfigPath)){
   paths.casperFlags = config.casperFlags || null;
   paths.engine = config.engine || null;
   paths.report = config.report || null;
-  paths.ciReport = config.ci || paths.ci;
+  paths.ciReport = config.ci ? {
+    format: config.ci.format || paths.ci.format,
+    testReportFileName: config.ci.testReportFileName || paths.ci.testReportFileName,
+    testSuiteName: config.ci.testSuiteName || paths.ci.testSuiteName
+  } : paths.ci;
 }
 
 paths.compareReportURL = 'http://localhost:' + paths.portNumber + '/compare/';

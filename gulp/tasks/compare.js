@@ -12,7 +12,9 @@ gulp.task('compare', function (done) {
     testPairsLength;
 
     function updateProgress() {
-        var results = {};
+        var results = {},
+            testReportFileName;
+
         _.each(compareConfig.testPairs, function (pair) {
             if (!results[pair.testStatus]) {
                 results[pair.testStatus] = 0;
@@ -26,8 +28,9 @@ gulp.task('compare', function (done) {
 
             // if the test report is enabled in the config
             if (testSuite) {
-                junitWriter.save(path.join(paths.ci_report, 'xunit.xml'), function() {
-                    console.log('\x1b[32m', 'Regression test report file (xunit.xml) is successfully created.', '\x1b[0m');
+                testReportFileName = paths.ciReport.testReportFileName.replace(/(\..+)?$/, '.xml');
+                junitWriter.save(path.join(paths.ci_report, testReportFileName), function() {
+                    console.log('\x1b[32m', 'Regression test report file (' + testReportFileName + ') is successfully created.', '\x1b[0m');
                 });
             }
 
@@ -53,8 +56,8 @@ gulp.task('compare', function (done) {
 
         resemble(referencePath).compareTo(testPath).onComplete(function (data) {
             var imageComparisonFailed = !data.isSameDimensions || data.misMatchPercentage > pair.misMatchThreshold,
-            error,
-            testCase;
+                error,
+                testCase;
 
             if (imageComparisonFailed) {
                 pair.testStatus = "fail";
