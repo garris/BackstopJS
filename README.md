@@ -19,17 +19,21 @@ BackstopJS automates CSS regression testing of your responsive web UI by compari
 
 
 
-## Tutorials and Commentary
+## Tutorials, Extensions and more...
 
-- A lovely article on [Making Visual Regression Useful](https://medium.com/@philgourley/making-visual-regression-useful-acfae27e5031#.y3mw9tnxt) by [Phillip Gourley](https://medium.com/@philgourley?source=post_header_lockup)
 
-- Visual regression testing article on [css-tricks.com](http://css-tricks.com/automating-css-regression-testing/)
+- Visual regression testing tutorial [css-tricks.com](http://css-tricks.com/automating-css-regression-testing/)
+
+-  A lovely article on [Making Visual Regression Useful](https://medium.com/@philgourley/making-visual-regression-useful-acfae27e5031#.y3mw9tnxt) by [Phillip Gourley](https://medium.com/@philgourley?source=post_header_lockup)
 
 - Automated regression testing for AngularJS (and other) web-apps -- article on [DWB](http://davidwalsh.name/visual-regression-testing-angular-applications)
 
-- Want to add BackstopJS to your existing *gulp* build?  Turns out to be pretty easy – use **gulp-chug**. Learn how in this article by [Filip Bartos](http://blog.bartos.me/css-regression-testing/).
+- Want to add BackstopJS to your existing *gulp* build?  Turns out to be pretty easy – use [gulp-chug](https://github.com/robatron/gulp-chug). Learn how in this article by [Filip Bartos](http://blog.bartos.me/css-regression-testing/).
 
 - *Grunt fans* -- check out [grunt-backstop](https://github.com/ddluc/grunt-backstop) and this [very nicely written article by Joe Watkins](http://joe-watkins.io/css-visual-regression-testing-with-grunt-backstopjs/)
+
+
+- Generate a BackstopJS configuration file from sitemap.xml with [BackstopJS Scenarios Constructor](https://github.com/enzosterro/bscm/) by [Enzo Sterro](https://github.com/enzosterro)
 
 
 - BackstopJS brochure at [http://BackstopJS.org/](http://garris.github.io/BackstopJS/).
