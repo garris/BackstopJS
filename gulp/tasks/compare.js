@@ -28,7 +28,7 @@ gulp.task('compare', function (done) {
 
             // if the test report is enabled in the config
             if (testSuite) {
-                testReportFileName = paths.ciReport.testReportFileName.replace(/(\..+)?$/, '.xml');
+                testReportFileName = paths.ciReport.testReportFileName.replace(/\.xml$/, '') + ".xml";
                 junitWriter.save(path.join(paths.ci_report, testReportFileName), function() {
                     console.log('\x1b[32m', 'Regression test report file (' + testReportFileName + ') is successfully created.', '\x1b[0m');
                 });
