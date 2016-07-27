@@ -24,14 +24,8 @@ var exposedCommandNames = [
 
 /* Used to convert an array of objects {name, execute} to a unique object {[name]: execute} */
 function toObjectReducer (object, command) {
-  var commandObject = {};
-  commandObject[command.name] = command.execute;
-
-  return Object.assign(
-    {},
-    object,
-    commandObject
-  );
+  object[command.name] = command.execute;
+  return object;
 }
 
 function executeCommand (commandName, args) {

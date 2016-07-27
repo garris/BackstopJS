@@ -34,7 +34,7 @@ var padding = Object.keys(commandsDescription)
 
 function makeDescription (descriptions) {
   return Object.keys(descriptions)
-    .map((commandName) => {
+    .map(function (commandName) {
       return makeSpaces(4) + commandName + makeSpaces(2 + padding - commandName.length) + descriptions[commandName];
     })
     .join('\n');
