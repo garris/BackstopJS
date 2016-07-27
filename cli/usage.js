@@ -1,7 +1,7 @@
 var version = require('../package.json').version;
 
 var commandsDescription = {
-  genConfig: 'genConfig!!',
+  genConfig: 'Generate a configuration file for your project',
   reference: 'reference!!',
   test: 'test!!',
   bless: 'bless!!',

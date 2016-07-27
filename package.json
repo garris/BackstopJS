@@ -6,7 +6,7 @@
     "backstop": "./cli/index.js"
   },
   "scripts": {
-    "genConfig": "gulp genConfig",
+    "genConfig": "node ./cli/index.js genConfig",
     "reference": "gulp reference",
     "test": "gulp test",
     "bless": "gulp bless",
@@ -48,6 +48,7 @@
     "phantomjs-prebuilt": "^2.1.7",
     "require-dir": "^0.1.0",
     "underscore": "~1.6.0",
+    "vinyl-fs": "^2.4.3",
     "yargs": "~3.9.0"
   }
 }

@@ -13,10 +13,13 @@ var path = require('path');
 
 /* Each and every command defined, including commands used in before/after */
 var commandNames = [
+  'genScripts',
+  'genConfig'
 ];
 
 /* Commands that are only exposed to higher levels */
 var exposedCommandNames = [
+  'genConfig'
 ];
 
 /* Used to convert an array of objects {name, execute} to a unique object {[name]: execute} */
