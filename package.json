@@ -2,6 +2,9 @@
   "name": "backstopjs",
   "version": "1.3.6",
   "description": "BackstopJS: Catch CSS curveballs.",
+  "bin": {
+    "backstop": "./cli/index.js"
+  },
   "scripts": {
     "genConfig": "gulp genConfig",
     "reference": "gulp reference",
@@ -40,6 +43,7 @@
     "junitwriter" : "~0.3.1" ,
     "http-proxy": "~1.1.4",
     "is-running": "~1.0.5",
+    "minimist": "^1.2.0",
     "node-resemble-js": "0.0.4",
     "phantomjs-prebuilt": "^2.1.7",
     "require-dir": "^0.1.0",
