@@ -31,22 +31,21 @@ function toObjectReducer (object, command) {
   );
 }
 
-function executeCommand (commandName) {
+function executeCommand (commandName, args) {
   if (typeof commandName === 'string' && commands.hasOwnProperty(commandName)) {
-    commands[commandName].apply(this, arguments.slice(1));
+    commands[commandName].apply(this, args.slice(1));
   } else {
     console.log('WARN: The command "' + commandName + '" does not exist');
   }
 }
 
-function executeCommands (commandNames) {
-  if (!typeof commandNames === 'object' || typeof commandNames.length === 'undefined') {
-    console.log('WARN: The list of command names must be an array');
+function executeCommands (commandNames, args) {
+  if (!commandNames || !typeof commandNames === 'object' || typeof commandNames.forEach !== 'function') {
     return;
   }
 
   commandNames.forEach(function (commandName) {
-    executeCommand.apply(this, [commandName].concat(arguments.slice(1)));
+    executeCommand(commandName, args);
   });
 }
 
@@ -54,16 +53,16 @@ var commands = commandNames
   .map(function requireCommand (commandName) {
     return {
       name: commandName,
-      commandDefinition: require(path.join('./', commandName))
+      commandDefinition: require(path.join(__dirname, commandName))
     };
   })
   .map(function definitionToExecution (command) {
     return {
-      name: command.commandName,
-      execute: function execute () {
-        executeCommands.apply(this, [command.commandDefinition.before].concat(arguments));
-        command.commandDefinition.execute.apply(this, arguments);
-        executeCommands.apply(this, [command.commandDefinition.after].concat(arguments));
+      name: command.name,
+      execute: function execute (args) {
+        executeCommands(command.commandDefinition.before, args);
+        command.commandDefinition.execute.apply(this, args);
+        executeCommands(command.commandDefinition.after, args);
       }
     };
   })
@@ -82,9 +81,11 @@ var exposedCommands = exposedCommandNames
   .reduce(toObjectReducer, {});
 
 module.exports = function execute (commandName) {
+  var args = (arguments.length === 1 ? [arguments[0]] : Array.apply(null, arguments));
+
   if (!exposedCommands.hasOwnProperty(commandName)) {
     throw new Error('The command `' + commandName + '` is not exposed publicly.');
   }
 
-  exposedCommands[commandName].apply(this, arguments.slice(1));
+  exposedCommands[commandName](args);
 };

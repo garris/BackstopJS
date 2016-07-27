@@ -26,7 +26,7 @@ if (!commandName) {
   process.exit();
 } else {
   try {
-    commands(argsOptions['_']);
+    commands.apply(this, argsOptions['_']);
   } catch (e) {
     console.error(e.message);
     usage();
