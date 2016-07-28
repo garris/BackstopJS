@@ -25,11 +25,8 @@ if (!commandName) {
   usage();
   process.exit();
 } else {
-  try {
-    commands.apply(this, argsOptions['_']);
-  } catch (e) {
-    console.error(e.message);
-    usage();
-    process.exit();
-  }
+  commands.apply(this, argsOptions['_'])
+    .catch(function () {
+      usage();
+    });
 }

@@ -1,5 +1,7 @@
 var paths = require('../util/paths');
 var vfs = require('vinyl-fs');
+var Promise = require('es6-promise').Promise;
+var streamToPromise = require('../util/streamToPromise');
 
 /**
  * Called by genConfig.
@@ -8,10 +10,12 @@ var vfs = require('vinyl-fs');
 module.exports = {
   execute: function genScripts () {
     if (paths.casper_scripts) {
-      return vfs.src([paths.casper_scripts_default + '/*.js'])
+      var stream = vfs.src([paths.casper_scripts_default + '/*.js'])
         .pipe(vfs.dest(paths.casper_scripts));
+
+      return streamToPromise(stream);
     } else {
-      console.log('ERROR: Can\'t generate a scripts directory. No \'casper_scripts\' path property was found in backstop.json.');
+      return Promise.reject('ERROR: Can\'t generate a scripts directory. No \'casper_scripts\' path property was found in backstop.json.');
     }
   }
 };

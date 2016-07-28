@@ -1,4 +1,6 @@
 var path = require('path');
+var Promise = require('es6-promise').Promise;
+var logger = require('../util/logger')('COMMAND');
 
 /*
  * Each file included in this folder (except `index.js`) is a command and must export the following object
@@ -30,9 +32,10 @@ function toObjectReducer (object, command) {
 
 function executeCommand (commandName, args) {
   if (typeof commandName === 'string' && commands.hasOwnProperty(commandName)) {
-    commands[commandName].apply(this, args.slice(1));
+    return commands[commandName].apply(this, args.slice(1));
   } else {
-    console.log('WARN: The command "' + commandName + '" does not exist');
+    logger.warn('The command `' + commandName + '` does not exist');
+    return Promise.resolve();
   }
 }
 
@@ -41,9 +44,16 @@ function executeCommands (commandNames, args) {
     return;
   }
 
+  var result = Promise.resolve();
+
   commandNames.forEach(function (commandName) {
-    executeCommand(commandName, args);
+    result = result
+      .then(function () {
+        return executeCommand(commandName, args);
+      });
   });
+
+  return result;
 }
 
 var commands = commandNames
@@ -57,9 +67,40 @@ var commands = commandNames
     return {
       name: command.name,
       execute: function execute (args) {
-        executeCommands(command.commandDefinition.before, args);
-        command.commandDefinition.execute.apply(this, args);
-        executeCommands(command.commandDefinition.after, args);
+        return Promise.resolve()
+          .then(function () {
+            if (command.commandDefinition.before) {
+              logger.info('Executing before scripts for `' + command.name + '`');
+              return executeCommands(command.commandDefinition.before, args)
+                .then(function () {
+                  logger.info('Before scripts for `' + command.name + '` sucessfully executed');
+                });
+            }
+          })
+          .then(function () {
+            logger.info('Executing core for `' + command.name + '`');
+            return Promise.resolve()
+              .then(function () {
+                command.commandDefinition.execute.apply(this, args);
+              })
+              .catch(function (error) {
+                logger.error('Command `' + command.name + '` ended with an error');
+                logger.error(error.stack);
+                throw error;
+              });
+          })
+          .then(function () {
+            if (command.commandDefinition.after) {
+              logger.info('Executing after scripts for `' + command.name + '`');
+              return executeCommands(command.commandDefinition.after, args)
+                .then(function () {
+                  logger.info('After scripts for `' + command.name + '` sucessfully executed');
+                });
+            }
+          })
+          .then(function () {
+            logger.success('Command `' + command.name + '` sucessfully executed');
+          });
       }
     };
   })
@@ -84,5 +125,5 @@ module.exports = function execute (commandName) {
     throw new Error('The command `' + commandName + '` is not exposed publicly.');
   }
 
-  exposedCommands[commandName](args);
+  return exposedCommands[commandName](args);
 };

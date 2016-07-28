@@ -1,4 +1,5 @@
 var version = require('../package.json').version;
+var makeSpaces = require('../core/util/makeSpaces');
 
 var commandsDescription = {
   genConfig: 'Generate a configuration file for your project',
@@ -16,21 +17,15 @@ var optionsDescription = {
   '-v, --version': 'Display version'
 };
 
-function makeSpaces (length) {
-  var i = 0;
-  var result = '';
-  while (i < length) {
-    result += ' ';
-    i++;
-  }
-  return result;
-}
-
 // Number of spaces to echap before writing description
 var padding = Object.keys(commandsDescription)
   .concat(Object.keys(optionsDescription))
-  .map(function (string) { return string.length })
-  .reduce(function maxReducer (max, length) { return Math.max(max, length) }, 0);
+  .map(function (string) {
+    return string.length;
+  })
+  .reduce(function maxReducer (max, length) {
+    return Math.max(max, length);
+  }, 0);
 
 function makeDescription (descriptions) {
   return Object.keys(descriptions)
