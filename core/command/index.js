@@ -44,16 +44,14 @@ function executeCommands (commandNames, args) {
     return;
   }
 
-  var result = Promise.resolve();
-
-  commandNames.forEach(function (commandName) {
-    result = result
+  var promises = commandNames.map(function (commandName) {
+    return Promise.resolve()
       .then(function () {
         return executeCommand(commandName, args);
       });
   });
 
-  return result;
+  return Promise.all(promises);
 }
 
 var commands = commandNames
