@@ -11,12 +11,16 @@ BackstopJS automates CSS regression testing of your responsive web UI by compari
 
 ## The BackstopJS workflow
 
-1. Set up a test config file: specify screen sizes and DOM selectors.
-2. Use BackstopJS to create reference screenshots.
-3. Make some changes to your CSS or add new DOM components.
-4. Run a test. BackstopJS creates a set of *test* screenshots and compares them with the *reference screenshots* you made in step 2 above. Any unwanted/unforeseen changes show up in a nice report.
+###Set up
+  - Generate your config: specify URLs, screen sizes, DOM selectors and other key things.
+  - Use BackstopJS to create a set of *reference* screenshots. BackstopJS will consider this your *source of truth*! (You can update this whenever you want).
 
+###Then it's one, two, three on repeat...
+  1. **Make some changes** to your CSS _or_ add new components _or_ do a build _or_ push to production _or_ just wait for the display gremlins to strike...
+  2. **Trigger a test**. BackstopJS creates a set of *test* screenshots and compares them with the *reference* screenshots you made during setup above. Any unwanted/unforeseen changes show up in a nice report.
+  3. **Profit!** 🤑
 
+  
 
 
 ## Tutorials, Extensions and more...
