@@ -79,7 +79,7 @@ var commands = commandNames
             logger.info('Executing core for `' + command.name + '`');
             return Promise.resolve()
               .then(function () {
-                command.commandDefinition.execute.apply(this, args);
+                return command.commandDefinition.execute.apply(this, args);
               })
               .catch(function (error) {
                 logger.error('Command `' + command.name + '` ended with an error');
