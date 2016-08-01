@@ -1,4 +1,4 @@
-var fs = require('fs');
+var fs = require('../util/fs');
 var spawn = require('child_process').spawn;
 var isRunning = require('is-running');
 var paths = require('../util/paths');
@@ -10,36 +10,38 @@ var defaultPort = paths.portNumber || 3001;
 // IF ALREADY STARTED IT WILL NOT TRY TO START AGAIN
 module.exports = {
   execute: function (done) {
-    return new Promise(function (resolve, reject) {
-      fs.readFile(paths.serverPidFile, function (err, data) {
-        if (err) {
-          reject(err);
+    return fs.exists(paths.serverPidFile)
+      .then(function shouldServerStart (exists) {
+        if (!exists) {
+          return true;
         }
 
-        if (data) {
-          var pid = parseInt(data);
-
-          if (!isRunning(pid)) {
-            start();
-          }
-        } else {
-          start();
+        return fs.readFile(paths.serverPidFile)
+          .then(function (data) {
+            return !data || !isRunning(parseInt(data));
+          });
+      })
+      .then(function startServerIfNecessary (shouldStart) {
+        if (shouldStart) {
+          return start();
         }
-
-        setTimeout(resolve, 1000);
       });
-    });
+  }
+};
 
-    function start () {
-      var time = (Number(argv.t) === argv.t && argv.t % 1 === 0) ? argv.t : 15;
-      var port = argv.p || defaultPort;
-      var serverHook = spawn(
-        'node',
-        ['server.js', '-t', time, '-p', port],
-        {detached: true, stdio: 'ignore'}
-      );
-      serverHook.unref();
-      fs.writeFileSync(paths.serverPidFile, serverHook.pid);
+function start () {
+  var time = (Number(argv.t) === argv.t && argv.t % 1 === 0) ? argv.t : 15;
+  var port = argv.p || defaultPort;
+
+  var serverHook = spawn(
+    'node',
+    ['server.js', '-t', time, '-p', port],
+    {detached: true, stdio: 'ignore'}
+  );
+  serverHook.unref();
+
+  return fs.writeFile(paths.serverPidFile, serverHook.pid)
+    .then(function logServerPid () {
       console.log('\nServer launched in background with PID: ' + serverHook.pid);
       console.log('Listening on port: ' + port);
 
@@ -48,6 +50,5 @@ module.exports = {
       } else {
         console.log('NOTE: Sever will run until you stop it with \'npm run stop\'.\n');
       }
-    }
-  }
-};
+    });
+}

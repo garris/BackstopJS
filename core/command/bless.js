@@ -1,7 +1,7 @@
 var paths = require('../util/paths');
 var checksum = require('checksum');
 var fs = require('../util/fs');
-var updateCompareConfigs = require('../util/updateCompareConfig');
+var updateCompareConfig = require('../util/updateCompareConfig');
 
 module.exports = {
   execute: function () {
@@ -10,7 +10,7 @@ module.exports = {
       { encoding: 'utf8' }
     )
       .then(function (config) {
-        updateCompareConfigs(function (compareConfig) {
+        updateCompareConfig(function (compareConfig) {
           compareConfig.lastConfigHash = checksum(config.toString());
         });
       });

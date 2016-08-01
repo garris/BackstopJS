@@ -1,24 +1,20 @@
 var fs = require('fs');
+var promisify = require('./promisify');
 
-function promisfy (func) {
-  return function () {
-    var args = (arguments.length === 1 ? [arguments[0]] : Array.apply(null, arguments));
-    return new Promise(function (resolve, reject) {
-      args.push(function (err) {
-        if (err) {
-          reject(err);
-          return;
-        }
-
-        var args = (arguments.length === 1 ? [arguments[0]] : Array.apply(null, arguments));
-        resolve(args.slice(1));
+var fsPromisified = {
+  readFile: promisify(fs.readFile),
+  writeFile: promisify(fs.writeFile),
+  unlink: promisify(fs.unlink),
+  stat: promisify(fs.stat),
+  exists: function exists (file) {
+    return fsPromisified.stat(file)
+      .then(function (args) {
+        return args[0];
+      })
+      .catch(function () {
+        return false;
       });
-      func.apply(this, args);
-    });
-  };
-}
-
-module.exports = {
-  readFile: promisfy(fs.readFile),
-  writeFile: promisfy(fs.writeFile)
+  }
 };
+
+module.exports = fsPromisified;

@@ -19,7 +19,7 @@ if (argsOptions.v || argsOptions.version) {
   process.exit();
 }
 
-const commandName = argsOptions['_'][0];
+var commandName = argsOptions['_'][0];
 
 if (!commandName) {
   usage();

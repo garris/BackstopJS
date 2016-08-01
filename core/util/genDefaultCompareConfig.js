@@ -1,12 +1,12 @@
-var updateCompareConfigs = require('./updateCompareConfig');
+var updateCompareConfig = require('./updateCompareConfig');
 
 var configDefault = {
-  "testPairs": []
+  testPairs: []
 };
 
 var genDefaultCompareConfig = function () {
-  updateCompareConfigs(function(compareConfigFile) {
-    compareConfigFile.compareConfig = JSON.stringify(configDefault,null,2);
+  updateCompareConfig(function (compareConfigFile) {
+    compareConfigFile.compareConfig = JSON.stringify(configDefault, null, 2);
   });
 };
 
