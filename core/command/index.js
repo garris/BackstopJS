@@ -116,12 +116,22 @@ var exposedCommands = exposedCommandNames
   })
   .reduce(toObjectReducer, {});
 
-module.exports = function execute (commandName) {
+function execute (commandName) {
   var args = (arguments.length === 1 ? [arguments[0]] : Array.apply(null, arguments));
 
   if (!exposedCommands.hasOwnProperty(commandName)) {
-    throw new Error('The command `' + commandName + '` is not exposed publicly.');
+    if (commandName.charAt(0) === '_' && commands.hasOwnProperty(commandName.substring(1))) {
+      commandName = commandName.substring(1);
+    } else {
+      throw new Error('The command `' + commandName + '` is not exposed publicly.');
+    }
   }
 
-  return exposedCommands[commandName](args);
-};
+  return commands[commandName](args);
+}
+
+exposedCommandNames.forEach(function (commandName) {
+  execute[commandName] = exposedCommands[commandName];
+});
+
+module.exports = execute;
