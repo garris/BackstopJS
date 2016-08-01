@@ -15,13 +15,31 @@ var logger = require('../util/logger')('COMMAND');
 
 /* Each and every command defined, including commands used in before/after */
 var commandNames = [
+  'bless',
+  'clean',
+  'compare',
+  'echo',
+  'genConfig',
   'genScripts',
-  'genConfig'
+  'init',
+  'openReport',
+  'reference',
+  'report',
+  'start',
+  'stop',
+  'test'
 ];
 
 /* Commands that are only exposed to higher levels */
 var exposedCommandNames = [
-  'genConfig'
+  'genConfig',
+  'reference',
+  'test',
+  'bless',
+  'start',
+  'stop',
+  'openReport',
+  'echo'
 ];
 
 /* Used to convert an array of objects {name, execute} to a unique object {[name]: execute} */
@@ -127,11 +145,10 @@ function execute (commandName) {
     }
   }
 
-  return commands[commandName](args);
+  return commands.init(args)
+    .then(function () {
+      return commands[commandName](args);
+    });
 }
-
-exposedCommandNames.forEach(function (commandName) {
-  execute[commandName] = exposedCommands[commandName];
-});
 
 module.exports = execute;

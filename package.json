@@ -7,13 +7,13 @@
   },
   "scripts": {
     "genConfig": "node ./cli/index.js genConfig",
-    "reference": "gulp reference",
-    "test": "gulp test",
-    "bless": "gulp bless",
-    "start": "gulp start",
-    "stop": "gulp stop",
-    "openReport": "gulp openReport",
-    "echo": "gulp echo"
+    "reference": "node ./cli/index.js reference",
+    "test": "node ./cli/index.js test",
+    "bless": "node ./cli/index.js bless",
+    "start": "node ./cli/index.js start",
+    "stop": "node ./cli/index.js stop",
+    "openReport": "node ./cli/index.js openReport",
+    "echo": "node ./cli/index.js echo"
   },
   "repository": {
     "type": "git",
