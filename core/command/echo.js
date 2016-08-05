@@ -3,10 +3,10 @@ var getCasperArgs = require('../util/getCasperArgs');
 var Promise = require('es6-promise').Promise;
 
 module.exports = {
-  execute: function () {
+  execute: function (config) {
     var tests = ['capture/echoFiles.js'];
 
-    var casperArgs = getCasperArgs(tests);
+    var casperArgs = getCasperArgs(config, tests);
     console.log('\nRunning CasperJS with: ', casperArgs);
 
     var casperProcess = (process.platform === 'win32' ? 'casperjs.cmd' : 'casperjs');

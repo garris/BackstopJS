@@ -1,14 +1,17 @@
 var fs = require('../util/fs');
-var paths = require('../util/paths');
 
 module.exports = {
-  execute: function () {
-    var config = require(paths.activeCaptureConfigPath);
-
+  execute: function (config) {
     // Serialize config as JSON into capture config.
-    return fs.writeFile(
-      paths.captureConfigFileName,
-      JSON.stringify(config)
-    );
+    return fs.readFile(config.backstopConfigFileName)
+      .then(function (result) {
+        return result[0];
+      })
+      .then(function (customConfig) {
+        return fs.writeFile(
+          config.captureConfigFileName,
+          customConfig
+        );
+      });
   }
 };

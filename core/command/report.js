@@ -1,19 +1,18 @@
-var paths = require('../util/paths');
 var Promise = require('es6-promise').Promise;
 
 module.exports = {
   before: ['start'],
-  execute: function () {
+  execute: function (config) {
     var executeCommand = require('./index');
 
     var promises = [];
 
-    if (!paths.report || paths.report.indexOf('browser') > -1) {
-      promises.push(executeCommand('_openReport'));
+    if (!config.report || config.report.indexOf('browser') > -1) {
+      promises.push(executeCommand('_openReport', config, true));
     }
 
-    if (!paths.report || paths.report.indexOf('CLI') > -1) {
-      promises.push(executeCommand('_compare'));
+    if (!config.report || config.report.indexOf('CLI') > -1) {
+      promises.push(executeCommand('_compare', config, true));
     }
 
     return Promise.all(promises);

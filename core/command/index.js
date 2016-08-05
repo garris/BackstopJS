@@ -1,6 +1,7 @@
 var path = require('path');
 var Promise = require('es6-promise').Promise;
 var logger = require('../util/logger')('COMMAND');
+var makeConfig = require('../util/makeConfig');
 
 /*
  * Each file included in this folder (except `index.js`) is a command and must export the following object
@@ -48,16 +49,16 @@ function toObjectReducer (object, command) {
   return object;
 }
 
-function executeCommand (commandName, args) {
+function executeCommand (commandName, config) {
   if (typeof commandName === 'string' && commands.hasOwnProperty(commandName)) {
-    return commands[commandName].apply(this, args.slice(1));
+    return commands[commandName](config);
   } else {
     logger.warn('The command `' + commandName + '` does not exist');
     return Promise.resolve();
   }
 }
 
-function executeCommands (commandNames, args) {
+function executeCommands (commandNames, config) {
   if (!commandNames || !typeof commandNames === 'object' || typeof commandNames.forEach !== 'function') {
     return;
   }
@@ -65,7 +66,7 @@ function executeCommands (commandNames, args) {
   var promises = commandNames.map(function (commandName) {
     return Promise.resolve()
       .then(function () {
-        return executeCommand(commandName, args);
+        return executeCommand(commandName, config);
       });
   });
 
@@ -82,12 +83,12 @@ var commands = commandNames
   .map(function definitionToExecution (command) {
     return {
       name: command.name,
-      execute: function execute (args) {
+      execute: function execute (config) {
         return Promise.resolve()
           .then(function () {
             if (command.commandDefinition.before) {
               logger.info('Executing before scripts for `' + command.name + '`');
-              return executeCommands(command.commandDefinition.before, args)
+              return executeCommands(command.commandDefinition.before, config)
                 .then(function () {
                   logger.info('Before scripts for `' + command.name + '` sucessfully executed');
                 });
@@ -97,18 +98,18 @@ var commands = commandNames
             logger.info('Executing core for `' + command.name + '`');
             return Promise.resolve()
               .then(function () {
-                return command.commandDefinition.execute.apply(this, args);
+                return command.commandDefinition.execute(config);
               })
               .catch(function (error) {
                 logger.error('Command `' + command.name + '` ended with an error');
-                logger.error(error.stack);
+                logger.error(error);
                 throw error;
               });
           })
           .then(function () {
             if (command.commandDefinition.after) {
               logger.info('Executing after scripts for `' + command.name + '`');
-              return executeCommands(command.commandDefinition.after, args)
+              return executeCommands(command.commandDefinition.after, config)
                 .then(function () {
                   logger.info('After scripts for `' + command.name + '` sucessfully executed');
                 });
@@ -134,9 +135,7 @@ var exposedCommands = exposedCommandNames
   })
   .reduce(toObjectReducer, {});
 
-function execute (commandName) {
-  var args = (arguments.length === 1 ? [arguments[0]] : Array.apply(null, arguments));
-
+function execute (commandName, baseConfig, isConfigCompleted) {
   if (!exposedCommands.hasOwnProperty(commandName)) {
     if (commandName.charAt(0) === '_' && commands.hasOwnProperty(commandName.substring(1))) {
       commandName = commandName.substring(1);
@@ -145,10 +144,8 @@ function execute (commandName) {
     }
   }
 
-  return commands.init(args)
-    .then(function () {
-      return commands[commandName](args);
-    });
+  var config = isConfigCompleted ? baseConfig : makeConfig(baseConfig);
+  return commands[commandName](config);
 }
 
 module.exports = execute;

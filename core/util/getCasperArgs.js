@@ -1,16 +1,14 @@
-var paths = require('./paths');
-
-module.exports = function getCasperArgs (tests) {
+module.exports = function getCasperArgs (config, tests) {
   var args = [];
-  if (/slimer/.test(paths.engine)) {
+  if (/slimer/.test(config.engine)) {
     args = ['--engine=slimerjs'];
   }
 
-  if (paths.casperFlags) {
-    if (/--engine=/.test(paths.casperFlags.toString())) {
-      args = paths.casperFlags; // casperFlags --engine setting takes presidence -- replace if found.
+  if (config.casperFlags) {
+    if (/--engine=/.test(config.casperFlags.toString())) {
+      args = config.casperFlags; // casperFlags --engine setting takes presidence -- replace if found.
     } else {
-      args = args.concat(paths.casperFlags);
+      args = args.concat(config.casperFlags);
     }
   }
 

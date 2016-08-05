@@ -1,14 +1,16 @@
 var fs = require('../util/fs');
 var promisify = require('../util/promisify');
 var exec = promisify(require('child_process').exec);
-var paths = require('../util/paths');
 
 module.exports = {
-  execute: function () {
-    return fs.exists(paths.serverPidFile)
+  execute: function (config) {
+    return fs.exists(config.serverPidFile)
       .then(function (exists) {
         if (exists) {
-          return fs.readFile(paths.serverPidFile);
+          return fs.readFile(config.serverPidFile)
+            .then(function (pid) {
+              return pid[0];
+            });
         } else {
           return null;
         }
@@ -18,7 +20,7 @@ module.exports = {
           return exec('kill ' + pid)
             .then(function () {
               console.log('Stopped PID:' + pid);
-              return fs.unlink(paths.serverPidFile);
+              return fs.unlink(config.serverPidFile);
             });
         }
       });

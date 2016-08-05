@@ -1,14 +1,16 @@
 var fs = require('../util/fs');
 var spawn = require('child_process').spawn;
 var checksum = require('checksum');
-var paths = require('../util/paths');
 var getCasperArgs = require('../util/getCasperArgs');
 
-function getLastConfigHash () {
-  return fs.exists(paths.compareConfigFileName)
+function getLastConfigHash (config) {
+  return fs.exists(config.compareConfigFileName)
     .then(function (exists) {
       if (exists) {
-        return fs.readFile(paths.compareConfigFileName)
+        return fs.readFile(config.compareConfigFileName, {encoding: 'utf8'})
+          .then(function (config) {
+            return config[0];
+          })
           .then(function (config) {
             return config ? JSON.parse(config).lastConfigHash : false;
           });
@@ -21,13 +23,13 @@ function getLastConfigHash () {
 // This task will generate a date-named directory with DOM screenshot files as specified in `./capture/config.json` followed by running a report.
 // NOTE: If there is no bitmaps_reference directory or if the bitmaps_reference directory is empty then a new batch of reference files will be generated in the bitmaps_reference directory.  Reporting will be skipped in this case.
 module.exports = {
-  before: [],
-  execute: function () {
-    ensureTestIsGenerated()
+  before: ['init'],
+  execute: function (config) {
+    ensureTestIsGenerated(config)
       .then(function (testMode) {
         // AT THIS POINT WE ARE EITHER RUNNING IN "TEST" OR "REFERENCE" MODE
         var tests = ['capture/genBitmaps.js'];
-        var casperArgs = getCasperArgs(tests);
+        var casperArgs = getCasperArgs(config, tests);
 
         console.log('\nRunning CasperJS with: ', casperArgs);
         var casperProcess = (process.platform === 'win32' ? 'casperjs.cmd' : 'casperjs');
@@ -54,7 +56,7 @@ module.exports = {
 
             if (testMode) {
               var executeCommand = require('./index');
-              executeCommand('_report').then(function () {
+              executeCommand('_report', config, true).then(function () {
                 resolve();
               });
             } else {
@@ -68,10 +70,10 @@ module.exports = {
 };
 
 // THIS IS THE BLOCK WHICH SWITCHES US INTO "GENERATE REFERENCE" MODE.  I'D RATHER SOMETHING MORE EXPLICIT THO. LIKE AN ENV PARAMETER...
-function ensureTestIsGenerated () {
+function ensureTestIsGenerated (config) {
   var executeCommand = require('./index');
 
-  return fs.exists(paths.bitmaps_reference)
+  return fs.exists(config.bitmaps_reference)
     .then(function (testMode) {
       if (testMode) {
         return true;
@@ -81,14 +83,25 @@ function ensureTestIsGenerated () {
 
       // IF WE ARE IN TEST GENERATION MODE -- LOOK FOR CHANGES IN THE CONFIG.
       // TEST WHETHER THERE IS A CONFIG-CONFIG HASH IN THE COMPARE-CONFIG-FILE - IF IT DOESN'T CREATE A NEW ONE (It is likely a scenario where the user is testing shared reference files in a new context. e.g different dev env).
-      return getLastConfigHash()
+      return getLastConfigHash(config)
         .then(function (compareConfigLastConfigHash) {
           if (compareConfigLastConfigHash === false) {
-            return executeCommand('_bless');
+            return executeCommand('_bless', config, true);
           } else {
-            return fs.readFile(paths.activeCaptureConfigPath, 'utf8')
+            return fs.exists(config.activeCaptureConfigPath)
+              .then(function (exists) {
+                if (!exists) {
+                  throw new Error('NOPE');
+                }
+              })
+              .then(function () {
+                return fs.readFile(config.activeCaptureConfigPath, {encoding: 'utf8'})
+                  .then(function (config) {
+                    return config[0];
+                  });
+              })
               .then(function (config) {
-                if (checksum(config) !== compareConfigLastConfigHash) {
+                if (config && checksum(config) !== compareConfigLastConfigHash) {
                   console.log('\nIt looks like the reference configuration has been changed since last reference batch.');
                   console.log('Please run `$ npm run reference` to generate a fresh set of reference files');
                   console.log('or run `$ npm run bless` then `$ npm run test` to enable testing with this configuration.\n\n');

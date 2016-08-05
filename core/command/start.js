@@ -1,37 +1,34 @@
 var fs = require('../util/fs');
 var spawn = require('child_process').spawn;
 var isRunning = require('is-running');
-var paths = require('../util/paths');
 var argv = require('yargs').argv;
-
-var defaultPort = paths.portNumber || 3001;
 
 // THIS WILL START THE LOCAL WEBSERVER
 // IF ALREADY STARTED IT WILL NOT TRY TO START AGAIN
 module.exports = {
-  execute: function (done) {
-    return fs.exists(paths.serverPidFile)
+  execute: function (config) {
+    return fs.exists(config.serverPidFile)
       .then(function shouldServerStart (exists) {
         if (!exists) {
           return true;
         }
 
-        return fs.readFile(paths.serverPidFile)
+        return fs.readFile(config.serverPidFile)
           .then(function (data) {
             return !data || !isRunning(parseInt(data));
           });
       })
       .then(function startServerIfNecessary (shouldStart) {
         if (shouldStart) {
-          return start();
+          return start(config);
         }
       });
   }
 };
 
-function start () {
+function start (config) {
   var time = (Number(argv.t) === argv.t && argv.t % 1 === 0) ? argv.t : 15;
-  var port = argv.p || defaultPort;
+  var port = config.portNumber;
 
   var serverHook = spawn(
     'node',
@@ -40,7 +37,7 @@ function start () {
   );
   serverHook.unref();
 
-  return fs.writeFile(paths.serverPidFile, serverHook.pid)
+  return fs.writeFile(config.serverPidFile, serverHook.pid)
     .then(function logServerPid () {
       console.log('\nServer launched in background with PID: ' + serverHook.pid);
       console.log('Listening on port: ' + port);

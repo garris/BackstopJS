@@ -1,13 +1,12 @@
-var paths = require('./paths');
 var fsx = require('fs-extra');
 
-var updateCompareConfig = function (updateCallback) {
-  fsx.ensureFileSync(paths.compareConfigFileName);
-  var compareConfigFile = fsx.readJsonSync(paths.compareConfigFileName, {throws: false}) || {};
+var updateCompareConfig = function (config, updateCallback) {
+  fsx.ensureFileSync(config.compareConfigFileName);
+  var compareConfigFile = fsx.readJsonSync(config.compareConfigFileName, {throws: false}) || {};
   updateCallback(compareConfigFile);
 
   fsx.writeFileSync(
-    paths.compareConfigFileName,
+    config.compareConfigFileName,
     JSON.stringify(compareConfigFile, null, 2)
   );
 };

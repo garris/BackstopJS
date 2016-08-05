@@ -1,13 +1,12 @@
 var del = require('del');
-var paths = require('../util/paths');
 var genDefaultCompareConfig = require('../util/genDefaultCompareConfig');
 
 module.exports = {
-  execute: function () {
-    genDefaultCompareConfig();
+  execute: function (config) {
+    genDefaultCompareConfig(config);
 
     var promise = del(
-      [ paths.bitmaps_reference + '/**' ],
+      [ config.bitmaps_reference + '/**' ],
       { force: true }
     );
 

@@ -1,5 +1,4 @@
 var resemble = require('node-resemble-js');
-var paths = require('../util/paths');
 var fs = require('fs');
 var path = require('path');
 var _ = require('underscore');
@@ -7,18 +6,18 @@ var junitWriter = new (require('junitwriter'))();
 var streamToPromise = require('../util/streamToPromise');
 
 module.exports = {
-  execute: function () {
-    var compareConfig = JSON.parse(fs.readFileSync(paths.compareConfigFileName, 'utf8')).compareConfig;
-    var testSuite = paths.report &&
-      paths.report.indexOf('CI') > -1 &&
-      paths.ciReport.format === 'junit' &&
-      junitWriter.addTestsuite(paths.ciReport.testSuiteName);
+  execute: function (config) {
+    var compareConfig = JSON.parse(fs.readFileSync(config.compareConfigFileName, 'utf8')).compareConfig;
+    var testSuite = config.report &&
+      config.report.indexOf('CI') > -1 &&
+      config.ciReport.format === 'junit' &&
+      junitWriter.addTestsuite(config.ciReport.testSuiteName);
 
     var tests = _.map(compareConfig.testPairs, function (pair) {
       pair.testStatus = 'running';
 
-      var referencePath = path.join(paths.backstop, pair.reference);
-      var testPath = path.join(paths.backstop, pair.test);
+      var referencePath = path.join(config.backstop, pair.reference);
+      var testPath = path.join(config.backstop, pair.test);
 
       return compareImage(referencePath, testPath)
         .then(function logCompareResult (data) {
@@ -62,8 +61,8 @@ module.exports = {
 
         // if the test report is enabled in the config
         if (testSuite) {
-          testReportFileName = paths.ciReport.testReportFileName.replace(/\.xml$/, '') + '.xml';
-          junitWriter.save(path.join(paths.ci_report, testReportFileName), function () {
+          testReportFileName = config.ciReport.testReportFileName.replace(/\.xml$/, '') + '.xml';
+          junitWriter.save(path.join(config.ci_report, testReportFileName), function () {
             console.log('\x1b[32m', 'Regression test report file (' + testReportFileName + ') is successfully created.', '\x1b[0m');
           });
         }
