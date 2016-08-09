@@ -82,7 +82,7 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
 
       var onBeforeScript = scenario.onBeforeScript || config.onBeforeScript;
       if (onBeforeScript) {
-        require(getScriptPath(onBeforeScript))(casper, scenario, vp);
+        require(getScriptPath(onBeforeScript))(casper, scenario, vp, isReference);
       }
 
       this.thenOpen(url, function() {
@@ -124,7 +124,7 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
         //
         var onReadyScript = scenario.onReadyScript || config.onReadyScript;
         if (onReadyScript) {
-          require(getScriptPath(onReadyScript))(casper, scenario, vp);
+          require(getScriptPath(onReadyScript))(casper, scenario, vp, isReference);
         }
       });
 
