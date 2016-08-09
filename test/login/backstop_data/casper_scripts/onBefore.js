@@ -1,7 +1,7 @@
 var logInObj = require('../../loginObj.json');
 var pause_time = 1000;
 
-module.exports = function(casper, scenario, vp) {
+module.exports = function(casper, scenario, vp, isReference) {
   casper.evaluate(function(){
     console.log('This custom script is running inside your web app!');
   });
