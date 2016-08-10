@@ -88,6 +88,7 @@ if(fs.existsSync(paths.activeCaptureConfigPath)){
   } : paths.ci;
 }
 
-paths.compareReportURL = 'http://localhost:' + paths.portNumber + '/compare/';
+paths.domainUrl = argv.domainUrl ? (argv.domainUrl + ':') : 'http://localhost:';
+paths.compareReportURL = paths.domainUrl + paths.portNumber + '/compare/';
 
 module.exports = paths;
