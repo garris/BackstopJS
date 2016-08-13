@@ -1,12 +1,14 @@
+/* global resemble, async, angular */
+
 var compareApp = angular.module('compareApp', ['ngRoute']);
 
 
 compareApp.config( function( $routeProvider ){
   $routeProvider
-    .when( "/compare", {redirect:'/url'} )
-    .when( "/url", {action: 'url'} )
-    .when( "/file", {action:'file'} )
-    .otherwise( {action: "file"} );
+    .when( '/compare', {redirect:'/url'} )
+    .when( '/url', {action: 'url'} )
+    .when( '/file', {action:'file'} )
+    .otherwise( {action: 'file'} );
 });
 
 
@@ -34,13 +36,15 @@ compareApp.controller('MainCtrl', function ($scope, $route, $routeParams, $q, $h
   $scope.statusFilter = 'none';
 
   $scope.displayOnStatusFilter = function(o){
-    if(o.processing)return false;
+    if(o.processing){
+      return false;
+    }
     //console.log($scope.statusFilter,o)
-    if($scope.statusFilter=='all'){
+    if($scope.statusFilter==='all'){
       return true;
-    }else if($scope.statusFilter=='failed'){
+    }else if($scope.statusFilter==='failed'){
       if(!o.passed){return true;}
-    }else if($scope.statusFilter=='passed'){
+    }else if($scope.statusFilter==='passed'){
       if(o.passed){return true;}
     }else{
       return false;
@@ -61,15 +65,15 @@ compareApp.controller('MainCtrl', function ($scope, $route, $routeParams, $q, $h
     this.meta.misMatchThreshold = (o && o.misMatchThreshold && o.misMatchThreshold >= 0) ? o.misMatchThreshold : defaultMisMatchThreshold;
   };
 
-  $scope.$on("$routeChangeSuccess", function( $currentRoute, $previousRoute ){
+  $scope.$on('$routeChangeSuccess', function( $currentRoute, $previousRoute ){
     $scope.params = JSON.stringify($routeParams,null,2);
     $scope.action = $route.current.action;
 
-    if($scope.action=='url')
+    if($scope.action==='url') {
       $scope.runUrlConfig($routeParams);
-    else
+    } else {
       $scope.runFileConfig($routeParams);
-
+    }
 
   });
 
@@ -109,7 +113,9 @@ compareApp.controller('MainCtrl', function ($scope, $route, $routeParams, $q, $h
       ,1
       ,function(testPair,cb){
         $scope.compareTestPair(testPair,function(o){
-          if(o.passed)$scope.passedCount++;
+          if(o.passed){
+            $scope.passedCount++;
+          }
           $scope.testPairsCompleted++;
           $scope.testDuration = (new Date()-startTs);
           $scope.$digest();
@@ -118,10 +124,11 @@ compareApp.controller('MainCtrl', function ($scope, $route, $routeParams, $q, $h
       }
       ,function(){
         $scope.testIsRunning = false;
-        if($scope.passedCount == $scope.testPairsCompleted)
-          $scope.statusFilter='passed';
-        else
-          $scope.statusFilter='failed';
+        if($scope.passedCount === $scope.testPairsCompleted) {
+          $scope.statusFilter = 'passed';
+        } else {
+          $scope.statusFilter = 'failed';
+        }
         $scope.$digest();
       }
     );
@@ -138,12 +145,14 @@ compareApp.controller('MainCtrl', function ($scope, $route, $routeParams, $q, $h
 
     resemble.outputSettings(resembleTestConfig);
 
-    var diff = resemble(testPair.a.src).compareTo(testPair.b.src).onComplete(function(diffData){
+    resemble(testPair.a.src).compareTo(testPair.b.src).onComplete(function(diffData){
       testPair.report = JSON.stringify(diffData,null,2);
       testPair.c.src = diffData.getImageDataUrl();
       testPair.processing=false;
       testPair.passed=(diffData.isSameDimensions && diffData.misMatchPercentage<testPair.meta.misMatchThreshold)?true:false;
-      if(cb)cb(testPair);
+      if(cb) {
+        cb(testPair);
+      }
     });
   };//scope.compareTestPair()
 

@@ -1,7 +1,7 @@
 var updateCompareConfigs = require('./updateCompareConfig');
 
 var configDefault = {
-  "testPairs": []
+  'testPairs': []
 };
 
 var genDefaultCompareConfig = function () {

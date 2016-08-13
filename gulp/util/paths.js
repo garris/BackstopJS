@@ -8,9 +8,9 @@ var defaultConfigPath = '../../backstop.json';
 var paths = {};
 paths.portNumber = defaultPort;
 paths.ci = {
-    format: 'junit',
-    testReportFileName: 'xunit',
-    testSuiteName: 'BackstopJS'
+  format: 'junit',
+  testReportFileName: 'xunit',
+  testSuiteName: 'BackstopJS'
 };
 
 // BACKSTOP MODULE PATH
