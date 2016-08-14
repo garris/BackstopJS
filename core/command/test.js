@@ -1,7 +1,9 @@
 var fs = require('../util/fs');
+var path = require('path');
 var spawn = require('child_process').spawn;
 var checksum = require('checksum');
 var getCasperArgs = require('../util/getCasperArgs');
+var isWin = require('../util/isWin');
 
 function getLastConfigHash (config) {
   return fs.exists(config.compareConfigFileName)
@@ -28,15 +30,23 @@ module.exports = {
     ensureTestIsGenerated(config)
       .then(function (testMode) {
         // AT THIS POINT WE ARE EITHER RUNNING IN "TEST" OR "REFERENCE" MODE
-        var tests = ['capture/genBitmaps.js'];
+        var tests = [path.join(config.backstop, 'capture/genBitmaps.js')];
         var casperArgs = getCasperArgs(config, tests);
 
         console.log('\nRunning CasperJS with: ', casperArgs);
-        var casperProcess = (process.platform === 'win32' ? 'casperjs.cmd' : 'casperjs');
-        var casperChild = spawn(casperProcess, casperArgs);
 
+        process.env.PHANTOMJS_EXECUTABLE = path.join(config.backstop, 'node_modules/.bin/phantomjs');
+
+        var casperProcess = path.join(config.backstop, 'node_modules/.bin/casperjs') + (isWin ?  '.cmd' : '');
+        var casperChild = spawn(casperProcess , casperArgs, {cwd: config.customBackstop});
+
+        var prefix = 'CasperJS: ';
         casperChild.stdout.on('data', function (data) {
-          console.log('CasperJS:', data.toString().slice(0, -1)); // Remove \n
+          console.log(prefix, data.toString().slice(0, -1).split('\n').join('\n' + prefix)); // Remove \n
+        });
+
+        casperChild.stderr.on('data', function (data) {
+          console.error(prefix, data.toString().slice(0, -1).split('\n').join('\n' + prefix)); // Remove \n
         });
 
         return new Promise(function (resolve, reject) {
@@ -52,6 +62,7 @@ module.exports = {
             if (code !== 0) {
               console.log('\nLooks like an error occured. You may want to try running `$ npm run echo`. This will echo the requested test URL output to the console. You can check this output to verify that the file requested is indeed being received in the expected format.');
               reject(new Error('An error occured. You may want to try running `$ npm run echo`.'));
+              return;
             }
 
             if (testMode) {

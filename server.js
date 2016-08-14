@@ -14,12 +14,6 @@ app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.static(rootDir));
 
-// app.all('/app/',function(req,res){
-//  console.log(new Date());
-//  exec("gulp test",puts);
-//  res.send('ok');
-// })
-
 var listenerHook = app.listen(port);
 
 //===================

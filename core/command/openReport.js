@@ -1,54 +1,41 @@
-var vfs = require('vinyl-fs');
-var open = require('gulp-open');
+var open = require('open');
 var isWin = require('../util/isWin');
-var rename = require('gulp-rename');
-var jeditor = require('gulp-json-editor');
-var streamToPromise = require('../util/streamToPromise');
 var Promise = require('es6-promise').Promise;
-
-var referenceDir = './bitmaps_reference/';
-var testDir = './bitmaps_test/';
+var fs = require('../util/fs');
+var logger = require('../util/logger')('openReport');
 
 module.exports = {
   execute: function (config) {
-    console.log('\nTesting with ', config.compareConfigFileName);
-    console.log('Opening report -> ', config.compareReportURL + '\n');
 
-    var options = {
-      url: config.compareReportURL,
-      app: isWin ? 'chrome' : 'Google Chrome'
-    };
+    var referenceDir = config.backstop + '/compare/bitmaps_reference/';
+    var testDir = config.backstop + '/compare/bitmaps_test/';
+
+    console.log('\nTesting with ', config.compareConfigFileName);
 
     var promises = [];
 
     // cache bitmaps_reference files locally
-    promises.push(streamToPromise(
-      vfs.src(config.bitmaps_reference + '/**/*')
-        .pipe(vfs.dest(referenceDir))
-    ));
+    promises.push(fs.copyGlob(config.bitmaps_reference + '/**/*', referenceDir).then(function() { logger.log('Copied references'); }, function(err) { logger.error("Failed reference copy"); throw err;}));
 
     // cache bitmaps_test files locally
-    promises.push(streamToPromise(
-      vfs.src(config.bitmaps_test + '/**/*')
-        .pipe(vfs.dest(testDir))
-    ));
+    promises.push(fs.copyGlob(config.bitmaps_test + '/**/*', testDir).then(function() { logger.log('Copied test'); }, function(err) { logger.error("Failed test copy"); throw err; }));
 
-    promises.push(streamToPromise(
-      vfs.src(config.compareConfigFileName)
-        .pipe(jeditor(function (config) {
-          config.compareConfig.testPairs.forEach(function (item) {
-            var rFile = referenceDir + item.reference.split('/').slice(-1)[0];
-            var tFile = testDir + item.test.split('/').slice(-2).join('/');
-            item.local_reference = rFile;
-            item.local_test = tFile;
-          });
-          return JSON.stringify(config.compareConfig);
-        }))
-      .pipe(rename('compare/config.json'))
-      .pipe(vfs.dest('.'))
-      .pipe(open('', options))
-    ));
+    promises.push(new Promise(function(resolve, reject) {
+      var json = require(config.customBackstop + '/' + config.compareConfigFileName);
 
-    return Promise.all(promises);
+      //json.compareConfig.testPairs.forEach(function (item) {
+      //  var rFile = referenceDir + item.reference.split('/').slice(-1)[0];
+      //  var tFile = testDir + item.test.split('/').slice(-2).join('/');
+      //  item.local_reference = rFile;
+      //  item.local_test = tFile;
+      //});
+
+      fs.writeFile(config.backstop + '/compare/config.json', JSON.stringify(json.compareConfig, null, 2)).then(resolve, reject);
+    }).then(function() { logger.log('Copied configuration'); }, function(err) { logger.error("Failed configuration copy"); throw err; }));
+
+    return Promise.all(promises).then(function() {
+      console.log('Opening report -> ', config.compareReportURL + '\n');
+      open(config.compareReportURL, isWin ? 'chrome' : 'Google Chrome');
+    });
   }
 };

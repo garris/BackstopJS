@@ -12,14 +12,23 @@ function makeConfig (customConfig) {
   };
 
   // BACKSTOP MODULE PATH
-  config.backstop = path.join(__dirname, '../..');
-  config.customBackstop = path.join(__dirname, '../../../..');
+  config.backstop = path.join(__dirname, '../..'); // backstop module
+  config.customBackstop = process.cwd(); // running instance
 
-  config.backstopConfigFileName = customConfig.backstopConfigFileName
-    ? customConfig.backstopConfigFileName.indexOf('/') === 0
-      ? customConfig.backstopConfigFileName
-      : path.join(config.customBackstop, customConfig.backstopConfigFileName)
-    : path.join(config.customBackstop, 'backstop.json');
+  // Legacy mode, if the cwd is the backstop module
+  if (config.backstop == config.customBackstop) {
+    config.customBackstop = path.join(__dirname, '../../../..');
+  }
+
+  if (customConfig.backstopConfigFileName) {
+    if (customConfig.backstopConfigFileName.indexOf('/') === 0) {
+      config.backstopConfigFileName = customConfig.backstopConfigFileName;
+    } else {
+      config.backstopConfigFileName = path.join(config.customBackstop, customConfig.backstopConfigFileName);
+    }
+  } else {
+    config.backstopConfigFileName =  path.join(config.customBackstop, 'backstop.json');
+  }
 
   // BITMAPS PATHS -- note: this path is overwritten if config files exist.  see below.
   config.bitmaps_reference = config.customBackstop + '/backstop_data/bitmaps_reference';

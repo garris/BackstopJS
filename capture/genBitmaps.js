@@ -1,13 +1,24 @@
-
 var fs = require('fs');
+var cwd = fs.workingDirectory;
+var __dirname = null;
+var searchString = "genBitmaps.js";
+require('system').args.forEach(function(arg, i) {
+  var position = arg.length - searchString.length;
+  var lastIndex = arg.indexOf(searchString, position);
+  if (lastIndex !== -1 && lastIndex === position) {
+    __dirname = arg.replace(fs.separator + 'genBitmaps.js', '');
+  }
+});
 
-var selectorNotFoundPath = 'capture/resources/selectorNotFound_noun_164558_cc.png'
-var hiddenSelectorPath = 'capture/resources/hiddenSelector_noun_63405.png'
-var genConfigPath = 'capture/config.json'
+if (!__dirname) {
+  console.log("Could not find dirname");
+}
 
+var selectorNotFoundPath = __dirname + '/resources/selectorNotFound_noun_164558_cc.png'
+var hiddenSelectorPath = __dirname + '/resources/hiddenSelector_noun_63405.png'
+var genConfigPath = __dirname + '/config.json'; // TODO :: find a way to use that directly from the main configuration
 
-var configJSON = fs.read(genConfigPath);
-var config = JSON.parse(configJSON);
+var config = require(genConfigPath);
 if (!config.paths) {
   config.paths = {};
 }
@@ -22,8 +33,8 @@ var scenarios = config.scenarios||config.grabConfigs;
 var compareConfig = {testPairs:[]};
 
 var casper = require("casper").create({
-  // clientScripts: ["jquery.js"] // uncomment to add jQuery if you need that.
-  // TODO: if (config.debug) { add prop debug true }
+  logLevel: config.debug? "debug" : "info",
+  verbose: config.debug
 });
 
 if (config.debug) {
@@ -48,9 +59,7 @@ casper.on('resource.received', function(resource) {
   }
 });
 
-
-
-function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_test,isReference){
+function capturePageSelectors(scenarios,viewports,bitmaps_reference,bitmaps_test,isReference){
 
   var
     screenshotNow = new Date(),
@@ -176,12 +185,10 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
             if (casper.visible(o)) {
               casper.captureSelector(filePath, o);
             } else {
-              var assetData = fs.read(hiddenSelectorPath, 'b');
-              fs.write(filePath, assetData, 'b');
+              fs.write(filePath, fs.read(hiddenSelectorPath, 'b'), 'b');
             }
           } else {
-            var assetData = fs.read(selectorNotFoundPath, 'b');
-            fs.write(filePath, assetData, 'b');
+            fs.write(filePath, fs.read(selectorNotFoundPath, 'b'), 'b');
           }
 
 
@@ -218,8 +225,7 @@ if(!exists){isReference=true; console.log('CREATING NEW REFERENCE FILES')}
 
 
 capturePageSelectors(
-  'index.html'
-  ,scenarios
+  scenarios
   ,viewports
   ,bitmaps_reference
   ,bitmaps_test
@@ -264,7 +270,7 @@ function getScriptPath(scriptFilePath) {
     return;
   }
 
-  return shimRelativePath(script_path);
+  return cwd + fs.separator + script_path;
 }
 
 function ensureFileSuffix(filename, suffix) {
@@ -276,9 +282,4 @@ function ensureFileSuffix(filename, suffix) {
 // merge both strings while soft-enforcing a single slash between them
 function glueStringsWithSlash(stringA, stringB) {
   return stringA.replace(/\/$/, '') + '/' + stringB.replace(/^\//, '');
-}
-
-// require() calls are relative to this file `genBitmaps.js` (not CWD) -- therefore relative paths need shimmimg
-function shimRelativePath(path) {
-  return path.replace(/^\.\.\//, '../../../').replace(/^\.\//, '../../');
 }

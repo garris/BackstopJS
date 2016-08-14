@@ -21,7 +21,6 @@ var commandNames = [
   'compare',
   'echo',
   'genConfig',
-  'genScripts',
   'init',
   'openReport',
   'reference',

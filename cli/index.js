@@ -11,7 +11,7 @@ var argsOptions = parseArgs(process.argv.slice(2), {
   boolean: ['h', 'help', 'v', 'version'],
   string: ['config', 'port', 'p'],
   default: {
-    config: '../../backstop.json'
+    config: 'backstop.json'
   }
 });
 

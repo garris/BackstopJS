@@ -32,7 +32,7 @@ function start (config) {
 
   var serverHook = spawn(
     'node',
-    ['server.js', '-t', time, '-p', port],
+    [__dirname + '/../../server.js', '-t', time, '-p', port],
     {detached: true, stdio: 'ignore'}
   );
   serverHook.unref();

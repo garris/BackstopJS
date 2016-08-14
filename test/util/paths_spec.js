@@ -16,7 +16,7 @@ describe("setting the backstop.json location", function () {
 				return false;
 			}
 		});
-		var paths = require('../../gulp/util/paths.js');
+		var paths = require('../../core/util/paths.js');
 		assert.equal(paths.activeCaptureConfigPath, paths.captureConfigFileNameDefault);
 	});
 
@@ -32,7 +32,7 @@ describe("setting the backstop.json location", function () {
 		});
 		// Mock require(expectedBackstopPath).
 		mockery.registerMock(expectedBackstopPath, {});
-		var paths = require('../../gulp/util/paths.js');
+		var paths = require('../../core/util/paths.js');
 		assert.equal(paths.activeCaptureConfigPath, expectedBackstopPath);
 	});
 
@@ -52,7 +52,7 @@ describe("setting the backstop.json location", function () {
 		});
 		// Mock require(expectedBackstopPath).
 		mockery.registerMock(expectedBackstopPath, {});
-		var paths = require('../../gulp/util/paths.js');
+		var paths = require('../../core/util/paths.js');
 		assert.equal(paths.activeCaptureConfigPath, expectedBackstopPath);
 	});
 
@@ -72,7 +72,7 @@ describe("setting the backstop.json location", function () {
 		});
 		// Mock require(customBackstopConfigPath).
 		mockery.registerMock(customBackstopConfigPath, {});
-		var paths = require('../../gulp/util/paths.js');
+		var paths = require('../../core/util/paths.js');
 		assert.equal(paths.activeCaptureConfigPath, customBackstopConfigPath);
 	});
 
@@ -88,7 +88,7 @@ describe("setting the backstop.json location", function () {
 			}
 		});
 		try {
-			require('../../gulp/util/paths.js');
+			require('../../core/util/paths.js');
 			assert.fail();
 		} catch(err) {
 			assert.equal(err.message, 'Couldn\'t resolve backstop config file');
