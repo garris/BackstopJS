@@ -68,6 +68,11 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
 
   casper.start();
 
+  if(casper.cli.has('password') && casper.cli.has('username') ) {
+    casper.setHttpAuth(casper.cli.get('password'),casper.cli.get('username'));
+    casper.echo("Use Auth from user " + casper.cli.get('username'));
+  }
+
   casper.each(scenarios,function(casper, scenario, scenario_index){
 
     casper.each(viewports, function(casper, vp, viewport_index) {

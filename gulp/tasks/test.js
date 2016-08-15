@@ -4,6 +4,7 @@ var fsx    = require('fs-extra');
 var spawn = require('child_process').spawn;
 var paths = require('../util/paths');
 var checksum = require('checksum');
+var argv = require('yargs').argv;
 
 
 
@@ -58,6 +59,11 @@ gulp.task('test',['init'], function () {
     } else {
       args = args.concat(paths.casperFlags);
     }
+  }
+
+  if(argv.username && argv.password){
+    args.push("--username=" + argv.username);
+    args.push("--password=" + argv.password);
   }
 
   var casperArgs = tests.concat(args);
