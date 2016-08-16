@@ -1,4 +1,3 @@
-var Promise = require('es6-promise').Promise;
 var fs = require('../util/fs');
 var logger = require('../util/logger')('genConfig');
 

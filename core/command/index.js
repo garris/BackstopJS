@@ -1,5 +1,4 @@
 var path = require('path');
-var Promise = require('es6-promise').Promise;
 var logger = require('../util/logger')('COMMAND');
 var makeConfig = require('../util/makeConfig');
 
@@ -101,7 +100,7 @@ var commands = commandNames
               })
               .catch(function (error) {
                 logger.error('Command `' + command.name + '` ended with an error');
-                logger.error(error);
+                logger.error(error, error.stack);
                 throw error;
               });
           })

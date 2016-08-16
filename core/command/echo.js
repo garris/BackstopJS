@@ -1,6 +1,5 @@
 var spawn = require('child_process').spawn;
 var getCasperArgs = require('../util/getCasperArgs');
-var Promise = require('es6-promise').Promise;
 
 module.exports = {
   execute: function (config) {

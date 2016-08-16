@@ -1,6 +1,5 @@
 var open = require('open');
 var isWin = require('../util/isWin');
-var Promise = require('es6-promise').Promise;
 var fs = require('../util/fs');
 var logger = require('../util/logger')('openReport');
 

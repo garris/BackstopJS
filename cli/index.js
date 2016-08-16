@@ -15,6 +15,11 @@ var argsOptions = parseArgs(process.argv.slice(2), {
   }
 });
 
+// Catch errors from failing promises
+process.on('unhandledRejection', (error, promise) => {
+  console.error(error.stack);
+});
+
 if (argsOptions.h || argsOptions.help) {
   usage();
   process.exit();

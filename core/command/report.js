@@ -1,5 +1,3 @@
-var Promise = require('es6-promise').Promise;
-
 module.exports = {
   before: ['start'],
   execute: function (config) {

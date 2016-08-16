@@ -1,4 +1,3 @@
-var Promise = require('es6-promise').Promise;
 
 module.exports = function promisify (func) {
   return function () {

@@ -26,6 +26,10 @@ var longestTitle = 5;
 function paddedString (length, string) {
   var padding = makeSpaces(length + 3);
 
+  if (string instanceof Error) {
+    string = string.stack;
+  }
+
   var lines = string.split('\n');
   var paddedLines = lines
     .slice(1)
