@@ -26,17 +26,22 @@ if (argsOptions.v || argsOptions.version) {
 }
 
 var commandName = argsOptions['_'][0];
-var configPath = path.join(process.cwd(), argsOptions['config']);
+var configPath = path.join(process.cwd(), argsOptions['configPath']);
 
 if (!commandName) {
   usage();
   process.exit();
 } else {
   fs.readFile(configPath)
-    .then(function (buffer) {
-      return JSON.parse(buffer.toString());
+    .then(function () {
+      if (configPath.substr(-3) === ".js") {
+        return JSON.parse(JSON.stringify(require(configPath)));
+      } else {
+        return JSON.parse(buffer.toString());
+      }
     })
-    .catch(function () {
+    .catch(function (ex) {
+      console.log("Error " + ex);
       return {};
     })
     .then(function (baseConfig) {

@@ -1,4 +1,5 @@
 var path = require('path');
+var argv = require('yargs').argv;
 
 var defaultPort = 3001;
 
@@ -10,7 +11,6 @@ function makeConfig (customConfig) {
     testReportFileName: 'xunit',
     testSuiteName: 'BackstopJS'
   };
-
   // BACKSTOP MODULE PATH
   config.backstop = path.join(__dirname, '../..'); // backstop module
   config.customBackstop = process.cwd(); // running instance
@@ -20,14 +20,18 @@ function makeConfig (customConfig) {
     config.customBackstop = path.join(__dirname, '../../../..');
   }
 
-  if (customConfig.backstopConfigFileName) {
-    if (customConfig.backstopConfigFileName.indexOf('/') === 0) {
+
+  // BACKSTOP CONFIG PATH
+  var configPathArg = argv.backstopConfigFilePath || argv.configPath || null;
+  console.log(configPathArg);
+  if (configPathArg) {
+    if (configPathArg.charAt(0) === '/') {
       config.backstopConfigFileName = customConfig.backstopConfigFileName;
     } else {
-      config.backstopConfigFileName = path.join(config.customBackstop, customConfig.backstopConfigFileName);
+      config.backstopConfigFileName = path.join(config.customBackstop, configPathArg);
     }
   } else {
-    config.backstopConfigFileName =  path.join(config.customBackstop, 'backstop.json');
+    config.backstopConfigFileName = path.join(config.customBackstop, 'backstop.json');
   }
 
   // BITMAPS PATHS -- note: this path is overwritten if config files exist.  see below.
