@@ -20,7 +20,7 @@ BackstopJS automates CSS regression testing of your responsive web UI by compari
   2. **Trigger a test**. BackstopJS creates a set of *test* screenshots and compares them with the *reference* screenshots you made during setup above. Any unwanted/unforeseen changes show up in a nice report.
   3. **Profit!** 🤑
 
-  
+
 
 
 ## Tutorials, Extensions and more...
@@ -121,10 +121,10 @@ The location of the `backstop.json` file as well as all resource directories can
     }
   ],
   "paths": {
-    "bitmaps_reference": "../../backstop_data/bitmaps_reference",
-    "bitmaps_test": "../../backstop_data/bitmaps_test",
-    "compare_data": "../../backstop_data/bitmaps_test/compare.json",
-    "casper_scripts": "../../backstop_data/casper_scripts"
+    "bitmaps_reference": "backstop_data/bitmaps_reference",
+    "bitmaps_test": "backstop_data/bitmaps_test",
+    "compare_data": "backstop_data/bitmaps_test/compare.json",
+    "casper_scripts": "backstop_data/casper_scripts"
   },
   "engine": "phantomjs",
   "report": ["browser", "CLI"],
@@ -143,7 +143,7 @@ The location of the `backstop.json` file as well as all resource directories can
 ### Generating (or updating) reference bitmaps
 
 ```sh
-$ npm run reference
+$ backstop reference
 ```
 
 
@@ -154,7 +154,7 @@ This task will create a (or update an existing) `bitmaps_reference` directory wi
 ### Generating test bitmaps
 
 ```sh
-$ npm run test
+$ backstop test
 ```
 
 This task will create a new set of bitmaps in `bitmaps_test/<timestamp>/`
@@ -250,7 +250,7 @@ _Note: This is requred if you want to test an entire document layout with a `hei
 ### Testing across different environments
 Comparing against different environments is easy. (e.g. compare a production environment against a staging environment).
 
-To do this, add a `referenceUrl` to your scenario configuration. When running `$ npm run test` BackstopJS will use the `url` for screen grabs.  When running `$ npm run reference` BackstopJS will check for `referenceUrl` and use that if it's there. Otherwise it will use `url` for both.
+To do this, add a `referenceUrl` to your scenario configuration. When running `$ backstop test` BackstopJS will use the `url` for screen grabs.  When running `$ backstop reference` BackstopJS will check for `referenceUrl` and use that if it's there. Otherwise it will use `url` for both.
 
 ```js
   "scenarios": [
@@ -355,7 +355,7 @@ Using the report property in `backstop.json` enable or disable browser or server
 If you choose the CLI-only reporting you can always enter the following command to see the latest test run report in the browser.
 
 ```sh
-$ npm run openReport
+$ backstop openReport
 ```
 
 #### Test report integration with a build system like Jenkins/Travis
@@ -392,7 +392,7 @@ JSON-based configs cramping your style? Well, here's some good news -- BackstopJ
 To use a js module based config file, explicitly specify your config filepath when running a command. e.g.
 
 ```sh
-$ npm run test -- --configPath=../../backstopTests/someTest.js
+$ backstop test --configPath=../../backstopTests/someTest.js
 ```
 _Remember to add that extra `--` after the `test` command._
 _See the next section for more info on setting the config file path._
@@ -406,25 +406,25 @@ Often, users have multiple config files to test various different scenarios or e
 
 ```sh
 # example 1: run reference generation with absolute path
-$ npm run reference -- --configPath=~/backstopTests/someTest.json
+$ backstop reference --configPath=~/backstopTests/someTest.json
 # Will capture reference files using scenarios from someTest.json inside backstopTests inside your home folder.
 
 # example 2: run test with absolute path
-$ npm run test -- --configPath=~/backstopTests/someTest.json
+$ backstop test --configPath=~/backstopTests/someTest.json
 # Will run tests using scenarios from `someTest.json` inside `backstopTests` inside your home folder.
 
 # example 3: run test with relative path
-$ npm run test -- --configPath=../../backstopTests/someTest.json
+$ backstop test --configPath=../../backstopTests/someTest.json
 # Will run tests using scenarios from `someTest.json` inside `backstopTests` inside your project root folder.
 
 # example 4: run test with relative path and JS module
-$ npm run test -- --configPath=../../backstopTests/someTest.js
+$ backstop test --configPath=../../backstopTests/someTest.js
 # You can also specify your config parameters as a node module. This will import `someTest.js` from `backstopTests` inside your project root folder.
 ```
 
 NOTES:
 - all paths are relative to the location of the BackstopJS install directory _(which is either inside your project's `node_modules` or `bower_components` depending on how BackstopJS was installed)._
-- _Remember to add that extra `--` after the `npm run test` and `npm run reference` commands._
+- _Remember to add that extra `--` after the `backstop test` and `backstop reference` commands._
 
 ### Setting the bitmap and script directory paths (version 0.6.0+)
 By default, BackstopJS saves its screenshots into `./backstopjs/bitmaps_reference/` and `./backstopjs/bitmaps_test/` in parallel with your `./backstop.js` config file. The location of these directories are configurable so they can easily be moved inside or outside your source control or file sharing environment.
@@ -433,14 +433,14 @@ The `compare.json` file contains file mappings between reference and test files.
 
 If you are using custom casper_scripts -- that directory can be specified too.
 
-Please note: these file paths are relative to your `./node_modules/backstopjs/` directory.
+Please note: these file paths are relative to your current working directory.
 
 ```json
   "paths": {
-    "bitmaps_reference": "../../backstop_data/bitmaps_reference",
-    "bitmaps_test": "../../backstop_data/bitmaps_test",
-    "compare_data": "../../backstop_data/bitmaps_test/compare.json",
-    "casper_scripts": "../../backstop_data/scripts"
+    "bitmaps_reference": "backstop_data/bitmaps_reference",
+    "bitmaps_test": "backstop_data/bitmaps_test",
+    "compare_data": "backstop_data/bitmaps_test/compare.json",
+    "casper_scripts": "backstop_data/scripts"
   }
 ```
 
@@ -483,18 +483,12 @@ This is for you if for some reason you find yourself needing advanced configurat
 Please make sure you have Python installed.
 _see https://github.com/garris/BackstopJS/issues/185_
 
-####The dreaded _command-not-found_ error...
+#### The dreaded _command-not-found_ error...
 
-If this happens then you may not be in the right directory – try...
-
-```sh
-cd node_modules/backstopjs/
-```
-
-Then try running your BackstopJS command again.
+If the command `backstop` isn't found, it's probably not in your path, from your project you can run `node_modules/.bin/backstop` instead
 
 
-####Debugging
+#### Debugging
 To enable verbose console output when running your tests set the `debug` property to `true` in `backstop.json`.
 
 ```json
