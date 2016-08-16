@@ -7,7 +7,7 @@ var streamToPromise = require('../util/streamToPromise');
 
 module.exports = {
   execute: function (config) {
-    var compareConfig = JSON.parse(fs.readFileSync(config.compareConfigFileName, 'utf8')).compareConfig;
+    var compareConfig = require(config.compareConfigFileName).compareConfig;
     var testSuite = config.report &&
       config.report.indexOf('CI') > -1 &&
       config.ciReport.format === 'junit' &&

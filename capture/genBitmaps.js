@@ -242,11 +242,8 @@ function complete(){
   var compareConfigFile = fs.read(compareConfigFileName);
   var compareConfigJSON = JSON.parse(compareConfigFile || '{}');
   compareConfigJSON.compareConfig = compareConfig;
-  fs.write(compareConfigFileName, JSON.stringify(compareConfigJSON,null,2), 'w');
-  console.log(
-    'Comparison config file updated.'
-    //,configData
-  );
+  fs.write(__dirname + "/../" + compareConfigFileName, JSON.stringify(compareConfigJSON,null,2), 'w');
+  console.log('Comparison config file updated.');
 }
 
 function pad(number) {
