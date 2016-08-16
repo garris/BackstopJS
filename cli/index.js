@@ -32,25 +32,21 @@ if (!commandName) {
   usage();
   process.exit();
 } else {
-  fs.readFile(configPath)
-    .then(function () {
-      if (configPath.substr(-3) === ".js") {
-        return JSON.parse(JSON.stringify(require(configPath)));
-      } else {
-        return JSON.parse(buffer.toString());
-      }
-    })
-    .catch(function (ex) {
-      console.log("Error " + ex);
-      return {};
-    })
-    .then(function (baseConfig) {
-      var config = applyCliArgs(baseConfig, argsOptions);
-      return executeCommand(commandName, config, false);
-    })
-    .catch(function (e) {
-      usage();
-    });
+
+  var config;
+
+  try {
+    config = require(configPath);
+  } catch (e) {
+    console.error("Error " + e);
+    process.exit(1);
+  }
+
+  config = applyCliArgs(config, argsOptions);
+  executeCommand(commandName, config, false).catch(function(e) {
+    console.error("Error " + e);
+    usage();
+  });
 }
 
 function applyCliArgs (baseConfig, argsOptions) {
