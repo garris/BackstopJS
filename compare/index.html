@@ -12,74 +12,65 @@
 </head>
 
 <body ng-app="compareApp">
-  <div id="root" ng-controller="MainCtrl">
-    <div class="container"><h1>{{name}} Report</h1></div>
-    <div class="container summaryBlock">
-      <h2 class='lead'>
-        <div class="stat">Passed <strong class='green circle'>{{passedCount}}</strong>&nbsp;&nbsp; Failed <strong class='red circle'>{{testPairs.length-passedCount}}</strong></div>
+<div id="root" ng-controller="MainCtrl" class="container-fluid">
+  <h1>{{name}} Report</h1>
+  <div class="summaryBlock">
+    <h3 class="statContainer">
+            <span class="stat">Passed <span class='label label-success'>{{passedCount}}</span>&nbsp;&nbsp; Failed <span
+                    class='label label-danger'>{{testPairs.length-passedCount}}</span></span>
+      <span class="stat">{{testDuration/1000 | number : 2}}s</span>
+    </h3>
+    <table class="summaryList">
+      <tr ng-repeat="thisTestPair in testPairs">
+        <td class="statusInds">
+          <div class="indicator failed" ng-if="!thisTestPair.passed"><span class="dot red"></span>failed</div>
+          <div class="indicator passed" ng-if="thisTestPair.passed"><span class="dot green"></span>passed</div>
+        </td>
+        <td>{{ thisTestPair.meta.pair.label }}</td>
+        <td>{{ thisTestPair.meta.pair.selector }}</td>
+        <td><span class="fileName">{{ thisTestPair.meta.pair.fileName }}</span></td>
+      </tr>
+    </table>
+  </div> <!-- end summaryBlock -->
 
-        <div class="stat">{{testDuration/1000 | number : 2}}s</div>
-      </h2>
-      <table class="summaryList">
-        <tr ng-repeat="thisTestPair in testPairs">
-          <td class="statusInds">
-            <div class="indicator failed" ng-if="!thisTestPair.passed"><span class="dot red"></span>failed</div>
-            <div class="indicator passed" ng-if="thisTestPair.passed"><span class="dot green"></span>passed</div>
-          </td>
-          <td>{{ thisTestPair.meta.pair.label }}</td>
-          <td>{{ thisTestPair.meta.pair.selector }}</td>
-          <td><span class="fileName">{{ thisTestPair.meta.pair.fileName }}</span></td>
-        </tr>
-      </table>
-    </div> <!-- end summaryBlock -->
+  <div class='filterGroup form-group'>
+    <label for="statusFilter" class="control-label">status filter</label>
+    <select id="statusFilter" class="form-control" ng-model="statusFilter" ng-options="status for status in detailFilterOptions"></select>
+  </div> <!-- end filterGroup -->
 
-    <div class="detailReport">
-
-      <div class='filterGroup form-group'>
-        <label for="statusFilter" class="control-label">status filter</label>
-        <select id="statusFilter" class="form-control" ng-model="statusFilter" ng-options="status for status in detailFilterOptions"></select>
-
+  <div class="results" ng-repeat="thisTestPair in testPairs | filter : displayOnStatusFilter">
+    <div class="flex-container">
+      <div class="selector">{{ thisTestPair.meta.pair.label }} - {{ thisTestPair.meta.pair.selector }}</div>
+      <div class="filename">{{ thisTestPair.meta.pair.fileName }}</div>
+    </div>
+    <div class="flex-container small">
+      <div>Reference</div>
+      <div>Test</div>
+      <div ng-if="!thisTestPair.passed">Diff</div>
+      <div>Report</div>
+    </div>
+    <div class="flex-container">
+      <div>
+        <img ng-src="{{ thisTestPair.a.src }}" alt="Reference" />
       </div>
-
-      <div class="results" ng-repeat="thisTestPair in testPairs | filter : displayOnStatusFilter">
-        <div class="flex-container">
-          <div class="selector">{{ thisTestPair.meta.pair.label }} {{ thisTestPair.meta.pair.selector }}</div>
-          <div class="filename">{{ thisTestPair.meta.fileName }}</div>
-        </div>
-        <div class="flex-container">
-            <div>Reference</div>
-            <div>Test</div>
-            <div ng-if="!thisTestPair.passed">Diff</div>
-            <div>Report</div>
-        </div>
-        <div class="flex-container">
-          <div>
-            <img ng-src="{{ thisTestPair.a.src }}">
-          </div>
-          <div>
-            <img ng-src="{{ thisTestPair.b.src }}">
-          </div>
-          <div ng-if="!thisTestPair.passed">
-            <img ng-src="{{ thisTestPair.c.src }}" image-name="c">
-          </div>
-          <div>
-            <div class="statusInds">
-              <div class="indicator failed" ng-if="!thisTestPair.passed"><span class="dot red"></span>failed</div>
-              <div class="indicator passed" ng-if="thisTestPair.passed"><span class="dot green"></span>passed</div>
-            </div>
-            <div class="reportTxt">Report: {{ thisTestPair.report }}</div>
-            <div class="reportTxt">Threshold: {{ thisTestPair.meta.misMatchThreshold}}</div>
-          </div>
-        </div>
+      <div>
+        <img ng-src="{{ thisTestPair.b.src }}" alt="Test" />
       </div>
+      <div ng-if="!thisTestPair.passed">
+        <img ng-src="{{ thisTestPair.c.src }}" image-name="c" alt="Difference" />
+      </div>
+      <div>
+        <div class="statusInds">
+          <div class="indicator failed" ng-if="!thisTestPair.passed"><span class="dot red"></span>failed</div>
+          <div class="indicator passed" ng-if="thisTestPair.passed"><span class="dot green"></span>passed</div>
+        </div>
+        <div class="reportTxt">Report: {{ thisTestPair.report }}</div>
+        <div class="reportTxt">Threshold: {{ thisTestPair.meta.misMatchThreshold}}</div>
+      </div>
+    </div>
+  </div> <!-- end results -->
 
-    </div> <!-- end detailReport -->
-
-
-  <footer></footer>
-
-
-  </div> <!-- end #root -->
+</div> <!-- end #root -->
 
 </body>
 </html>
