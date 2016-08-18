@@ -234,26 +234,12 @@ function captureScreenshot(casper, filePath, selector) {
   }
 }
 
-
-//========================
-//this query should be moved to the prior process
-//`isReference` could be better passed as env parameter
-var exists = fs.exists(bitmaps_reference);
-var isReference = false;
-if (!exists) {
-  isReference = true;
-  console.log('CREATING NEW REFERENCE FILES')
+var isReference = config.isReference;
+if (isReference) {
+  console.log('CREATING NEW REFERENCE FILES');
 }
-//========================
 
-
-capturePageSelectors(
-  scenarios
-  , viewports
-  , bitmaps_reference
-  , bitmaps_test
-  , isReference
-);
+capturePageSelectors(scenarios, viewports, bitmaps_reference, bitmaps_test, isReference);
 
 casper.run(function () {
   complete();

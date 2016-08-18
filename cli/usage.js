@@ -5,7 +5,6 @@ var commandsDescription = {
   genConfig: 'Generate a configuration file for your project',
   reference: 'reference!!',
   test: 'test!!',
-  bless: 'bless!!',
   openReport: 'openReport!!',
   echo: 'echo!!'
 };

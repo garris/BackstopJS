@@ -13,11 +13,9 @@ var makeConfig = require('../util/makeConfig');
 
 /* Each and every command defined, including commands used in before/after */
 var commandNames = [
-  'bless',
   'clean',
   'echo',
   'genConfig',
-  'init',
   'openReport',
   'reference',
   'report',
@@ -29,7 +27,6 @@ var exposedCommandNames = [
   'genConfig',
   'reference',
   'test',
-  'bless',
   'openReport',
   'echo'
 ];

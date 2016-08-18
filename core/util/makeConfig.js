@@ -69,7 +69,6 @@ function makeConfig (customConfig) {
     config.ci_report = customConfig.paths.ci_report || config.ci_report;
   }
 
-  config.configHash = config.bitmaps_test + '/config.hash';
   config.compareConfigFileName = config.html_report + '/config.js';
 
   config.casperFlags = customConfig.casperFlags || null;
