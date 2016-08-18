@@ -6,8 +6,6 @@ var commandsDescription = {
   reference: 'reference!!',
   test: 'test!!',
   bless: 'bless!!',
-  start: 'start!!',
-  stop: 'stop!!',
   openReport: 'openReport!!',
   echo: 'echo!!'
 };

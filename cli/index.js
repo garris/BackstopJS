@@ -9,7 +9,7 @@ var version = require('../package.json').version;
 
 var argsOptions = parseArgs(process.argv.slice(2), {
   boolean: ['h', 'help', 'v', 'version'],
-  string: ['config', 'port', 'p'],
+  string: ['config'],
   default: {
     config: 'backstop.json'
   }
@@ -49,8 +49,6 @@ if (!commandName) {
   }
 
   var exitCode = 0;
-
-  config = applyCliArgs(config, argsOptions);
   executeCommand(commandName, config, false).catch(function() {
     exitCode = 1;
   });
@@ -62,9 +60,4 @@ if (!commandName) {
     process.exit(exitCode);
   });
 
-}
-
-function applyCliArgs (baseConfig, argsOptions) {
-  baseConfig.portNumber = argsOptions.port || argsOptions.p || baseConfig.portNumber;
-  return baseConfig;
 }

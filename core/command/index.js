@@ -21,8 +21,6 @@ var commandNames = [
   'openReport',
   'reference',
   'report',
-  'start',
-  'stop',
   'test'
 ];
 
@@ -32,8 +30,6 @@ var exposedCommandNames = [
   'reference',
   'test',
   'bless',
-  'start',
-  'stop',
   'openReport',
   'echo'
 ];

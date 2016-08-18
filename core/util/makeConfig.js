@@ -1,13 +1,9 @@
 var path = require('path');
 var argv = require('yargs').argv;
-
 var temp = require('temp');
-
-var defaultPort = 3001;
 
 function makeConfig (customConfig) {
   var config = {};
-  config.portNumber = defaultPort;
   config.ci = {
     format: 'junit',
     testReportFileName: 'xunit',
@@ -24,7 +20,6 @@ function makeConfig (customConfig) {
 
   // BACKSTOP CONFIG PATH
   var configPathArg = argv.backstopConfigFilePath || argv.configPath || null;
-  console.log(configPathArg);
   if (configPathArg) {
     if (configPathArg.charAt(0) === '/') {
       config.backstopConfigFileName = customConfig.backstopConfigFileName;
@@ -61,9 +56,6 @@ function makeConfig (customConfig) {
   config.casper_scripts = config.customBackstop + '/backstop_data/casper_scripts';
   config.casper_scripts_default = config.backstop + '/capture/casper_scripts';
 
-  // SERVER PID PATH
-  config.serverPidFile = config.backstop + '/server.pid';
-
   // ACTIVE CAPTURE CONFIG PATH
   config.activeCaptureConfigPath = config.backstopConfigFileName;
   console.log('\nBackstopJS Config loaded at location', config.backstopConfigFileName);
@@ -80,7 +72,6 @@ function makeConfig (customConfig) {
   config.configHash = config.bitmaps_test + '/config.hash';
   config.compareConfigFileName = config.html_report + '/config.js';
 
-  config.portNumber = customConfig.port || defaultPort;
   config.casperFlags = customConfig.casperFlags || null;
   config.engine = customConfig.engine || null;
   config.report = customConfig.report || null;

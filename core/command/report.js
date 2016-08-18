@@ -90,7 +90,6 @@ function writeJunitReport(config, reporter) {
 }
 
 module.exports = {
-  //before: ['start'],
   execute: function (config) {
     return compare(config).then(function (report) {
       var failed = report.failed();

@@ -509,43 +509,8 @@ From your project run ...
 $ backstop echo
 ```
 
-<!-- #### Body capture is clipped
-
-Some stylesheets include a `height:100%` rule on the `<body>` element. When you use the `body` selector in this scenario, the resulting image will be clipped to the viewport. A special `body:noclip` selector is availble to force casper to use `casper.capture()` instead of `casper.captureSelector()`. Simply replace any `body` selectors in your scenarios config with `body:noclip` and this should ensure that the entire document is captured. -->
-
-
-### Running the report server
-
-The test comparison report was written in Angular.js and requires a running HTTP server instance.  This instance is auto-started after a test is run.  The server is also auto-stopped after 15 minutes so you don't have to go worrying about node processes running all over the place.
-
-You can manually start the server optionally passing your own timeout parameter (in minutes). Passing 0 will disable the timeout feature and run the server until you manually stop it.
-
-From your project, run ...
-
-```sh
-$ backstop start -- -t 0
-```
-
-To manually stop the server, from your project, run ...
-
-```sh
-$ backstop stop
-```
-
----
-
 
 ## Release History
-
-
-<!--
-To try the new feature, install the beta version...
-$ npm install garris/backstopjs#master
--->
-
-
-
-
 
 ### Version 1.3.2 available now
 [Please file questions, comments or issues here](https://github.com/garris/BackstopJS/issues).
