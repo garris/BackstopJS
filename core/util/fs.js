@@ -4,6 +4,8 @@ var copy = require('copy');
 var promisify = require('./promisify');
 
 var fsPromisified = {
+  createWriteStream: fs.createWriteStream,
+  existsSync: fs.existsSync,
   readFile: promisify(fs.readFile),
   writeFile: promisify(fs.writeFile),
   unlink: promisify(fs.unlink),

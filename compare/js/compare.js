@@ -1,161 +1,69 @@
-/* global resemble, async, angular */
+/* global angular */
 
-var compareApp = angular.module('compareApp', ['ngRoute']);
+var tests = {};
 
+function report(report) {
+  tests = report;
+}
 
-compareApp.config( function( $routeProvider ){
-  $routeProvider
-    .when( '/compare', {redirect:'/url'} )
-    .when( '/url', {action: 'url'} )
-    .when( '/file', {action:'file'} )
-    .otherwise( {action: 'file'} );
-});
+var compareApp = angular.module('compareApp', []);
 
+var defaultMisMatchThreshold = 1;
 
-compareApp.controller('MainCtrl', function ($scope, $route, $routeParams, $q, $http, $filter) {
+var testPairObj = function (o) {
+  this.a = {src: o.pair.reference || '', srcClass: 'reference'};
+  this.b = {src: o.pair.test || '', srcClass: 'test'};
+  this.c = {src: o.pair.diffImage || '', srcClass: 'diff'};
 
-  var resembleTestConfig = {
-    errorColor: {red: 255, green: 0, blue: 255},
-    errorType: 'movement',
-    transparency: 0.1,
-    largeImageThreshold: 1200
-  };
+  this.report = JSON.stringify(o.pair.diff, null, 2);
+  this.passed = o.status == "pass";
+  this.meta = o;
+  this.meta.misMatchThreshold = (o && o.misMatchThreshold && o.misMatchThreshold >= 0) ? o.misMatchThreshold : defaultMisMatchThreshold;
+};
 
-  var defaultMisMatchThreshold = 1;
-
-  //A TEST PAIR ARE TWO IMAGE OBJECTS PLUS THEIR META DATA WHICH WILL BE COMPARED BY RESEMBLE
+compareApp.controller('MainCtrl', function ($scope) {
+  $scope.name = tests.testSuite;
   $scope.testPairs = [];
-
-  $scope.testPairsCompleted = 0;
   $scope.passedCount = 0;
   $scope.testDuration = 0;
   $scope.testIsRunning = true;
 
+  tests.tests.forEach(function (o) {
+    $scope.testDuration += o.pair.diff.analysisTime;
 
-  $scope.detailFilterOptions = ['failed','passed','all','none'];
-  $scope.statusFilter = 'none';
-
-  $scope.displayOnStatusFilter = function(o){
-    if(o.processing){
-      return false;
-    }
-    //console.log($scope.statusFilter,o)
-    if($scope.statusFilter==='all'){
-      return true;
-    }else if($scope.statusFilter==='failed'){
-      if(!o.passed){return true;}
-    }else if($scope.statusFilter==='passed'){
-      if(o.passed){return true;}
-    }else{
-      return false;
-    }
-  };
-
-
-
-
-  var testPairObj = function(a,b,c,o){
-    this.a={src:a||'',srcClass:'reference'},
-      this.b={src:b||'',srcClass:'test'},
-      this.c={src:c||'',srcClass:'diff'},
-      this.report=null;
-    this.processing=true;
-    this.passed=false;
-    this.meta = o;
-    this.meta.misMatchThreshold = (o && o.misMatchThreshold && o.misMatchThreshold >= 0) ? o.misMatchThreshold : defaultMisMatchThreshold;
-  };
-
-  $scope.$on('$routeChangeSuccess', function( $currentRoute, $previousRoute ){
-    $scope.params = JSON.stringify($routeParams,null,2);
-    $scope.action = $route.current.action;
-
-    if($scope.action==='url') {
-      $scope.runUrlConfig($routeParams);
-    } else {
-      $scope.runFileConfig($routeParams);
+    if (o.pair.diff.isSameDimensions) {
+      delete o.pair.diff.dimensionDifference;
     }
 
+    delete o.pair.diff.analysisTime;
+
+    if (o.status == "pass") {
+      $scope.passedCount++;
+    }
+
+    $scope.testPairs.push(new testPairObj(o));
   });
 
+  $scope.statusFilter = 'failed';
+  if ($scope.passedCount === $scope.testPairs.length) {
+    $scope.statusFilter = 'passed';
+  }
 
-  //TAKES PARAMETERS FROM URL AND RUNS IMG DIFF TEST
-  $scope.runUrlConfig = function(params){
-    console.log(params);
-    $scope.testPairs.push(new testPairObj('../'+params.a, '../'+params.b, null));
-    $scope.compareTestPair($scope.testPairs[0]);
+  $scope.detailFilterOptions = ['failed', 'passed', 'all', 'none'];
+
+  $scope.displayOnStatusFilter = function (o) {
+    if ($scope.statusFilter === 'all') {
+      return true;
+    }
+
+    if ($scope.statusFilter === 'failed' && !o.passed) {
+      return true;
+    }
+
+    if ($scope.statusFilter === 'passed' && o.passed) {
+      return true;
+    }
+
+    return false;
   };
-
-
-  //READS CONFIG FROM FILE AND RUNS IMG DIFF TEST
-  $scope.runFileConfig = function(params){
-    $http.get('./config.json')
-      .success(function(data, status) {
-        // console.log('got data!',status,data);
-        data.testPairs.forEach(function(o,i,a){
-          $scope.testPairs.push(new testPairObj('../'+o.local_reference, '../'+o.local_test, null, o));
-        });
-        $scope.compareTestPairs($scope.testPairs);
-
-      })
-      .error(function(data, status) {
-        console.log('config file operation failed '+status);
-      });
-  };
-
-
-
-  //LOOPS THROUGH TEST PAIR CONFIG AND CALLS compareTestPair(testPair) ON EACH ONE
-  $scope.compareTestPairs = function compareTestPairs(testPairs){
-    var startTs = new Date();
-
-    async.eachLimit(
-      testPairs
-      ,1
-      ,function(testPair,cb){
-        $scope.compareTestPair(testPair,function(o){
-          if(o.passed){
-            $scope.passedCount++;
-          }
-          $scope.testPairsCompleted++;
-          $scope.testDuration = (new Date()-startTs);
-          $scope.$digest();
-          cb();
-        });
-      }
-      ,function(){
-        $scope.testIsRunning = false;
-        if($scope.passedCount === $scope.testPairsCompleted) {
-          $scope.statusFilter = 'passed';
-        } else {
-          $scope.statusFilter = 'failed';
-        }
-        $scope.$digest();
-      }
-    );
-
-
-
-  };
-
-
-
-  //TEST AN INDIVIDUAL testPair OBJECT.  UPDATES THE OBJECT WITH RESULTS AND THEN RETURNS THE OBJECT WITH THE CALLBACK
-  $scope.compareTestPair = function compareTestPair(testPair,cb){
-    testPair.processing=true;
-
-    resemble.outputSettings(resembleTestConfig);
-
-    resemble(testPair.a.src).compareTo(testPair.b.src).onComplete(function(diffData){
-      testPair.report = JSON.stringify(diffData,null,2);
-      testPair.c.src = diffData.getImageDataUrl();
-      testPair.processing=false;
-      testPair.passed=(diffData.isSameDimensions && diffData.misMatchPercentage<testPair.meta.misMatchThreshold)?true:false;
-      if(cb) {
-        cb(testPair);
-      }
-    });
-  };//scope.compareTestPair()
-
-
-
 });

@@ -2,7 +2,10 @@ var fs = require('../util/fs');
 
 module.exports = {
   execute: function (config) {
-    var configJSON = JSON.stringify(require(config.backstopConfigFileName));
-    return fs.writeFile(config.captureConfigFileName, configJSON);
+    var configJSON = require(config.backstopConfigFileName);
+
+    configJSON.paths.tempCompareConfigFileName = config.tempCompareConfigFileName;
+
+    return fs.writeFile(config.captureConfigFileName, JSON.stringify(configJSON));
   }
 };

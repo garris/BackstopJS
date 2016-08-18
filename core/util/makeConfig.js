@@ -1,6 +1,8 @@
 var path = require('path');
 var argv = require('yargs').argv;
 
+var temp = require('temp');
+
 var defaultPort = 3001;
 
 function makeConfig (customConfig) {
@@ -19,7 +21,6 @@ function makeConfig (customConfig) {
   if (config.backstop == config.customBackstop) {
     config.customBackstop = path.join(__dirname, '../../../..');
   }
-
 
   // BACKSTOP CONFIG PATH
   var configPathArg = argv.backstopConfigFilePath || argv.configPath || null;
@@ -41,13 +42,15 @@ function makeConfig (customConfig) {
   // Continuous Integration (CI) report
   config.ci_report = config.customBackstop + '/ci_report';
 
+  // HTML Report
+  config.html_report = config.customBackstop + '/html_report';
+
   // COMPARE PATHS -- note: compareConfigFileName is overwritten if config files exist.  see below.
   config.comparePath = config.backstop + '/compare';
-  config.compareConfigFileName = config.comparePath + '/config.json';
+  config.tempCompareConfigFileName = temp.path({suffix: '.json'});
 
   // CAPTURE CONFIG PATHS
   config.captureConfigFileName = config.backstop + '/capture/config.json';
-  config.captureConfigFileNameCache = config.backstop + '/capture/.config.json.cache';
   config.captureConfigFileNameDefault = config.backstop + '/capture/config.default.json';
 
   // SCRIPTS PATHS -- note: scripts is overwritten if config file exists.
@@ -65,10 +68,13 @@ function makeConfig (customConfig) {
   if (customConfig.paths) {
     config.bitmaps_reference = customConfig.paths.bitmaps_reference || config.bitmaps_reference;
     config.bitmaps_test = customConfig.paths.bitmaps_test || config.bitmaps_test;
-    config.compareConfigFileName = customConfig.paths.compare_data || config.compareConfigFileName;
+    config.html_report = customConfig.paths.compare_data || config.html_report;
     config.casper_scripts = customConfig.paths.casper_scripts || null;
     config.ci_report = customConfig.paths.ci_report || config.ci_report;
   }
+
+  config.configHash = config.bitmaps_test + '/config.hash';
+  config.compareConfigFileName = config.html_report + '/config.js';
 
   config.portNumber = customConfig.port || defaultPort;
   config.casperFlags = customConfig.casperFlags || null;
@@ -80,7 +86,7 @@ function makeConfig (customConfig) {
     testSuiteName: customConfig.ci.testSuiteName || config.ci.testSuiteName
   } : config.ci;
 
-  config.compareReportURL = 'http://localhost:' + config.portNumber + '/compare/';
+  config.compareReportURL = config.html_report + '/index.html';
 
   return config;
 }

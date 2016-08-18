@@ -26,7 +26,7 @@ if (!config.paths) {
 var bitmaps_reference = config.paths.bitmaps_reference || 'bitmaps_reference';
 var bitmaps_test = config.paths.bitmaps_test || 'bitmaps_test';
 var casper_scripts = config.paths.casper_scripts || null;
-var compareConfigFileName = config.paths.compare_data || 'compare/config.json';
+var comparePairsFileName = config.paths.tempCompareConfigFileName;
 var viewports = config.viewports;
 var scenarios = config.scenarios||config.grabConfigs;
 
@@ -238,11 +238,8 @@ casper.run(function(){
 });
 
 function complete(){
-  fs.touch(compareConfigFileName);
-  var compareConfigFile = fs.read(compareConfigFileName);
-  var compareConfigJSON = JSON.parse(compareConfigFile || '{}');
-  compareConfigJSON.compareConfig = compareConfig;
-  fs.write(__dirname + "/../" + compareConfigFileName, JSON.stringify(compareConfigJSON,null,2), 'w');
+  var compareConfigJSON = {compareConfig: compareConfig};
+  fs.write(comparePairsFileName, JSON.stringify(compareConfigJSON,null,2), 'w');
   console.log('Comparison config file updated.');
 }
 

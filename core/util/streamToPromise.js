@@ -1,19 +1,19 @@
-module.exports = function onStreamEnd (stream) {
+module.exports = function onStreamEnd (stream, result) {
   return new Promise(function (resolve, reject) {
     if (stream.writable) {
       stream.on('finish', function () {
-        resolve();
+        resolve(result);
       });
     }
 
     if (stream.readable) {
       stream.on('end', function () {
-        resolve();
+        resolve(result);
       });
     }
 
     stream.on('close', function () {
-      resolve();
+      resolve(result);
     });
 
     stream.on('error', function (error) {

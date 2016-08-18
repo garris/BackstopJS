@@ -6,15 +6,15 @@ var getCasperArgs = require('../util/getCasperArgs');
 var isWin = require('../util/isWin');
 
 function getLastConfigHash (config) {
-  return fs.exists(config.compareConfigFileName)
+  return fs.exists(config.configHash)
     .then(function (exists) {
       if (exists) {
-        return fs.readFile(config.compareConfigFileName, {encoding: 'utf8'})
+        return fs.readFile(config.configHash, {encoding: 'utf8'})
           .then(function (config) {
             return config[0];
           })
           .then(function (config) {
-            return config ? JSON.parse(config).lastConfigHash : false;
+            return config ? config : false;
           });
       } else {
         return false;

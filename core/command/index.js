@@ -17,7 +17,6 @@ var makeConfig = require('../util/makeConfig');
 var commandNames = [
   'bless',
   'clean',
-  'compare',
   'echo',
   'genConfig',
   'init',
