@@ -1,6 +1,6 @@
 var resemble = require('node-resemble-js');
 var path = require('path');
-var _ = require('underscore');
+var map = require('lodash.map');
 
 var fs = require('./fs');
 var streamToPromise = require('./streamToPromise');
@@ -47,7 +47,7 @@ module.exports = function (config) {
 
   var report = new Reporter(config.ciReport.testSuiteName);
 
-  var tests = _.map(compareConfig.testPairs, function (pair) {
+  var tests = map(compareConfig.testPairs, function (pair) {
     var Test = report.addTest(pair);
 
     var referencePath = path.join(config.customBackstop, pair.reference);

@@ -1,5 +1,3 @@
-var _ = require('underscore');
-
 function Test(pair) {
   this.pair = pair;
   this.status = 'running';
@@ -24,11 +22,11 @@ Reporter.prototype.addTest = function(pair) {
 Reporter.prototype.passed = function() {
   var count = 0;
 
-  _.each(this.tests, function (test) {
-    if (test.passed()) {
+  for (var test in this.tests) {
+    if (this.tests.hasOwnProperty(test) && this.tests[test].passed()) {
       count++;
     }
-  });
+  }
 
   return count;
 };
@@ -36,11 +34,11 @@ Reporter.prototype.passed = function() {
 Reporter.prototype.failed = function() {
   var count = 0;
 
-  _.each(this.tests, function (test) {
-    if (!test.passed()) {
+  for (var test in this.tests) {
+    if (this.tests.hasOwnProperty(test) && !this.tests[test].passed()) {
       count++;
     }
-  });
+  }
 
   return count;
 };

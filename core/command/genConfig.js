@@ -9,9 +9,9 @@ module.exports = {
     var promises = [];
 
     if (config.casper_scripts) {
-      logger.log("Copying '" + config.casper_scripts_default + '/*.js' + "' to '" + config.casper_scripts + "'");
+      logger.log("Copying '" + config.casper_scripts_default + "' to '" + config.casper_scripts + "'");
 
-      promises.push(fs.copyGlob(config.casper_scripts_default + '/*.js', config.casper_scripts));
+      promises.push(fs.copy(config.casper_scripts_default, config.casper_scripts));
     } else {
       logger.error('ERROR: Can\'t generate a scripts directory. No \'casper_scripts\' path property was found in backstop.json.');
     }

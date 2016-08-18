@@ -1,4 +1,3 @@
-var _ = require('underscore');
 var path = require('path');
 var junitWriter = new (require('junitwriter'))();
 
@@ -35,14 +34,17 @@ function writeBrowserReport(config, reporter) {
 
     // Fixing URLs in the configuration
     var report = toAbsolute(config.html_report);
-    _.each(reporter.tests, function (item, i) {
-      reporter.tests[i].pair.reference = path.relative(report, toAbsolute(item.pair.reference));
-      reporter.tests[i].pair.test = path.relative(report, toAbsolute(item.pair.test));
+    for (var i in reporter.tests) {
+      if (reporter.tests.hasOwnProperty(i)) {
+        var pair = reporter.tests[i].pair;
+        reporter.tests[i].pair.reference = path.relative(report, toAbsolute(pair.reference));
+        reporter.tests[i].pair.test = path.relative(report, toAbsolute(pair.test));
 
-      if (item.pair.diffImage) {
-        reporter.tests[i].pair.diffImage = path.relative(report, toAbsolute(item.pair.diffImage));
+        if (pair.diffImage) {
+          reporter.tests[i].pair.diffImage = path.relative(report, toAbsolute(pair.diffImage));
+        }
       }
-    });
+    }
 
     var jsonp = 'report(' + JSON.stringify(reporter, null, 2) + ');';
     return fs.writeFile(config.compareConfigFileName, jsonp).then(function () {

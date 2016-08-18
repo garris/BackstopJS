@@ -39,9 +39,7 @@ describe("setting the backstop.json location", function () {
 	it('should use a relative custom backstop.json location is specified as an argument', function () {
 		var customBackstopConfigPath = 'backstop/config.json';
 		var expectedBackstopPath = path.join(__dirname, '../../', customBackstopConfigPath);
-		mockery.registerMock('yargs', {
-			argv: {backstopConfigFilePath: customBackstopConfigPath}
-		});
+		mockery.registerMock('minimist', {backstopConfigFilePath: customBackstopConfigPath});
 		mockery.registerMock('fs', {
 			existsSync: function (pathToCheck) {
 				return pathToCheck === expectedBackstopPath;
@@ -59,9 +57,7 @@ describe("setting the backstop.json location", function () {
 	it('should use an absolute custom backstop.json location is specified as an argument', function () {
 		var customBackstopConfigPath = '/backstop/config.json';
 
-		mockery.registerMock('yargs', {
-			argv: {backstopConfigFilePath: customBackstopConfigPath}
-		});
+    mockery.registerMock('minimist', {backstopConfigFilePath: customBackstopConfigPath});
 		mockery.registerMock('fs', {
 			existsSync: function (pathToCheck) {
 				return pathToCheck === customBackstopConfigPath;
@@ -79,9 +75,7 @@ describe("setting the backstop.json location", function () {
 	it('should throw an exception if the custom backstop location is not pointing to a valid file', function () {
 		var customBackstopConfigPath = '/backstop/config.json';
 
-		mockery.registerMock('yargs', {
-			argv: {backstopConfigFilePath: customBackstopConfigPath}
-		});
+    mockery.registerMock('minimist', {backstopConfigFilePath: customBackstopConfigPath});
 		mockery.registerMock('fs', {
 			existsSync: function (pathToCheck) {
 				return false;
