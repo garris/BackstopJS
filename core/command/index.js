@@ -69,7 +69,7 @@ var commands = commandNames
         // won't be able to catch it a second time
         promise.catch(function (error) {
           logger.error('Command `' + command.name + '` ended with an error');
-          logger.error(error.stack);
+          logger.error(error);
         });
 
         return promise.then(function (result) {

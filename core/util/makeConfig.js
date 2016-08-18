@@ -44,6 +44,10 @@ function makeConfig (customConfig) {
 
   // HTML Report
   config.html_report = config.customBackstop + '/html_report';
+  config.openReport = true;
+  if ("openReport" in customConfig) {
+    config.openReport = customConfig.openReport;
+  }
 
   // COMPARE PATHS -- note: compareConfigFileName is overwritten if config files exist.  see below.
   config.comparePath = config.backstop + '/compare';

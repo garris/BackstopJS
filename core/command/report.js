@@ -52,8 +52,10 @@ function writeBrowserReport(config, reporter) {
       throw err;
     });
   }).then(function() {
-    var executeCommand = require('./index');
-    return executeCommand('_openReport', config, true);
+    if (config.openReport) {
+      var executeCommand = require('./index');
+      return executeCommand('_openReport', config, true);
+    }
   });
 }
 
