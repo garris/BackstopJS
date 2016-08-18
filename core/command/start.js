@@ -45,7 +45,7 @@ function start (config) {
       if (time > 0) {
         console.log('NOTE: Sever will auto-shutdown in ' + time + ' mins.\n');
       } else {
-        console.log('NOTE: Sever will run until you stop it with \'npm run stop\'.\n');
+        console.log('NOTE: Sever will run until you stop it with \'backstop stop\'.\n');
       }
     });
 }

@@ -25,9 +25,12 @@ function getLastConfigHash (config) {
 // This task will generate a date-named directory with DOM screenshot files as specified in `./capture/config.json` followed by running a report.
 // NOTE: If there is no bitmaps_reference directory or if the bitmaps_reference directory is empty then a new batch of reference files will be generated in the bitmaps_reference directory.  Reporting will be skipped in this case.
 module.exports = {
-  before: ['init'],
   execute: function (config) {
-    ensureTestIsGenerated(config)
+    var executeCommand = require('./index');
+
+    return executeCommand('_init', config, true).then(function() {
+
+    return ensureTestIsGenerated(config)
       .then(function (testMode) {
         // AT THIS POINT WE ARE EITHER RUNNING IN "TEST" OR "REFERENCE" MODE
         var tests = [path.join(config.backstop, 'capture/genBitmaps.js')];
@@ -52,31 +55,27 @@ module.exports = {
         return new Promise(function (resolve, reject) {
           casperChild.on('close', function (code) {
             var success = code === 0; // Will be 1 in the event of failure
-            var result = (success)
-              ? 'Bitmap file generation completed.'
-              : 'Testing script failed with code: ' + code;
+            var result = (success) ? 'Bitmap file generation completed.' : 'Testing script failed with code: ' + code;
 
             console.log('\n' + result);
 
             // exit if there was some kind of failure in the casperChild process
             if (code !== 0) {
-              console.log('\nLooks like an error occured. You may want to try running `$ npm run echo`. This will echo the requested test URL output to the console. You can check this output to verify that the file requested is indeed being received in the expected format.');
-              reject(new Error('An error occured. You may want to try running `$ npm run echo`.'));
+              console.log('\nLooks like an error occured. You may want to try running `$ backstop echo`. This will echo the requested test URL output to the console. You can check this output to verify that the file requested is indeed being received in the expected format.');
+              reject(new Error('An error occured. You may want to try running `$ backstop echo`.'));
               return;
             }
 
             if (testMode) {
-              var executeCommand = require('./index');
-              executeCommand('_report', config, true).then(function () {
-                resolve();
-              });
+              executeCommand('_report', config, true).then(resolve, reject);
             } else {
-              console.log('\nRun `$ npm run test` to generate diff report.\n');
+              console.log('\nRun `$ backstop test` to generate diff report.\n');
               resolve();
             }
           });
         });
       });
+    });
   }
 };
 
@@ -114,9 +113,9 @@ function ensureTestIsGenerated (config) {
               .then(function (config) {
                 if (config && checksum(config) !== compareConfigLastConfigHash) {
                   console.log('\nIt looks like the reference configuration has been changed since last reference batch.');
-                  console.log('Please run `$ npm run reference` to generate a fresh set of reference files');
-                  console.log('or run `$ npm run bless` then `$ npm run test` to enable testing with this configuration.\n\n');
-                  throw new Error('Please run `npm run reference` to generate a fresh set of reference files');
+                  console.log('Please run `$ backstop reference` to generate a fresh set of reference files');
+                  console.log('or run `$ backstop bless` then `$ backstop test` to enable testing with this configuration.\n\n');
+                  throw new Error('Please run `backstop reference` to generate a fresh set of reference files');
                 }
 
                 return false;

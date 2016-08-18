@@ -66,10 +66,10 @@ $ npm install garris/backstopjs#master
 
 **If you don't already have a BackstopJS config file.** The following command will create a config template file which you can modify in your root directory. *Note: this will overwrite any existing backstopjs config file.*
 
-From `./node_modules/backstopjs` ...
+From your projects's directory ...
 
 ```sh
-$ npm run genConfig
+$ backstop genConfig
 ```
 
 
@@ -503,10 +503,10 @@ For a sanity check you can also use the following command -- it will output your
 
 _Please note: this will check your scenario `url` only.  It does not check for a `referenceUrl` property._
 
-From `./node_modules/backstopjs` ...
+From your project run ...
 
 ```sh
-$ npm run echo
+$ backstop echo
 ```
 
 <!-- #### Body capture is clipped
@@ -520,16 +520,16 @@ The test comparison report was written in Angular.js and requires a running HTTP
 
 You can manually start the server optionally passing your own timeout parameter (in minutes). Passing 0 will disable the timeout feature and run the server until you manually stop it.
 
-From `./node_modules/backstopjs` ...
+From your project, run ...
 
 ```sh
-$ npm run start -- -t 0
+$ backstop start -- -t 0
 ```
 
-To manually stop the server, from `./node_modules/backstopjs` ...
+To manually stop the server, from your project, run ...
 
 ```sh
-$ npm run stop
+$ backstop stop
 ```
 
 ---

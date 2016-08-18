@@ -16,7 +16,7 @@ var argsOptions = parseArgs(process.argv.slice(2), {
 });
 
 // Catch errors from failing promises
-process.on('unhandledRejection', (error, promise) => {
+process.on('unhandledRejection', function(error, promise) {
   console.error(error.stack);
 });
 
@@ -31,27 +31,37 @@ if (argsOptions.v || argsOptions.version) {
 }
 
 var commandName = argsOptions['_'][0];
-var configPath = path.join(process.cwd(), argsOptions['configPath']);
 
 if (!commandName) {
   usage();
   process.exit();
 } else {
 
-  var config;
+  var config = {};
 
-  try {
-    config = require(configPath);
-  } catch (e) {
-    console.error("Error " + e);
-    process.exit(1);
+  if (argsOptions['configPath']) {
+    try {
+      config = require(path.join(process.cwd(), argsOptions['configPath']));
+    } catch (e) {
+      console.error("Error " + e);
+      process.exit(1);
+    }
   }
 
+  var exitCode = 0;
+
   config = applyCliArgs(config, argsOptions);
-  executeCommand(commandName, config, false).catch(function(e) {
-    console.error("Error " + e);
-    usage();
+  executeCommand(commandName, config, false).catch(function() {
+    exitCode = 1;
   });
+
+  /*
+   * Wait for the stdout buffer to drain.
+   */
+  process.on("exit", function() {
+    process.exit(exitCode);
+  });
+
 }
 
 function applyCliArgs (baseConfig, argsOptions) {
