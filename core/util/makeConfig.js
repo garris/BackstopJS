@@ -1,14 +1,17 @@
 var path = require('path');
-var argv = require('minimist')(process.argv.slice(2));
 var temp = require('temp');
 
-function makeConfig (customConfig) {
+function makeConfig (customConfig, argv) {
   var config = {};
+
+  config.args = argv;
+
   config.ci = {
     format: 'junit',
     testReportFileName: 'xunit',
     testSuiteName: 'BackstopJS'
   };
+
   // BACKSTOP MODULE PATH
   config.backstop = path.join(__dirname, '../..'); // backstop module
   config.customBackstop = process.cwd(); // running instance
@@ -57,7 +60,6 @@ function makeConfig (customConfig) {
   config.casper_scripts_default = config.backstop + '/capture/casper_scripts';
 
   // ACTIVE CAPTURE CONFIG PATH
-  config.activeCaptureConfigPath = config.backstopConfigFileName;
   console.log('\nBackstopJS Config loaded at location', config.backstopConfigFileName);
 
   // overwrite default filepaths if config files exist

@@ -4,6 +4,7 @@ var path = require('path');
 var parseArgs = require('minimist');
 var usage = require('./usage');
 var fs = require('../core/util/fs');
+var makeConfig = require('../core/util/makeConfig');
 var executeCommand = require('../core/command');
 var version = require('../package.json').version;
 
@@ -48,8 +49,10 @@ if (!commandName) {
     }
   }
 
+  config = makeConfig(config, argsOptions);
+
   var exitCode = 0;
-  executeCommand(commandName, config, false).catch(function() {
+  executeCommand(commandName, config).catch(function() {
     exitCode = 1;
   });
 

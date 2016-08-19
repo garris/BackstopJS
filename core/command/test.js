@@ -7,7 +7,7 @@ module.exports = {
   execute: function (config) {
     return createBitmaps(config, false).then(function() {
       var executeCommand = require('./index');
-      return executeCommand('_report', config, true);
+      return executeCommand('_report', config);
     });
   }
 };

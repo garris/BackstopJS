@@ -1,6 +1,6 @@
 var path = require('path');
 var logger = require('../util/logger')('COMMAND');
-var makeConfig = require('../util/makeConfig');
+
 
 /*
  * Each file included in this folder (except `index.js`) is a command and must export the following object
@@ -86,7 +86,7 @@ var exposedCommands = exposedCommandNames
   })
   .reduce(toObjectReducer, {});
 
-function execute (commandName, baseConfig, isConfigCompleted) {
+function execute (commandName, config) {
   if (!exposedCommands.hasOwnProperty(commandName)) {
     if (commandName.charAt(0) === '_' && commands.hasOwnProperty(commandName.substring(1))) {
       commandName = commandName.substring(1);
@@ -95,7 +95,6 @@ function execute (commandName, baseConfig, isConfigCompleted) {
     }
   }
 
-  var config = isConfigCompleted ? baseConfig : makeConfig(baseConfig);
   return commands[commandName](config);
 }
 
