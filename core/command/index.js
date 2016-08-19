@@ -13,7 +13,6 @@ var logger = require('../util/logger')('COMMAND');
 
 /* Each and every command defined, including commands used in before/after */
 var commandNames = [
-  'clean',
   'echo',
   'genConfig',
   'openReport',

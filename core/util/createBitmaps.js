@@ -1,13 +1,41 @@
 var path = require('path');
 
 var fs = require('./fs');
+var each = require('./each');
 var runCasper = require('./runCasper');
+
+var logger = require('./logger')('createBitmaps');
+
+function includes(string, search, start) {
+  if (typeof start !== 'number') {
+    start = 0;
+  }
+
+  if (start + search.length > this.length) {
+    return false;
+  } else {
+    return string.indexOf(search, start) !== -1;
+  }
+}
 
 function writeReferenceCreateConfig(config, isReference) {
   var configJSON = require(config.backstopConfigFileName);
 
   configJSON.isReference = isReference;
   configJSON.paths.tempCompareConfigFileName = config.tempCompareConfigFileName;
+
+  if (config.args.filter) {
+    var scenarii = [];
+    each(configJSON.scenarios, function(scenario) {
+      if (includes(scenario.label, config.args.filter)) {
+        scenarii.push(scenario);
+      }
+    });
+
+    logger.log("Will generate " + scenarii.length + " out of " + configJSON.scenarios.length + " scenarii");
+
+    configJSON.scenarios = scenarii;
+  }
 
   return fs.writeFile(config.captureConfigFileName, JSON.stringify(configJSON));
 }
