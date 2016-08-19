@@ -67,7 +67,12 @@ function writeJunitReport(config, reporter) {
 
   var testSuite = junitWriter.addTestsuite(reporter.testSuite);
 
-  _.each(reporter.tests, function (test) {
+  for (var i in reporter.tests) {
+    if (!reporter.tests.hasOwnProperty(i)) {
+      continue;
+    }
+
+    var test = reporter.tests[i];
     var testCase = testSuite.addTestcase(' ›› ' + test.pair.label, test.pair.selector);
 
     if (!test.passed()) {
@@ -75,7 +80,7 @@ function writeJunitReport(config, reporter) {
       testCase.addError(error, 'CSS component');
       testCase.addFailure(error, 'CSS component');
     }
-  });
+  }
 
   return new Promise(function(resolve, reject) {
     var destination = path.join(config.ci_report, testReportFileName);
