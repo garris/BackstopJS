@@ -51,3 +51,5 @@ th{text-align: left;background: #ddd;padding: 10px;white-space: nowrap;}
 .yellow{background-color: #ffcc00; }
 .red{background: #c60000; }
 .green{background: #56e900; }
+.hide{display: none}
+.summaryListButton {margin-bottom:10px;}

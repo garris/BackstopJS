@@ -27,6 +27,7 @@ compareApp.controller('MainCtrl', function ($scope) {
   $scope.passedCount = 0;
   $scope.testDuration = 0;
   $scope.testIsRunning = true;
+  $scope.isSummaryListCollapsed = true;
 
   tests.tests.forEach(function (o) {
     $scope.testDuration += o.pair.diff.analysisTime;

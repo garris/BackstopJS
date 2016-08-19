@@ -20,7 +20,11 @@
                     class='label label-danger'>{{testPairs.length-passedCount}}</span></span>
       <span class="stat">{{testDuration/1000 | number : 2}}s</span>
     </h3>
-    <table class="summaryList">
+    <button class="summaryListButton" type="button" class="btn btn-default" ng-click="isSummaryListCollapsed = !isSummaryListCollapsed">
+      <span ng-if="!isSummaryListCollapsed">Collapse Summary List</span>
+      <span ng-if="isSummaryListCollapsed">Expand Summary List</span>
+    </button>
+    <table class="summaryList" ng-class="{'hide' : isSummaryListCollapsed}">
       <tr ng-repeat="thisTestPair in testPairs">
         <td class="statusInds">
           <div class="indicator failed" ng-if="!thisTestPair.passed"><span class="dot red"></span>failed</div>
