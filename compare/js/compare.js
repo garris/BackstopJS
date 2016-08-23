@@ -6,7 +6,7 @@ function report(report) {
   tests = report;
 }
 
-var compareApp = angular.module('compareApp', []);
+var compareApp = angular.module('compareApp', ['ui.bootstrap']);
 
 var defaultMisMatchThreshold = 1;
 
@@ -21,7 +21,7 @@ var testPairObj = function (o) {
   this.meta.misMatchThreshold = (o && o.misMatchThreshold && o.misMatchThreshold >= 0) ? o.misMatchThreshold : defaultMisMatchThreshold;
 };
 
-compareApp.controller('MainCtrl', function ($scope) {
+compareApp.controller('MainCtrl', function ($scope, $uibModal) {
   $scope.name = tests.testSuite;
   $scope.testPairs = [];
   $scope.passedCount = 0;
@@ -66,5 +66,42 @@ compareApp.controller('MainCtrl', function ($scope) {
     }
 
     return false;
+  };
+
+  $scope.openModal = function (size, referenceImg, testImg) {
+    var modalInstance = $uibModal.open({
+      animation: true,
+      ariaLabelledBy: 'modal-title',
+      ariaDescribedBy: 'modal-body',
+      templateUrl: 'myModalContent.html',
+      controller: 'ModalInstanceCtrl',
+      windowClass: 'modal',
+      resolve: {
+        referenceImg: function () {
+          return referenceImg;
+        },
+        testImg: function () {
+          return testImg;
+        },
+      }
+    });
+  };
+});
+
+// Please note that $uibModalInstance represents a modal window (instance) dependency.
+// It is not the same as the $uibModal service used above.
+compareApp.controller('ModalInstanceCtrl', function ($scope, $uibModalInstance, referenceImg, testImg) {
+
+  $scope.selected = {
+    referenceImg: referenceImg,
+    testImg: testImg
+  };
+
+  $scope.ok = function () {
+    $uibModalInstance.close();
+  };
+
+  $scope.cancel = function () {
+    $uibModalInstance.dismiss('cancel');
   };
 });

@@ -53,3 +53,10 @@ th{text-align: left;background: #ddd;padding: 10px;white-space: nowrap;}
 .green{background: #56e900; }
 .hide{display: none}
 .summaryListButton {margin-bottom:10px;}
+
+.modal .modal-dialog{
+  width: 80%; height: 400px;
+  position: absolute;
+  top:0; bottom: 0; left: 0; right: 0;
+  margin: auto
+}

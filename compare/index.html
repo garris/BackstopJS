@@ -3,10 +3,12 @@
 <head>
   <title>BackstopJS Report</title>
 
-  <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="bower_components/bootstrap-css-only/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="css/styles.css">
+  <link rel="stylesheet" type="text/css" href="css/imagediff.css">
 
   <script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
+  <script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
   <script type="text/javascript" src="js/compare.js"></script>
   <script type="text/javascript" src="config.js"></script>
 </head>
@@ -44,7 +46,10 @@
 
   <div class="results" ng-repeat="thisTestPair in testPairs | filter : displayOnStatusFilter">
     <div class="flex-container">
-      <div class="selector">{{ thisTestPair.meta.pair.label }} - {{ thisTestPair.meta.pair.selector }}</div>
+      <div class="selector">{{ thisTestPair.meta.pair.label }} - {{ thisTestPair.meta.pair.selector }}
+        <button type="button" class="btn btn-default"
+                ng-click="openModal('lg', thisTestPair.a.src, thisTestPair.b.src)">Show diff</button>
+      </div>
       <div class="filename">{{ thisTestPair.meta.pair.fileName }}</div>
     </div>
     <div class="flex-container small">
@@ -73,6 +78,28 @@
       </div>
     </div>
   </div> <!-- end results -->
+
+  <div>
+    <script type="text/ng-template" id="myModalContent.html">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modal-title">Comparsion result</h3>
+      </div>
+      <div class="modal-body" id="modal-body">
+        <center>
+          <div class="image-slider">
+            <div>
+              <img ng-src="{{ selected.referenceImg }}"/>
+            </div>
+            <img ng-src="{{ selected.testImg }}"/>
+          </div>
+        </center>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+      </div>
+    </script>
+  </div>
+  <!--</center>-->
 
 </div> <!-- end #root -->
 
