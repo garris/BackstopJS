@@ -46,7 +46,7 @@
     "casper_scripts": "backstop_data/casper_scripts"
   },
   "engine": "phantomjs",
-  "report": ["CLI", "browser"],
+  "report": ["browser"],
   "casperFlags": [],
   "debug": false,
   "port": 3001

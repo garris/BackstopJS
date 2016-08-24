@@ -349,10 +349,10 @@ _Browser Report_
 Using the report property in `backstop.json` enable or disable browser or server-side-reporting by including/excluding the respective properties. The following settings will run both reports at the same time.
 
 ```json
-"report": ["browser", "CLI"]
+"report": ["browser", "CI"]
 ```
 
-If you choose the CLI-only reporting you can always enter the following command to see the latest test run report in the browser.
+If you choose the CI-only reporting you can always enter the following command to see the latest test run report in the browser.
 
 ```sh
 $ backstop openReport
@@ -363,7 +363,7 @@ $ backstop openReport
 The following config would enable the CI - report (*default: junit format*)
 
 ```json
-"report" : [ "CLI" ,  "CI" ],
+"report" : [ "CI" ],
 ```
 
 The regression test report will be generated in the JUnit format and the report will be placed in the given directory (*default: [backstopjs dir]/test/ci_report/xunit.xml*).

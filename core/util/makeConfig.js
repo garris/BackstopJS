@@ -1,16 +1,11 @@
 var path = require('path');
 var temp = require('temp');
 
-function makeConfig (customConfig, argv) {
+function makeConfig (argv) {
+
   var config = {};
 
   config.args = argv;
-
-  config.ci = {
-    format: 'junit',
-    testReportFileName: 'xunit',
-    testSuiteName: 'BackstopJS'
-  };
 
   // BACKSTOP MODULE PATH
   config.backstop = path.join(__dirname, '../..'); // backstop module
@@ -22,10 +17,10 @@ function makeConfig (customConfig, argv) {
   }
 
   // BACKSTOP CONFIG PATH
-  var configPathArg = argv.backstopConfigFilePath || argv.configPath || null;
+  var configPathArg = argv.backstopConfigFilePath || argv.configPath || argv.config || null;
   if (configPathArg) {
     if (configPathArg.charAt(0) === '/') {
-      config.backstopConfigFileName = customConfig.backstopConfigFileName;
+      config.backstopConfigFileName = configPathArg;
     } else {
       config.backstopConfigFileName = path.join(config.customBackstop, configPathArg);
     }
@@ -33,18 +28,37 @@ function makeConfig (customConfig, argv) {
     config.backstopConfigFileName = path.join(config.customBackstop, 'backstop.json');
   }
 
+  console.log('\nBackstopJS CWD: ', config.customBackstop);
+  console.log('BackstopJS loading config: ', config.backstopConfigFileName, "\n");
+
+  // LOAD CONFIG
+  var userConfig = {};
+  if (config.backstopConfigFileName) {
+    try {
+      userConfig = require(config.backstopConfigFileName);
+    } catch (e) {
+      console.error("Error " + e);
+      process.exit(1);
+    }
+  }
+
   // BITMAPS PATHS -- note: this path is overwritten if config files exist.  see below.
   config.bitmaps_reference = config.customBackstop + '/backstop_data/bitmaps_reference';
   config.bitmaps_test = config.customBackstop + '/backstop_data/bitmaps_test';
 
   // Continuous Integration (CI) report
-  config.ci_report = config.customBackstop + '/ci_report';
+  config.ci_report = config.customBackstop + '/backstop_data/ci_report';
+  config.ci = {
+    format: 'junit',
+    testReportFileName: 'xunit',
+    testSuiteName: 'BackstopJS'
+  };
 
   // HTML Report
-  config.html_report = config.customBackstop + '/html_report';
+  config.html_report = config.customBackstop + '/backstop_data/html_report';
   config.openReport = true;
-  if ("openReport" in customConfig) {
-    config.openReport = customConfig.openReport;
+  if ("openReport" in userConfig) {
+    config.openReport = userConfig.openReport;
   }
 
   // COMPARE PATHS -- note: compareConfigFileName is overwritten if config files exist.  see below.
@@ -59,29 +73,25 @@ function makeConfig (customConfig, argv) {
   config.casper_scripts = config.customBackstop + '/backstop_data/casper_scripts';
   config.casper_scripts_default = config.backstop + '/capture/casper_scripts';
 
-  // ACTIVE CAPTURE CONFIG PATH
-  console.log('\nBackstopJS Config loaded at location', config.backstopConfigFileName);
+  config.casperFlags = userConfig.casperFlags || null;
+  config.engine = userConfig.engine || null;
+  config.report = userConfig.report || [ 'CI', 'browser'];
+  config.ciReport = userConfig.ci ? {
+    format: userConfig.ci.format || config.ci.format,
+    testReportFileName: userConfig.ci.testReportFileName || config.ci.testReportFileName,
+    testSuiteName: userConfig.ci.testSuiteName || config.ci.testSuiteName
+  } : config.ci;
 
   // overwrite default filepaths if config files exist
-  if (customConfig.paths) {
-    config.bitmaps_reference = customConfig.paths.bitmaps_reference || config.bitmaps_reference;
-    config.bitmaps_test = customConfig.paths.bitmaps_test || config.bitmaps_test;
-    config.html_report = customConfig.paths.compare_data || config.html_report;
-    config.casper_scripts = customConfig.paths.casper_scripts || null;
-    config.ci_report = customConfig.paths.ci_report || config.ci_report;
+  if (userConfig.paths) {
+    config.bitmaps_reference = userConfig.paths.bitmaps_reference || config.bitmaps_reference;
+    config.bitmaps_test = userConfig.paths.bitmaps_test || config.bitmaps_test;
+    config.html_report = userConfig.paths.html_report || config.html_report;
+    config.casper_scripts = userConfig.paths.casper_scripts || config.casper_scripts;
+    config.ci_report = userConfig.paths.ci_report || config.ci_report;
   }
 
   config.compareConfigFileName = config.html_report + '/config.js';
-
-  config.casperFlags = customConfig.casperFlags || null;
-  config.engine = customConfig.engine || null;
-  config.report = customConfig.report || null;
-  config.ciReport = customConfig.ci ? {
-    format: customConfig.ci.format || config.ci.format,
-    testReportFileName: customConfig.ci.testReportFileName || config.ci.testReportFileName,
-    testSuiteName: customConfig.ci.testSuiteName || config.ci.testSuiteName
-  } : config.ci;
-
   config.compareReportURL = config.html_report + '/index.html';
 
   return config;
