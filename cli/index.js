@@ -38,19 +38,7 @@ if (!commandName) {
   process.exit();
 } else {
 
-  var config = {};
-
-  if (argsOptions['configPath']) {
-    try {
-      config = require(path.join(process.cwd(), argsOptions['configPath']));
-    } catch (e) {
-      console.error("Error " + e);
-      process.exit(1);
-    }
-  }
-
-  config = makeConfig(config, argsOptions);
-
+  var config = makeConfig(argsOptions);
   var exitCode = 0;
   executeCommand(commandName, config).catch(function() {
     exitCode = 1;
