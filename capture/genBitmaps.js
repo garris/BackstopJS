@@ -39,10 +39,6 @@ if (config.debug) {
   });
 }
 
-casper.on('remote.message', function (message) {
-  this.echo('remote console > ' + message);
-});
-
 casper.on('resource.received', function (resource) {
   var status = resource.status;
   if (status >= 400) {
@@ -56,7 +52,6 @@ function capturePageSelectors (scenarios, viewports, bitmapsReferencePath, bitma
   var consoleBuffer = '';
 
   casper.on('remote.message', function (message) {
-    this.echo(message);
     consoleBuffer = consoleBuffer + '\n' + message;
   });
 
