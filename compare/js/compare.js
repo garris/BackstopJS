@@ -2,7 +2,7 @@
 
 var tests = {};
 
-function report(report) {
+function report (report) { // eslint-disable-line no-unused-vars
   tests = report;
 }
 
@@ -10,13 +10,13 @@ var compareApp = angular.module('compareApp', ['ui.bootstrap']);
 
 var defaultMisMatchThreshold = 1;
 
-var testPairObj = function (o) {
+var TestPair = function (o) {
   this.a = {src: o.pair.reference || '', srcClass: 'reference'};
   this.b = {src: o.pair.test || '', srcClass: 'test'};
   this.c = {src: o.pair.diffImage || '', srcClass: 'diff'};
 
   this.report = JSON.stringify(o.pair.diff, null, 2);
-  this.passed = o.status == "pass";
+  this.passed = o.status === 'pass';
   this.meta = o;
   this.meta.misMatchThreshold = (o && o.misMatchThreshold && o.misMatchThreshold >= 0) ? o.misMatchThreshold : defaultMisMatchThreshold;
 };
@@ -38,11 +38,11 @@ compareApp.controller('MainCtrl', function ($scope, $uibModal) {
 
     delete o.pair.diff.analysisTime;
 
-    if (o.status == "pass") {
+    if (o.status === 'pass') {
       $scope.passedCount++;
     }
 
-    $scope.testPairs.push(new testPairObj(o));
+    $scope.testPairs.push(new TestPair(o));
   });
 
   $scope.statusFilter = 'failed';
@@ -69,7 +69,7 @@ compareApp.controller('MainCtrl', function ($scope, $uibModal) {
   };
 
   $scope.openModal = function (size, referenceImg, testImg) {
-    var modalInstance = $uibModal.open({
+    $uibModal.open({
       animation: true,
       ariaLabelledBy: 'modal-title',
       ariaDescribedBy: 'modal-body',
@@ -82,7 +82,7 @@ compareApp.controller('MainCtrl', function ($scope, $uibModal) {
         },
         testImg: function () {
           return testImg;
-        },
+        }
       }
     });
   };
@@ -91,7 +91,6 @@ compareApp.controller('MainCtrl', function ($scope, $uibModal) {
 // Please note that $uibModalInstance represents a modal window (instance) dependency.
 // It is not the same as the $uibModal service used above.
 compareApp.controller('ModalInstanceCtrl', function ($scope, $uibModalInstance, referenceImg, testImg) {
-
   $scope.selected = {
     referenceImg: referenceImg,
     testImg: testImg

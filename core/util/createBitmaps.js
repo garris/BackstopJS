@@ -6,7 +6,7 @@ var runCasper = require('./runCasper');
 
 var logger = require('./logger')('createBitmaps');
 
-function includes(string, search, start) {
+function includes (string, search, start) {
   if (typeof start !== 'number') {
     start = 0;
   }
@@ -18,7 +18,7 @@ function includes(string, search, start) {
   }
 }
 
-function writeReferenceCreateConfig(config, isReference) {
+function writeReferenceCreateConfig (config, isReference) {
   var configJSON = require(config.backstopConfigFileName);
 
   configJSON.isReference = isReference;
@@ -26,13 +26,13 @@ function writeReferenceCreateConfig(config, isReference) {
 
   if (config.args.filter) {
     var scenarii = [];
-    each(configJSON.scenarios, function(scenario) {
+    each(configJSON.scenarios, function (scenario) {
       if (includes(scenario.label, config.args.filter)) {
         scenarii.push(scenario);
       }
     });
 
-    logger.log("Will generate " + scenarii.length + " out of " + configJSON.scenarios.length + " scenarii");
+    logger.log('Will generate ' + scenarii.length + ' out of ' + configJSON.scenarios.length + ' scenarii');
 
     configJSON.scenarios = scenarii;
   }
@@ -40,7 +40,7 @@ function writeReferenceCreateConfig(config, isReference) {
   return fs.writeFile(config.captureConfigFileName, JSON.stringify(configJSON));
 }
 
-module.exports = function(config, isReference) {
+module.exports = function (config, isReference) {
   return writeReferenceCreateConfig(config, isReference).then(function () {
     var tests = [path.join(config.backstop, 'capture/genBitmaps.js')];
     var casperChild = runCasper(config, tests);

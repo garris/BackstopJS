@@ -1,8 +1,7 @@
-module.exports = function(casper, scenario, vp) {
+module.exports = function (casper, scenario, vp) {
   casper.echo('onBeforeEach.js', 'INFO');
   casper.wait(50);
 };
-
 
 // // EXAMPLE: LOGIN BEFORE RUNNING TESTS
 // module.exports = function(casper, scenario, vp) {

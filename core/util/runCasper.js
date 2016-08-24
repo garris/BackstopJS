@@ -2,7 +2,7 @@ var path = require('path');
 var spawn = require('child_process').spawn;
 var isWin = require('./isWin');
 
-function getCasperArgs(config, tests) {
+function getCasperArgs (config, tests) {
   var args = [];
   if (/slimer/.test(config.engine)) {
     args = ['--engine=slimerjs'];

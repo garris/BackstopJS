@@ -1,9 +1,7 @@
 #!/usr/bin/env node
 
-var path = require('path');
 var parseArgs = require('minimist');
 var usage = require('./usage');
-var fs = require('../core/util/fs');
 var makeConfig = require('../core/util/makeConfig');
 var executeCommand = require('../core/command');
 var version = require('../package.json').version;
@@ -17,7 +15,7 @@ var argsOptions = parseArgs(process.argv.slice(2), {
 });
 
 // Catch errors from failing promises
-process.on('unhandledRejection', function(error, promise) {
+process.on('unhandledRejection', function (error, promise) {
   console.error(error.stack);
 });
 
@@ -37,18 +35,16 @@ if (!commandName) {
   usage();
   process.exit();
 } else {
-
   var config = makeConfig(argsOptions);
   var exitCode = 0;
-  executeCommand(commandName, config).catch(function() {
+  executeCommand(commandName, config).catch(function () {
     exitCode = 1;
   });
 
   /*
    * Wait for the stdout buffer to drain.
    */
-  process.on("exit", function() {
+  process.on('exit', function () {
     process.exit(exitCode);
   });
-
 }

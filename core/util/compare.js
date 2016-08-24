@@ -7,7 +7,7 @@ var streamToPromise = require('./streamToPromise');
 var Reporter = require('./Reporter');
 var logger = require('./logger')('compare');
 
-function storeFailedDiffImage(testPath, data) {
+function storeFailedDiffImage (testPath, data) {
   var failedDiffFilename = getFailedDiffFilename(testPath);
   console.log('   See:', failedDiffFilename);
 
@@ -19,20 +19,19 @@ function storeFailedDiffImage(testPath, data) {
   return streamToPromise(storageStream, failedDiffFilename);
 }
 
-function getFailedDiffFilename(testPath) {
+function getFailedDiffFilename (testPath) {
   var lastSlash = testPath.lastIndexOf(path.sep);
   return testPath.slice(0, lastSlash + 1) + 'failed_diff_' + testPath.slice(lastSlash + 1, testPath.length);
 }
 
-function compareImage(referencePath, testPath) {
+function compareImage (referencePath, testPath) {
   return new Promise(function (resolve, reject) {
-
     if (!fs.existsSync(referencePath)) {
-      reject("Reference image not found: " + referencePath);
+      reject('Reference image not found: ' + referencePath);
     }
 
     if (!fs.existsSync(testPath)) {
-      reject("Test image not found: " + testPath);
+      reject('Test image not found: ' + testPath);
     }
 
     resemble(referencePath).compareTo(testPath)
@@ -54,7 +53,7 @@ module.exports = function (config) {
     var testPath = path.join(config.customBackstop, pair.test);
 
     return compareImage(referencePath, testPath)
-      .then(function logCompareResult(data) {
+      .then(function logCompareResult (data) {
         pair.diff = data;
 
         if (data.isSameDimensions && data.misMatchPercentage <= pair.misMatchThreshold) {
@@ -72,11 +71,10 @@ module.exports = function (config) {
 
           return pair;
         });
-
       });
   });
 
   return Promise.all(tests).then(function () {
     return report;
-  })
+  });
 };

@@ -17,9 +17,9 @@ module.exports = {
     }
 
     // Copies a boilerplate config file to the current config file location.
-    promises.push(fs.copy(config.captureConfigFileNameDefault, config.backstopConfigFileName).then(function() {
+    promises.push(fs.copy(config.captureConfigFileNameDefault, config.backstopConfigFileName).then(function () {
       logger.log("Configuration file written at '" + config.backstopConfigFileName + "'");
-    }, function(err) {
+    }, function (err) {
       throw err;
     }));
 

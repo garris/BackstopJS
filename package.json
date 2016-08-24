@@ -6,7 +6,9 @@
     "backstop": "./cli/index.js"
   },
   "scripts": {
-    "lint": "eslint core/**/*.js cli/**/*.js capture/**/*.js compare/**/*.js",
+    "lint": "npm run lint-web && npm run lint-node",
+    "lint-web": "eslint --env browser compare/*.js compare/**/*.js --fix",
+    "lint-node": "eslint --env node core/*.js core/**/*.js cli/*.js cli/**/*.js capture/*.js capture/**/*.js --fix",
     "genConfig": "node ./cli/index.js genConfig",
     "reference": "node ./cli/index.js reference",
     "test": "node ./cli/index.js test",
@@ -23,6 +25,10 @@
   "devDependencies": {
     "chai": "^1.9.2",
     "eslint": "^3.3.0",
+    "eslint-config-semistandard": "^7.0.0-beta.0",
+    "eslint-config-standard": "^6.0.0",
+    "eslint-plugin-promise": "^2.0.1",
+    "eslint-plugin-standard": "^2.0.0",
     "mocha": "^1.21.5",
     "mockery": "^1.4.0"
   },

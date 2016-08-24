@@ -41,7 +41,7 @@ Commands:\n\
 \n\
 Options:\n\
 ' + makeDescription(optionsDescription) + '\n\
-  \n')
+  \n');
 }
 
 module.exports = usage;

@@ -1,21 +1,12 @@
+/* eslint-disable no-path-concat */
+
 var fs = require('fs');
 var cwd = fs.workingDirectory;
-var __dirname = null;
-var searchString = "genBitmaps.js";
-require('system').args.forEach(function (arg, i) {
-  var position = arg.length - searchString.length;
-  var lastIndex = arg.indexOf(searchString, position);
-  if (lastIndex !== -1 && lastIndex === position) {
-    __dirname = arg.replace(fs.separator + 'genBitmaps.js', '');
-  }
-});
+var scriptName = fs.absolute(require('system').args[3]);
+var __dirname = scriptName.substring(0, scriptName.lastIndexOf('/'));
 
-if (!__dirname) {
-  console.log("Could not find dirname");
-}
-
-var selectorNotFoundPath = __dirname + '/resources/selectorNotFound_noun_164558_cc.png'
-var hiddenSelectorPath = __dirname + '/resources/hiddenSelector_noun_63405.png'
+var selectorNotFoundPath = __dirname + '/resources/selectorNotFound_noun_164558_cc.png';
+var hiddenSelectorPath = __dirname + '/resources/hiddenSelector_noun_63405.png';
 var genConfigPath = __dirname + '/config.json'; // TODO :: find a way to use that directly from the main configuration
 
 var config = require(genConfigPath);
@@ -23,28 +14,28 @@ if (!config.paths) {
   config.paths = {};
 }
 
-var bitmaps_reference = config.paths.bitmaps_reference || 'bitmaps_reference';
-var bitmaps_test = config.paths.bitmaps_test || 'bitmaps_test';
-var casper_scripts = config.paths.casper_scripts || null;
+var bitmapsReferencePath = config.paths.bitmaps_reference || 'bitmaps_reference';
+var bitmapsTestPath = config.paths.bitmaps_test || 'bitmaps_test';
+var casperScriptsPath = config.paths.casper_scripts || null;
 var comparePairsFileName = config.paths.tempCompareConfigFileName;
 var viewports = config.viewports;
 var scenarios = config.scenarios || config.grabConfigs;
 
 var compareConfig = {testPairs: []};
 
-var casper = require("casper").create({
-  logLevel: config.debug ? "debug" : "info",
+var casper = require('casper').create({
+  logLevel: config.debug ? 'debug' : 'info',
   verbose: config.debug
 });
 
 if (config.debug) {
   console.log('Debug is enabled!');
 
-  casper.on("page.error", function (msg, trace) {
-    this.echo("Remote Error >    " + msg, "error");
-    this.echo("file:     " + trace[0].file, "WARNING");
-    this.echo("line:     " + trace[0].line, "WARNING");
-    this.echo("function: " + trace[0]["function"], "WARNING");
+  casper.on('page.error', function (msg, trace) {
+    this.echo('Remote Error >    ' + msg, 'error');
+    this.echo('file:     ' + trace[0].file, 'WARNING');
+    this.echo('line:     ' + trace[0].line, 'WARNING');
+    this.echo('function: ' + trace[0]['function'], 'WARNING');
   });
 }
 
@@ -59,13 +50,9 @@ casper.on('resource.received', function (resource) {
   }
 });
 
-function capturePageSelectors(scenarios, viewports, bitmaps_reference, bitmaps_test, isReference) {
-
-  var
-    screenshotNow = new Date(),
-    screenshotDateTime = screenshotNow.getFullYear() + pad(screenshotNow.getMonth() + 1) + pad(screenshotNow.getDate()) + '-' + pad(screenshotNow.getHours()) + pad(screenshotNow.getMinutes()) + pad(screenshotNow.getSeconds());
-
-
+function capturePageSelectors (scenarios, viewports, bitmapsReferencePath, bitmapsTestPath, isReference) {
+  var screenshotNow = new Date();
+  var screenshotDateTime = screenshotNow.getFullYear() + pad(screenshotNow.getMonth() + 1) + pad(screenshotNow.getDate()) + '-' + pad(screenshotNow.getHours()) + pad(screenshotNow.getMinutes()) + pad(screenshotNow.getSeconds());
   var consoleBuffer = '';
 
   casper.on('remote.message', function (message) {
@@ -78,22 +65,20 @@ function capturePageSelectors(scenarios, viewports, bitmaps_reference, bitmaps_t
   casper.each(scenarios, function (casper, scenario) {
     var referenceId = scenario.label.replace(/\//g, '_');
 
-    processScenario(casper, scenario, referenceId, referenceId, viewports, bitmaps_reference, bitmaps_test, screenshotDateTime, consoleBuffer);
+    processScenario(casper, scenario, referenceId, referenceId, viewports, bitmapsReferencePath, bitmapsTestPath, screenshotDateTime, consoleBuffer);
 
-    if (!isReference && scenario.hasOwnProperty("variants")) {
+    if (!isReference && scenario.hasOwnProperty('variants')) {
       scenario.variants.forEach(function (variant) {
-        processScenario(casper, variant, variant.label.replace(/\//g, '_'), referenceId, viewports, bitmaps_reference, bitmaps_test, screenshotDateTime, consoleBuffer);
+        processScenario(casper, variant, variant.label.replace(/\//g, '_'), referenceId, viewports, bitmapsReferencePath, bitmapsTestPath, screenshotDateTime, consoleBuffer);
       });
     }
-
-  });//end casper.each scenario
-
+  });// end casper.each scenario
 }
 
-function processScenario(casper, scenario, scenarioId, referenceId, viewports, bitmaps_reference, bitmaps_test, screenshotDateTime, consoleBuffer) {
+function processScenario (casper, scenario, scenarioId, referenceId, viewports, bitmapsReferencePath, bitmapsTestPath, screenshotDateTime, consoleBuffer) {
   var scriptTimeout = 20000;
 
-  casper.each(viewports, function (casper, vp, viewport_index) {
+  casper.each(viewports, function (casper, vp, viewportIndex) {
     this.then(function () {
       this.viewport(vp.width || vp.viewport.width, vp.height || vp.viewport.height);
     });
@@ -110,22 +95,22 @@ function processScenario(casper, scenario, scenarioId, referenceId, viewports, b
 
     this.thenOpen(url, function () {
       casper.waitFor(
-        function () { //test
+        function () { // test
           var readyEvent = scenario.readyEvent || config.readyEvent;
           if (!readyEvent) {
             return true;
           }
           var regExReadyFlag = new RegExp(readyEvent, 'i');
           return consoleBuffer.search(regExReadyFlag) >= 0;
-        }
-        , function () {//on done
+        },
+        function () { // on done
           consoleBuffer = '';
           casper.echo('Ready event received.');
-        }
-        , function () {
-          casper.echo('ERROR: casper timeout.')
-        } //on timeout
-        , scriptTimeout
+        },
+        function () {
+          casper.echo('ERROR: casper timeout.');
+        }, // on timeout
+        scriptTimeout
       );
       casper.wait(scenario.delay || 1);
     });
@@ -156,10 +141,9 @@ function processScenario(casper, scenario, scenarioId, referenceId, viewports, b
     });
 
     this.then(function () {
-
       this.echo('Screenshots for ' + vp.name + ' (' + (vp.width || vp.viewport.width) + 'x' + (vp.height || vp.viewport.height) + ')', 'info');
 
-      //HIDE SELECTORS WE WANT TO AVOID
+      // HIDE SELECTORS WE WANT TO AVOID
       if (scenario.hasOwnProperty('hideSelectors')) {
         scenario.hideSelectors.forEach(function (o, i, a) {
           casper.evaluate(function (o) {
@@ -170,7 +154,7 @@ function processScenario(casper, scenario, scenarioId, referenceId, viewports, b
         });
       }
 
-      //REMOVE UNWANTED SELECTORS FROM RENDER TREE
+      // REMOVE UNWANTED SELECTORS FROM RENDER TREE
       if (scenario.hasOwnProperty('removeSelectors')) {
         scenario.removeSelectors.forEach(function (o, i, a) {
           casper.evaluate(function (o) {
@@ -181,47 +165,43 @@ function processScenario(casper, scenario, scenarioId, referenceId, viewports, b
         });
       }
 
-      //CREATE SCREEN SHOTS AND TEST COMPARE CONFIGURATION (CONFIG FILE WILL BE SAVED WHEN THIS PROCESS RETURNS)
+      // CREATE SCREEN SHOTS AND TEST COMPARE CONFIGURATION (CONFIG FILE WILL BE SAVED WHEN THIS PROCESS RETURNS)
       // If no selectors are provided then set the default 'body'
       if (!scenario.hasOwnProperty('selectors')) {
         scenario.selectors = ['body'];
       }
       scenario.selectors.forEach(function (o, i, a) {
-        var cleanedSelectorName = o.replace(/[^a-z0-9_\-]/gi, '');//remove anything that's not a letter or a number
-        //var cleanedUrl = scenario.url.replace(/[^a-zA-Z\d]/,'');//remove anything that's not a letter or a number
+        var cleanedSelectorName = o.replace(/[^a-z0-9_\-]/gi, '');// remove anything that's not a letter or a number
+        // var cleanedUrl = scenario.url.replace(/[^a-zA-Z\d]/,'');//remove anything that's not a letter or a number
         // var fileName = scenario_index + '_' + i + '_' + cleanedSelectorName + '_' + viewport_index + '_' + vp.name + '.png';
-        var fileNameTemplate = '_' + i + '_' + cleanedSelectorName + '_' + viewport_index + '_' + vp.name + '.png';
+        var fileNameTemplate = '_' + i + '_' + cleanedSelectorName + '_' + viewportIndex + '_' + vp.name + '.png';
         var fileName = scenarioId + fileNameTemplate;
 
-        var reference_FP = bitmaps_reference + '/' + referenceId + fileNameTemplate;
-        var test_FP = bitmaps_test + '/' + screenshotDateTime + '/' + fileName;
+        var referenceFilePath = bitmapsReferencePath + '/' + referenceId + fileNameTemplate;
+        var testFilePath = bitmapsTestPath + '/' + screenshotDateTime + '/' + fileName;
 
-        var filePath = (isReference) ? reference_FP : test_FP;
+        var filePath = (isReference) ? referenceFilePath : testFilePath;
 
         captureScreenshot(casper, filePath, o);
 
         if (!isReference) {
           compareConfig.testPairs.push({
-            reference: reference_FP,
-            test: test_FP,
+            reference: referenceFilePath,
+            test: testFilePath,
             selector: o,
             fileName: fileName,
             label: scenario.label,
             misMatchThreshold: scenario.misMatchThreshold || config.misMatchThreshold
           });
         }
-        //casper.echo('remote capture to > '+filePath,'info');
-
-      });//end topLevelModules.forEach
-
+        // casper.echo('remote capture to > '+filePath,'info');
+      });// end topLevelModules.forEach
     });
-
-  });//end casper.each viewports
-
+  });// end casper.each viewports
 }
 
-function captureScreenshot(casper, filePath, selector) {
-  if (selector === "body:noclip" || selector === "document") {
+function captureScreenshot (casper, filePath, selector) {
+  if (selector === 'body:noclip' || selector === 'document') {
     casper.capture(filePath);
   } else if (casper.exists(selector)) {
     if (casper.visible(selector)) {
@@ -239,20 +219,20 @@ if (isReference) {
   console.log('CREATING NEW REFERENCE FILES');
 }
 
-capturePageSelectors(scenarios, viewports, bitmaps_reference, bitmaps_test, isReference);
+capturePageSelectors(scenarios, viewports, bitmapsReferencePath, bitmapsTestPath, isReference);
 
 casper.run(function () {
   complete();
   this.exit();
 });
 
-function complete(){
+function complete () {
   var compareConfigJSON = {compareConfig: compareConfig};
-  fs.write(comparePairsFileName, JSON.stringify(compareConfigJSON,null,2), 'w');
+  fs.write(comparePairsFileName, JSON.stringify(compareConfigJSON, null, 2), 'w');
   console.log('Comparison config file updated.');
 }
 
-function pad(number) {
+function pad (number) {
   var r = String(number);
   if (r.length === 1) {
     r = '0' + r;
@@ -260,29 +240,29 @@ function pad(number) {
   return r;
 }
 
-function getScriptPath(scriptFilePath) {
-  var script_path = ensureFileSuffix(scriptFilePath, 'js');
+function getScriptPath (scriptFilePath) {
+  var scriptPath = ensureFileSuffix(scriptFilePath, 'js');
 
-  if (casper_scripts) {
-    script_path = glueStringsWithSlash(casper_scripts, script_path);
+  if (casperScriptsPath) {
+    scriptPath = glueStringsWithSlash(casperScriptsPath, scriptPath);
   }
 
   // make sure it's there...
-  if (!fs.isFile(script_path)) {
-    casper.echo(script_path + ' was not found.', 'ERROR');
+  if (!fs.isFile(scriptPath)) {
+    casper.echo(scriptPath + ' was not found.', 'ERROR');
     return;
   }
 
-  return cwd + fs.separator + script_path;
+  return cwd + fs.separator + scriptPath;
 }
 
-function ensureFileSuffix(filename, suffix) {
-  var re = new RegExp('\.' + suffix + '$', '');
+function ensureFileSuffix (filename, suffix) {
+  var re = new RegExp('\.' + suffix + '$', ''); // eslint-disable-line no-useless-escape
 
   return filename.replace(re, '') + '.' + suffix;
 }
 
 // merge both strings while soft-enforcing a single slash between them
-function glueStringsWithSlash(stringA, stringB) {
+function glueStringsWithSlash (stringA, stringB) {
   return stringA.replace(/\/$/, '') + '/' + stringB.replace(/^\//, '');
 }

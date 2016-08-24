@@ -1,7 +1,6 @@
 var path = require('path');
 var logger = require('../util/logger')('COMMAND');
 
-
 /*
  * Each file included in this folder (except `index.js`) is a command and must export the following object
  * {
@@ -46,7 +45,7 @@ var commands = commandNames
   .map(function definitionToExecution (command) {
     return {
       name: command.name,
-      execute: function execute(config) {
+      execute: function execute (config) {
         logger.info('Executing core for `' + command.name + '`');
 
         var promise = command.commandDefinition.execute(config);

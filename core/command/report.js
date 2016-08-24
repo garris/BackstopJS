@@ -5,15 +5,15 @@ var fs = require('../util/fs');
 var logger = require('../util/logger')('report');
 var compare = require('../util/compare');
 
-function toAbsolute(p) {
-  if (p[0] == '/') {
+function toAbsolute (p) {
+  if (p[0] === '/') {
     return p;
   }
 
   return path.join(process.cwd(), p);
 }
 
-function writeReport(config, reporter) {
+function writeReport (config, reporter) {
   var promises = [];
 
   if (config.report && config.report.indexOf('CI') > -1 && config.ciReport.format === 'junit') {
@@ -27,10 +27,10 @@ function writeReport(config, reporter) {
   return Promise.all(promises);
 }
 
-function writeBrowserReport(config, reporter) {
-  logger.log("Writing browser report");
+function writeBrowserReport (config, reporter) {
+  logger.log('Writing browser report');
   return fs.copy(config.comparePath, config.html_report).then(function () {
-    logger.log("Browser reported copied");
+    logger.log('Browser reported copied');
 
     // Fixing URLs in the configuration
     var report = toAbsolute(config.html_report);
@@ -53,7 +53,7 @@ function writeBrowserReport(config, reporter) {
       logger.error('Failed configuration copy');
       throw err;
     });
-  }).then(function() {
+  }).then(function () {
     if (config.openReport) {
       var executeCommand = require('./index');
       return executeCommand('_openReport', config);
@@ -61,8 +61,8 @@ function writeBrowserReport(config, reporter) {
   });
 }
 
-function writeJunitReport(config, reporter) {
-  logger.log("Writing jUnit Report");
+function writeJunitReport (config, reporter) {
+  logger.log('Writing jUnit Report');
   var testReportFileName = config.ciReport.testReportFileName.replace(/\.xml$/, '') + '.xml';
 
   var testSuite = junitWriter.addTestsuite(reporter.testSuite);
@@ -82,7 +82,7 @@ function writeJunitReport(config, reporter) {
     }
   }
 
-  return new Promise(function(resolve, reject) {
+  return new Promise(function (resolve, reject) {
     var destination = path.join(config.ci_report, testReportFileName);
     junitWriter.save(destination, function (err) {
       if (err) {
