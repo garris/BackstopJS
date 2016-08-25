@@ -9,7 +9,6 @@ module.exports = {
       open(config.compareReportURL, function (err) {
         if (err) {
           logger.error("An error occured while opening report in the default browser.")
-          // reject(err);
         }
         resolve();
       });
