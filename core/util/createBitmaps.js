@@ -23,6 +23,7 @@ function writeReferenceCreateConfig (config, isReference) {
 
   configJSON.isReference = isReference;
   configJSON.paths.tempCompareConfigFileName = config.tempCompareConfigFileName;
+  configJSON.defaultMisMatchThreshold = config.defaultMisMatchThreshold;
 
   if (config.args.filter) {
     var scenarii = [];

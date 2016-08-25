@@ -96,6 +96,8 @@ function makeConfig (argv) {
   config.compareConfigFileName = config.html_report + '/config.js';
   config.compareReportURL = config.html_report + '/index.html';
 
+  config.defaultMisMatchThreshold = 0.1;
+
   return config;
 }
 

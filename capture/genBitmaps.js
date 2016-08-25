@@ -186,7 +186,7 @@ function processScenario (casper, scenario, scenarioId, referenceId, viewports, 
             selector: o,
             fileName: fileName,
             label: scenario.label,
-            misMatchThreshold: scenario.misMatchThreshold || config.misMatchThreshold
+            misMatchThreshold: scenario.misMatchThreshold || config.misMatchThreshold || config.defaultMisMatchThreshold
           });
         }
         // casper.echo('remote capture to > '+filePath,'info');
