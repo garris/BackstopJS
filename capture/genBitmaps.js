@@ -46,31 +46,32 @@ casper.on('resource.received', function (resource) {
   }
 });
 
+var consoleBuffer = '';
+casper.on('remote.message', function (message) {
+  casper.echo(message);
+  consoleBuffer = consoleBuffer + '\n' + message;
+});
+
 function capturePageSelectors (scenarios, viewports, bitmapsReferencePath, bitmapsTestPath, isReference) {
   var screenshotNow = new Date();
   var screenshotDateTime = screenshotNow.getFullYear() + pad(screenshotNow.getMonth() + 1) + pad(screenshotNow.getDate()) + '-' + pad(screenshotNow.getHours()) + pad(screenshotNow.getMinutes()) + pad(screenshotNow.getSeconds());
-  var consoleBuffer = '';
-
-  casper.on('remote.message', function (message) {
-    consoleBuffer = consoleBuffer + '\n' + message;
-  });
 
   casper.start();
 
   casper.each(scenarios, function (casper, scenario) {
     var referenceId = scenario.label.replace(/\//g, '_');
 
-    processScenario(casper, scenario, referenceId, referenceId, viewports, bitmapsReferencePath, bitmapsTestPath, screenshotDateTime, consoleBuffer);
+    processScenario(casper, scenario, referenceId, referenceId, viewports, bitmapsReferencePath, bitmapsTestPath, screenshotDateTime);
 
     if (!isReference && scenario.hasOwnProperty('variants')) {
       scenario.variants.forEach(function (variant) {
-        processScenario(casper, variant, variant.label.replace(/\//g, '_'), referenceId, viewports, bitmapsReferencePath, bitmapsTestPath, screenshotDateTime, consoleBuffer);
+        processScenario(casper, variant, variant.label.replace(/\//g, '_'), referenceId, viewports, bitmapsReferencePath, bitmapsTestPath, screenshotDateTime);
       });
     }
   });// end casper.each scenario
 }
 
-function processScenario (casper, scenario, scenarioId, referenceId, viewports, bitmapsReferencePath, bitmapsTestPath, screenshotDateTime, consoleBuffer) {
+function processScenario (casper, scenario, scenarioId, referenceId, viewports, bitmapsReferencePath, bitmapsTestPath, screenshotDateTime) {
   var scriptTimeout = 20000;
 
   casper.each(viewports, function (casper, vp, viewportIndex) {
@@ -88,6 +89,8 @@ function processScenario (casper, scenario, scenarioId, referenceId, viewports, 
       require(getScriptPath(onBeforeScript))(casper, scenario, vp);
     }
 
+
+
     this.thenOpen(url, function () {
       casper.waitFor(
         function () { // test
@@ -96,14 +99,14 @@ function processScenario (casper, scenario, scenarioId, referenceId, viewports, 
             return true;
           }
           var regExReadyFlag = new RegExp(readyEvent, 'i');
-          return consoleBuffer.search(regExReadyFlag) >= 0;
+          return consoleBuffer.search(regExReadyFlag) > -1;
         },
         function () { // on done
           consoleBuffer = '';
           casper.echo('Ready event received.');
         },
         function () {
-          casper.echo('ERROR: casper timeout.');
+          casper.echo('Error while waiting for ready event.');
         }, // on timeout
         scriptTimeout
       );
