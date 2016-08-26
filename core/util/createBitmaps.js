@@ -55,8 +55,8 @@ module.exports = function (config, isReference) {
 
         // exit if there was some kind of failure in the casperChild process
         if (code !== 0) {
-          console.log('\nLooks like an error occured. You may want to try running `$ backstop echo`. This will echo the requested test URL output to the console. You can check this output to verify that the file requested is indeed being received in the expected format.');
-          reject(new Error('An error occured. You may want to try running `$ backstop echo`.'));
+          console.log('\nAn unexpected error occured. You may want to try setting the debug option to `true` in your config file.');
+          reject(new Error('An unexpected error occured. You may want to try setting the debug option to `true` in your config file.'));
           return;
         }
 
