@@ -1,5 +1,5 @@
 module.exports = function (casper, scenario, vp) {
-  casper.echo('Your web-app has not loaded yet. Edit onBefore.js to log-in, load cookies or set other states required for your test.', 'INFO');
+  console.log('Your web-app has not loaded yet. Edit onBefore.js to log-in, load cookies or set other states required for your test.', 'INFO');
 };
 
 // // EXAMPLE: LOGIN BEFORE RUNNING TESTS
