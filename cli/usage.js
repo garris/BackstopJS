@@ -2,11 +2,11 @@ var version = require('../package.json').version;
 var makeSpaces = require('../core/util/makeSpaces');
 
 var commandsDescription = {
-  genConfig: 'Generate a configuration file for your project',
-  reference: 'reference!!',
-  test: 'test!!',
-  openReport: 'openReport!!',
-  echo: 'echo!!'
+  genConfig: 'Generate a configuration file boilerplate in your current directory. PLEASE NOTE: this will force overwrite any existing config.',
+  reference: 'Create reference screenshots of your web content at multiple sceen sizes.',
+  test: 'Create test screenshots of your web content and compare against the set you created using `backstop reference`.',
+  openReport: 'View your last test screenshots in your browser.'//,
+  //echo: 'What?'
 };
 
 var optionsDescription = {
