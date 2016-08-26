@@ -1,8 +1,6 @@
 module.exports = function (casper, scenario, vp) {
   casper.echo('onReady.js', 'INFO');
   casper.evaluate(function () {
-    console.log('This custom script is running inside your web app!');
-    console.log('Add your own casper commands here to simulate user interacions or logging in.');
+    console.log('Your web-app is now loaded. Modify onReady.js to simulate user interacions or other state changes.');
   });
-  casper.wait(50);
 };

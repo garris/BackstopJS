@@ -42,12 +42,12 @@
   "paths": {
     "bitmaps_reference": "backstop_data/bitmaps_reference",
     "bitmaps_test": "backstop_data/bitmaps_test",
-    "compare_data": "backstop_data/bitmaps_test/compare.json",
-    "casper_scripts": "backstop_data/casper_scripts"
+    "casper_scripts": "backstop_data/casper_scripts",
+    "html_report": "backstop_data/html_report",
+    "ci_report": "backstop_data/ci_report"
   },
+  "casperFlags": [],
   "engine": "phantomjs",
   "report": ["browser"],
-  "casperFlags": [],
-  "debug": false,
-  "port": 3001
+  "debug": false
 }
