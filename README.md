@@ -444,6 +444,27 @@ Please note: these file paths are relative to your `./node_modules/backstopjs/` 
   }
 ```
 
+### Setting custom reference file names (version 1.3.0+)
+By default, BackstopJS saves its screenshots using the next file name template
+
+```
+{scenarioIndex}_{selectorIndex}_{selectorLabel}_{viewportIndex}_{viewportLabel}.png
+```
+
+You can add your own template in config file
+
+```json
+  "fileNameTemplate": "{configFile}_{scenarioIndex}_{scenarioLabel}_{selectorIndex}_{selectorLabel}_{viewportIndex}_{viewportLabel}"
+```
+
+You can also set human name for your config which will replace name (or hash) of your `configFile`
+
+```json
+  "name": "Default"
+```
+
+NB! All symbols except `0-9`, `a-Z`, `-` and `_` will be removed in reference file names.
+
 ### Changing the rendering engine (version 0.6.0+)
 BackstopJS supports using PhantomJS or SlimerJS for web app rendering. (With thanks to CasperJS for doing the heavy lifting here.)
 
