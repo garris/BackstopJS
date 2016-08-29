@@ -5,14 +5,6 @@ var fs = require('../util/fs');
 var logger = require('../util/logger')('report');
 var compare = require('../util/compare');
 
-function toAbsolute (p) {
-  if (p[0] === '/') {
-    return p;
-  }
-
-  return path.join(process.cwd(), p);
-}
-
 function writeReport (config, reporter) {
   var promises = [];
 
@@ -28,6 +20,12 @@ function writeReport (config, reporter) {
 }
 
 function writeBrowserReport (config, reporter) {
+  function toAbsolute (p) {
+    if (p[0] === '/') {
+      return p;
+    }
+    return path.join(config.customBackstop, p);
+  }
   logger.log('Writing browser report');
   return fs.copy(config.comparePath, config.html_report).then(function () {
     logger.log('Browser reported copied');
@@ -101,8 +99,7 @@ module.exports = {
     return compare(config).then(function (report) {
       var failed = report.failed();
 
-      console.log('\n');
-      logger.log('Test completed...');
+      logger.log('\nTest completed...');
       logger.log('\x1b[32m' + report.passed() + ' Passed' + '\x1b[0m');
       logger.log('\x1b[31m' + failed + ' Failed\n' + '\x1b[0m');
 

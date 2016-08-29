@@ -3,7 +3,8 @@ var temp = require('temp');
 var fs = require('./fs');
 
 function makeConfig (argv) {
-  var config = {};
+  var config = {},
+      CMD_REQUIRES_CONFIG = !/genConfig/.test(argv['_'][0]);
 
   config.args = argv;
 
@@ -14,6 +15,7 @@ function makeConfig (argv) {
   // Legacy mode, if the cwd is the backstop module
   if (config.backstop === config.customBackstop) {
     config.customBackstop = path.join(__dirname, '../../../..');
+    console.log('BackstopJS is running in legacy mode.')
   }
 
   // BACKSTOP CONFIG PATH
@@ -29,12 +31,12 @@ function makeConfig (argv) {
   }
 
   console.log('\nBackstopJS CWD: ', config.customBackstop);
-  console.log('BackstopJS loading config: ', config.backstopConfigFileName, '\n');
 
   // LOAD CONFIG
   var userConfig = {};
-  if (config.backstopConfigFileName && fs.existsSync(config.backstopConfigFileName)) {
+  if (CMD_REQUIRES_CONFIG && config.backstopConfigFileName && fs.existsSync(config.backstopConfigFileName)) {
     try {
+      console.log('BackstopJS loading config: ', config.backstopConfigFileName, '\n');
       userConfig = require(config.backstopConfigFileName);
     } catch (e) {
       console.error('Error ' + e);
@@ -75,7 +77,7 @@ function makeConfig (argv) {
 
   config.casperFlags = userConfig.casperFlags || null;
   config.engine = userConfig.engine || null;
-  config.report = userConfig.report || [ 'CI', 'browser' ];
+  config.report = userConfig.report || [ 'browser' ];
   config.ciReport = userConfig.ci ? {
     format: userConfig.ci.format || config.ci.format,
     testReportFileName: userConfig.ci.testReportFileName || config.ci.testReportFileName,
@@ -93,6 +95,8 @@ function makeConfig (argv) {
 
   config.compareConfigFileName = config.html_report + '/config.js';
   config.compareReportURL = config.html_report + '/index.html';
+
+  config.defaultMisMatchThreshold = 0.1;
 
   return config;
 }
