@@ -26,10 +26,13 @@ function writeReferenceCreateConfig (config, isReference) {
 
   if (config.args.filter) {
     var scenarii = [];
-    each(configJSON.scenarios, function (scenario) {
-      if (includes(scenario.label, config.args.filter)) {
-        scenarii.push(scenario);
-      }
+
+    config.args.filter.split(',').forEach(function (filteredTest) {
+      each(configJSON.scenarios, function (scenario) {
+        if (includes(scenario.label, filteredTest)) {
+          scenarii.push(scenario);
+        }
+      });
     });
 
     logger.log('Will generate ' + scenarii.length + ' out of ' + configJSON.scenarios.length + ' scenarii');

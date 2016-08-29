@@ -9,6 +9,7 @@
 
   <script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
   <script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+  <script type="text/javascript" src="bower_components/angular-clipboard/angular-clipboard.js"></script>
   <script type="text/javascript" src="js/compare.js"></script>
   <script type="text/javascript" src="js/revealer.js"></script>
   <script type="text/javascript" src="config.js"></script>
@@ -16,6 +17,8 @@
 
 <body ng-app="compareApp">
 <div id="root" ng-controller="MainCtrl" class="container-fluid">
+  <div uib-alert ng-repeat="alert in alerts" ng-class="'alert-' + alert.type"
+       dismiss-on-timeout="2000" close="closeAlert($index)">{{alert.msg}}</div>
   <h1>{{name}} Report</h1>
   <div class="summaryBlock">
     <h3 class="statContainer">
@@ -27,6 +30,7 @@
       <span ng-if="!isSummaryListCollapsed">Collapse Summary List</span>
       <span ng-if="isSummaryListCollapsed">Expand Summary List</span>
     </button>
+    <button class="summaryListButton" type="button" class="btn btn-default" ng-click="copyFailedTestsIds()">Copy failed tests to clipboard</button>
     <table class="summaryList" ng-class="{'hide' : isSummaryListCollapsed}">
       <tr ng-repeat="thisTestPair in testPairs">
         <td class="statusInds">

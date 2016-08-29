@@ -2,11 +2,11 @@
 
 var tests = {};
 
-function report (report) { // eslint-disable-line no-unused-vars
+function report(report) { // eslint-disable-line no-unused-vars
   tests = report;
 }
 
-var compareApp = angular.module('compareApp', ['ui.bootstrap', 'revealer']);
+var compareApp = angular.module('compareApp', ['ui.bootstrap', 'angular-clipboard', 'revealer']);
 
 var defaultMisMatchThreshold = 1;
 
@@ -21,13 +21,18 @@ var TestPair = function (o) {
   this.meta.misMatchThreshold = (o && o.misMatchThreshold && o.misMatchThreshold >= 0) ? o.misMatchThreshold : defaultMisMatchThreshold;
 };
 
-compareApp.controller('MainCtrl', function ($scope, $uibModal) {
+compareApp.controller('MainCtrl', ['$scope', '$uibModal', 'clipboard', function ($scope, $uibModal, clipboard) {
   $scope.name = tests.testSuite;
   $scope.testPairs = [];
+  $scope.alerts = [];
   $scope.passedCount = 0;
   $scope.testDuration = 0;
   $scope.testIsRunning = true;
   $scope.isSummaryListCollapsed = true;
+
+  if (!clipboard.supported) {
+    $scope.alerts.push({type: 'danger', msg: 'Sorry, copy to clipboard is not supported'});
+  }
 
   tests.tests.forEach(function (o) {
     $scope.testDuration += o.pair.diff.analysisTime;
@@ -68,6 +73,27 @@ compareApp.controller('MainCtrl', function ($scope, $uibModal) {
     return false;
   };
 
+  $scope.copyFailedTestsIds = function () {
+    var failedTests = '';
+    $scope.testPairs.forEach(function (test) {
+      if (!test.passed) {
+        failedTests = failedTests + test.meta.pair.label + ',';
+      }
+    });
+
+    if (failedTests) {
+      clipboard.copyText(failedTests.substring(0, failedTests.length - 1));
+      $scope.alerts.push({type: 'success', msg: 'Failed tests were copied to clipboard'});
+    } else {
+      $scope.alerts.push({type: 'warning', msg: 'No failed tests were found'});
+    }
+
+  };
+
+  $scope.closeAlert = function (index) {
+    $scope.alerts.splice(index, 1);
+  };
+
   $scope.openModal = function (size, referenceImg, testImg) {
     $uibModal.open({
       animation: true,
@@ -86,7 +112,7 @@ compareApp.controller('MainCtrl', function ($scope, $uibModal) {
       }
     });
   };
-});
+}]);
 
 // Please note that $uibModalInstance represents a modal window (instance) dependency.
 // It is not the same as the $uibModal service used above.
