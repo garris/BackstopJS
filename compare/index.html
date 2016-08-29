@@ -5,11 +5,12 @@
 
   <link rel="stylesheet" type="text/css" href="bower_components/bootstrap-css-only/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="css/styles.css">
-  <link rel="stylesheet" type="text/css" href="css/imagediff.css">
+  <link rel="stylesheet" type="text/css" href="css/revealer.css">
 
   <script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
   <script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
   <script type="text/javascript" src="js/compare.js"></script>
+  <script type="text/javascript" src="js/revealer.js"></script>
   <script type="text/javascript" src="config.js"></script>
 </head>
 
@@ -85,21 +86,23 @@
         <h3 class="modal-title" id="modal-title">Comparsion result</h3>
       </div>
       <div class="modal-body" id="modal-body">
-        <center>
-          <div class="image-slider">
-            <div>
-              <img ng-src="{{ selected.referenceImg }}"/>
-            </div>
-            <img ng-src="{{ selected.testImg }}"/>
-          </div>
-        </center>
+
+        <div class="btn-group " role="group">
+          <button type="button" class="btn btn-success" ng-click="setImgPositionValue(0)">Reference</button>
+          <button type="button" class="btn btn-warning" ng-click="setImgPositionValue(100)">Test</button>
+        </div>
+
+        <revealer top-image="{{ selected.referenceImg }}"
+                  bottom-image="{{ selected.testImg }}"
+                  start-position = "imgPositionValue">
+        </revealer>
+
       </div>
       <div class="modal-footer">
         <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
       </div>
     </script>
   </div>
-  <!--</center>-->
 
 </div> <!-- end #root -->
 

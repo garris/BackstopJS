@@ -6,7 +6,7 @@ function report (report) { // eslint-disable-line no-unused-vars
   tests = report;
 }
 
-var compareApp = angular.module('compareApp', ['ui.bootstrap']);
+var compareApp = angular.module('compareApp', ['ui.bootstrap', 'revealer']);
 
 var defaultMisMatchThreshold = 1;
 
@@ -91,9 +91,16 @@ compareApp.controller('MainCtrl', function ($scope, $uibModal) {
 // Please note that $uibModalInstance represents a modal window (instance) dependency.
 // It is not the same as the $uibModal service used above.
 compareApp.controller('ModalInstanceCtrl', function ($scope, $uibModalInstance, referenceImg, testImg) {
+
+  $scope.imgPositionValue = 50;
+
   $scope.selected = {
     referenceImg: referenceImg,
     testImg: testImg
+  };
+
+  $scope.setImgPositionValue = function (value) {
+    $scope.imgPositionValue = value;
   };
 
   $scope.ok = function () {
