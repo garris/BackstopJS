@@ -26,11 +26,11 @@
                     class='label label-danger'>{{testPairs.length-passedCount}}</span></span>
       <span class="stat">{{testDuration/1000 | number : 2}}s</span>
     </h3>
-    <button class="summaryListButton" type="button" class="btn btn-default" ng-click="isSummaryListCollapsed = !isSummaryListCollapsed">
+    <button class="btn btn-default summaryListButton" type="button" class="btn btn-default" ng-click="isSummaryListCollapsed = !isSummaryListCollapsed">
       <span ng-if="!isSummaryListCollapsed">Collapse Summary List</span>
       <span ng-if="isSummaryListCollapsed">Expand Summary List</span>
     </button>
-    <button class="summaryListButton" type="button" class="btn btn-default" ng-click="copyFailedTestsIds()">Copy failed tests to clipboard</button>
+    <button class="btn btn-default summaryListButton" type="button" class="btn btn-default" ng-click="copyFailedTestsIds()">Copy failed tests to clipboard</button>
     <table class="summaryList" ng-class="{'hide' : isSummaryListCollapsed}">
       <tr ng-repeat="thisTestPair in testPairs">
         <td class="statusInds">
@@ -52,7 +52,7 @@
   <div class="results" ng-repeat="thisTestPair in testPairs | filter : displayOnStatusFilter">
     <div class="flex-container">
       <div class="selector">{{ thisTestPair.meta.pair.label }} - {{ thisTestPair.meta.pair.selector }}
-        <button type="button" class="btn btn-default"
+        <button type="button" class="btn btn-default btn-sm"
                 ng-click="openModal('lg', thisTestPair.a.src, thisTestPair.b.src)">Show diff</button>
       </div>
       <div class="filename">{{ thisTestPair.meta.pair.fileName }}</div>
@@ -65,10 +65,10 @@
     </div>
     <div class="flex-container">
       <div>
-        <img ng-src="{{ thisTestPair.a.src }}" alt="Reference" />
+        <img ng-src="{{ thisTestPair.a.src }}" alt="Reference" ng-click="openModal('lg', thisTestPair.a.src, thisTestPair.b.src)" />
       </div>
       <div>
-        <img ng-src="{{ thisTestPair.b.src }}" alt="Test" />
+        <img ng-src="{{ thisTestPair.b.src }}" alt="Test" ng-click="openModal('lg', thisTestPair.a.src, thisTestPair.b.src)" />
       </div>
       <div ng-if="!thisTestPair.passed">
         <img ng-src="{{ thisTestPair.c.src }}" image-name="c" alt="Difference" />
@@ -96,8 +96,8 @@
           <button type="button" class="btn btn-warning" ng-click="setImgPositionValue(100)">Test</button>
         </div>
 
-        <revealer top-image="{{ selected.referenceImg }}"
-                  bottom-image="{{ selected.testImg }}"
+        <revealer top-image="{{ selected.testImg }}"
+                  bottom-image="{{ selected.referenceImg }}"
                   start-position = "imgPositionValue">
         </revealer>
 
