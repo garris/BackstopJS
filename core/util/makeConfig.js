@@ -3,8 +3,8 @@ var temp = require('temp');
 var fs = require('./fs');
 
 function makeConfig (argv) {
-  var config = {},
-      CMD_REQUIRES_CONFIG = !/genConfig/.test(argv['_'][0]);
+  var config = {};
+  var CMD_REQUIRES_CONFIG = !/genConfig/.test(argv['_'][0]);
 
   config.args = argv;
 
@@ -15,7 +15,7 @@ function makeConfig (argv) {
   // Legacy mode, if the cwd is the backstop module
   if (config.backstop === config.customBackstop) {
     config.customBackstop = path.join(__dirname, '../../../..');
-    console.log('BackstopJS is running in legacy mode.')
+    console.log('BackstopJS is running in legacy mode.');
   }
 
   // BACKSTOP CONFIG PATH

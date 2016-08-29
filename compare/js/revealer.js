@@ -1,4 +1,5 @@
-(function(root, factory) {
+/* global define */
+(function (root, factory) {
   'use strict';
 
   if (typeof define === 'function' && define.amd) {
@@ -11,9 +12,7 @@
     // no module loading system
     return factory(root.angular);
   }
-
-})(this, function(angular) {
-
+})(this, function (angular) {
   'use strict';
 
   var module = 'revealer';
@@ -49,7 +48,7 @@
    * @element <revealer top-image="top.png" top-label="Top Image" bottom-image="bottom.png" bottom-label="Bottom Label"></revealer>
    * @scope
    */
-  function revealer($document, $window) {
+  function revealer ($document, $window) {
     return {
       restrcit: 'E',
       template: ['<div class="revealer__container">',
@@ -74,8 +73,7 @@
       link: link
     };
 
-    function link(scope, elem, attr) {
-
+    function link (scope, elem, attr) {
       // throw error when image path not provided
       if ((!scope.topImage) ||
           (!scope.bottomImage)) {
@@ -84,7 +82,7 @@
 
       scope.startPosition = (scope.startPosition && scope.startPosition < 100) ? scope.startPosition : 50;
 
-      scope.scroll = (scope.scroll === true) ? true : false;
+      scope.scroll = scope.scroll === true;
       scope.scrollOffset = scope.scrollOffset || 0;
 
       var handle;
@@ -98,10 +96,7 @@
       var handleDrag = throttle(_handleDrag, 40);
       var handleScroll = throttle(_handleScroll, 20);
 
-
-
-      $document.ready(function() {
-
+      $document.ready(function () {
         // store the needed elements
         handle = getElem(elem, '.revealer__handle');
         topImage = getElem(elem, '.revealer__top-image');
@@ -116,9 +111,8 @@
 
         (!scope.scroll) ? setRevealPosition(handle, topImage, scope.startPosition) : setRevealPosition(handle, topImage, 0);
 
-        angular.forEach(multipleEvents, function(eventConfig) {
-
-          handle.on(eventConfig.action, function(e) {
+        angular.forEach(multipleEvents, function (eventConfig) {
+          handle.on(eventConfig.action, function (e) {
             var clickPos;
 
             handle.addClass(handleClass);
@@ -146,13 +140,11 @@
             // event listerners on drag an elements
             $document.on(eventConfig.release, removeListeners);
           });
-
         });
 
-        scope.$watch("startPosition", function (newValue, oldValue) {
+        scope.$watch('startPosition', function (newValue, oldValue) {
           setRevealPosition(handle, topImage, newValue);
         });
-
       }); // ready
 
       /**
@@ -162,7 +154,7 @@
        * the handle and the width of the topImage container
        * @param  {Event Object} e : Event Object
        */
-      function _handleDrag(e) {
+      function _handleDrag (e) {
         e.preventDefault();
 
         var eventObject = (e.type === 'mousemove') ? e : e.changedTouches[0];
@@ -186,23 +178,20 @@
        * the scroll position of the element
        * @param  {Event Object} e
        */
-      function _handleScroll(e) {
+      function _handleScroll (e) {
         e.preventDefault();
 
         // calculate if elem in viewport
         // if it is, calulate the scroll percentage
         // in relation to the elem, set percentage for revealer
         if (inView(elem, $window, scope.scrollOffset)) {
-
           var elemTop = getDimensions(elem[0].parentNode).top;
-          var height =  window.innerHeight - scope.scrollOffset;
+          var height = window.innerHeight - scope.scrollOffset;
           var percentage = (height - elemTop) / height * 100;
 
           if (percentage > 0 && percentage < 100) {
-
             setRevealPosition(handle, topImage, percentage);
           }
-
         }
       }
 
@@ -212,7 +201,7 @@
        * @param  {Object} config
        * @param  {Event object} e
        */
-      function removeListeners(e) {
+      function removeListeners (e) {
         var configIndex = (e.type === multipleEvents[0].release) ? 0 : 1;
         var config = multipleEvents[configIndex];
 
@@ -228,9 +217,7 @@
           angular.element($window).off('scroll', handleScroll);
         }
       }
-
     } // link
-
   } // revealer
 
   /**
@@ -239,7 +226,7 @@
    * @param {DOM object} revealer : top image to reveal
    * @param {Number} position     : position of revealer
    */
-  function setRevealPosition(handle, revealer, position) {
+  function setRevealPosition (handle, revealer, position) {
     handle.css({ left: appendPercentage(position) });
     revealer.css({ width: appendPercentage(position) });
   }
@@ -250,7 +237,7 @@
    * @param  {String} value     : class to search for
    * @return {DOM Element}
    */
-  function getElem(elem, value) {
+  function getElem (elem, value) {
     return angular.element(elem[0].querySelector(value));
   }
 
@@ -260,7 +247,7 @@
    * @param  {Object} target position of target element on page
    * @return {Object}        x and y coordinates of mouse
    */
-  function mousePos(e, target) {
+  function mousePos (e, target) {
     return {
       x: e.clientX - target.left
     };
@@ -271,7 +258,7 @@
    * @param  {DOM element} elem
    * @return {Object}      getBoundingClientRect() results
    */
-  function getDimensions(elem) {
+  function getDimensions (elem) {
     elem = elem[0] || elem;
     return elem.getBoundingClientRect();
   }
@@ -281,7 +268,7 @@
    * @param  {Number} value
    * @return {String} string representation of value
    */
-  function appendPercentage(value) {
+  function appendPercentage (value) {
     return value + '%';
   }
 
@@ -295,21 +282,21 @@
    * @param  {Number}   delay
    * @return {Function}
    */
-  function throttle(cb, delay) {
+  function throttle (cb, delay) {
     var _this = this;
     var wait = false;
 
-    function reset() {
+    function reset () {
       wait = false;
     }
 
-    return function() {
+    return function () {
       if (!wait) {
         cb.apply(_this, arguments);
         wait = true;
         setTimeout(reset, delay);
       }
-    }
+    };
   }
 
   /**
@@ -320,7 +307,7 @@
    * @param  {Number}       offset
    * @return {Boolean}
    */
-  function inView(elem, win, offset) {
+  function inView (elem, win, offset) {
     offset = offset || 0;
     var dimensions = getDimensions(elem[0].parentNode || elem);
     return (!!dimensions && dimensions.bottom >= 0 && dimensions.top <= win.innerHeight - offset);

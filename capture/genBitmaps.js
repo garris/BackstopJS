@@ -89,8 +89,6 @@ function processScenario (casper, scenario, scenarioId, referenceId, viewports, 
       require(getScriptPath(onBeforeScript))(casper, scenario, vp);
     }
 
-
-
     this.thenOpen(url, function () {
       casper.waitFor(
         function () { // test

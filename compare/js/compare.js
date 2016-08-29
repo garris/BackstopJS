@@ -2,7 +2,7 @@
 
 var tests = {};
 
-function report(report) { // eslint-disable-line no-unused-vars
+function report (report) { // eslint-disable-line no-unused-vars
   tests = report;
 }
 
@@ -87,7 +87,6 @@ compareApp.controller('MainCtrl', ['$scope', '$uibModal', 'clipboard', function 
     } else {
       $scope.alerts.push({type: 'warning', msg: 'No failed tests were found'});
     }
-
   };
 
   $scope.closeAlert = function (index) {
@@ -117,7 +116,6 @@ compareApp.controller('MainCtrl', ['$scope', '$uibModal', 'clipboard', function 
 // Please note that $uibModalInstance represents a modal window (instance) dependency.
 // It is not the same as the $uibModal service used above.
 compareApp.controller('ModalInstanceCtrl', function ($scope, $uibModalInstance, referenceImg, testImg) {
-
   $scope.imgPositionValue = 50;
 
   $scope.selected = {
