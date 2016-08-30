@@ -350,7 +350,7 @@ _**NOTE:** SlimerJS currently requires an absolute path -- so be sure to include
 
 ```json
   "paths": {
-    "casper_scripts": "../../backstop_data/scripts"
+    "casper_scripts": "backstop_data/scripts"
   }
 ```
 
@@ -396,7 +396,7 @@ You may customize the testsuite name and/or a report file (xunit.xml) path to yo
 
 ```js
 "paths": {
-       "ci_report" :  "../../backstop_data/ci_report"
+       "ci_report" :  "backstop_data/ci_report"
 },
 "ci": {
       "format" :  "junit" ,
@@ -416,7 +416,7 @@ JSON-based configs cramping your style? Well, here's some good news -- BackstopJ
 To use a js module based config file, explicitly specify your config filepath when running a command. e.g.
 
 ```sh
-$ backstop test --configPath=../../backstopTests/someTest.js
+$ backstop test --configPath=backstopTests/someTest.js
 ```
 _Remember to add that extra `--` after the `test` command._
 _See the next section for more info on setting the config file path._
@@ -438,11 +438,11 @@ $ backstop test --configPath=~/backstopTests/someTest.json
 # Will run tests using scenarios from `someTest.json` inside `backstopTests` inside your home folder.
 
 # example 3: run test with relative path
-$ backstop test --configPath=../../backstopTests/someTest.json
+$ backstop test --configPath=backstopTests/someTest.json
 # Will run tests using scenarios from `someTest.json` inside `backstopTests` inside your project root folder.
 
 # example 4: run test with relative path and JS module
-$ backstop test --configPath=../../backstopTests/someTest.js
+$ backstop test --configPath=backstopTests/someTest.js
 # You can also specify your config parameters as a node module. This will import `someTest.js` from `backstopTests` inside your project root folder.
 ```
 
