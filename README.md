@@ -21,7 +21,9 @@ $ npm install -g garris/backstopjs#version_2_0
 ```
 npm install -g backstopjs
 ```
-Please see the `version_2_0` readme for updated instructions.
+**BACKSTOP V2 IS NOW A GLOBAL APP AND PATHS ARE RELATIVE TO CWD.**
+
+Please see the `version_2_0` [readme](https://github.com/garris/BackstopJS/blob/version_2_0/README.md) for updated instructions.
 
 BackstopJS version 2.0 is now a globally installable CLI and Gulp has been removed.
 
