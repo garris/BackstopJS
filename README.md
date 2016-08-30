@@ -18,10 +18,15 @@ $ npm install -g garris/backstopjs#version_2_0
 
 ### BackstopJS core is completely rewritten with huge speed improvements and many many bug fixes.
 
-Also, BackstopJS is now a globally installable CLI and Gulp has been removed.
+**PLEASE NOTE: INSTALLATION HAS CHANGED TO:**
+```
+npm install -g backstopjs
+```
+Please see the `version_2_0` readme for updated instructions.
+
+BackstopJS version 2.0 is now a globally installable CLI and Gulp has been removed.
 
 Many many thanks for all who helped with this monumental task!
-
 
 [@JulienPradet](https://github.com/JulienPradet), [@onigoetz](https://github.com/onigoetz), [@borys-rudenko](https://github.com/borys-rudenko), [@ksushik](https://github.com/ksushik), [@dmitriyilchgmailcom](https://github.com/dmitriyilchgmailcom)
 
