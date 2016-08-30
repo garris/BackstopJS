@@ -1,6 +1,7 @@
 var path = require('path');
 var spawn = require('child_process').spawn;
 var isWin = require('./isWin');
+var findExecutable = require('./findExecutable');
 
 function getCasperArgs (config, tests) {
   var args = [];
@@ -24,9 +25,9 @@ module.exports = function (config, tests) {
 
   console.log('\nRunning CasperJS with: ', casperArgs);
 
-  process.env.PHANTOMJS_EXECUTABLE = path.join(config.backstop, 'node_modules/.bin/phantomjs');
+  process.env.PHANTOMJS_EXECUTABLE = findExecutable('phantomjs-prebuilt', 'phantomjs');
 
-  var casperProcess = path.join(config.backstop, 'node_modules/.bin/casperjs') + (isWin ? '.cmd' : '');
+  var casperProcess = findExecutable('casperjs', 'casperjs');
   var casperChild = spawn(casperProcess, casperArgs, {cwd: config.customBackstop});
 
   var prefix = 'CasperJS: ';
