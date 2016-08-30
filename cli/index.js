@@ -1,18 +1,22 @@
 #!/usr/bin/env node
 
-var path = require('path');
 var parseArgs = require('minimist');
 var usage = require('./usage');
-var fs = require('../core/util/fs');
+var makeConfig = require('../core/util/makeConfig');
 var executeCommand = require('../core/command');
 var version = require('../package.json').version;
 
 var argsOptions = parseArgs(process.argv.slice(2), {
   boolean: ['h', 'help', 'v', 'version'],
-  string: ['config', 'port', 'p'],
+  string: ['config'],
   default: {
-    config: '../../backstop.json'
+    config: 'backstop.json'
   }
+});
+
+// Catch errors from failing promises
+process.on('unhandledRejection', function (error, promise) {
+  console.error(error.stack);
 });
 
 if (argsOptions.h || argsOptions.help) {
@@ -26,29 +30,21 @@ if (argsOptions.v || argsOptions.version) {
 }
 
 var commandName = argsOptions['_'][0];
-var configPath = path.join(process.cwd(), argsOptions['config']);
 
 if (!commandName) {
   usage();
   process.exit();
 } else {
-  fs.readFile(configPath)
-    .then(function (buffer) {
-      return JSON.parse(buffer.toString());
-    })
-    .catch(function () {
-      return {};
-    })
-    .then(function (baseConfig) {
-      var config = applyCliArgs(baseConfig, argsOptions);
-      return executeCommand(commandName, config, false);
-    })
-    .catch(function (e) {
-      usage();
-    });
-}
+  var config = makeConfig(argsOptions);
+  var exitCode = 0;
+  executeCommand(commandName, config).catch(function () {
+    exitCode = 1;
+  });
 
-function applyCliArgs (baseConfig, argsOptions) {
-  baseConfig.portNumber = argsOptions.port || argsOptions.p || baseConfig.portNumber;
-  return baseConfig;
+  /*
+   * Wait for the stdout buffer to drain.
+   */
+  process.on('exit', function () {
+    process.exit(exitCode);
+  });
 }

@@ -1,7 +1,24 @@
+var createBitmaps = require('../util/createBitmaps');
+var fs = require('../util/fs');
+var logger = require('../util/logger')('clean');
+
 module.exports = {
-  before: ['clean', 'bless'],
   execute: function (config) {
-    var executeCommand = require('./index');
-    return executeCommand('_test', config, true);
+    var firstStep;
+
+    // Remove existing references only if we must generate all of them
+    if (!config.args.filter) {
+      firstStep = fs.remove(config.bitmaps_reference).then(function () {
+        logger.success('bitmaps_reference was cleaned.');
+      });
+    } else {
+      firstStep = Promise.resolve();
+    }
+
+    return firstStep.then(function () {
+      return createBitmaps(config, true);
+    }).then(function () {
+      console.log('\nRun `$ backstop test` to generate diff report.\n');
+    });
   }
 };
