@@ -9,6 +9,25 @@ BackstopJS automates CSS regression testing of your responsive web UI by compari
 **Features:** Plays nice with multiple config files – Simulate user interactions with CasperJS scripts – Fast inline-CLI reports – detailed in-browser reports – CI Integration with junit reports – Test html5 elements like webfonts and flexbox – also plays nice with source control.
 
 
+## Version 2.0 Beta is here now!
+
+
+```sh
+$ npm install -g garris/backstopjs#version_2_0
+```
+
+### BackstopJS core is completely rewritten with huge speed improvements and many many bug fixes.
+
+Also, BackstopJS is now a globally installable CLI and Gulp has been removed.
+
+Many many thanks for all who helped with this monumental task!
+
+
+[@JulienPradet](https://github.com/JulienPradet), [@onigoetz](https://github.com/onigoetz), [@borys-rudenko](https://github.com/borys-rudenko), [@ksushik](https://github.com/ksushik), [@dmitriyilchgmailcom](https://github.com/dmitriyilchgmailcom)
+
+
+
+
 ## The BackstopJS workflow
 
 ###Set up
@@ -51,13 +70,13 @@ BackstopJS automates CSS regression testing of your responsive web UI by compari
 You can add BackstopJS from the root directory of any project.
 
 ```sh
-$ npm install --save-dev backstopjs
+$ npm install -g backstopjs
 ```
 
 ###Installing a development version
 
 ```sh
-$ npm install garris/backstopjs#master
+$ npm install -g garris/backstopjs#master
 ```
 
 
