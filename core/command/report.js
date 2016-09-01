@@ -27,7 +27,7 @@ function writeBrowserReport (config, reporter) {
     return path.join(config.customBackstop, p);
   }
   logger.log('Writing browser report');
-  return fs.copy(config.comparePath, config.html_report).then(function () {
+  return fs.copy(config.comparePath, toAbsolute(config.html_report)).then(function () {
     logger.log('Browser reported copied');
 
     // Fixing URLs in the configuration
