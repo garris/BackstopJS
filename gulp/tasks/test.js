@@ -80,6 +80,7 @@ gulp.task('test',['init'], function () {
     //exit if there was some kind of failure in the casperChild process
     if(code!=0){
       console.log('\nLooks like an error occured. You may want to try running `$ npm run echo`. This will echo the requested test URL output to the console. You can check this output to verify that the file requested is indeed being received in the expected format.');
+      var config = fs.readFileSync(paths.activeCaptureConfigPath, 'utf8');
       if (config.openReportIfCasperFailures) {
         return false;
       }
