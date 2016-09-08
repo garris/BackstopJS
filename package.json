@@ -13,7 +13,8 @@
     "reference": "node ./cli/index.js reference",
     "test": "node ./cli/index.js test",
     "openReport": "node ./cli/index.js openReport",
-    "echo": "node ./cli/index.js echo"
+    "echo": "node ./cli/index.js echo",
+    "server": "node ./core/server/server.js"
   },
   "repository": {
     "type": "git",
@@ -23,6 +24,7 @@
   "license": "MIT",
   "main": "",
   "devDependencies": {
+    "body-parser": "^1.15.2",
     "chai": "^1.9.2",
     "eslint": "^3.3.0",
     "eslint-config-semistandard": "^7.0.0-beta.0",
@@ -42,6 +44,7 @@
     "node-resemble-js": "0.0.4",
     "open": "0.0.5",
     "phantomjs-prebuilt": "^2.1.7",
+    "express": "^4.14.0",
     "temp": "^0.8.3"
   }
 }
