@@ -20,6 +20,8 @@ var casperScriptsPath = config.paths.casper_scripts || null;
 var comparePairsFileName = config.paths.tempCompareConfigFileName;
 var viewports = config.viewports;
 var scenarios = config.scenarios || config.grabConfigs;
+var configId = config.id || genHash(config.backstopConfigFileName);
+var fileNameTemplate = config.fileNameTemplate || '{configId}_{scenarioLabel}_{selectorIndex}_{selectorLabel}_{viewportIndex}_{viewportLabel}';
 
 var compareConfig = {testPairs: []};
 
@@ -59,19 +61,20 @@ function capturePageSelectors (scenarios, viewports, bitmapsReferencePath, bitma
   casper.start();
 
   casper.each(scenarios, function (casper, scenario) {
-    var referenceId = scenario.label.replace(/\//g, '_');
+    var scenarioLabelSafe = makeSafe(scenario.label);
 
-    processScenario(casper, scenario, referenceId, referenceId, viewports, bitmapsReferencePath, bitmapsTestPath, screenshotDateTime);
+    processScenario(casper, scenario, scenarioLabelSafe, scenarioLabelSafe, viewports, bitmapsReferencePath, bitmapsTestPath, screenshotDateTime);
 
     if (!isReference && scenario.hasOwnProperty('variants')) {
       scenario.variants.forEach(function (variant) {
-        processScenario(casper, variant, variant.label.replace(/\//g, '_'), referenceId, viewports, bitmapsReferencePath, bitmapsTestPath, screenshotDateTime);
+        var variantLabelSafe = makeSafe(variant.label);
+        processScenario(casper, variant, variantLabelSafe, scenarioLabelSafe, viewports, bitmapsReferencePath, bitmapsTestPath, screenshotDateTime);
       });
     }
   });// end casper.each scenario
 }
 
-function processScenario (casper, scenario, scenarioId, referenceId, viewports, bitmapsReferencePath, bitmapsTestPath, screenshotDateTime) {
+function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabel, viewports, bitmapsReferencePath, bitmapsTestPath, screenshotDateTime) {
   var scriptTimeout = 20000;
 
   casper.each(viewports, function (casper, vp, viewportIndex) {
@@ -137,7 +140,7 @@ function processScenario (casper, scenario, scenarioId, referenceId, viewports, 
     });
 
     this.then(function () {
-      this.echo('Screenshots for ' + vp.name + ' (' + (vp.width || vp.viewport.width) + 'x' + (vp.height || vp.viewport.height) + ')', 'info');
+      this.echo('Screenshots for ' + makeSafe(vp.name) + ' (' + (vp.width || vp.viewport.width) + 'x' + (vp.height || vp.viewport.height) + ')', 'info');
 
       // HIDE SELECTORS WE WANT TO AVOID
       if (scenario.hasOwnProperty('hideSelectors')) {
@@ -167,13 +170,32 @@ function processScenario (casper, scenario, scenarioId, referenceId, viewports, 
         scenario.selectors = ['body'];
       }
       scenario.selectors.forEach(function (o, i, a) {
-        var cleanedSelectorName = o.replace(/[^a-z0-9_\-]/gi, '');// remove anything that's not a letter or a number
+        var cleanedSelectorName = o.replace(/[^a-z0-9_\-]/gi, ''); // remove anything that's not a letter or a number
+        var switchedScenarioOrVariantLabel = (isReference) ? scenarioLabel : scenarioOrVariantLabel;
+        // ???
         // var cleanedUrl = scenario.url.replace(/[^a-zA-Z\d]/,'');//remove anything that's not a letter or a number
         // var fileName = scenario_index + '_' + i + '_' + cleanedSelectorName + '_' + viewport_index + '_' + vp.name + '.png';
-        var fileNameTemplate = '_' + i + '_' + cleanedSelectorName + '_' + viewportIndex + '_' + vp.name + '.png';
-        var fileName = scenarioId + fileNameTemplate;
 
-        var referenceFilePath = bitmapsReferencePath + '/' + referenceId + fileNameTemplate;
+        // onigoetz
+        // var fileName = scenarioOrVariantLabel + fileName;
+
+        // var fileName = switchedScenarioOrVariantLabel + '_' + i + '_' + cleanedSelectorName + '_' + viewportIndex + '_' + makeSafe(vp.name) + '.png';
+
+        var fileName = fileNameTemplate
+          .replace(/\{configId\}/, configId)
+          .replace(/\{scenarioLabel\}/, switchedScenarioOrVariantLabel) // derrived from scenario.label & variant.label
+          .replace(/\{selectorIndex\}/, i)
+          .replace(/\{selectorLabel\}/, cleanedSelectorName)
+          .replace(/\{viewportIndex\}/, viewportIndex)
+          .replace(/\{viewportLabel\}/, makeSafe(vp.name))
+          .replace(/[^a-z0-9_\-]/gi, ''); // remove anything that's not a letter or a number or dash or underscore.
+
+        if (!/\.png$/i.test(fileName)) {
+          fileName = fileName + '.png';
+        }
+// console.log('filename >>>', fileName);
+
+        var referenceFilePath = bitmapsReferencePath + '/' + fileName;
         var testFilePath = bitmapsTestPath + '/' + screenshotDateTime + '/' + fileName;
 
         var filePath = (isReference) ? referenceFilePath : testFilePath;
@@ -261,4 +283,20 @@ function ensureFileSuffix (filename, suffix) {
 // merge both strings while soft-enforcing a single slash between them
 function glueStringsWithSlash (stringA, stringB) {
   return stringA.replace(/\/$/, '') + '/' + stringB.replace(/^\//, '');
+}
+
+function genHash (str) {
+  var hash = 0, i, chr, len;
+  if (!str) return hash;
+  str = str.toString();
+  for (i = 0, len = str.length; i < len; i++) {
+    chr = str.charCodeAt(i);
+    hash = ((hash << 5) - hash) + chr;
+    hash |= 0; // Convert to 32bit integer
+  }
+  return hash.toString();
+}
+
+function makeSafe (str) {
+  return str.replace(/\//g, '_');
 }
