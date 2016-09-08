@@ -172,14 +172,6 @@ function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabe
       scenario.selectors.forEach(function (o, i, a) {
         var cleanedSelectorName = o.replace(/[^a-z0-9_\-]/gi, ''); // remove anything that's not a letter or a number
         var switchedScenarioOrVariantLabel = (isReference) ? scenarioLabel : scenarioOrVariantLabel;
-        // ???
-        // var cleanedUrl = scenario.url.replace(/[^a-zA-Z\d]/,'');//remove anything that's not a letter or a number
-        // var fileName = scenario_index + '_' + i + '_' + cleanedSelectorName + '_' + viewport_index + '_' + vp.name + '.png';
-
-        // onigoetz
-        // var fileName = scenarioOrVariantLabel + fileName;
-
-        // var fileName = switchedScenarioOrVariantLabel + '_' + i + '_' + cleanedSelectorName + '_' + viewportIndex + '_' + makeSafe(vp.name) + '.png';
 
         var fileName = fileNameTemplate
           .replace(/\{configId\}/, configId)
@@ -193,7 +185,6 @@ function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabe
         if (!/\.png$/i.test(fileName)) {
           fileName = fileName + '.png';
         }
-// console.log('filename >>>', fileName);
 
         var referenceFilePath = bitmapsReferencePath + '/' + fileName;
         var testFilePath = bitmapsTestPath + '/' + screenshotDateTime + '/' + fileName;
@@ -298,5 +289,5 @@ function genHash (str) {
 }
 
 function makeSafe (str) {
-  return str.replace(/\//g, '_');
+  return str.replace(/[ \/]/g, '_');
 }
