@@ -45,8 +45,8 @@ function writeBrowserReport (config, reporter) {
     }
 
     var jsonp = 'report(' + JSON.stringify(reporter, null, 2) + ');';
-    return fs.writeFile(config.compareConfigFileName, jsonp).then(function () {
-      logger.log('Copied configuration:' + config.compareConfigFileName);
+    return fs.writeFile(toAbsolute(config.compareConfigFileName), jsonp).then(function () {
+      logger.log('Copied configuration to: ' + toAbsolute(config.compareConfigFileName));
     }, function (err) {
       logger.error('Failed configuration copy');
       throw err;
