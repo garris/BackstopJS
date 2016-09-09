@@ -2,7 +2,7 @@ var path = require('path');
 var temp = require('temp');
 var fs = require('./fs');
 
-function makeConfig (argv) {
+function makeConfig(argv) {
   var config = {};
   var CMD_REQUIRES_CONFIG = !/genConfig/.test(argv['_'][0]);
 
@@ -77,7 +77,7 @@ function makeConfig (argv) {
 
   config.casperFlags = userConfig.casperFlags || null;
   config.engine = userConfig.engine || null;
-  config.report = userConfig.report || [ 'browser' ];
+  config.report = userConfig.report || ['browser'];
   config.ciReport = userConfig.ci ? {
     format: userConfig.ci.format || config.ci.format,
     testReportFileName: userConfig.ci.testReportFileName || config.ci.testReportFileName,
@@ -98,7 +98,14 @@ function makeConfig (argv) {
 
   config.defaultMisMatchThreshold = 0.1;
 
-  return config;
+  return new Promise(function (resolve) {
+    fs.writeFile(config.customBackstop + '/core/server/temp/config.json', JSON.stringify(config, null, 2))
+      .then(function (err) {
+        if (err) {
+          return throwError(err);
+        }
+        resolve(config);
+      });
+  });
 }
-
 module.exports = makeConfig;
