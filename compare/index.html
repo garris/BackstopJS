@@ -54,6 +54,9 @@
       <div class="selector">{{ thisTestPair.meta.pair.label }} - {{ thisTestPair.meta.pair.selector }}
         <button type="button" class="btn btn-default btn-sm"
                 ng-click="openModal('lg', thisTestPair.a.src, thisTestPair.b.src)">Show diff</button>
+
+        <button type="button" class="btn btn-default btn-sm"
+                ng-click="setTestAsNewReference(thisTestPair, thisTestPair.a.src, thisTestPair.b.src)">Set as new base</button>
       </div>
       <div class="filename">{{ thisTestPair.meta.pair.fileName }}</div>
     </div>
