@@ -35,16 +35,18 @@ if (!commandName) {
   usage();
   process.exit();
 } else {
-  var config = makeConfig(argsOptions);
-  var exitCode = 0;
-  executeCommand(commandName, config).catch(function () {
-    exitCode = 1;
+  makeConfig(argsOptions).then(function (configData) {
+    var exitCode = 0;
+    executeCommand(commandName, configData).catch(function () {
+      exitCode = 1;
+    });
+
+    /*
+     * Wait for the stdout buffer to drain.
+     */
+    process.on('exit', function () {
+      process.exit(exitCode);
+    });
   });
 
-  /*
-   * Wait for the stdout buffer to drain.
-   */
-  process.on('exit', function () {
-    process.exit(exitCode);
-  });
 }
