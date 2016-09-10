@@ -7,7 +7,7 @@ var executeCommand = require('../core/command');
 var version = require('../package.json').version;
 
 var argsOptions = parseArgs(process.argv.slice(2), {
-  boolean: ['h', 'help', 'v', 'version'],
+  boolean: ['h', 'help', 'v', 'version', 'i'],
   string: ['config'],
   default: {
     config: 'backstop.json'

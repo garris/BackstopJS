@@ -6,13 +6,13 @@ module.exports = {
   execute: function (config) {
     var firstStep;
 
-    // Remove existing references only if we must generate all of them
-    if (!config.args.filter) {
+    // do not remove reference directory if we are in incremental mode
+    if (config.args.filter || config.args.i) {
+      firstStep = Promise.resolve();
+    } else {
       firstStep = fs.remove(config.bitmaps_reference).then(function () {
         logger.success('bitmaps_reference was cleaned.');
       });
-    } else {
-      firstStep = Promise.resolve();
     }
 
     return firstStep.then(function () {
