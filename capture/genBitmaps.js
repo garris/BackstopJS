@@ -285,7 +285,8 @@ function genHash (str) {
     hash = ((hash << 5) - hash) + chr;
     hash |= 0; // Convert to 32bit integer
   }
-  return hash.toString();
+  // return a string and replace a negative sign with a zero
+  return hash.toString().replace(/^-/,0);
 }
 
 function makeSafe (str) {
