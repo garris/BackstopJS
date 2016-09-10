@@ -16,7 +16,7 @@ BackstopJS automates CSS regression testing of your responsive web UI by compari
 $ npm install -g garris/backstopjs#version_2_0
 ```
 
-### BackstopJS core is completely rewritten with huge speed improvements and many many bug fixes.
+### BackstopJS core is completely rewritten with huge speed improvements, new features and a barrel of bug fixes.
 
 **PLEASE NOTE: INSTALLATION HAS CHANGED TO:**
 ```
