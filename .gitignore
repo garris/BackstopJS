@@ -27,3 +27,4 @@ bitmaps_test
 bitmaps_reference
 compare/config.js
 capture/config.json
+core/server/config.json
