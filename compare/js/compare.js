@@ -2,7 +2,7 @@
 
 var tests = {};
 
-function report (report) { // eslint-disable-line no-unused-vars
+function report(report) { // eslint-disable-line no-unused-vars
   tests = report;
 }
 
@@ -21,7 +21,25 @@ var TestPair = function (o) {
   this.meta.misMatchThreshold = (o && o.misMatchThreshold && o.misMatchThreshold >= 0) ? o.misMatchThreshold : defaultMisMatchThreshold;
 };
 
-compareApp.controller('MainCtrl', ['$scope', '$uibModal', 'clipboard', function ($scope, $uibModal, clipboard) {
+var handleTests = function ($scope) {
+  tests.tests.forEach(function (test) {
+    $scope.testDuration += test.pair.diff.analysisTime;
+
+    if (test.pair.diff.isSameDimensions) {
+      delete test.pair.diff.dimensionDifference;
+    }
+
+    delete test.pair.diff.analysisTime;
+
+    if (test.status === 'pass') {
+      $scope.passedCount++;
+    }
+
+    $scope.testPairs.push(new TestPair(test));
+  });
+};
+
+compareApp.controller('MainCtrl', ['$scope', '$http', '$uibModal', 'clipboard', function ($scope, $http, $uibModal, clipboard) {
   $scope.name = tests.testSuite;
   $scope.testPairs = [];
   $scope.alerts = [];
@@ -34,21 +52,7 @@ compareApp.controller('MainCtrl', ['$scope', '$uibModal', 'clipboard', function 
     $scope.alerts.push({type: 'danger', msg: 'Sorry, copy to clipboard is not supported'});
   }
 
-  tests.tests.forEach(function (o) {
-    $scope.testDuration += o.pair.diff.analysisTime;
-
-    if (o.pair.diff.isSameDimensions) {
-      delete o.pair.diff.dimensionDifference;
-    }
-
-    delete o.pair.diff.analysisTime;
-
-    if (o.status === 'pass') {
-      $scope.passedCount++;
-    }
-
-    $scope.testPairs.push(new TestPair(o));
-  });
+  handleTests($scope);
 
   $scope.statusFilter = 'failed';
   if ($scope.passedCount === $scope.testPairs.length) {
@@ -111,6 +115,48 @@ compareApp.controller('MainCtrl', ['$scope', '$uibModal', 'clipboard', function 
       }
     });
   };
+
+  $scope.setTestAsNewReference = function (testPair, referenceImg, testImg) {
+    var data = JSON.stringify({
+      reference: referenceImg,
+      test: testImg
+    });
+
+    $http.post('http:/localhost:3001/api/reference/replace', data)
+      .then(function successCallback() {
+        updateTestPair(testPair.meta);
+      }, function errorCallback(response) {
+
+      });
+  };
+
+  function updateTestPair(testPair) {
+    $scope.testPairs = [];
+    $scope.passedCount = 0;
+    $scope.testDuration = 0;
+
+    // update
+    tests.tests.forEach(function (test) {
+      if (test.pair.fileName === testPair.pair.fileName) {
+        test.status = 'pass';
+        test.pair.diff = setTestPairToDDefault();
+        delete test.pair.diffImage;
+      }
+    });
+
+    handleTests($scope);
+  }
+
+  function setTestPairToDDefault() {
+    return {
+      "isSameDimensions": true,
+      "dimensionDifference": {
+        "width": 0,
+        "height": 0
+      }
+    };
+  }
+
 }]);
 
 // Please note that $uibModalInstance represents a modal window (instance) dependency.
