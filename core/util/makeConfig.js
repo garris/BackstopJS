@@ -99,10 +99,10 @@ function makeConfig(argv) {
   config.defaultMisMatchThreshold = 0.1;
 
   return new Promise(function (resolve) {
-    fs.writeFile(config.customBackstop + '/core/server/temp/config.json', JSON.stringify(config, null, 2))
+    fs.writeFile(config.customBackstop + '/core/server/config.json', JSON.stringify(config, null, 2))
       .then(function (err) {
         if (err) {
-          return throwError(err);
+          throw new Error(err);
         }
         resolve(config);
       });

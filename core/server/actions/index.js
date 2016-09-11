@@ -18,7 +18,7 @@ function overrideReferenceFile(referencePath, testPath) {
 }
 
 function updateTestPair() {
-  const config = require('../temp/config.json');
+  const config = require('../config.json');
   return executeCommand('_writeReport', config)
 }
 
