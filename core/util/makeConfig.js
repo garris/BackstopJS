@@ -100,7 +100,7 @@ function makeConfig(argv) {
 
   return new Promise(function (resolve) {
     fs.writeFile(config.customBackstop + '/core/server/config.json', JSON.stringify(config, null, 2))
-      .then(function (err) {
+      .then(function (data, err) {
         if (err) {
           throw new Error(err);
         }
