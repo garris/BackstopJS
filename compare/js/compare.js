@@ -6,14 +6,14 @@ function report(report) { // eslint-disable-line no-unused-vars
   tests = report;
 }
 
-window.addEventListener('beforeunload', function (e) {
-  stopServer();
-  var confirmationMessage = "\o/";
-
-  e.returnValue = confirmationMessage;     // Gecko, Trident, Chrome 34+
-  return confirmationMessage;              // Gecko, WebKit, Chrome <34
-});
-
+// stop the server when user closes the report
+window.onbeforeunload = function() {
+  $.ajax({
+    url: "http:/localhost:3001/api/system/stop",
+    type: "get",
+    async: false
+  });
+};
 
 var compareApp = angular.module('compareApp', ['ui.bootstrap', 'angular-clipboard', 'revealer']);
 
@@ -124,12 +124,6 @@ compareApp.controller('MainCtrl', ['$scope', '$http', '$uibModal', 'clipboard', 
       }
     });
   };
-
-  function stopServer() {
-    $http.get('http:/localhost:3001/api/system/stop').catch(function(error) {
-      console.log('Error: ', error);
-    });
-  }
 
   $scope.setTestAsNewReference = function (testPair, referenceImg, testImg) {
     var data = JSON.stringify({
