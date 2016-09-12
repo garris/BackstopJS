@@ -16,19 +16,31 @@ BackstopJS automates CSS regression testing of your responsive web UI by compari
 $ npm install -g garris/backstopjs#version_2_0
 ```
 
-### BackstopJS core is completely rewritten with huge speed improvements, new features and a barrel of bug fixes.
+### Here's whats new...
 
-**PLEASE NOTE: INSTALLATION HAS CHANGED TO:**
-```
+<ul>
+  <li>All-new, all-optimized CLI core</li>
+  <li>Huge performance gains</li>
+  <li>Global or local install options</li>
+  <li>Invoke from anywhere with <code>`backstop &lt;command&gt;`</code></li>
+  <li>Incremental reference generation</li>
+  <li>Scenario filtering</li>
+  <li>Custom screenshot file naming</li>
+  <li>More bug fixes than you can shake a stick at</li>
+  <li>Removed Gulp dependency and more!</li>
+</ul>
+
+
+
+**PLEASE NOTE: Check this documentation for new install instructions and config changes!**
+<!-- ```
 npm install -g backstopjs
-```
-BaxkstopJS CLI is now a global install and paths are relative to CWD -- Please see the `version_2_0` readme for updated instructions.
+``` -->
+For earlier version users -- *BackstopJS CLI is now a global install -- config paths are now relative to your CWD.*
 
-BackstopJS version 2.0 is now a globally installable CLI and Gulp has been removed.
+Many many thanks for all who helped with this monumental task! 💙㊗️🙇
 
-Many many thanks for all who helped with this monumental task!
-
-[@JulienPradet](https://github.com/JulienPradet), [@onigoetz](https://github.com/onigoetz), [@borys-rudenko](https://github.com/borys-rudenko), [@ksushik](https://github.com/ksushik), [@dmitriyilchgmailcom](https://github.com/dmitriyilchgmailcom)
+[@JulienPradet](https://github.com/JulienPradet), [@onigoetz](https://github.com/onigoetz), [@borys-rudenko](https://github.com/borys-rudenko), [@ksushik](https://github.com/ksushik), [@dmitriyilchgmailcom](https://github.com/dmitriyilchgmailcom), [@Primajin](https://github.com/Primajin)
 
 
 
