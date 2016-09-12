@@ -9,7 +9,8 @@
     "angular": "~1.4.8",
     "bootstrap-css-only": "~3.3.6",
     "angular-bootstrap": "~2.1.1",
-    "angular-clipboard": "~1.5.0"
+    "angular-clipboard": "~1.5.0",
+    "jquery": "2.2.4"
   },
   "devDependencies": {}
 }
