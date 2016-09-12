@@ -4,8 +4,9 @@ var junitWriter = new (require('junitwriter'))();
 var fs = require('../util/fs');
 var logger = require('../util/logger')('report');
 var compare = require('../util/compare');
+var spawn = require('../util/spawn').spawn;
 
-function writeReport (config, reporter) {
+function writeReport(config, reporter) {
   var promises = [];
 
   if (config.report && config.report.indexOf('CI') > -1 && config.ciReport.format === 'junit') {
@@ -19,8 +20,8 @@ function writeReport (config, reporter) {
   return Promise.all(promises);
 }
 
-function writeBrowserReport (config, reporter) {
-  function toAbsolute (p) {
+function writeBrowserReport(config, reporter) {
+  function toAbsolute(p) {
     if (p[0] === '/') {
       return p;
     }
@@ -52,6 +53,9 @@ function writeBrowserReport (config, reporter) {
       throw err;
     });
   }).then(function () {
+    // start the server needed for report functionality
+    spawn('npm', ['run', 'server']);
+
     if (config.openReport) {
       var executeCommand = require('./index');
       return executeCommand('_openReport', config);
@@ -59,7 +63,7 @@ function writeBrowserReport (config, reporter) {
   });
 }
 
-function writeJunitReport (config, reporter) {
+function writeJunitReport(config, reporter) {
   logger.log('Writing jUnit Report');
   var testReportFileName = config.ciReport.testReportFileName.replace(/\.xml$/, '') + '.xml';
 
