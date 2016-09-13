@@ -54,7 +54,9 @@ function writeBrowserReport(config, reporter) {
     });
   }).then(function () {
     // start the server needed for report functionality
-    spawn('npm', ['run', 'server']);
+    spawn('npm', ['run', 'server'], {
+      cwd: __dirname
+    });
 
     if (config.openReport) {
       var executeCommand = require('./index');
