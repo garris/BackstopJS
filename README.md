@@ -8,28 +8,42 @@ BackstopJS automates CSS regression testing of your responsive web UI by compari
 
 **Features:** Plays nice with multiple config files – Simulate user interactions with CasperJS scripts – Fast inline-CLI reports – detailed in-browser reports – CI Integration with junit reports – Test html5 elements like webfonts and flexbox – also plays nice with source control.
 
-## Version 2.0 Beta is here now!
-
+## Version 2.0 Beta is released!
 
 ```sh
 $ npm install -g garris/backstopjs#version_2_0
 ```
+`
 
-### BackstopJS core is completely rewritten with huge speed improvements and many many bug fixes.
+### Here's whats new...
 
-**PLEASE NOTE: INSTALLATION HAS CHANGED TO:**
-```
+<ul>
+  <li>All-new, all-optimized CLI core</li>
+  <li>Huge performance gains</li>
+  <li>Global or local install options</li>
+  <li>Invoke from anywhere with <code>`backstop &lt;command&gt;`</code></li>
+  <li>Incremental reference generation</li>
+  <li>Scenario filtering</li>
+  <li>Custom screenshot file naming</li>
+  <li>More bug fixes than you can shake a stick at</li>
+  <li>Removed Gulp dependency and more!</li>
+</ul>
+
+
+
+**PLEASE NOTE: Check this documentation for new install instructions and config changes!**
+<!-- ```
 npm install -g backstopjs
-```
-**BACKSTOP V2 IS NOW A GLOBAL APP AND PATHS ARE RELATIVE TO CWD.**
+``` -->
+For earlier version users -- *BackstopJS CLI is now a global install -- config paths are now relative to your CWD.*
 
-Please see the `version_2_0` [readme](https://github.com/garris/BackstopJS/blob/version_2_0/README.md) for updated instructions.
+Many many thanks for all who helped with this monumental task! 💙㊗️🙇
 
-BackstopJS version 2.0 is now a globally installable CLI and Gulp has been removed.
+[@JulienPradet](https://github.com/JulienPradet), [@onigoetz](https://github.com/onigoetz), [@borys-rudenko](https://github.com/borys-rudenko), [@ksushik](https://github.com/ksushik), [@dmitriyilchgmailcom](https://github.com/dmitriyilchgmailcom), [@Primajin](https://github.com/Primajin)
 
-Many many thanks for all who helped with this monumental task!
 
-[@JulienPradet](https://github.com/JulienPradet), [@onigoetz](https://github.com/onigoetz), [@borys-rudenko](https://github.com/borys-rudenko), [@ksushik](https://github.com/ksushik), [@dmitriyilchgmailcom](https://github.com/dmitriyilchgmailcom)
+
+
 
 
 
