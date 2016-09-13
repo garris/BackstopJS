@@ -4,13 +4,14 @@ var fs = require('../util/fs');
 var logger = require('../util/logger')('report');
 var compare = require('../util/compare');
 
-function writeBrowserReport (config, reporter) {
-  function toAbsolute (p) {
+function writeBrowserReport(config, reporter) {
+  function toAbsolute(p) {
     if (p[0] === '/') {
       return p;
     }
     return path.join(config.customBackstop, p);
   }
+
   logger.log('Writing browser report');
   return fs.copy(config.comparePath, toAbsolute(config.html_report)).then(function () {
     logger.log('Browser reported copied');
@@ -31,7 +32,7 @@ function writeBrowserReport (config, reporter) {
     }
 
     var jsonp = 'report(' + JSON.stringify(reporter, null, 2) + ');';
-    return fs.writeFile(config.compareConfigFileName, jsonp).then(function () {
+    return fs.writeFile(toAbsolute(config.compareConfigFileName), jsonp).then(function () {
       logger.log('Copied configuration:' + config.compareConfigFileName);
     }, function (err) {
       logger.error('Failed configuration copy');
