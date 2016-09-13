@@ -101,7 +101,7 @@ function makeConfig(argv) {
   config.paths = userConfig.paths;
 
   return new Promise(function (resolve) {
-    fs.writeFile(config.customBackstop + '/core/server/config.json', JSON.stringify(config, null, 2))
+    fs.writeFile(path.join(__dirname, '../') + 'server/config.json', JSON.stringify(config, null, 2))
       .then(function (data, err) {
         if (err) {
           throw new Error(err);
