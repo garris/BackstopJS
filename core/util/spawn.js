@@ -25,7 +25,7 @@ module.exports = {
         if (signal != null) {
           return this.killed = true;
         }
-        console.log('Child exited!', code);
+        console.log('Process closed!');
       });
 
     } catch (e) {
