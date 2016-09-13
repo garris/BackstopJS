@@ -148,7 +148,7 @@ compareApp.controller('MainCtrl', ['$scope', '$http', '$uibModal', 'clipboard', 
     tests.tests.forEach(function (test) {
       if (test.pair.fileName === testPair.pair.fileName) {
         test.status = 'pass';
-        test.pair.diff = setTestPairToDDefault();
+        test.pair.diff = setTestPairToDefault();
         delete test.pair.diffImage;
       }
     });
@@ -156,7 +156,7 @@ compareApp.controller('MainCtrl', ['$scope', '$http', '$uibModal', 'clipboard', 
     handleTests($scope);
   }
 
-  function setTestPairToDDefault() {
+  function setTestPairToDefault() {
     return {
       "isSameDimensions": true,
       "dimensionDifference": {
