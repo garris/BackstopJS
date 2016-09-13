@@ -13,8 +13,6 @@ BackstopJS automates CSS regression testing of your responsive web UI by compari
 ```sh
 $ npm install -g garris/backstopjs#version_2_0
 ```
-`
-
 ### Here's whats new...
 
 <ul>
