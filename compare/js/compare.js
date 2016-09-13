@@ -6,13 +6,19 @@ function report(report) { // eslint-disable-line no-unused-vars
   tests = report;
 }
 
+function hasReloaded() {
+  return window.performance.navigation.type === 1;
+}
+
 // stop the server when user closes the report
-window.onbeforeunload = function() {
-  $.ajax({
-    url: "http:/localhost:3001/api/system/stop",
-    type: "get",
-    async: false
-  });
+window.onbeforeunload = function () {
+  if (!hasReloaded()) {
+    $.ajax({
+      url: "http:/localhost:3001/api/system/stop",
+      type: "get",
+      async: false
+    });
+  }
 };
 
 var compareApp = angular.module('compareApp', ['ui.bootstrap', 'angular-clipboard', 'revealer']);
