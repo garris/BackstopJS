@@ -98,6 +98,8 @@ function makeConfig(argv) {
 
   config.defaultMisMatchThreshold = 0.1;
 
+  config.paths = userConfig.paths;
+
   return new Promise(function (resolve) {
     fs.writeFile(config.customBackstop + '/core/server/config.json', JSON.stringify(config, null, 2))
       .then(function (data, err) {

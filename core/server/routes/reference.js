@@ -1,29 +1,31 @@
 'use strict';
 
 const action = require('../actions');
+const path = require('path');
+const config = require('../config.json');
 
 module.exports = (app) => {
 
   app.post('/api/reference/replace', (request, response) => {
-    const reference = request.body.reference.replace('..', 'backstop_data');
-    const test = request.body.test.replace('..', 'backstop_data');
+    let reference = path.join(config.paths.bitmaps_reference, request.body.reference);
+    let test = path.join(config.paths.bitmaps_test, request.body.test);
 
-    //TODO real path
-    // const reference = 'backstop_data/bitmaps_reference/My Homepage_0_header_0_phone.png';
-    // const test = 'backstop_data/bitmaps_test/20160908-104127/My Homepage_1_main_0_phone.png';
+    // resolve to get the absolute path
+    reference = path.resolve(config.customBackstop, reference);
+    test = path.resolve(config.customBackstop, test);
 
     action.overrideReferenceFile(reference, test)
-      .then(function() {
+      .then(function () {
         return action.updateTestPair();
       })
-      .then(function() {
+      .then(function () {
         response.json({
           reference,
           test
         });
       })
       .catch(function (err) {
-          console.log(err);
+        throw err;
       });
   });
 

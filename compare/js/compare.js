@@ -127,8 +127,8 @@ compareApp.controller('MainCtrl', ['$scope', '$http', '$uibModal', 'clipboard', 
 
   $scope.setTestAsNewReference = function (testPair, referenceImg, testImg) {
     var data = JSON.stringify({
-      reference: referenceImg,
-      test: testImg
+      reference: referenceImg.replace('../bitmaps_reference', ''),
+      test: testImg.replace('../bitmaps_test', '')
     });
 
     $http.post('http:/localhost:3001/api/reference/replace', data)
