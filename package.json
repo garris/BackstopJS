@@ -24,9 +24,7 @@
   "license": "MIT",
   "main": "",
   "devDependencies": {
-    "body-parser": "^1.15.2",
     "chai": "^1.9.2",
-    "cors": "^2.8.1",
     "eslint": "^3.3.0",
     "eslint-config-semistandard": "^7.0.0-beta.0",
     "eslint-config-standard": "^6.0.0",
@@ -46,6 +44,8 @@
     "open": "0.0.5",
     "phantomjs-prebuilt": "^2.1.7",
     "express": "^4.14.0",
-    "temp": "^0.8.3"
+    "temp": "^0.8.3",
+    "cors": "^2.8.1",
+    "body-parser": "^1.15.2"
   }
 }
