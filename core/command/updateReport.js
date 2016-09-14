@@ -4,7 +4,7 @@ var fs = require('../util/fs');
 var logger = require('../util/logger')('report');
 var compare = require('../util/compare');
 var utils = require('../util/utils');
-var reportHelper = require('../util/report/report.util');
+var reportHelper = require('../helpers/report.helper');
 
 function writeBrowserReport(config, reporter) {
   var htmlReportPath = utils.toAbsolute(config.html_report);
