@@ -4,7 +4,8 @@ var junitWriter = new (require('junitwriter'))();
 var fs = require('../util/fs');
 var logger = require('../util/logger')('report');
 var compare = require('../util/compare');
-var spawn = require('../util/spawn').spawn;
+var utils = require('../util/utils');
+var reportHelper = require('../helpers/report.helper');
 
 function writeReport(config, reporter) {
   var promises = [];
@@ -21,48 +22,20 @@ function writeReport(config, reporter) {
 }
 
 function writeBrowserReport(config, reporter) {
-  function toAbsolute(p) {
-    if (p[0] === '/') {
-      return p;
-    }
-    return path.join(config.customBackstop, p);
-  }
+  var htmlReportPath = utils.toAbsolute(config.html_report);
   logger.log('Writing browser report');
-  return fs.copy(config.comparePath, toAbsolute(config.html_report)).then(function () {
-    logger.log('Browser reported copied');
 
-    // Fixing URLs in the configuration
-    var report = toAbsolute(config.html_report);
-    for (var i in reporter.tests) {
-      if (reporter.tests.hasOwnProperty(i)) {
-        var pair = reporter.tests[i].pair;
-        reporter.tests[i].pair.reference = path.relative(report, toAbsolute(pair.reference));
-        reporter.tests[i].pair.test = path.relative(report, toAbsolute(pair.test));
-
-        if (pair.diffImage) {
-          reporter.tests[i].pair.diffImage = path.relative(report, toAbsolute(pair.diffImage));
-        }
-      }
-    }
-
-    var jsonp = 'report(' + JSON.stringify(reporter, null, 2) + ');';
-    return fs.writeFile(config.compareConfigFileName, jsonp).then(function () {
-      logger.log('Copied configuration:' + config.compareConfigFileName);
-    }, function (err) {
-      logger.error('Failed configuration copy');
-      throw err;
+  return fs.copy(config.comparePath, htmlReportPath)
+    .then(function () {
+      logger.log('Browser reported copied');
+    })
+    .then(reportHelper.updateTestPairLinks(config, reporter))
+    .then(reportHelper.writeReportToFile(config, reporter))
+    .then(reportHelper.startReportServer())
+    .then(reportHelper.openReport(config))
+    .catch(function (err) {
+      throw new Error(err);
     });
-  }).then(function () {
-    // start the server needed for report functionality
-    spawn('npm', ['run', 'server'], {
-      cwd: __dirname
-    });
-
-    if (config.openReport) {
-      var executeCommand = require('./index');
-      return executeCommand('_openReport', config);
-    }
-  });
 }
 
 function writeJunitReport(config, reporter) {
@@ -70,7 +43,6 @@ function writeJunitReport(config, reporter) {
   var testReportFileName = config.ciReport.testReportFileName.replace(/\.xml$/, '') + '.xml';
 
   var testSuite = junitWriter.addTestsuite(reporter.testSuite);
-
   for (var i in reporter.tests) {
     if (!reporter.tests.hasOwnProperty(i)) {
       continue;
