@@ -1,14 +1,14 @@
 'use strict';
 
-const action = require('../actions');
-const path = require('path');
-const config = require('../config.json');
+var action = require('../actions');
+var path = require('path');
+var config = require('../config.json');
 
 module.exports = (app) => {
 
   app.post('/api/reference/replace', (request, response) => {
-    let reference = path.join(config.paths.bitmaps_reference, request.body.reference);
-    let test = path.join(config.paths.bitmaps_test, request.body.test);
+    var reference = path.join(config.paths.bitmaps_reference, request.body.reference);
+    var test = path.join(config.paths.bitmaps_test, request.body.test);
 
     // resolve to get the absolute path
     reference = path.resolve(config.customBackstop, reference);
@@ -20,8 +20,8 @@ module.exports = (app) => {
       })
       .then(function () {
         response.json({
-          reference,
-          test
+          reference: reference,
+          test: test
         });
       })
       .catch(function (err) {

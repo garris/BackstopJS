@@ -1,7 +1,7 @@
 'use strict';
 
-const reference = require('./reference');
-const system = require('./system');
+var reference = require('./reference');
+var system = require('./system');
 
 module.exports = (app) => {
 

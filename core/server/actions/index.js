@@ -16,7 +16,7 @@ function overrideReferenceFile(referencePath, testPath) {
           resolve();
         })
         .catch(function(err) {
-          console.log(err);
+          throw err;
         });
     });
   })
@@ -28,6 +28,6 @@ function updateTestPair() {
 
 
 module.exports = {
-  overrideReferenceFile,
-  updateTestPair
+  overrideReferenceFile: overrideReferenceFile,
+  updateTestPair: updateTestPair
 };
