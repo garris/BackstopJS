@@ -30,13 +30,7 @@ module.exports = {
       logger.log('\x1b[32m' + report.passed() + ' Passed' + '\x1b[0m');
       logger.log('\x1b[31m' + failed + ' Failed\n' + '\x1b[0m');
 
-      return writeBrowserReport(config, report).then(function () {
-        if (failed) {
-          logger.error('*** Mismatch errors found ***');
-          logger.log('For a detailed report run `backstop openReport`\n');
-          throw new Error('Mismatch errors found.');
-        }
-      });
+      return writeBrowserReport(config, report);
     });
   }
 };
