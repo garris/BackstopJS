@@ -237,6 +237,21 @@ function complete(){
   var compareConfigJSON = JSON.parse(compareConfigFile || '{}');
   compareConfigJSON.compareConfig = compareConfig;
   fs.write(compareConfigFileName, JSON.stringify(compareConfigJSON,null,2), 'w');
+
+  // Generate the xunit file if requested via a casper flag in the config.
+  var xunitFile;
+  if (config.casperFlags) {
+    config.casperFlags.forEach(function(casperFlag){
+      if (! xunitFile && casperFlag.match(/--xunit=(.*)$/)) {
+          xunitFile = casperFlag.match(/--xunit=(.*)$/)[1];
+      }
+    });
+  }
+
+  if (xunitFile) {
+    casper.test.renderResults(true, 0, xunitFile);
+  }
+
   console.log(
     'Comparison config file updated.'
     //,configData
