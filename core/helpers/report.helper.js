@@ -20,12 +20,14 @@ module.exports = {
     });
   },
 
-  updateTestPairLinks: function (config, reporter) {
+  updateTestPairLinks: function (config, reporter, diffOnly) {
     var report = util.toAbsolute(config.html_report);
 
     reporter.tests.forEach(function (test) {
-      test.pair.reference = path.relative(report, util.toAbsolute(test.pair.reference));
-      test.pair.test = path.relative(report, util.toAbsolute(test.pair.test));
+      if(!diffOnly) {
+        test.pair.reference = path.relative(report, util.toAbsolute(test.pair.reference));
+        test.pair.test = path.relative(report, util.toAbsolute(test.pair.test));
+      }
 
       if (test.pair.diffImage) {
         test.pair.diffImage = path.relative(report, util.toAbsolute(test.pair.diffImage));

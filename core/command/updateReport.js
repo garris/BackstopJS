@@ -14,7 +14,7 @@ function writeBrowserReport(config, reporter) {
     .then(function () {
       logger.log('Browser reported copied');
     })
-    .then(reportHelper.updateTestPairLinks(config, reporter))
+    .then(reportHelper.updateTestPairLinks(config, reporter, true))
     .then(reportHelper.writeReportToFile(config, reporter))
     .catch(function(err) {
       throw err;
