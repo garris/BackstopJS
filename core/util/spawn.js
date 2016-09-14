@@ -21,10 +21,7 @@ module.exports = {
         console.log('Server: ', data.toString().slice(0, -1).split('\n').join('\n' + 'Server: '));
       });
 
-      spawn.on('exit', (code, signal) => {
-        if (signal != null) {
-          return this.killed = true;
-        }
+      spawn.on('exit', () => {
         console.log('Process closed!');
       });
 

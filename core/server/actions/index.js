@@ -23,7 +23,7 @@ function overrideReferenceFile(referencePath, testPath) {
 }
 
 function updateTestPair() {
-  return executeCommand('_writeReport', config);
+  return executeCommand('_updateReport', config);
 }
 
 

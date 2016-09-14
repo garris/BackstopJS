@@ -18,7 +18,7 @@ var commandNames = [
   'reference',
   'report',
   'test',
-  'writeReport'
+  'updateReport'
 ];
 
 /* Commands that are only exposed to higher levels */
