@@ -61,7 +61,11 @@ gulp.task('compare', function (done) {
 
             if (imageComparisonFailed) {
                 pair.testStatus = "fail";
-                console.log('\x1b[31m', 'ERROR:', pair.label, pair.fileName, '\x1b[0m');
+                if (data.misMatchPercentage > pair.misMatchThreshold) {
+                  console.log('\x1b[31m', 'ERROR (' + data.misMatchPercentage + '% / ' + pair.misMatchThreshold + '%):', pair.label, pair.fileName, '\x1b[0m');
+                } else {
+                  console.log('\x1b[31m', 'ERROR (dimensions mismatch):', pair.label, pair.fileName, '\x1b[0m');
+                }
                 storeFailedDiffImage(testPath, data);
             } else {
                 pair.testStatus = "pass";
