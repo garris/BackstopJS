@@ -4,9 +4,9 @@ var action = require('../actions');
 var path = require('path');
 var config = require('../config.json');
 
-module.exports = (app) => {
+module.exports = function (app) {
 
-  app.post('/api/reference/replace', (request, response) => {
+  app.post('/api/reference/replace', function (request, response) {
     var reference = path.join(config.paths.bitmaps_reference, request.body.reference);
     var test = path.join(config.paths.bitmaps_test, request.body.test);
 

@@ -1,12 +1,12 @@
 'use strict';
 
-const fs = require('../../util/fs');
-const logger = require('../../util/logger')('report');
-const config = require('../config.json');
-const executeCommand = require('./../../command/index');
+var fs = require('../../util/fs');
+var logger = require('../../util/logger')('report');
+var config = require('../config.json');
+var executeCommand = require('./../../command/index');
 
 function overrideReferenceFile(referencePath, testPath) {
-  return new Promise((resolve) => {
+  return new Promise(function (resolve) {
     fs.exists(referencePath).then(function () {
       logger.log('File exists!');
 

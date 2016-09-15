@@ -1,8 +1,8 @@
 'use strict';
 
-module.exports = (app) => {
+module.exports = function (app) {
 
-  app.get('/api/system/stop', (request, response) => {
+  app.get('/api/system/stop', function (request, response) {
     process.exit();
   });
 

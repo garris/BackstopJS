@@ -13,15 +13,15 @@ module.exports = {
 
       var spawn = child.spawn(command, args, options);
 
-      spawn.stdout.on('data', (data) => {
+      spawn.stdout.on('data', function (data) {
         console.log('Server: ', data.toString().slice(0, -1).split('\n').join('\n' + 'Server: '));
       });
 
-      spawn.stderr.on('data', (data) => {
+      spawn.stderr.on('data', function (data) {
         console.log('Server: ', data.toString().slice(0, -1).split('\n').join('\n' + 'Server: '));
       });
 
-      spawn.on('exit', () => {
+      spawn.on('exit', function () {
         console.log('Process closed!');
       });
 
