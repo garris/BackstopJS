@@ -23,8 +23,8 @@ node_modules
 
 compare/bower_components/**/.*
 
-bitmaps_test
-bitmaps_reference
+/backstop_data/bitmaps_test/
+/backstop_data/html_report/
 compare/config.js
 capture/config.json
 core/server/config.json

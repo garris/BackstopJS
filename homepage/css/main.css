@@ -50,7 +50,7 @@ margin-top: 0;
 text-shadow:0 1px 1px #fff, 0 1px 12px rgba(255,255,255,.7);
 }
 
-.topHat p{
+.topHat p, .topHat li{
 text-align: center;
 /*font-family: 'HelveticaNeue-Light';	*/
 font-family: 'Raleway' ,'HelveticaNeue' ,'Helvetica Neue',Helvetica,Sans-Serif;

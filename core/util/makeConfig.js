@@ -4,6 +4,8 @@ var fs = require('./fs');
 
 function makeConfig(argv) {
   var config = {};
+
+  //We don't need to load a config if the user is *generating* a config.
   var CMD_REQUIRES_CONFIG = !/genConfig/.test(argv['_'][0]);
 
   config.args = argv;
@@ -34,7 +36,7 @@ function makeConfig(argv) {
 
   // LOAD CONFIG
   var userConfig = {};
-  if (CMD_REQUIRES_CONFIG && config.backstopConfigFileName && fs.existsSync(config.backstopConfigFileName)) {
+  if (CMD_REQUIRES_CONFIG && config.backstopConfigFileName) {
     try {
       console.log('BackstopJS loading config: ', config.backstopConfigFileName, '\n');
       userConfig = require(config.backstopConfigFileName);

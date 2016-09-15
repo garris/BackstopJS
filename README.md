@@ -8,27 +8,36 @@ BackstopJS automates CSS regression testing of your responsive web UI by compari
 
 **Features:** Plays nice with multiple config files – Simulate user interactions with CasperJS scripts – Fast inline-CLI reports – detailed in-browser reports – CI Integration with junit reports – Test html5 elements like webfonts and flexbox – also plays nice with source control.
 
-
-## Version 2.0 Beta is here now!
-
+## Version 2.0 Beta is released!
 
 ```sh
 $ npm install -g garris/backstopjs#version_2_0
 ```
+### Here's whats new...
 
-### BackstopJS core is completely rewritten with huge speed improvements and many many bug fixes.
+<ul>
+  <li>All-new, all-optimized CLI core</li>
+  <li>Huge performance gains</li>
+  <li>Global or local install options</li>
+  <li>Invoke from anywhere with <code>`backstop &lt;command&gt;`</code></li>
+  <li>Incremental reference generation</li>
+  <li>Scenario filtering</li>
+  <li>Custom screenshot file naming</li>
+  <li>More bug fixes than you can shake a stick at</li>
+  <li>Removed Gulp dependency and more!</li>
+</ul>
 
-**PLEASE NOTE: INSTALLATION HAS CHANGED TO:**
-```
+
+
+**PLEASE NOTE: Check this documentation for new install instructions and config changes!**
+<!-- ```
 npm install -g backstopjs
-```
-BaxkstopJS CLI is now a global install and paths are relative to CWD -- Please see the `version_2_0` readme for updated instructions.
+``` -->
+For earlier version users -- *BackstopJS CLI is now a global install -- config paths are now relative to your CWD.*
 
-BackstopJS version 2.0 is now a globally installable CLI and Gulp has been removed.
+Many many thanks for all who helped with this monumental task! 💙㊗️🙇
 
-Many many thanks for all who helped with this monumental task!
-
-[@JulienPradet](https://github.com/JulienPradet), [@onigoetz](https://github.com/onigoetz), [@borys-rudenko](https://github.com/borys-rudenko), [@ksushik](https://github.com/ksushik), [@dmitriyilchgmailcom](https://github.com/dmitriyilchgmailcom)
+[@JulienPradet](https://github.com/JulienPradet), [@onigoetz](https://github.com/onigoetz), [@borys-rudenko](https://github.com/borys-rudenko), [@ksushik](https://github.com/ksushik), [@dmitriyilchgmailcom](https://github.com/dmitriyilchgmailcom), [@Primajin](https://github.com/Primajin)
 
 
 
@@ -43,7 +52,7 @@ Many many thanks for all who helped with this monumental task!
   1. **Make some changes** to your CSS _or_ add new components _or_ do a build _or_ push to production _or_ just wait for the display gremlins to strike...
   2. **Trigger a test**. BackstopJS creates a set of *test* screenshots and compares them with the *reference* screenshots you made during setup above. Any unwanted/unforeseen changes show up in a nice report.
   3. **Profit!** 🤑
-
+  
 
 
 
