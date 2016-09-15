@@ -159,7 +159,9 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
             if ( !scenario.hasOwnProperty('selectors') ) {
               scenario.selectors = [ 'body' ];
             }
+        var onSelectorScript = scenario.onBeforeSelector || config.onBeforeSelector;
         scenario.selectors.forEach(function(o,i,a){
+          
           var cleanedSelectorName = o.replace(/[^a-z0-9_\-]/gi,'');//remove anything that's not a letter or a number
           //var cleanedUrl = scenario.url.replace(/[^a-zA-Z\d]/,'');//remove anything that's not a letter or a number
           var fileName = scenario_index + '_' + i + '_' + cleanedSelectorName + '_' + viewport_index + '_' + vp.name + '.png';;
@@ -170,21 +172,30 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
           var filePath      = (isReference)?reference_FP:test_FP;
 
 
-          if(o === "body:noclip" || o === "document") {
-            casper.capture(filePath);
-          } else if (casper.exists(o)) {
-            if (casper.visible(o)) {
-              casper.captureSelector(filePath, o);
+          
+          casper.waitFor(function(){
+            if (onSelectorScript) {
+              return require(getScriptPath(onSelectorScript))(casper, scenario, vp, o);
             } else {
-              var assetData = fs.read(hiddenSelectorPath, 'b');
+              return true;
+            }
+          }, function(){
+            
+            if(o === "body:noclip" || o === "document") {
+              casper.capture(filePath);
+            } else if (casper.exists(o)) {
+              if (casper.visible(o)) {
+                casper.captureSelector(filePath, o);
+              } else {
+                var assetData = fs.read(hiddenSelectorPath, 'b');
+                fs.write(filePath, assetData, 'b');
+              }
+            } else {
+              var assetData = fs.read(selectorNotFoundPath, 'b');
               fs.write(filePath, assetData, 'b');
             }
-          } else {
-            var assetData = fs.read(selectorNotFoundPath, 'b');
-            fs.write(filePath, assetData, 'b');
-          }
-
-
+          });              
+          
           if (!isReference) {
             compareConfig.testPairs.push({
               reference:reference_FP,
