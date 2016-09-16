@@ -148,6 +148,7 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
               scenario.removeSelectors.forEach(function(o,i,a){
                 casper.evaluate(function(o){
                   Array.prototype.forEach.call(document.querySelectorAll(o), function(s, j){
+                    s.classList.add('_nIgnore');
                     s.style.display='none';
                   });
                 },o);
@@ -159,16 +160,41 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
             if ( !scenario.hasOwnProperty('selectors') ) {
               scenario.selectors = [ 'body' ];
             }
+
+        // if similar selectors exist on the given page, expand and test them too
+        if (scenario.enableSelectorExpansion) {
+            scenario.selectors = scenario.selectors.reduce(function(acc, selector, index) { 
+                var expandedSelectors = casper.evaluate(function(selector, index) {
+                    return [].slice.call(document.querySelectorAll(selector)).filter(function (element) {
+                        
+                        // dont test if they are added into the removeSelectors config section
+                        return !~(element.classList + '').indexOf('_nIgnore');
+                    }).map(function(element, i) {
+
+                            // by using __backstopjs__, we are making sure that this classname does not clash with user defined ones 
+                            var nPart = '__backstopjs__' + index + '__' + i;
+                            element.classList.add(nPart);
+                            return selector + '.' + nPart;
+                    });
+                }, selector, index);
+                return acc.concat(expandedSelectors);
+            }, []);
+        }
+
+
         scenario.selectors.forEach(function(o,i,a){
           var cleanedSelectorName = o.replace(/[^a-z0-9_\-]/gi,'');//remove anything that's not a letter or a number
           //var cleanedUrl = scenario.url.replace(/[^a-zA-Z\d]/,'');//remove anything that's not a letter or a number
+          
+          // make sure that we always refer the actual reference file & not the expanded ones
+          if (/__backstopjs__\d*__\d*/.test(cleanedSelectorName)) {
+            i = cleanedSelectorName.match(/__backstopjs__(\d*)__\d*/)[1];
+          }
           var fileName = scenario_index + '_' + i + '_' + cleanedSelectorName + '_' + viewport_index + '_' + vp.name + '.png';;
-
-          var reference_FP  = bitmaps_reference + '/' + fileName;
+          var reference_FP  = bitmaps_reference + '/' + fileName.replace(/__backstopjs__\d*__\d*/, '');
           var test_FP       = bitmaps_test + '/' + screenshotDateTime + '/' + fileName;
 
           var filePath      = (isReference)?reference_FP:test_FP;
-
 
           if(o === "body:noclip" || o === "document") {
             casper.capture(filePath);
@@ -184,8 +210,7 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
             fs.write(filePath, assetData, 'b');
           }
 
-
-          if (!isReference) {
+        if (!isReference) {
             compareConfig.testPairs.push({
               reference:reference_FP,
               test:test_FP,
