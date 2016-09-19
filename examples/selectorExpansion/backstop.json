@@ -1,0 +1,43 @@
+{
+    "viewports": [
+        {
+            "name": "phone",
+            "width": 320,
+            "height": 480
+        },
+        {
+            "name": "desktop",
+            "width": 1440,
+            "height": 900
+        }
+    ],
+    "scenarios": [
+        {
+            "label": "primary buttons",
+            "url": "index.html",
+            "hideSelectors": [],
+            "removeSelectors": [
+                ".container .btn.btn-primary.anyclassname"
+            ],
+            "selectors": [
+                ".container  .btn.btn-primary"
+            ],
+            "enableSelectorExpansion": true,
+            "delay": 100,
+            "misMatchThreshold" : 0.1,
+            "onBeforeScript": "onBefore.js",
+            "onReadyScript": "onReady.js"
+        }
+    ],
+    "paths": {
+        "bitmaps_reference": "./backstop_data/bitmaps_reference",
+        "bitmaps_test": "./backstop_data/bitmaps_test",
+        "compare_data": "./backstop_data/bitmaps_test/compare.json",
+        "casper_scripts": "./backstop_data/casper_scripts"
+    },
+    "engine": "phantomjs",
+    "report": ["CLI", "browser"],
+    "casperFlags": [],
+    "debug": false,
+    "port": 3001
+}
