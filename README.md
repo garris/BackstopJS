@@ -40,12 +40,12 @@ Many many thanks for all who helped with this monumental task! 💙㊗️🙇
 [@JulienPradet](https://github.com/JulienPradet), [@onigoetz](https://github.com/onigoetz), [@borys-rudenko](https://github.com/borys-rudenko), [@ksushik](https://github.com/ksushik), [@dmitriyilchgmailcom](https://github.com/dmitriyilchgmailcom), [@Primajin](https://github.com/Primajin)
 
 
-
+----
 
 ## The BackstopJS workflow
 
 ###Set up
-  - Generate your config: specify URLs, screen sizes, DOM selectors and other key things.
+  - Generate your config: specify URLs, screen sizes, DOM selectors, interactions etc.
   - Use BackstopJS to create a set of *reference* screenshots. BackstopJS will consider this your *source of truth*! (You can update this whenever you want).
 
 ###Then it's one, two, three on repeat...
@@ -59,7 +59,7 @@ Many many thanks for all who helped with this monumental task! 💙㊗️🙇
 ## Tutorials, Extensions and more...
 
 
-- **BackstopJS tutorial on [css-tricks.com](http://css-tricks.com/automating-css-regression-testing/)**
+- BackstopJS tutorial on [css-tricks.com](http://css-tricks.com/automating-css-regression-testing/)
 
 -  A lovely article on [Making Visual Regression Useful](https://medium.com/@philgourley/making-visual-regression-useful-acfae27e5031#.y3mw9tnxt) by [Phillip Gourley](https://medium.com/@philgourley?source=post_header_lockup)
 
@@ -110,21 +110,24 @@ By default, `genConfig` will put `backstop.json` at the project root. Also by de
 
 The location of the `backstop.json` file as well as all resource directories can be specified -- see [Setting the config file path](#setting-the-config-file-path-version-090) below.
 
-**A step-by-step tutorial is at [css-tricks.com](http://css-tricks.com/automating-css-regression-testing/).**
+
 
 
 ```json
 {
+  "id": "prod_test",
   "viewports": [
     {
       "name": "phone",
       "width": 320,
       "height": 480
-    }, {
+    },
+    {
       "name": "tablet_v",
       "width": 568,
       "height": 1024
-    }, {
+    },
+    {
       "name": "tablet_h",
       "width": 1024,
       "height": 768
@@ -132,48 +135,44 @@ The location of the `backstop.json` file as well as all resource directories can
   ],
   "scenarios": [
     {
-      "label": "My Homepage",
-      "url": "http://getbootstrap.com",
+      "label": "BackstopJS Homepage",
+      "url": "https://garris.github.io/BackstopJS/",
       "hideSelectors": [],
-      "removeSelectors": [
-        "#carbonads-container"
-      ],
+      "removeSelectors": [],
       "selectors": [
-        "header",
-        "main",
-        "body .bs-docs-featurette:nth-of-type(1)",
-        "body .bs-docs-featurette:nth-of-type(2)",
-        "footer",
-        "body"
+        ".jumbotron",
+        ".row.firstPanel",
+        ".firstPanel .col-sm-4:nth-of-type(2)",
+        ".firstPanel .col-sm-4:nth-of-type(3)",
+        ".firstPanel .col-sm-4:nth-of-type(4)",
+        ".secondPanel",
+        ".finalWords",
+        "footer"
       ],
       "readyEvent": null,
       "delay": 500,
       "misMatchThreshold" : 0.1,
-      "onReadyScript": null,
-      "onBeforeScript": null
+      "onBeforeScript": "onBefore.js",
+      "onReadyScript": "onReady.js"
     }
   ],
   "paths": {
     "bitmaps_reference": "backstop_data/bitmaps_reference",
     "bitmaps_test": "backstop_data/bitmaps_test",
-    "compare_data": "backstop_data/bitmaps_test/compare.json",
-    "casper_scripts": "backstop_data/casper_scripts"
+    "casper_scripts": "backstop_data/casper_scripts",
+    "html_report": "backstop_data/html_report",
+    "ci_report": "backstop_data/ci_report"
   },
+  "casperFlags": [],
   "engine": "phantomjs",
-  "report": ["browser", "CLI"],
-  "debug": false,
-  "port": 3001
+  "report": ["browser"],
+  "debug": false
 }
 ```
 
-
-**DEV NOTE:** If a valid config is not present at the project root (or at the path [specified on your CLI](#setting-the-config-file-path-version-090)), BackstopJS will go into **Demo** mode and run the default config at... `./node_modules/backstopjs/capture/config.default.json`
-
-
-
 ## Usage Notes
 
-### Generating (or updating) reference bitmaps
+### Creating or updating reference bitmaps
 
 ```sh
 $ backstop reference
