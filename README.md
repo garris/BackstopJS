@@ -4,9 +4,9 @@
 **Catch CSS curve balls.**
 
 
-BackstopJS automates CSS regression testing of your responsive web UI by comparing DOM screenshots at various viewport sizes.
+BackstopJS automates visual regression testing of your responsive web UI by comparing DOM screenshots over time.
 
-**Features:** Plays nice with multiple config files – Simulate user interactions with CasperJS scripts – Fast inline-CLI reports – detailed in-browser reports – CI Integration with junit reports – Test html5 elements like webfonts and flexbox – also plays nice with source control.
+**Features:** Plays nice with multiple config files – Simulate user interactions with CasperJS scripts – Fast inline-CLI reports – detailed in-browser reports – CI Integration with junit reports – Test html5 elements like webfonts and flexbox – also plays nice with source control share your gold master with your team.
 
 ## Version 2.0 Beta is released!
 
@@ -17,7 +17,7 @@ $ npm install -g garris/backstopjs#version_2_0
 
 <ul>
   <li>All-new, all-optimized CLI core</li>
-  <li>Huge performance gains</li>
+  <li>Huge performance gains from 1.x versions</li>
   <li>Global or local install options</li>
   <li>Invoke from anywhere with <code>`backstop &lt;command&gt;`</code></li>
   <li>Incremental reference generation</li>
@@ -33,48 +33,20 @@ $ npm install -g garris/backstopjs#version_2_0
 <!-- ```
 npm install -g backstopjs
 ``` -->
-For earlier version users -- *BackstopJS CLI is now a global install -- config paths are now relative to your CWD.*
+For 1.x users -- *BackstopJS CLI is now a global install -- config paths are now relative to your CWD.*
 
-Many many thanks for all who helped with this monumental task! 💙㊗️🙇
-
-[@JulienPradet](https://github.com/JulienPradet), [@onigoetz](https://github.com/onigoetz), [@borys-rudenko](https://github.com/borys-rudenko), [@ksushik](https://github.com/ksushik), [@dmitriyilchgmailcom](https://github.com/dmitriyilchgmailcom), [@Primajin](https://github.com/Primajin)
+Many many thanks for all who helped with this monumental task! 💙㊗️🙇 [@JulienPradet](https://github.com/JulienPradet), [@onigoetz](https://github.com/onigoetz), [@borys-rudenko](https://github.com/borys-rudenko), [@ksushik](https://github.com/ksushik), [@dmitriyilchgmailcom](https://github.com/dmitriyilchgmailcom), [@Primajin](https://github.com/Primajin)
 
 
 ----
 
-## The BackstopJS workflow
+##The BackstopJS workflow
 
-###Set up
-  - Generate your config: specify URLs, screen sizes, DOM selectors, interactions etc.
-  - Use BackstopJS to create a set of *reference* screenshots. BackstopJS will consider this your *source of truth*! (You can update this whenever you want).
+  - **Configure:** Specify URLs, screen sizes, DOM selectors, interactions etc. (see examples directory)
 
-###Then it's one, two, three on repeat...
-  1. **Make some changes** to your CSS _or_ add new components _or_ do a build _or_ push to production _or_ just wait for the display gremlins to strike...
-  2. **Trigger a test**. BackstopJS creates a set of *test* screenshots and compares them with the *reference* screenshots you made during setup above. Any unwanted/unforeseen changes show up in a nice report.
-  3. **Profit!** 🤑
-  
+  - **Bless:** Create a set of *reference* screenshots. BackstopJS will consider this your *source of truth*! (Update this whenever you want).
 
-
-
-## Tutorials, Extensions and more...
-
-
-- BackstopJS tutorial on [css-tricks.com](http://css-tricks.com/automating-css-regression-testing/)
-
--  A lovely article on [Making Visual Regression Useful](https://medium.com/@philgourley/making-visual-regression-useful-acfae27e5031#.y3mw9tnxt) by [Phillip Gourley](https://medium.com/@philgourley?source=post_header_lockup)
-
-- Automated regression testing for AngularJS (and other) web-apps -- article on [DWB](http://davidwalsh.name/visual-regression-testing-angular-applications)
-
-- Want to add BackstopJS to your existing *gulp* build?  Turns out to be pretty easy – use [gulp-chug](https://github.com/robatron/gulp-chug). Learn how in this article by [Filip Bartos](http://blog.bartos.me/css-regression-testing/).
-
-- *Grunt fans* -- check out [grunt-backstop](https://github.com/ddluc/grunt-backstop) and this [very nicely written article by Joe Watkins](http://joe-watkins.io/css-visual-regression-testing-with-grunt-backstopjs/)
-
-
-- Generate a BackstopJS configuration file from sitemap.xml with [BackstopJS Scenarios Constructor](https://github.com/enzosterro/bscm/) by [Enzo Sterro](https://github.com/enzosterro)
-
-
-- BackstopJS brochure at [http://BackstopJS.org/](http://garris.github.io/BackstopJS/).
-
+  - **Test:** BackstopJS creates a set of *test* screenshots and compares them with the *reference* screenshots you made above. Any unwanted/unforeseen changes show up in a nice report.
 
 
 ##Installation
@@ -458,7 +430,7 @@ NOTES:
 - all paths are relative to the location of the BackstopJS install directory _(which is either inside your project's `node_modules` or `bower_components` depending on how BackstopJS was installed)._
 - _Remember to add that extra `--` after the `backstop test` and `backstop reference` commands._
 
-### Setting the bitmap and script directory paths (version 0.6.0+)
+###Setting the bitmap and script directory paths (version 0.6.0+)
 By default, BackstopJS saves its screenshots into `./backstopjs/bitmaps_reference/` and `./backstopjs/bitmaps_test/` in parallel with your `./backstop.js` config file. The location of these directories are configurable so they can easily be moved inside or outside your source control or file sharing environment.
 
 The `compare.json` file contains file mappings between reference and test files. This file tells the comparison module what comparisons to run. It is probably best kept inside the `bitmaps_test` directory.
@@ -476,7 +448,7 @@ Please note: these file paths are relative to your current working directory.
   }
 ```
 
-### Changing the rendering engine (version 0.6.0+)
+###Changing the rendering engine (version 0.6.0+)
 BackstopJS supports using PhantomJS or SlimerJS for web app rendering. (With thanks to CasperJS for doing the heavy lifting here.)
 
 First, be sure to have SlimerJS installed. From your root directory run...
@@ -493,11 +465,11 @@ Then, in your `backstop.json` config file, update the engine property to...
 Thats it.
 
 
-### Changing the reporting server port
+###Changing the reporting server port
 
 The default port used by BackstopJS is 3001.   You can change it by setting the `port` parameter in the `backstop.json` file.
 
-### Setting Casper command-line flags (version 0.9.0+)
+###Setting Casper command-line flags (version 0.9.0+)
 This is for you if for some reason you find yourself needing advanced configuration access to CasperJS.  You can set CasperJS flags via `casperFlags` like so...
 
 ```json
@@ -509,42 +481,28 @@ This is for you if for some reason you find yourself needing advanced configurat
 ]
 ```
 
-### Troubleshooting
+###Troubleshooting
 
 ####Windows users...
-Please make sure you have Python installed.
+PhantomJS needs Python -- please make sure you have Python installed...
 _see https://github.com/garris/BackstopJS/issues/185_
 
-#### The dreaded _command-not-found_ error...
+####The dreaded _command-not-found_ error...
 
-If the command `backstop` isn't found, it's probably not in your path, from your project you can run `node_modules/.bin/backstop` instead
+Did you install BackstopJS with the global option?  If installing globally remember to add that `-g` when installing with npm: `npm install backstop -g`.     If you installed *locally*, remember that the main reason to do this is to invoke BackstopJS with npm scripts -- see the local installation section above for more info.
 
 
-#### Debugging
-To enable verbose console output when running your tests set the `debug` property to `true` in `backstop.json`.
+####Debugging
+To enable verbose console output when running your tests set the `debug` property to `true` in `backstop.json`.  This will also output your  payload to the terminal so you can make sure to check that the server is sending what you expect. 😉
 
 ```json
   "debug": true
 ```
 
-#### Viewing response contents
+---
+##Release History
 
-Sometimes it also helps to verify that BackstopJS is receiving the correct response. Enabling the `debug` property (see _Debugging_ above) will output this data to the console whenever a test is run.
-
-For a sanity check you can also use the following command -- it will output your requested file contents to the console.
-
-_Please note: this will check your scenario `url` only.  It does not check for a `referenceUrl` property._
-
-From your project run ...
-
-```sh
-$ backstop echo
-```
-
-
-## Release History
-
-### Version 1.3.2 available now
+###Version 1.3.2 available now
 [Please file questions, comments or issues here](https://github.com/garris/BackstopJS/issues).
 
 ####Version 1.3.2 adds CI Integration with junit reports and some nice to haves
@@ -574,7 +532,21 @@ $ backstop echo
 
 
 ---
+##Tutorials, Extensions and more...
 
+- BackstopJS tutorial on [css-tricks.com](http://css-tricks.com/automating-css-regression-testing/)
+
+-  A lovely article on [Making Visual Regression Useful](https://medium.com/@philgourley/making-visual-regression-useful-acfae27e5031#.y3mw9tnxt) by [Phillip Gourley](https://medium.com/@philgourley?source=post_header_lockup)
+
+- Automated regression testing for AngularJS (and other) web-apps -- article on [DWB](http://davidwalsh.name/visual-regression-testing-angular-applications)
+
+- Want to add BackstopJS to your existing *gulp* build?  Turns out to be pretty easy – use [gulp-chug](https://github.com/robatron/gulp-chug). Learn how in this article by [Filip Bartos](http://blog.bartos.me/css-regression-testing/).
+
+- *Grunt fans* -- check out [grunt-backstop](https://github.com/ddluc/grunt-backstop) and this [very nicely written article by Joe Watkins](http://joe-watkins.io/css-visual-regression-testing-with-grunt-backstopjs/)
+
+- Generate a BackstopJS configuration file from sitemap.xml with [BackstopJS Scenarios Constructor](https://github.com/enzosterro/bscm/) by [Enzo Sterro](https://github.com/enzosterro)
+
+- BackstopJS brochure at [http://BackstopJS.org/](http://garris.github.io/BackstopJS/).
 
 
 ##Backstory:
@@ -590,7 +562,7 @@ BackstopJS was created by [Garris Shipon](expanded.me) during the [Art.com labs]
 
 ...
 
-## Many many thanks to [all the contributors](https://github.com/garris/BackstopJS/graphs/contributors) with special thanks to...
+##Many many thanks to [all the contributors](https://github.com/garris/BackstopJS/graphs/contributors) with special thanks to...
 - [Suresh Kumar. M](https://github.com/garris/BackstopJS/commits/master?author=nobso) for help on the 1.3.2 release
 - [Klaus Bayrhammer](https://github.com/klausbayrhammer) for all the incredible effort leading up to 1.0 -- the cli reports and compatibility fixes are awesome!
 - [Evan Lovely](https://github.com/EvanLovely) and [Klaus Bayrhammer](https://github.com/klausbayrhammer) for help on the 0.9.0 release
