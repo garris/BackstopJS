@@ -33,7 +33,7 @@ $ npm install -g garris/backstopjs#version_2_0
 <!-- ```
 npm install -g backstopjs
 ``` -->
-For 1.x users -- *BackstopJS CLI is now a global install -- config paths are now relative to your CWD.*
+For 1.x users -- *BackstopJS CLI is now a global install -- config paths are now relative to your current working directory `$(pwd)`.*
 
 Many many thanks for all who helped with this monumental task! 💙㊗️🙇 [@JulienPradet](https://github.com/JulienPradet), [@onigoetz](https://github.com/onigoetz), [@borys-rudenko](https://github.com/borys-rudenko), [@ksushik](https://github.com/ksushik), [@dmitriyilchgmailcom](https://github.com/dmitriyilchgmailcom), [@Primajin](https://github.com/Primajin)
 
@@ -431,20 +431,18 @@ NOTES:
 - _Remember to add that extra `--` after the `backstop test` and `backstop reference` commands._
 
 ###Setting the bitmap and script directory paths (version 0.6.0+)
-By default, BackstopJS saves its screenshots into `./backstopjs/bitmaps_reference/` and `./backstopjs/bitmaps_test/` in parallel with your `./backstop.js` config file. The location of these directories are configurable so they can easily be moved inside or outside your source control or file sharing environment.
+By default, BackstopJS saves generated resources into the `backstop_data` directory in parallel with your `backstop.json` config file. The location of the various resource types are configurable so they can easily be moved inside or outside your source control or file sharing environment. See below for the options...
 
-The `compare.json` file contains file mappings between reference and test files. This file tells the comparison module what comparisons to run. It is probably best kept inside the `bitmaps_test` directory.
-
-If you are using custom casper_scripts -- that directory can be specified too.
-
-Please note: these file paths are relative to your current working directory.
+_Please note: these file paths are relative to your current working directory $(pwd)._
 
 ```json
+  ...
   "paths": {
     "bitmaps_reference": "backstop_data/bitmaps_reference",
     "bitmaps_test": "backstop_data/bitmaps_test",
-    "compare_data": "backstop_data/bitmaps_test/compare.json",
-    "casper_scripts": "backstop_data/scripts"
+    "casper_scripts": "backstop_data/casper_scripts",
+    "html_report": "backstop_data/html_report",
+    "ci_report": "backstop_data/ci_report"
   }
 ```
 
@@ -464,10 +462,11 @@ Then, in your `backstop.json` config file, update the engine property to...
 ```
 Thats it.
 
-
+<!--
 ###Changing the reporting server port
 
 The default port used by BackstopJS is 3001.   You can change it by setting the `port` parameter in the `backstop.json` file.
+-->
 
 ###Setting Casper command-line flags (version 0.9.0+)
 This is for you if for some reason you find yourself needing advanced configuration access to CasperJS.  You can set CasperJS flags via `casperFlags` like so...
@@ -550,7 +549,7 @@ To enable verbose console output when running your tests set the `debug` propert
 
 
 ##Backstory:
-BackstopJS is a useful wrapper around the very fabulous [Resemble.js](https://github.com/Huddle/Resemble.js) component written by [James Cryer](https://github.com/jamescryer). Other implementations of Resemble.js, namely [PhantomCSS](https://github.com/Huddle/PhantomCSS) require writing long form [CasperJS](http://casperjs.org) tests -- which is of course great for testing complex UI interactions –- but kind of cumbersome for more simple applications like static CMS templates or lots and lots of app states at different screen sizes.
+BackstopJS is a useful wrapper around the very fabulous [Resemble.js](https://github.com/Huddle/Resemble.js) component written by [James Cryer](https://github.com/jamescryer). Other implementations of Resemble.js, namely [PhantomCSS](https://github.com/Huddle/PhantomCSS) require writing long form [CasperJS](http://casperjs.org) tests -- which is of course great for testing complex UI interactions –- but kind of cumbersome for testing simple applications like static CMS templates, lots and lots of app states and different screen sizes.
 
 BackstopJS may be just the thing if you develop custom WordPress, Drupal or other CMS templates.  Tested on OSX.
 
@@ -560,7 +559,7 @@ BackstopJS was created by [Garris Shipon](expanded.me) during the [Art.com labs]
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 
 
-...
+---
 
 ##Many many thanks to [all the contributors](https://github.com/garris/BackstopJS/graphs/contributors) with special thanks to...
 - [Suresh Kumar. M](https://github.com/garris/BackstopJS/commits/master?author=nobso) for help on the 1.3.2 release
