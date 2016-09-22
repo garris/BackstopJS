@@ -66,25 +66,25 @@ $ npm install -g garris/backstopjs#master
 ```
 
 
-##Configuration
+##Getting started
 
+###Generating your configuration file
 
-**If you don't already have a BackstopJS config file.** The following command will create a config template file which you can modify in your root directory. *Note: this will overwrite any existing backstopjs config file.*
+**If you don't already have a BackstopJS config file.** The following command will create a config template file which you can modify in your root directory. **Note: this will overwrite any existing backstopjs config file.**
 
 From your projects's directory ...
-
 ```sh
 $ backstop genConfig
 ```
 
-
-By default, `genConfig` will put `backstop.json` at the project root. Also by default, a `backstop_data` directory will be created at this same location.
+By default, `genConfig` will put `backstop.json` at your current location -- *if you're not sure where this is, run `echo $(pad)`, that's your current location*. Also by default, a `backstop_data` directory will be created at this same location.
 
 The location of the `backstop.json` file as well as all resource directories can be specified -- see [Setting the config file path](#setting-the-config-file-path-version-090) below.
 
 
+###Working with your config file
 
-
+Here is the configuration that `backstop genConfig` generates...
 ```json
 {
   "id": "prod_test",
@@ -109,8 +109,6 @@ The location of the `backstop.json` file as well as all resource directories can
     {
       "label": "BackstopJS Homepage",
       "url": "https://garris.github.io/BackstopJS/",
-      "hideSelectors": [],
-      "removeSelectors": [],
       "selectors": [
         ".jumbotron",
         ".row.firstPanel",
@@ -121,6 +119,8 @@ The location of the `backstop.json` file as well as all resource directories can
         ".finalWords",
         "footer"
       ],
+      "hideSelectors": [],
+      "removeSelectors": [],
       "readyEvent": null,
       "delay": 500,
       "misMatchThreshold" : 0.1,
@@ -142,7 +142,22 @@ The location of the `backstop.json` file as well as all resource directories can
 }
 ```
 
-## Usage Notes
+###Here are the important top level properties
+
+As a new user setting up tests for your project, you will be primarily concerned with a handful of properties.  Here are the important ones...
+
+`id` is the unique name of your config file.  It's used by BackstopJS to manage and name files. It's useful to set this property for projects with multiple configs but **it's required if you plan on sharing your reference files with teammates**.  If you're not sharing with others then you can omit this property -- BackstopJS will generate one for you based on your file system.
+
+`viewports` this is an array of screen size objects your DOM will be tested against.  Add as many as you like -- but add at least one.
+
+`scenarios` This is where the action is. Add one or many. The important  `scenarios` properties are...
+	* `label` which is required and used for file naming and other features
+	* `url` which is also required as it tells BackstopJS what endpoint/document you want to test.  This can be an absolute URL or local to your current working directory.
+
+
+
+
+##Using BackstopJS
 
 ### Creating or updating reference bitmaps
 
