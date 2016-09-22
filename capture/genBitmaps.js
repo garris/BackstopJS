@@ -75,10 +75,10 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
         this.viewport(vp.width||vp.viewport.width, vp.height||vp.viewport.height);
       });
 
-      var url = scenario.url;
       if (isReference && scenario.referenceUrl) {
-        url = scenario.referenceUrl;
+        scenario.url = scenario.referenceUrl;
       }
+      var url = scenario.url;
 
       var onBeforeScript = scenario.onBeforeScript || config.onBeforeScript;
       if (onBeforeScript) {
