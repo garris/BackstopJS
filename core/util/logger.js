@@ -30,6 +30,10 @@ function paddedString (length, string) {
     string = string.stack;
   }
 
+  if (typeof string !== 'string') {
+    return '';
+  }
+
   var lines = string.split('\n');
   var paddedLines = lines
     .slice(1)
