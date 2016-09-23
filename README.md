@@ -42,31 +42,30 @@ Many many thanks for all who helped with this monumental task! 💙㊗️🙇 [@
 
 ##The BackstopJS workflow
 
-  - **Configure:** Specify URLs, screen sizes, DOM selectors, interactions etc. (see examples directory)
+  - **Configure:** Specify URLs, screen sizes, DOM selectors, ready events, interactions etc. (see examples directory)
 
-  - **Bless:** Create a set of *reference* screenshots. BackstopJS will consider this your *source of truth*! (Update this whenever you want).
+  - **Bless:** Create a set of *reference* screenshots. BackstopJS will consider this your *source of truth*. (Update this whenever you want).
 
-  - **Test:** BackstopJS creates a set of *test* screenshots and compares them with the *reference* screenshots you made above. Any unwanted/unforeseen changes show up in a nice report.
+  - **Test:** BackstopJS creates a set of *test* screenshots and compares them with your *reference* screenshots. Any unwanted/unforeseen changes show up in a nice report.
+ 
 
+##Getting started
+### Installation
 
-##Installation
-
-###**BackstopJS package**
-
-You can add BackstopJS from the root directory of any project.
-
+#### Global installation (recommended)
+Run this in your terminal from anywhere...
 ```sh
 $ npm install -g backstopjs
 ```
+#### Local installation (advanced)
+
+
+
 
 ###Installing a development version
-
 ```sh
 $ npm install -g garris/backstopjs#master
 ```
-
-
-##Getting started
 
 ###Generating your configuration file
 
@@ -77,17 +76,17 @@ From your projects's directory ...
 $ backstop genConfig
 ```
 
-By default, `genConfig` will put `backstop.json` at your current location -- *if you're not sure where this is, run `echo $(pad)`, that's your current location*. Also by default, a `backstop_data` directory will be created at this same location.
+By default, `genConfig` will put `backstop.json` at your current working path -- *if you're not sure where this is, run `echo $(pad)`, that's your current path*. Also by default, a `backstop_data` directory will be created at this same location.
 
 The location of the `backstop.json` file as well as all resource directories can be specified -- see [Setting the config file path](#setting-the-config-file-path-version-090) below.
 
 
 ###Working with your config file
 
-Here is the configuration that `backstop genConfig` generates...
+####Here is the configuration that `backstop genConfig` generates...
 ```json
 {
-  "id": "prod_test",
+  "id": "backstop_prod_test",
   "viewports": [
     {
       "name": "phone",
@@ -107,7 +106,7 @@ Here is the configuration that `backstop genConfig` generates...
   ],
   "scenarios": [
     {
-      "label": "BackstopJS Homepage",
+      "label": "homepage",
       "url": "https://garris.github.io/BackstopJS/",
       "selectors": [
         ".jumbotron",
@@ -142,43 +141,48 @@ Here is the configuration that `backstop genConfig` generates...
 }
 ```
 
-###Here are the important top level properties
+####Required config properties
 
-As a new user setting up tests for your project, you will be primarily concerned with a handful of properties.  Here are the important ones...
+As a new user setting up tests for your project, you will be primarily concerned with these properties...
 
-`id` is the unique name of your config file.  It's used by BackstopJS to manage and name files. It's useful to set this property for projects with multiple configs but **it's required if you plan on sharing your reference files with teammates**.  If you're not sharing with others then you can omit this property -- BackstopJS will generate one for you based on your file system.
+##### id
+The unique name of your config file.  It's used by BackstopJS to manage and name files. It's useful to set this property for projects with multiple configs but **it's required if you plan on sharing your reference files with teammates**.  If you're not sharing with others then you can omit this property -- BackstopJS will auto-generate one for you based on your file system.
 
-`viewports` this is an array of screen size objects your DOM will be tested against.  Add as many as you like -- but add at least one.
+##### viewports
+An array of screen size objects your DOM will be tested against.  Add as many as you like -- but add at least one.
 
-`scenarios` This is where the action is. Add one or many. The important  `scenarios` properties are...
-	* `label` which is required and used for file naming and other features
-	* `url` which is also required as it tells BackstopJS what endpoint/document you want to test.  This can be an absolute URL or local to your current working directory.
+##### scenarios
+This is where you will spend most of your time. Add one or many. The important `scenarios` properties are...
+
+######scenarios.label
+Required. Used for screenshot naming.
+######scenarios.url
+Required. Tells BackstopJS what endpoint/document you want to test.  This can be an absolute URL or local to your current working directory.
+###### scenarios.selectors
+An array of CSS selector strings enabling you specify what part of your DOM you want to test.  The default value is `body`, which is used if this property is omitted.
 
 
+###Creating or updating reference bitmaps
 
-
-##Using BackstopJS
-
-### Creating or updating reference bitmaps
-
+From your project directory...
 ```sh
 $ backstop reference
 ```
 
-
-This task will create a (or update an existing) `bitmaps_reference` directory with screen captures from the current project build.
-
+This will create (or update) your `bitmaps_reference` directory with screen captures from the current project build.
 
 
-### Generating test bitmaps
+###Generating test bitmaps
 
 ```sh
 $ backstop test
 ```
 
-This task will create a new set of bitmaps in `bitmaps_test/<timestamp>/`
+This will create a new set of bitmaps in `bitmaps_test/<timestamp>/`
 
-Once the test bitmaps are generated, a report comparing the most recent test bitmaps against the current reference bitmaps will run. Significant differences will be detected and shown.
+Once the test bitmaps are generated, a report comparing the most recent test bitmaps against the current reference bitmaps will run. 
+
+Significant differences will be detected and displayed in the browser report.
 
 
 
