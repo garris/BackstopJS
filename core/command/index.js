@@ -12,7 +12,6 @@ var logger = require('../util/logger')('COMMAND');
 
 /* Each and every command defined, including commands used in before/after */
 var commandNames = [
-  'echo',
   'genConfig',
   'openReport',
   'reference',
@@ -25,8 +24,7 @@ var exposedCommandNames = [
   'genConfig',
   'reference',
   'test',
-  'openReport',
-  'echo'
+  'openReport'
 ];
 
 /* Used to convert an array of objects {name, execute} to a unique object {[name]: execute} */
