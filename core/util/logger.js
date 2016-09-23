@@ -31,7 +31,7 @@ function paddedString (length, string) {
   }
 
   if (typeof string !== 'string') {
-    return '';
+    return string;
   }
 
   var lines = string.split('\n');
