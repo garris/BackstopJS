@@ -23,7 +23,7 @@ function makeConfig (argv) {
   // BACKSTOP CONFIG PATH
   var configPathArg = argv.backstopConfigFilePath || argv.configPath || argv.config || null;
   if (configPathArg) {
-    if (configPathArg.charAt(0) === '/') {
+    if (path.isAbsolute(configPathArg)) {
       config.backstopConfigFileName = configPathArg;
     } else {
       config.backstopConfigFileName = path.join(config.customBackstop, configPathArg);
@@ -47,11 +47,11 @@ function makeConfig (argv) {
   }
 
   // BITMAPS PATHS -- note: this path is overwritten if config files exist.  see below.
-  config.bitmaps_reference = config.customBackstop + '/backstop_data/bitmaps_reference';
-  config.bitmaps_test = config.customBackstop + '/backstop_data/bitmaps_test';
+  config.bitmaps_reference = path.join(config.customBackstop, 'backstop_data', 'bitmaps_reference');
+  config.bitmaps_test = path.join(config.customBackstop, 'backstop_data', 'bitmaps_test');
 
   // Continuous Integration (CI) report
-  config.ci_report = config.customBackstop + '/backstop_data/ci_report';
+  config.ci_report = path.join(config.customBackstop, 'backstop_data', 'ci_report');
   config.ci = {
     format: 'junit',
     testReportFileName: 'xunit',
@@ -59,23 +59,23 @@ function makeConfig (argv) {
   };
 
   // HTML Report
-  config.html_report = config.customBackstop + '/backstop_data/html_report';
+  config.html_report = path.join(config.customBackstop, 'backstop_data', 'html_report');
   config.openReport = true;
   if ('openReport' in userConfig) {
     config.openReport = userConfig.openReport;
   }
 
   // COMPARE PATHS -- note: compareConfigFileName is overwritten if config files exist.  see below.
-  config.comparePath = config.backstop + '/compare';
+  config.comparePath = path.join(config.backstop, 'compare';
   config.tempCompareConfigFileName = temp.path({suffix: '.json'});
 
   // CAPTURE CONFIG PATHS
-  config.captureConfigFileName = config.backstop + '/capture/config.json';
-  config.captureConfigFileNameDefault = config.backstop + '/capture/config.default.json';
+  config.captureConfigFileName = path.join(config.backstop, 'capture', 'config.json';
+  config.captureConfigFileNameDefault = path.join(config.backstop, 'capture', 'config.default.json';
 
   // SCRIPTS PATHS -- note: scripts is overwritten if config file exists.
-  config.casper_scripts = config.customBackstop + '/backstop_data/casper_scripts';
-  config.casper_scripts_default = config.backstop + '/capture/casper_scripts';
+  config.casper_scripts = path.join(config.customBackstop, 'backstop_data', 'casper_scripts';
+  config.casper_scripts_default = path.join(config.backstop, 'capture', 'casper_scripts';
 
   config.casperFlags = userConfig.casperFlags || null;
   config.engine = userConfig.engine || null;
@@ -95,8 +95,8 @@ function makeConfig (argv) {
     config.ci_report = userConfig.paths.ci_report || config.ci_report;
   }
 
-  config.compareConfigFileName = config.html_report + '/config.js';
-  config.compareReportURL = config.html_report + '/index.html';
+  config.compareConfigFileName = path.join(config.html_report, 'config.js');
+  config.compareReportURL = path.join(config.html_report, 'index.html');
 
   config.defaultMisMatchThreshold = 0.1;
 
