@@ -166,8 +166,8 @@ function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabe
 
       // CREATE SCREEN SHOTS AND TEST COMPARE CONFIGURATION (CONFIG FILE WILL BE SAVED WHEN THIS PROCESS RETURNS)
       // If no selectors are provided then set the default 'body'
-      if (!scenario.hasOwnProperty('selectors')) {
-        scenario.selectors = ['body'];
+      if (!scenario.hasOwnProperty('selectors') || !scenario.selectors.length) {
+        scenario.selectors = ['document'];
       }
       scenario.selectors.forEach(function (o, i, a) {
         var cleanedSelectorName = o.replace(/[^a-z0-9_\-]/gi, ''); // remove anything that's not a letter or a number
