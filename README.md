@@ -59,6 +59,12 @@ $ npm install -g backstopjs
 ```
 #### Local installation (advanced)
 
+Before installing locally, keep in mind that local installs do not put the `Backstop` command on your application path. _Please refer to the Local Install Usage section of the documentation._
+
+To install locally, `cd` into your project directory then...
+```
+npm install backstopjs
+```
 
 
 
@@ -184,7 +190,7 @@ Once the test bitmaps are generated, a report comparing the most recent test bit
 
 Significant differences will be detected and displayed in the browser report.
 
-
+##Using BackstopJS
 
 ### Testing SPAs and AJAX content
 
