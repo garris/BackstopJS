@@ -66,16 +66,16 @@ function makeConfig (argv) {
   }
 
   // COMPARE PATHS -- note: compareConfigFileName is overwritten if config files exist.  see below.
-  config.comparePath = path.join(config.backstop, 'compare';
+  config.comparePath = path.join(config.backstop, 'compare');
   config.tempCompareConfigFileName = temp.path({suffix: '.json'});
 
   // CAPTURE CONFIG PATHS
-  config.captureConfigFileName = path.join(config.backstop, 'capture', 'config.json';
-  config.captureConfigFileNameDefault = path.join(config.backstop, 'capture', 'config.default.json';
+  config.captureConfigFileName = path.join(config.backstop, 'capture', 'config.json');
+  config.captureConfigFileNameDefault = path.join(config.backstop, 'capture', 'config.default.json');
 
   // SCRIPTS PATHS -- note: scripts is overwritten if config file exists.
-  config.casper_scripts = path.join(config.customBackstop, 'backstop_data', 'casper_scripts';
-  config.casper_scripts_default = path.join(config.backstop, 'capture', 'casper_scripts';
+  config.casper_scripts = path.join(config.customBackstop, 'backstop_data', 'casper_scripts');
+  config.casper_scripts_default = path.join(config.backstop, 'capture', 'casper_scripts');
 
   config.casperFlags = userConfig.casperFlags || null;
   config.engine = userConfig.engine || null;
