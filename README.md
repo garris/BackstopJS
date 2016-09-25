@@ -151,21 +151,15 @@ The location of the `backstop.json` file as well as all resource directories can
 
 As a new user setting up tests for your project, you will be primarily concerned with these properties...
 
-##### id
-The unique name of your config file.  It's used by BackstopJS to manage and name files. It's useful to set this property for projects with multiple configs but **it's required if you plan on sharing your reference files with teammates**.  If you're not sharing with others then you can omit this property -- BackstopJS will auto-generate one for you based on your file system.
+**`id`** – The unique name of your config file.  It's used by BackstopJS to manage and name files. It's useful to set this property for projects with multiple configs but **it's required if you plan on sharing your reference files with teammates**.  If you're not sharing with others then you can omit this property -- BackstopJS will auto-generate one for you based on your file system.
 
-##### viewports
-An array of screen size objects your DOM will be tested against.  Add as many as you like -- but add at least one.
+**`viewports`** – An array of screen size objects your DOM will be tested against.  Add as many as you like -- but add at least one.
 
-##### scenarios
-This is where you will spend most of your time. Add one or many. The important `scenarios` properties are...
+**`scenarios`** – This is where you set up your actual tests. The important sub properties are...
 
-######scenarios.label
-Required. Used for screenshot naming.
-######scenarios.url
-Required. Tells BackstopJS what endpoint/document you want to test.  This can be an absolute URL or local to your current working directory.
-###### scenarios.selectors
-An array of CSS selector strings enabling you specify what part of your DOM you want to test.  The default value is `body`, which is used if this property is omitted.
+- **`scenarios.label`** – Required. Used for screenshot naming.
+- **`scenarios.url`** – Required. Tells BackstopJS what endpoint/document you want to test.  This can be an absolute URL or local to your current working directory.
+- **`scenarios.selectors`** – An array of CSS selector strings enabling you specify what part of your DOM you want to test.  The default value is `body`, which is used if this property is omitted.
 
 
 ###Creating or updating reference bitmaps
@@ -292,7 +286,7 @@ To do this, add a `referenceUrl` to your scenario configuration. When running `$
 ```
 
 
-### Running custom CasperJS scripts (version 0.8.0+)
+### Running custom CasperJS scripts
 
 Simulate user actions (click, scroll, hover, wait, etc.) or states (cookie values) by running your own Casper.js script on ready. For each scenario, the custom .js file you specify is imported and run when the BackstopJS ready event is fired.
 
@@ -360,8 +354,7 @@ _**NOTE:** SlimerJS currently requires an absolute path -- so be sure to include
 ```
 
 
-### Reporting workflow tips (version 0.7.0+)
-There are two reporting options.  The fastest and least obtrusive is the CLI report which gives you a subdued thumbs up or thumbs down for your layout on each run.  The other report runs in the in-browser -- this gives you detailed visual feedback for each test case so you can validate why your screen diffs score the way they do.
+### Reporting workflow tips
 
 One testing approach to consider is incorporating BackstopJS into your build process and just let the CLI report run on each build.  It's natural for your layout to break while you're in feature development -- refer back to the report when you feel things should be shaping up. Check the in-browser version of the report occasionally as needed when you need deeper information about what's happening in a test case.
 
@@ -375,7 +368,7 @@ _Browser Report_
 ![](homepage/img/browserReport.png)
 
 
-Using the report property in `backstop.json` enable or disable browser or server-side-reporting by including/excluding the respective properties. The following settings will run both reports at the same time.
+Using the report property in `backstop.json` enable or disable browser including/excluding the respective properties. E.G. The following settings will run both reports at the same time.
 
 ```json
 "report": ["browser", "CI"]
@@ -414,7 +407,7 @@ You may customize the testsuite name and/or a report file (xunit.xml) path to yo
 
 When a layout error is found in CLI mode, BackstopJS will let you know in a general report displayed in the console. In addition, BackstopJS will throw an error that will be passed to calling process.
 
-###Using a js based config file (version 1.0.0+)
+###Using a js based config file
 
 JSON-based configs cramping your style? Well, here's some good news -- BackstopJS allows you to import all config parameters as a node module (as an option instead of JSON) which allows you to use comments, variables and logic etc. inside of your config.
 
@@ -430,7 +423,7 @@ Be sure to export your config object as a node module. See [test/configExample.j
 
 
 
-###Setting the config file path (version 0.9.0+)
+###Setting the config file path
 Often, users have multiple config files to test various different scenarios or even different projects. By default, BackstopJS looks for `backstop.json` in your project's root directory (in parallel with your `node_modules` directory). You can override this by passing a `--configPath` argument when running any command. e.g.
 
 ```sh
@@ -455,7 +448,7 @@ NOTES:
 - all paths are relative to the location of the BackstopJS install directory _(which is either inside your project's `node_modules` or `bower_components` depending on how BackstopJS was installed)._
 - _Remember to add that extra `--` after the `backstop test` and `backstop reference` commands._
 
-###Setting the bitmap and script directory paths (version 0.6.0+)
+###Setting the bitmap and script directory paths 
 By default, BackstopJS saves generated resources into the `backstop_data` directory in parallel with your `backstop.json` config file. The location of the various resource types are configurable so they can easily be moved inside or outside your source control or file sharing environment. See below for the options...
 
 _Please note: these file paths are relative to your current working directory $(pwd)._
@@ -471,7 +464,7 @@ _Please note: these file paths are relative to your current working directory $(
   }
 ```
 
-###Changing the rendering engine (version 0.6.0+)
+###Changing the rendering engine
 BackstopJS supports using PhantomJS or SlimerJS for web app rendering. (With thanks to CasperJS for doing the heavy lifting here.)
 
 First, be sure to have SlimerJS installed. From your root directory run...
@@ -493,7 +486,7 @@ Thats it.
 The default port used by BackstopJS is 3001.   You can change it by setting the `port` parameter in the `backstop.json` file.
 -->
 
-###Setting Casper command-line flags (version 0.9.0+)
+###Setting Casper command-line flags
 This is for you if for some reason you find yourself needing advanced configuration access to CasperJS.  You can set CasperJS flags via `casperFlags` like so...
 
 ```json
@@ -504,6 +497,34 @@ This is for you if for some reason you find yourself needing advanced configurat
   "--proxy-auth=user:pass"
 ]
 ```
+
+###Installing BackstopJS Locally
+The main reason to install backstop locally is likely to be a managed integration with a build implementation.
+
+From the...
+```
+<your-project-path>/node_modules/backstopjs/
+```
+...directory you can run...
+```
+$ npm run reference
+$ npm run test
+$ npm run genConfig
+$ npm run openReport
+```
+Which maps to the respective `backstop <command>`.
+
+Alternatively, when BackstopJS is installed locally, NPM will recognize the `backstop <command>` pattern originating from your own NPM `package.json` scripts. The following would enable you to run the
+```
+scripts: {
+  reference: backstop reference
+  test: backstop test
+  genConfig: backstop genConfig
+}
+``` 
+
+The above is a crude example -- there are other fancy mappings you can create as well -- check out the NPM documentation for more info.
+
 
 ###Troubleshooting
 
