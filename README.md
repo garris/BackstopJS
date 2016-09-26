@@ -531,7 +531,9 @@ The above is a crude example -- there are other fancy mappings you can create as
 
 ####Projects don't work when I share with other users or run in different environments. (filename problem)
 
-If you just upgraded to 2.x from 1.x then this is for you.  Filename formats have changed.  To use the 1.x (compatible) file format, use the `fileNameTemplate` property like so...
+#####If you just upgraded to 2.x from 1.x 
+
+Filename formats have changed.  To use the 1.x (compatible) file format, use the `fileNameTemplate` property like so...
 
 ```
 {
@@ -539,7 +541,10 @@ If you just upgraded to 2.x from 1.x then this is for you.  Filename formats hav
 fileNameTemplate: '{scenarioLabel}_{selectorIndex}_{selectorLabel}_{viewportIndex}_{viewportLabel}',
 ...
 ```
-*For more info see the new config file `id` property above in [Required config properties](#Required_config_properties)*
+
+#####If you are not migrating scripts but have recently upgraded BackstopJS
+
+Be sure to use a config `id` in your config file. See https://github.com/garris/BackstopJS/issues/291
 
 ####Windows users...
 
