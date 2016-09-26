@@ -417,10 +417,9 @@ To use a js module based config file, explicitly specify your config filepath wh
 ```sh
 $ backstop test --configPath=backstopTests/someTest.js
 ```
-_Remember to add that extra `--` after the `test` command._
 _See the next section for more info on setting the config file path._
 
-Be sure to export your config object as a node module. See [test/configExample.js](test/configExample.js) for a simple example.
+Be sure to export your config object as a node module. 
 
 
 
