@@ -78,6 +78,7 @@ $ npm install -g garris/backstopjs#master
 **If you don't already have a BackstopJS config file.** The following command will create a config template file which you can modify in your root directory. **Note: this will overwrite any existing backstopjs config file.**
 
 From your projects's directory ...
+
 ```sh
 $ backstop genConfig
 ```
@@ -157,9 +158,9 @@ As a new user setting up tests for your project, you will be primarily concerned
 
 **`scenarios`** – This is where you set up your actual tests. The important sub properties are...
 
-- **`scenarios.label`** – Required. Used for screenshot naming.
-- **`scenarios.url`** – Required. Tells BackstopJS what endpoint/document you want to test.  This can be an absolute URL or local to your current working directory.
-- **`scenarios.selectors`** – An array of CSS selector strings enabling you specify what part of your DOM you want to test.  The default value is `body`, which is used if this property is omitted.
+- **`scenarios[*n*].label`** – Required. Used for screenshot naming.
+- **`scenarios[*n*].url`** – Required. Tells BackstopJS what endpoint/document you want to test.  This can be an absolute URL or local to your current working directory.
+- **`scenarios[*n*].selectors`** – An array of CSS selector strings enabling you specify what part of your DOM you want to test.  The default value is `body`, which is used if this property is omitted.
 
 
 ###Creating or updating reference bitmaps
@@ -528,16 +529,31 @@ The above is a crude example -- there are other fancy mappings you can create as
 
 ###Troubleshooting
 
+####Projects don't work when I share with other users or run in different environments. (filename problem)
+
+If you just upgraded to 2.x from 1.x then this is for you.  Filename formats have changed.  To use the 1.x (compatible) file format, use the `fileNameTemplate` property like so...
+
+```
+{
+...
+fileNameTemplate: '{scenarioLabel}_{selectorIndex}_{selectorLabel}_{viewportIndex}_{viewportLabel}',
+...
+```
+*For more info see the new config file `id` property above in [Required config properties](#Required_config_properties)*
+
 ####Windows users...
+
 PhantomJS needs Python -- please make sure you have Python installed...
 _see https://github.com/garris/BackstopJS/issues/185_
 
+
 ####The dreaded _command-not-found_ error...
 
-Did you install BackstopJS with the global option?  If installing globally remember to add that `-g` when installing with npm: `npm install backstop -g`.     If you installed *locally*, remember that the main reason to do this is to invoke BackstopJS with npm scripts -- see the local installation section above for more info.
+Did you install BackstopJS with the global option?  If installing globally remember to add that `-g` when installing with npm *i.e.* `npm install backstop -g`.     If you installed *locally*, remember that the `backstop <command>` pattern will only be available to your npm scripts -- see the local installation section above for more info.
 
 
 ####Debugging
+
 To enable verbose console output when running your tests set the `debug` property to `true` in `backstop.json`.  This will also output your  payload to the terminal so you can make sure to check that the server is sending what you expect. 😉
 
 ```json
