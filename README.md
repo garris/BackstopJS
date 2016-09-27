@@ -11,7 +11,7 @@ BackstopJS automates CSS regression testing of your responsive web UI by compari
 ## Version 2.0 Beta is released!
 
 ```sh
-$ npm install -g garris/backstopjs#version_2_0
+$ npm install -g backstopjs@beta
 ```
 ### Here's whats new...
 
