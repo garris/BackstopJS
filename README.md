@@ -40,6 +40,24 @@ Many many thanks for all who helped with this monumental task! 💙㊗️🙇 [@
 
 ----
 
+## Contents
+
+[The BackstopJS workflow](#the-backstopjs-workflow)
+
+[Installation](#installation)
+
+[Getting Started](#getting-started)
+
+[Using BackstopJS](#using-backstopjs)
+
+[Troubleshooting](#troubleshooting)
+
+[Tutorials, Extensions and more](#tutorials-extensions-and-more)
+
+[Credits](#backstory)
+
+----
+
 ##The BackstopJS workflow
 
   - **Configure:** Specify URLs, screen sizes, DOM selectors, ready events, interactions etc. (see examples directory)
@@ -526,11 +544,11 @@ scripts: {
 The above is a crude example -- there are other fancy mappings you can create as well -- check out the NPM documentation for more info.
 
 
-###Troubleshooting
+##Troubleshooting
 
-####Projects don't work when I share with other users or run in different environments. (filename problem)
+###Projects don't work when I share with other users or run in different environments. (filename problem)
 
-#####If you just upgraded to 2.x from 1.x 
+####If you just upgraded to 2.x from 1.x 
 
 Filename formats have changed.  To use the 1.x (compatible) file format, use the `fileNameTemplate` property like so...
 
@@ -541,22 +559,22 @@ fileNameTemplate: '{scenarioLabel}_{selectorIndex}_{selectorLabel}_{viewportInde
 ...
 ```
 
-#####If you are not migrating scripts but have recently upgraded BackstopJS
+####If you are not migrating scripts but have recently upgraded BackstopJS
 
 Be sure to use a config `id` in your config file. See https://github.com/garris/BackstopJS/issues/291
 
-####Windows users...
+###Windows users...
 
 PhantomJS needs Python -- please make sure you have Python installed...
 _see https://github.com/garris/BackstopJS/issues/185_
 
 
-####The dreaded _command-not-found_ error...
+###The dreaded _command-not-found_ error...
 
 Did you install BackstopJS with the global option?  If installing globally remember to add that `-g` when installing with npm *i.e.* `npm install backstop -g`.     If you installed *locally*, remember that the `backstop <command>` pattern will only be available to your npm scripts -- see the local installation section above for more info.
 
 
-####Debugging
+###Debugging
 
 To enable verbose console output when running your tests set the `debug` property to `true` in `backstop.json`.  This will also output your  payload to the terminal so you can make sure to check that the server is sending what you expect. 😉
 
@@ -564,40 +582,9 @@ To enable verbose console output when running your tests set the `debug` propert
   "debug": true
 ```
 
----
-##Release History
-
-###Version 1.3.2 available now
-[Please file questions, comments or issues here](https://github.com/garris/BackstopJS/issues).
-
-####Version 1.3.2 adds CI Integration with junit reports and some nice to haves
-- take screenshots of your entire document
-- React app integration [check out the example](https://github.com/garris/BackstopJS/tree/master/test/simpleReactApp).
-
-
-####Version 1.1
-- reliability fixes plus a handful of improvements to close out the original roadmap.
-- Simplified installation -- just `npm install backstopjs` and you're ready to go!
-- All `Gulp` commands have been migrated to `npm run <command>` format for better compatibility!
-- now add logic and comments to your configs (optional JS based configs)
-- plays nice with other local services (change the BackstopJS port)
-
-####Version 0.9.0
-- Plays nice with multiple config files (setting the config file path)
-
-####Version 0.8.0
-- Simulate user interactions with CasperJS scripts
-
-####Version 0.7.0
-- Fast CLI reporting
-
-####Version 0.6.0
-- configurable screenshot locations. See *moving the bitmap directories* below.
-- SlimerJS support. See *changing the rendering engine* below.
-
 
 ---
-##Tutorials, Extensions and more...
+##Tutorials, Extensions and more
 
 - BackstopJS tutorial on [css-tricks.com](http://css-tricks.com/automating-css-regression-testing/)
 
@@ -614,7 +601,7 @@ To enable verbose console output when running your tests set the `debug` propert
 - BackstopJS brochure at [http://BackstopJS.org/](http://garris.github.io/BackstopJS/).
 
 
-##Backstory:
+##Backstory
 BackstopJS is a useful wrapper around the very fabulous [Resemble.js](https://github.com/Huddle/Resemble.js) component written by [James Cryer](https://github.com/jamescryer). Other implementations of Resemble.js, namely [PhantomCSS](https://github.com/Huddle/PhantomCSS) require writing long form [CasperJS](http://casperjs.org) tests -- which is of course great for testing complex UI interactions –- but kind of cumbersome for testing simple applications like static CMS templates, lots and lots of app states and different screen sizes.
 
 BackstopJS may be just the thing if you develop custom WordPress, Drupal or other CMS templates.  Tested on OSX.
@@ -627,7 +614,8 @@ BackstopJS was created by [Garris Shipon](expanded.me) during the [Art.com labs]
 
 ---
 
-##Many many thanks to [all the contributors](https://github.com/garris/BackstopJS/graphs/contributors) with special thanks to...
+##Gratitude
+Many many thanks to [all the contributors](https://github.com/garris/BackstopJS/graphs/contributors) with special thanks to...
 - [Suresh Kumar. M](https://github.com/garris/BackstopJS/commits/master?author=nobso) for help on the 1.3.2 release
 - [Klaus Bayrhammer](https://github.com/klausbayrhammer) for all the incredible effort leading up to 1.0 -- the cli reports and compatibility fixes are awesome!
 - [Evan Lovely](https://github.com/EvanLovely) and [Klaus Bayrhammer](https://github.com/klausbayrhammer) for help on the 0.9.0 release
