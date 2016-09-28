@@ -3,95 +3,112 @@
 <head>
   <title>BackstopJS Report</title>
 
-  <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="bower_components/bootstrap-css-only/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="css/styles.css">
+  <link rel="stylesheet" type="text/css" href="css/revealer.css">
 
   <script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
-  <script type="text/javascript" src="bower_components/angular-route/angular-route.min.js"></script>
-  <script type="text/javascript" src="bower_components/resemblejs/resemble.js"></script>
-  <script type="text/javascript" src="bower_components/async/lib/async.js"></script>
-
+  <script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+  <script type="text/javascript" src="bower_components/angular-clipboard/angular-clipboard.js"></script>
   <script type="text/javascript" src="js/compare.js"></script>
+  <script type="text/javascript" src="js/revealer.js"></script>
+  <script type="text/javascript" src="config.js"></script>
 </head>
 
 <body ng-app="compareApp">
-  <div id="root" ng-controller="MainCtrl">
-    <div class="container"><h1>BackstopJS Report</h1></div>
-    <div class="container summaryBlock">
-      <h2 class='lead'>
-        <div class="stat">Passed <strong class='green circle'>{{passedCount}}</strong>&nbsp;&nbsp; Failed <strong class='red circle'>{{testPairsCompleted-passedCount}}</strong></div>
-        <div class="stat">{{testPairsCompleted}} of {{testPairs.length}}</div>
-        <div class="stat">{{testDuration/1000 | number : 2}}s</div>
-        <div class="progressBarBlock" ng-if="testIsRunning">
-          <div class="progress">
-            <div class="progress-bar progress-bar-striped active"  role="progressbar" aria-valuenow="{{testPairsCompleted}}" aria-valuemin="0" aria-valuemax="{{testPairs.length}}" style="width: {{testPairsCompleted/testPairs.length*100| number : 0}}%">
-              <span class="sr-only">{{testPairsCompleted}} of {{testPairs.length}}</span>
-            </div>
-          </div>
+<div id="root" ng-controller="MainCtrl" class="container-fluid">
+  <div uib-alert ng-repeat="alert in alerts" ng-class="'alert-' + alert.type"
+       dismiss-on-timeout="2000" close="closeAlert($index)">{{alert.msg}}</div>
+  <h1>{{name}} Report</h1>
+  <div class="summaryBlock">
+    <h3 class="statContainer">
+            <span class="stat">Passed <span class='label label-success'>{{passedCount}}</span>&nbsp;&nbsp; Failed <span
+                    class='label label-danger'>{{testPairs.length-passedCount}}</span></span>
+      <span class="stat">{{testDuration/1000 | number : 2}}s</span>
+    </h3>
+    <button class="btn btn-default summaryListButton" type="button" class="btn btn-default" ng-click="isSummaryListCollapsed = !isSummaryListCollapsed">
+      <span ng-if="!isSummaryListCollapsed">Collapse Summary List</span>
+      <span ng-if="isSummaryListCollapsed">Expand Summary List</span>
+    </button>
+    <button class="btn btn-default summaryListButton" type="button" class="btn btn-default" ng-click="copyFailedTestsIds()">Copy failed tests to clipboard</button>
+    <table class="summaryList" ng-class="{'hide' : isSummaryListCollapsed}">
+      <tr ng-repeat="thisTestPair in testPairs">
+        <td class="statusInds">
+          <div class="indicator failed" ng-if="!thisTestPair.passed"><span class="dot red"></span>failed</div>
+          <div class="indicator passed" ng-if="thisTestPair.passed"><span class="dot green"></span>passed</div>
+        </td>
+        <td>{{ thisTestPair.meta.pair.label }}</td>
+        <td>{{ thisTestPair.meta.pair.selector }}</td>
+        <td><span class="fileName">{{ thisTestPair.meta.pair.fileName }}</span></td>
+      </tr>
+    </table>
+  </div> <!-- end summaryBlock -->
+
+  <div class='filterGroup form-group'>
+    <label for="statusFilter" class="control-label">status filter</label>
+    <select id="statusFilter" class="form-control" ng-model="statusFilter" ng-options="status for status in detailFilterOptions"></select>
+  </div> <!-- end filterGroup -->
+
+  <div class="results" ng-repeat="thisTestPair in testPairs | filter : displayOnStatusFilter">
+    <div class="flex-container">
+      <div class="selector">{{ thisTestPair.meta.pair.label }} - {{ thisTestPair.meta.pair.selector }}
+        <button type="button" class="btn btn-default btn-sm"
+                ng-click="openModal('lg', thisTestPair.a.src, thisTestPair.b.src)">Show diff</button>
+      </div>
+      <div class="filename">{{ thisTestPair.meta.pair.fileName }}</div>
+    </div>
+    <div class="flex-container small">
+      <div>Reference</div>
+      <div>Test</div>
+      <div ng-if="!thisTestPair.passed">Diff</div>
+      <div>Report</div>
+    </div>
+    <div class="flex-container">
+      <div>
+        <img ng-src="{{ thisTestPair.a.src }}" alt="Reference" ng-click="openModal('lg', thisTestPair.a.src, thisTestPair.b.src)" />
+      </div>
+      <div>
+        <img ng-src="{{ thisTestPair.b.src }}" alt="Test" ng-click="openModal('lg', thisTestPair.a.src, thisTestPair.b.src)" />
+      </div>
+      <div ng-if="!thisTestPair.passed">
+        <img ng-src="{{ thisTestPair.c.src }}" image-name="c" alt="Difference" />
+      </div>
+      <div>
+        <div class="statusInds">
+          <div class="indicator failed" ng-if="!thisTestPair.passed"><span class="dot red"></span>failed</div>
+          <div class="indicator passed" ng-if="thisTestPair.passed"><span class="dot green"></span>passed</div>
         </div>
-      </h2>
-      <table class="summaryList">
-        <tr ng-repeat="thisTestPair in testPairs">
-          <td class="statusInds">
-            <div class="indicator scanning" ng-if="thisTestPair.processing"><span class="dot yellow flash"></span>scanning</div>
-            <div class="indicator failed" ng-if="!thisTestPair.passed&&!thisTestPair.processing"><span class="dot red"></span>failed</div>
-            <div class="indicator passed" ng-if="thisTestPair.passed"><span class="dot green"></span>passed</div>
-          </td>
-          <td>
-            {{ thisTestPair.meta.label }} {{ thisTestPair.meta.selector }} <span class="fileName">{{ thisTestPair.meta.fileName }}</span>
-          </td>
-        </tr>
-      </table>
-    </div> <!-- end summaryBlock -->
+        <div class="reportTxt">Report: {{ thisTestPair.report }}</div>
+        <div class="reportTxt">Threshold: {{ thisTestPair.meta.misMatchThreshold}}</div>
+      </div>
+    </div>
+  </div> <!-- end results -->
 
-    <div class="detailReport">
+  <div>
+    <script type="text/ng-template" id="myModalContent.html">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modal-title">Comparsion result</h3>
+      </div>
+      <div class="modal-body" id="modal-body">
 
-      <div class='filterGroup form-group'>
-        <label for="statusFilter" class="control-label">status filter</label>
-        <select id="statusFilter" class="form-control" ng-model="statusFilter" ng-options="status for status in detailFilterOptions"></select>
+        <div class="btn-group " role="group">
+          <button type="button" class="btn btn-success" ng-click="setImgPositionValue(0)">Reference</button>
+          <button type="button" class="btn btn-warning" ng-click="setImgPositionValue(100)">Test</button>
+        </div>
+
+        <revealer top-image="{{ selected.testImg }}"
+                  bottom-image="{{ selected.referenceImg }}"
+                  start-position = "imgPositionValue">
+        </revealer>
 
       </div>
-
-      <div class="results" ng-repeat="thisTestPair in testPairs | filter : displayOnStatusFilter">
-        <div class="flex-container">
-            <div class="selector">{{ thisTestPair.meta.label }} {{ thisTestPair.meta.selector }}</div>
-            <div class="filename">{{ thisTestPair.meta.fileName }}</div>
-        </div>
-        <div class="flex-container">
-            <div>Reference</div>
-            <div>Test</div>
-            <div>Diff</div>
-            <div>Report</div>
-        </div>
-        <div class="flex-container">
-          <div>
-            <img ng-src="{{ thisTestPair.a.src }}">
-          </div>
-          <div>
-            <img ng-src="{{ thisTestPair.b.src }}">
-          </div>
-          <div>
-            <img ng-src="{{ thisTestPair.c.src }}" image-name="c">
-          </div>
-          <div>
-            <div class="statusInds">
-              <div class="indicator scanning" ng-if="thisTestPair.processing"><span class="dot yellow flash"></span>scanning</div>
-              <div class="indicator failed" ng-if="!thisTestPair.passed&&!thisTestPair.processing"><span class="dot red"></span>failed</div>
-              <div class="indicator passed" ng-if="thisTestPair.passed"><span class="dot green"></span>passed</div>
-            </div>
-            <div class="reportTxt">Threshold: {{ thisTestPair.meta.misMatchThreshold}}</div>
-            <div class="reportTxt">Report: {{ thisTestPair.report }}</div>
-          </div>
-        </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
       </div>
+    </script>
+  </div>
 
-    </div> <!-- end detailReport -->
-
-
-  <footer></footer>
-
-
-  </div> <!-- end #root -->
+</div> <!-- end #root -->
 
 </body>
 </html>

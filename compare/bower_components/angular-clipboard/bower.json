@@ -1,0 +1,20 @@
+{
+    "name": "angular-clipboard",
+    "version": "1.5.0",
+    "main": "angular-clipboard.js",
+    "description": "Copy to clipboard with AngularJS directive, without using Flash.",
+    "dependencies": {
+        "angular": "*"
+    },
+    "license": "MIT",
+    "ignore": [
+        "demo",
+        "test",
+        ".gitignore",
+        "bower.json",
+        "karma.conf.js",
+        "LICENSE",
+        "package.json",
+        "README.md"
+    ]
+}
