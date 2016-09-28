@@ -8,10 +8,10 @@ BackstopJS automates visual regression testing of your responsive web UI by comp
 
 **Features:** Plays nice with multiple config files – Simulate user interactions with CasperJS scripts – Fast inline-CLI reports – detailed in-browser reports – CI Integration with junit reports – Test html5 elements like webfonts and flexbox – also plays nice with source control share your gold master with your team.
 
-## Version 2.0 Beta is released!
+## Version 2.0 is released!
 
 ```sh
-$ npm install -g backstopjs@beta
+$ npm install -g backstopjs
 ```
 ### Here's whats new...
 
@@ -29,11 +29,13 @@ $ npm install -g backstopjs@beta
 
 
 
-**PLEASE NOTE: Check this documentation for new install instructions and config changes!**
-<!-- ```
-npm install -g backstopjs
-``` -->
-For 1.x users -- *BackstopJS CLI is now a global install -- config paths are now relative to your current working directory `$(pwd)`.*
+**For 1.x users migrating to 2.x**
+- BackstopJS CLI can be installed globally (and it's recommended) 
+- All config paths are now relative to your current working directory `$(pwd)`.
+- There are new config properties 
+    - `fileNameTemplate` Important if you are migrating [1.x configs](#2_0-configs-and-resources)
+    - `id` Use this if you are [sharing config files](#getting-started) 
+ 
 
 Many many thanks for all who helped with this monumental task! 💙㊗️🙇 [@JulienPradet](https://github.com/JulienPradet), [@onigoetz](https://github.com/onigoetz), [@borys-rudenko](https://github.com/borys-rudenko), [@ksushik](https://github.com/ksushik), [@dmitriyilchgmailcom](https://github.com/dmitriyilchgmailcom), [@Primajin](https://github.com/Primajin)
 
@@ -546,7 +548,9 @@ The above is a crude example -- there are other fancy mappings you can create as
 
 ##Troubleshooting
 
-###Projects don't work when I share with other users or run in different environments. (filename problem)
+###2.0 configs and resources
+
+_Projects don't work when I share with other users or run in different environments. (filename problem)_
 
 ####If you just upgraded to 2.x from 1.x 
 
