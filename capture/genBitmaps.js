@@ -60,8 +60,9 @@ function capturePageSelectors (scenarios, viewports, bitmapsReferencePath, bitma
 
   casper.start();
 
-  casper.each(scenarios, function (casper, scenario) {
+  casper.each(scenarios, function (casper, scenario, i) {
     var scenarioLabelSafe = makeSafe(scenario.label);
+    scenario.sIndex = i;
 
     processScenario(casper, scenario, scenarioLabelSafe, scenarioLabelSafe, viewports, bitmapsReferencePath, bitmapsTestPath, screenshotDateTime);
 
@@ -175,6 +176,7 @@ function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabe
 
         var fileName = fileNameTemplate
           .replace(/\{configId\}/, configId)
+          .replace(/\{scenarioIndex\}/, scenario.sIndex)
           .replace(/\{scenarioLabel\}/, switchedScenarioOrVariantLabel) // derrived from scenario.label & variant.label
           .replace(/\{selectorIndex\}/, i)
           .replace(/\{selectorLabel\}/, cleanedSelectorName)
