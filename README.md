@@ -209,12 +209,11 @@ Significant differences will be detected and displayed in the browser report.
 ##Using BackstopJS
 
 
-###Updating or Testing just one scenario
+###Updating or testing just one scenario (filtering)
 
 If you need to update references (or test) for just one app-state you can do so by invoking BackstopJS with the following argument...
 ```
 $ backstop reference --filter=<scenario.label>
-
 ```
 
 
