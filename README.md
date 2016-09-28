@@ -569,7 +569,7 @@ Filename formats have changed.  To use the 1.x (compatible) file format, use the
 ```
 {
 ...
-fileNameTemplate: '{scenarioLabel}_{selectorIndex}_{selectorLabel}_{viewportIndex}_{viewportLabel}',
+fileNameTemplate: '{scenarioInndex}_{scenarioLabel}_{selectorIndex}_{selectorLabel}_{viewportIndex}_{viewportLabel}',
 ...
 ```
 
