@@ -193,6 +193,7 @@ $ backstop reference
 This will create (or update) your `bitmaps_reference` directory with screen captures from the current project build.
 
 
+
 ###Generating test bitmaps
 
 ```sh
@@ -206,6 +207,16 @@ Once the test bitmaps are generated, a report comparing the most recent test bit
 Significant differences will be detected and displayed in the browser report.
 
 ##Using BackstopJS
+
+
+###Updating or Testing just one scenario
+
+If you need to update references (or test) for just one app-state you can do so by invoking BackstopJS with the following argument...
+```
+$ backstop reference --filter=<scenario.label>
+
+```
+
 
 ### Testing SPAs and AJAX content
 
@@ -548,9 +559,9 @@ The above is a crude example -- there are other fancy mappings you can create as
 
 ##Troubleshooting
 
-###2.0 configs and resources
+###Migrating to 2.0
 
-_Projects don't work when I share with other users or run in different environments. (filename problem)_
+_Filename issue: Projects don't work when I share with other users or run in different environments._
 
 ####If you just upgraded to 2.x from 1.x 
 
