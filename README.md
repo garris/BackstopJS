@@ -6,7 +6,7 @@
 
 BackstopJS automates visual regression testing of your responsive web UI by comparing DOM screenshots over time.
 
-**Features:** Plays nice with multiple config files – Simulate user interactions with CasperJS scripts – Fast inline-CLI reports – detailed in-browser reports – CI Integration with junit reports – Test html5 elements like webfonts and flexbox – also plays nice with source control share your gold master with your team.
+**Features:** Plays nice with multiple config files – Simulate user interactions with CasperJS scripts – Fast inline-CLI reports – detailed in-browser reports – CI Integration with JUnit reports – Test html5 elements like webfonts and flexbox – also plays nice with source control share your gold master with your team.
 
 ## Version 2.0 is released!
 
@@ -281,7 +281,7 @@ There may also be elements which need to be completely removed during testing. F
 ```
 
 ### Changing test sensitivity
-`"misMatchThreshold"` will change the amount of difference BackstopJS will tollerate before marking a test screenshot as "failed".  The default setting is `0.1`, this may need to be increased as the dimentions of your screenshot increases.
+`"misMatchThreshold"` will change the amount of difference BackstopJS will tolerate before marking a test screenshot as "failed".  The default setting is `0.1`, this may need to be increased as the dimensions of your screenshot increases.
 
 
 ### Capturing the entire document
@@ -297,7 +297,7 @@ BackstopJS recognizes a magic selector called `document`.  Use it to capture you
        ...
     }
 ```
-_Note: This is requred if you want to test an entire document layout with a `height: 100%` rule specified on the `<body>` element._
+_Note: This is required if you want to test an entire document layout with a `height: 100%` rule specified on the `<body>` element._
 
 
 
@@ -363,7 +363,7 @@ module.exports = function(casper, scenario, vp) {
   casper.click( '.toggle' );
   casper.wait( 250 );
 
-  // Example: changing behaivior based on config values
+  // Example: changing behavior based on config values
   if (vp.name === 'phone') {
     casper.echo( 'doing stuff for just phone viewport here' );
   }
