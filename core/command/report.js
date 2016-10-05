@@ -21,7 +21,7 @@ function writeReport (config, reporter) {
 
 function writeBrowserReport (config, reporter) {
   function toAbsolute (p) {
-    if (p[0] === '/') {
+    if (path.isAbsolute(p)) {
       return p;
     }
     return path.join(config.customBackstop, p);
