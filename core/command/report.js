@@ -39,7 +39,7 @@ function writeBrowserReport (config, reporter) {
         reporter.tests[i].pair.test = path.relative(report, toAbsolute(pair.test));
 
         if (pair.diffImage) {
-          reporter.tests[i].pair.diffImage = path.relative(report, toAbsolute(pair.diffImage));
+          reporter.tests[i].pair.diffImage = pair.diffImage;
         }
       }
     }
