@@ -6,7 +6,7 @@ module.exports = {
   execute: function (config) {
 
     function toAbsolute (p) {
-      if (p[0] === '/') {
+      if (path.isAbsolute(p)) {
         return p;
       }
       return path.join(config.customBackstop, p);
