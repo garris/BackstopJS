@@ -281,7 +281,9 @@ There may also be elements which need to be completely removed during testing. F
 ```
 
 ### Changing test sensitivity
-`"misMatchThreshold"` will change the amount of difference BackstopJS will tolerate before marking a test screenshot as "failed".  The default setting is `0.1`, this may need to be increased as the dimensions of your screenshot increases.
+`"misMatchThreshold"` (percentage 0.00%-100.00%) will change the amount of difference BackstopJS will tolerate before marking a test screenshot as "failed".  The default setting is `0.1`, this may need to be adjusted based on the kinds of testing you're doing.  
+
+More info on how misMatchThreshold is derrived can be found here... https://github.com/Huddle/Resemble.js/blob/af57cb2f4edfbe718d24b350b2be1d956b764298/resemble.js#L495
 
 
 ### Capturing the entire document
