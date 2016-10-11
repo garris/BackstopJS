@@ -12,9 +12,7 @@ function writeReport (config, reporter) {
     promises.push(writeJunitReport(config, reporter));
   }
 
-  if (config.report && config.report.indexOf('browser') > -1) {
-    promises.push(writeBrowserReport(config, reporter));
-  }
+  promises.push(writeBrowserReport(config, reporter));
 
   return Promise.all(promises);
 }
@@ -52,7 +50,7 @@ function writeBrowserReport (config, reporter) {
       throw err;
     });
   }).then(function () {
-    if (config.openReport) {
+    if (config.openReport && config.report && config.report.indexOf('browser') > -1) {
       var executeCommand = require('./index');
       return executeCommand('_openReport', config);
     }
