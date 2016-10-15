@@ -64,7 +64,12 @@ module.exports = function (config) {
         }
 
         Test.status = 'fail';
-        logger.error('ERROR: ' + pair.label + ' ' + pair.fileName);
+
+        if (!data.isSameDimensions) {
+          logger.error('ERROR (dimensions mismatch): ' + pair.label + ' ' + pair.fileName);
+        } else {
+          logger.error('ERROR (' + data.misMatchPercentage + '% / ' + pair.misMatchThreshold + '%): ' + pair.label + ' ' + pair.fileName);
+        }
 
         return storeFailedDiffImage(testPath, data).then(function (compare) {
           pair.diffImage = compare;
