@@ -99,6 +99,7 @@ function makeConfig (argv) {
   config.compareReportURL = path.join(config.html_report, 'index.html');
 
   config.defaultMisMatchThreshold = 0.1;
+  config.debug = userConfig.debug || false;
 
   return config;
 }
