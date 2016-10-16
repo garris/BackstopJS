@@ -64,7 +64,7 @@ module.exports = function (config) {
         }
 
         Test.status = 'fail';
-        logger.error('ERROR { size: ' + (data.isSameDimensions ? 'ok' : 'isDifferent') + ', content: ' + data.misMatchPercentage + '% }: ' + pair.label + ' ' + pair.fileName);
+        logger.error('ERROR { size: ' + (data.isSameDimensions ? 'ok' : 'isDifferent') + ', content: ' + data.misMatchPercentage + '%, threshold: ' + pair.misMatchThreshold + '% }: ' + pair.label + ' ' + pair.fileName);
 
         return storeFailedDiffImage(testPath, data).then(function (compare) {
           pair.diffImage = compare;
