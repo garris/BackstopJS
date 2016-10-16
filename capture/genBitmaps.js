@@ -159,7 +159,7 @@ function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabe
         scenario.removeSelectors.forEach(function (o, i, a) {
           casper.evaluate(function (o) {
             Array.prototype.forEach.call(document.querySelectorAll(o), function (s, j) {
-              s.style.display = 'none';
+              s.parentNode.removeChild(s);
             });
           }, o);
         });
@@ -170,6 +170,20 @@ function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabe
       if (!scenario.hasOwnProperty('selectors') || !scenario.selectors.length) {
         scenario.selectors = ['document'];
       }
+
+      if (scenario.enableSelectorExpansion) {
+        scenario.selectors = scenario.selectors.reduce(function(acc, selector, selectorIndex) {
+          var expandedSelectors = casper.evaluate(function(selector, expandedIndex) {
+            return [].slice.call(document.querySelectorAll(selector)).map(function(element, i) {
+              var indexPartial = '__n' + expandedIndex;
+              element.classList.add(nPart);
+              return selector + '.' + nPart;
+            });
+          }, selector, index);
+          return acc.concat(expandedSelectors);
+        }, []);
+      }
+
       scenario.selectors.forEach(function (o, i, a) {
         var cleanedSelectorName = o.replace(/[^a-z0-9_\-]/gi, ''); // remove anything that's not a letter or a number
         var switchedScenarioOrVariantLabel = (isReference) ? scenarioLabel : scenarioOrVariantLabel;
