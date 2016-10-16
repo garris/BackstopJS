@@ -96,10 +96,10 @@ module.exports = {
   execute: function (config) {
     return compare(config).then(function (report) {
       var failed = report.failed();
-
+      var passTag = '\x1b[32m', failTag = '\x1b[31m';
       logger.log('\nTest completed...');
-      logger.log('\x1b[32m' + report.passed() + ' Passed' + '\x1b[0m');
-      logger.log('\x1b[31m' + failed + ' Failed\n' + '\x1b[0m');
+      logger.log(passTag + report.passed() + ' Passed' + '\x1b[0m');
+      logger.log((failed ? failTag : passTag) + failed + ' Failed\n' + '\x1b[0m');
 
       return writeReport(config, report).then(function () {
         if (failed) {
