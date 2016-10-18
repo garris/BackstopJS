@@ -159,7 +159,7 @@ function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabe
         scenario.removeSelectors.forEach(function (o, i, a) {
           casper.evaluate(function (o) {
             Array.prototype.forEach.call(document.querySelectorAll(o), function (s, j) {
-              s.style.display = 'none';
+                s.remove();
             });
           }, o);
         });
@@ -170,10 +170,32 @@ function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabe
       if (!scenario.hasOwnProperty('selectors') || !scenario.selectors.length) {
         scenario.selectors = ['document'];
       }
+
+    // if similar selectors exist on the given page, expand and test them too
+    if (scenario.enableSelectorExpansion) {
+        scenario.selectors = scenario.selectors.reduce(function(acc, selector, index) { 
+            var expandedSelectors = casper.evaluate(function(selector, index) {
+                return [].slice.call(document.querySelectorAll(selector)).map(function(element, i) {
+
+                        // by using __n{index}__, we are making sure that this classname does not clash with user defined ones 
+                        var nPart = '__n' + index + '__' + i;
+                        element.classList.add(nPart);
+                        return selector + '.' + nPart;
+                });
+            }, selector, index);
+            return acc.concat(expandedSelectors);
+        }, []);
+    }
+
+
+
       scenario.selectors.forEach(function (o, i, a) {
         var cleanedSelectorName = o.replace(/[^a-z0-9_\-]/gi, ''); // remove anything that's not a letter or a number
         var switchedScenarioOrVariantLabel = (isReference) ? scenarioLabel : scenarioOrVariantLabel;
 
+        if (/__n\d*__\d*/.test(cleanedSelectorName)) {
+            i = cleanedSelectorName.match(/__n(\d*)__\d*/)[1];
+        }
         var fileName = fileNameTemplate
           .replace(/\{configId\}/, configId)
           .replace(/\{scenarioIndex\}/, scenario.sIndex)
@@ -188,7 +210,7 @@ function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabe
           fileName = fileName + '.png';
         }
 
-        var referenceFilePath = bitmapsReferencePath + '/' + fileName;
+        var referenceFilePath = bitmapsReferencePath + '/' + fileName.replace(/__n\d*__\d*/, '');
         var testFilePath = bitmapsTestPath + '/' + screenshotDateTime + '/' + fileName;
 
         var filePath = (isReference) ? referenceFilePath : testFilePath;
