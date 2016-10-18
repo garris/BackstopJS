@@ -171,15 +171,21 @@ function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabe
         scenario.selectors = ['document'];
       }
 
-      if (scenario.enableSelectorExpansion) {
-        scenario.selectors = scenario.selectors.reduce(function(acc, selector, selectorIndex) {
-          var expandedSelectors = casper.evaluate(function(selector, expandedIndex) {
-            return [].slice.call(document.querySelectorAll(selector)).map(function(element, i) {
+      if (scenario.disableSelectorExpansion !== true) {
+        scenario.selectors = scenario.selectors.reduce(function(acc, selector) {
+          var expandedSelectors = casper.evaluate(function(selector) {
+            return [].slice.call(document.querySelectorAll(selector)).map(function(element, expandedIndex) {
               var indexPartial = '__n' + expandedIndex;
-              element.classList.add(nPart);
-              return selector + '.' + nPart;
+              
+              // update all matching selectors with additional indexPartial class
+              element.classList.add(indexPartial);
+              
+              // return array of fully-qualified classnames
+              return selector + '.' + indexPartial;
             });
-          }, selector, index);
+          }, selector);
+          
+          // concat arrays of fully-qualified classnames
           return acc.concat(expandedSelectors);
         }, []);
       }
