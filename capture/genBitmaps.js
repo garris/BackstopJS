@@ -173,9 +173,15 @@ function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabe
 
       if (scenario.disableSelectorExpansion !== true) {
         scenario.selectors = scenario.selectors.reduce(function(acc, selector) {
-          var expandedSelectors = casper.evaluate(function(selector) {
+          var expandedSelector = casper.evaluate(function(selector) {
             return [].slice.call(document.querySelectorAll(selector)).map(function(element, expandedIndex) {
               var indexPartial = '__n' + expandedIndex;
+              
+              if (!expandedIndex) {
+                // only first element is used for screenshots -- even if multiple instances exist.
+                // therefore index 0 does not need extended qualification.
+                return selector;
+              }
               
               // update all matching selectors with additional indexPartial class
               element.classList.add(indexPartial);
@@ -186,7 +192,7 @@ function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabe
           }, selector);
           
           // concat arrays of fully-qualified classnames
-          return acc.concat(expandedSelectors);
+          return acc.concat(expandedSelector);
         }, []);
       }
 
