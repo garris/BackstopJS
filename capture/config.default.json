@@ -23,6 +23,7 @@
       "url": "https://garris.github.io/BackstopJS/",
       "hideSelectors": [],
       "removeSelectors": [],
+      "selctorExpansion": true,
       "selectors": [
         ".jumbotron",
         ".row.firstPanel",

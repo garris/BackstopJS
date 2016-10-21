@@ -171,32 +171,34 @@ function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabe
         scenario.selectors = ['document'];
       }
 
-      if (scenario.disableSelectorExpansion !== true) {
-        scenario.selectors = scenario.selectors.reduce(function(acc, selector) {
+      if (scenario.selctorExpansion === true) {
+        scenario.selectorsExpanded = scenario.selectors.reduce(function(acc, selector) {
           var expandedSelector = casper.evaluate(function(selector) {
             return [].slice.call(document.querySelectorAll(selector)).map(function(element, expandedIndex) {
               var indexPartial = '__n' + expandedIndex;
-              
+
               if (!expandedIndex) {
                 // only first element is used for screenshots -- even if multiple instances exist.
                 // therefore index 0 does not need extended qualification.
                 return selector;
               }
-              
+
               // update all matching selectors with additional indexPartial class
               element.classList.add(indexPartial);
-              
+
               // return array of fully-qualified classnames
               return selector + '.' + indexPartial;
             });
           }, selector);
-          
+
           // concat arrays of fully-qualified classnames
           return acc.concat(expandedSelector);
         }, []);
+      } else {
+        scenario.selectorsExpanded = scenario.selectors;
       }
 
-      scenario.selectors.forEach(function (o, i, a) {
+      scenario.selectorsExpanded.forEach(function (o, i, a) {
         var cleanedSelectorName = o.replace(/[^a-z0-9_\-]/gi, ''); // remove anything that's not a letter or a number
         var switchedScenarioOrVariantLabel = (isReference) ? scenarioLabel : scenarioOrVariantLabel;
 
