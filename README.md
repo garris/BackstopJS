@@ -190,9 +190,9 @@ From your project directory...
 $ backstop reference
 ```
 
-This will create (or update) your `bitmaps_reference` directory with screen captures from the current project build.
+This will create a `bitmaps_reference` directory with screen captures of all DOM elements specified in your config. See [scenario filtering](https://github.com/garris/BackstopJS#updating-or-testing-just-one-scenario-filtering) for more options.
 
-
+ 
 
 ###Generating test bitmaps
 
@@ -209,12 +209,20 @@ Significant differences will be detected and displayed in the browser report.
 ##Using BackstopJS
 
 
-###Updating or testing just one scenario (filtering)
+###Incremental scenario reference/testing (filtering)
 
-If you need to update references (or test) for just one app-state you can do so by invoking BackstopJS with the following argument...
+By default `backstop.reference` will first remove all files in your reference directory then generate screenshots of all selectors specified in your config file.   
+
+If you need to update references (or test) _for just one scenario_ you can do so by invoking BackstopJS with the `--filter` argument...
 ```
 $ backstop reference --filter=<scenario.label>
 ```
+
+Aleternatively, if you don't want BackstopJS do first delete all files in your reference directory you can enable the `incremental` flag.
+```
+$ backstop reference --i
+```
+
 
 
 ### Testing SPAs and AJAX content
