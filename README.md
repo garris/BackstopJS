@@ -190,7 +190,7 @@ From your project directory...
 $ backstop reference
 ```
 
-This will create a `bitmaps_reference` directory with screen captures of all DOM elements specified in your config. See [scenario filtering](https://github.com/garris/BackstopJS#updating-or-testing-just-one-scenario-filtering) for more options.
+This will create a `bitmaps_reference` directory with screen captures of all DOM elements specified in your config. See [scenario filtering](https://github.com/garris/BackstopJS#incremental-scenario-referencetesting-filtering) for more options.
 
  
 
