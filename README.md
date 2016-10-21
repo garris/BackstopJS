@@ -280,7 +280,7 @@ That said, for a use case where you are testing a DOM with say an ad banner or a
 ```
 
 #### Removing selectors
-There may also be elements which need to be completely removed during testing. For that we have `removeSelectors` which sets elements to `display:none`.
+There may also be elements which need to be completely removed during testing. For that we have `removeSelectors` which removes them from the DOM before screenshots.
 
 ```json
 "removeSelectors": [
