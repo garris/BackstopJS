@@ -145,6 +145,7 @@ The location of the `backstop.json` file as well as all resource directories can
         ".finalWords",
         "footer"
       ],
+      "selctorExpansion": true,
       "hideSelectors": [],
       "removeSelectors": [],
       "readyEvent": null,
@@ -207,6 +208,39 @@ Once the test bitmaps are generated, a report comparing the most recent test bit
 Significant differences will be detected and displayed in the browser report.
 
 ##Using BackstopJS
+
+###Targeting elements
+
+BackstopJS makes it super easy to capture screenshots of your entire layout or just parts of your layout.  This is defined in the your scenario.selectors array. Each element of your array accepts standard CSS notation. By default BackstopJS takes a screenshot of the first occurance of any selector found in your DOM.  e.g. If you have three `li` tags in your layout only the first will used.  
+
+#### selectorExpansion
+
+If you want BackstopJS to find and take screenshots of _all_ matching selector instances then there is a handy switch for that...
+```
+scenarios: [
+  {
+    "selctorExpansion": true,
+    "selectors": [
+      ".aListOfStuff li"
+    ]
+  }
+]
+// captures all li children of the .aListOfStuff node
+```
+If you want very explicit controll of what you capture then you can disable `selectorExpansion` and explictly select what you want...
+
+```
+scenarios: [
+  {
+    "selctorExpansion": false,
+    "selectors": [
+      ".aListOfStuff li:nth-of-type(1)"
+      ".aListOfStuff li:nth-of-type(2)"
+      ".aListOfStuff li:nth-of-type(3)"
+    ]
+  }
+]
+```
 
 
 ###Incremental scenario reference/testing (filtering)
