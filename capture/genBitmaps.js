@@ -159,7 +159,8 @@ function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabe
         scenario.removeSelectors.forEach(function (o, i, a) {
           casper.evaluate(function (o) {
             Array.prototype.forEach.call(document.querySelectorAll(o), function (s, j) {
-              s.parentNode.removeChild(s);
+              s.style.display = 'none';
+              s.classList.add('__86d')
             });
           }, o);
         });
