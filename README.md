@@ -30,12 +30,12 @@ $ npm install -g backstopjs
 
 
 **For 1.x users migrating to 2.x**
-- BackstopJS CLI can be installed globally (and it's recommended) 
+- BackstopJS CLI can be installed globally (and it's recommended)
 - All config paths are now relative to your current working directory `$(pwd)`.
-- There are new config properties 
+- There are new config properties
     - `fileNameTemplate` Important if you are migrating [1.x configs](#2_0-configs-and-resources)
-    - `id` Use this if you are [sharing config files](#getting-started) 
- 
+    - `id` Use this if you are [sharing config files](#getting-started)
+
 
 Many many thanks for all who helped with this monumental task! 💙㊗️🙇 [@JulienPradet](https://github.com/JulienPradet), [@onigoetz](https://github.com/onigoetz), [@borys-rudenko](https://github.com/borys-rudenko), [@ksushik](https://github.com/ksushik), [@dmitriyilchgmailcom](https://github.com/dmitriyilchgmailcom), [@Primajin](https://github.com/Primajin)
 
@@ -64,10 +64,10 @@ Many many thanks for all who helped with this monumental task! 💙㊗️🙇 [@
 
   - **Configure:** Specify URLs, screen sizes, DOM selectors, ready events, interactions etc. (see examples directory)
 
-  - **Bless:** Create a set of *reference* screenshots. BackstopJS will consider this your *source of truth*. (Update this whenever you want).
+  - **Reference:** Create a set of *reference* screenshots. BackstopJS will consider this your *source of truth*. (Update this whenever you want).
 
   - **Test:** BackstopJS creates a set of *test* screenshots and compares them with your *reference* screenshots. Any unwanted/unforeseen changes show up in a nice report.
- 
+
 
 ##Getting started
 ### Installation
@@ -193,7 +193,7 @@ $ backstop reference
 
 This will create a `bitmaps_reference` directory with screen captures of all DOM elements specified in your config. See [scenario filtering](https://github.com/garris/BackstopJS#incremental-scenario-referencetesting-filtering) for more options.
 
- 
+
 
 ###Generating test bitmaps
 
@@ -203,7 +203,7 @@ $ backstop test
 
 This will create a new set of bitmaps in `bitmaps_test/<timestamp>/`
 
-Once the test bitmaps are generated, a report comparing the most recent test bitmaps against the current reference bitmaps will run. 
+Once the test bitmaps are generated, a report comparing the most recent test bitmaps against the current reference bitmaps will run.
 
 Significant differences will be detected and displayed in the browser report.
 
@@ -211,7 +211,7 @@ Significant differences will be detected and displayed in the browser report.
 
 ###Targeting elements
 
-BackstopJS makes it super easy to capture screenshots of your entire layout or just parts of your layout.  This is defined in the your scenario.selectors array. Each element of your array accepts standard CSS notation. By default BackstopJS takes a screenshot of the first occurance of any selector found in your DOM.  e.g. If you have three `li` tags in your layout only the first will used.  
+BackstopJS makes it super easy to capture screenshots of your entire layout or just parts of your layout.  This is defined in the your scenario.selectors array. Each element of your array accepts standard CSS notation. By default BackstopJS takes a screenshot of the first occurance of any selector found in your DOM.  e.g. If you have three `li` tags in your layout only the first will used.
 
 #### selectorExpansion
 
@@ -246,7 +246,7 @@ scenarios: [
 
 ###Incremental scenario reference/testing (filtering)
 
-By default `backstop.reference` will first remove all files in your reference directory then generate screenshots of all selectors specified in your config file.   
+By default `backstop.reference` will first remove all files in your reference directory then generate screenshots of all selectors specified in your config file.
 
 If you need to update references (or test) _for just one scenario_ you can do so by invoking BackstopJS with the `--filter` argument...
 ```
@@ -324,7 +324,7 @@ There may also be elements which need to be completely removed during testing. F
 ```
 
 ### Changing test sensitivity
-`"misMatchThreshold"` (percentage 0.00%-100.00%) will change the amount of difference BackstopJS will tolerate before marking a test screenshot as "failed".  The default setting is `0.1`, this may need to be adjusted based on the kinds of testing you're doing.  
+`"misMatchThreshold"` (percentage 0.00%-100.00%) will change the amount of difference BackstopJS will tolerate before marking a test screenshot as "failed".  The default setting is `0.1`, this may need to be adjusted based on the kinds of testing you're doing.
 
 More info on how misMatchThreshold is derrived can be found here... https://github.com/Huddle/Resemble.js/blob/af57cb2f4edfbe718d24b350b2be1d956b764298/resemble.js#L495
 
@@ -494,7 +494,7 @@ $ backstop test --configPath=backstopTests/someTest.js
 ```
 _See the next section for more info on setting the config file path._
 
-Be sure to export your config object as a node module. 
+Be sure to export your config object as a node module.
 
 
 
@@ -523,7 +523,7 @@ NOTES:
 - all paths are relative to the location of the BackstopJS install directory _(which is either inside your project's `node_modules` or `bower_components` depending on how BackstopJS was installed)._
 - _Remember to add that extra `--` after the `backstop test` and `backstop reference` commands._
 
-###Setting the bitmap and script directory paths 
+###Setting the bitmap and script directory paths
 By default, BackstopJS saves generated resources into the `backstop_data` directory in parallel with your `backstop.json` config file. The location of the various resource types are configurable so they can easily be moved inside or outside your source control or file sharing environment. See below for the options...
 
 _Please note: these file paths are relative to your current working directory $(pwd)._
@@ -596,7 +596,7 @@ scripts: {
   test: backstop test
   genConfig: backstop genConfig
 }
-``` 
+```
 
 The above is a crude example -- there are other fancy mappings you can create as well -- check out the NPM documentation for more info.
 
@@ -607,7 +607,7 @@ The above is a crude example -- there are other fancy mappings you can create as
 
 _Filename issue: Projects don't work when I share with other users or run in different environments._
 
-####If you just upgraded to 2.x from 1.x 
+####If you just upgraded to 2.x from 1.x
 
 Filename formats have changed.  To use the 1.x (compatible) file format, use the `fileNameTemplate` property like so...
 
