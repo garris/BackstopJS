@@ -172,7 +172,7 @@ function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabe
         scenario.selectors = ['document'];
       }
 
-      if (scenario.selctorExpansion === true) {
+      if (scenario.selectorExpansion === true) {
         scenario.selectorsExpanded = scenario.selectors.reduce(function(acc, selector) {
           var expandedSelector = casper.evaluate(function(selector) {
             return [].slice.call(document.querySelectorAll(selector)).map(function(element, expandedIndex) {
