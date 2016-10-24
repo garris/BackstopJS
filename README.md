@@ -145,7 +145,7 @@ The location of the `backstop.json` file as well as all resource directories can
         ".finalWords",
         "footer"
       ],
-      "selctorExpansion": true,
+      "selectorExpansion": true,
       "hideSelectors": [],
       "removeSelectors": [],
       "readyEvent": null,
@@ -219,7 +219,7 @@ If you want BackstopJS to find and take screenshots of _all_ matching selector i
 ```
 scenarios: [
   {
-    "selctorExpansion": true,
+    "selectorExpansion": true,
     "selectors": [
       ".aListOfStuff li"
     ]
@@ -232,7 +232,7 @@ If you want very explicit controll of what you capture then you can disable `sel
 ```
 scenarios: [
   {
-    "selctorExpansion": false,
+    "selectorExpansion": false,
     "selectors": [
       ".aListOfStuff li:nth-of-type(1)"
       ".aListOfStuff li:nth-of-type(2)"
