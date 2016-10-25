@@ -17,6 +17,10 @@ function getCasperArgs (config, tests) {
     }
   }
 
+  if(process.env.npm_config_user && process.env.npm_config_password){
+      args = args.concat(['--user=' + process.env.npm_config_user, '--password=' + process.env.npm_config_password]);
+  }
+
   return tests.concat(args);
 }
 

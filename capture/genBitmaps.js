@@ -78,6 +78,11 @@ function capturePageSelectors (scenarios, viewports, bitmapsReferencePath, bitma
 function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabel, viewports, bitmapsReferencePath, bitmapsTestPath, screenshotDateTime) {
   var scriptTimeout = 20000;
 
+  if(casper.cli.options.user && casper.cli.options.password) {
+    console.log('Auth User via CLI: ' + casper.cli.options.user);
+    casper.setHttpAuth(casper.cli.options.user, casper.cli.options.password);
+  }
+
   casper.each(viewports, function (casper, vp, viewportIndex) {
     this.then(function () {
       this.viewport(vp.width || vp.viewport.width, vp.height || vp.viewport.height);
