@@ -61,9 +61,8 @@ gulp.task('test',['init'], function () {
     }
   }
 
-  if(argv.username && argv.password){
-    args.push("--username=" + argv.username);
-    args.push("--password=" + argv.password);
+  if(argv.user && argv.password){
+      args = args.concat(['--user='+argv.user,'--password='+argv.password]);
   }
 
   var casperArgs = tests.concat(args);

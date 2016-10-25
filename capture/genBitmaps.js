@@ -68,10 +68,11 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
 
   casper.start();
 
-  if(casper.cli.has('password') && casper.cli.has('username') ) {
-    casper.setHttpAuth(casper.cli.get('password'),casper.cli.get('username'));
-    casper.echo("Use Auth from user " + casper.cli.get('username'));
+  if(casper.cli.options.user && casper.cli.options.password) {
+    console.log('Auth User via CLI: ' + casper.cli.options.user);
+    casper.setHttpAuth(casper.cli.options.user, casper.cli.options.password);
   }
+
 
   casper.each(scenarios,function(casper, scenario, scenario_index){
 
@@ -87,7 +88,7 @@ function capturePageSelectors(url,scenarios,viewports,bitmaps_reference,bitmaps_
 
       var onBeforeScript = scenario.onBeforeScript || config.onBeforeScript;
       if (onBeforeScript) {
-        require(getScriptPath(onBeforeScript))(casper, scenario, vp, isReference);
+        require(getScriptPath(onBeforeScript))(casper, scenario, vp, args);
       }
 
       this.thenOpen(url, function() {
