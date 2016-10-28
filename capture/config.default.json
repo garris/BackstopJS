@@ -37,6 +37,7 @@
       "readyEvent": null,
       "delay": 500,
       "misMatchThreshold" : 0.1,
+      "isSameDimensions" : true,
       "onBeforeScript": "onBefore.js",
       "onReadyScript": "onReady.js"
     }
