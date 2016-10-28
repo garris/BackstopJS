@@ -151,6 +151,7 @@ The location of the `backstop.json` file as well as all resource directories can
       "readyEvent": null,
       "delay": 500,
       "misMatchThreshold" : 0.1,
+      "isSameDimensions" : true,
       "onBeforeScript": "onBefore.js",
       "onReadyScript": "onReady.js"
     }
@@ -327,6 +328,10 @@ There may also be elements which need to be completely removed during testing. F
 `"misMatchThreshold"` (percentage 0.00%-100.00%) will change the amount of difference BackstopJS will tolerate before marking a test screenshot as "failed".  The default setting is `0.1`, this may need to be adjusted based on the kinds of testing you're doing.
 
 More info on how misMatchThreshold is derrived can be found here... https://github.com/Huddle/Resemble.js/blob/af57cb2f4edfbe718d24b350b2be1d956b764298/resemble.js#L495
+
+`"isSameDimensions"` (true || false) will change whether BackstopJS will accept any change in dimensions. The default setting is `true`. If set to true then the test must be the same dimensions as the reference. If set to false the test does not have to be the same dimensions as the reference.
+
+This setting can be used in conjunction with `"misMatchThreshold"`, for example, when setting a `"misMatchThreshold"` of more than 0.00% and the mismatch causing a change in dimensions, setting `"isSameDimensions"` to false will allow the test to still pass, setting it to true would still make it fail. 
 
 
 ### Capturing the entire document
