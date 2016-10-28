@@ -56,7 +56,7 @@ module.exports = function (config) {
       .then(function logCompareResult (data) {
         pair.diff = data;
 
-        if (data.isSameDimensions && data.misMatchPercentage <= pair.misMatchThreshold) {
+        if ((pair.isSameDimensions == false || data.isSameDimensions == true) && data.misMatchPercentage <= pair.misMatchThreshold) {
           Test.status = 'pass';
           logger.success('OK: ' + pair.label + ' ' + pair.fileName);
 

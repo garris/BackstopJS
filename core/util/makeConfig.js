@@ -100,7 +100,7 @@ function makeConfig (argv) {
 
   config.defaultMisMatchThreshold = 0.1;
   config.debug = userConfig.debug || false;
-  config.isSameDimensions = userConfig.isSameDimensions || true;
+  config.defaultIsSameDimensions = userConfig.isSameDimensions || true;
 
   return config;
 }
