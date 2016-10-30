@@ -61,7 +61,7 @@ module.exports = function (config, isReference) {
 
         // exit if there was some kind of failure in the casperChild process
         if (code !== 0) {
-          logger.error('\nAn unexpected error occured. You may want to try setting the debug option to `true` in your config file.');
+          logger.error('An unexpected error occured. You may want to try setting the debug option to `true` in your config file.');
           reject(new Error('An unexpected error occured. You may want to try setting the debug option to `true` in your config file.'));
           return;
         }
