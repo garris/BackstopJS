@@ -1,6 +1,7 @@
 var path = require('path');
 var temp = require('temp');
 var fs = require('./fs');
+var logger = require('../util/logger')('makeConfig');
 
 function makeConfig (argv) {
   var config = {};
@@ -17,7 +18,7 @@ function makeConfig (argv) {
   // Legacy mode, if the cwd is the backstop module
   if (config.backstop === config.customBackstop) {
     config.customBackstop = path.join(__dirname, '../../../..');
-    console.log('BackstopJS is running in legacy mode.');
+    logger.info('BackstopJS is running in legacy mode.');
   }
 
   // BACKSTOP CONFIG PATH
@@ -32,16 +33,16 @@ function makeConfig (argv) {
     config.backstopConfigFileName = path.join(config.customBackstop, 'backstop.json');
   }
 
-  console.log('\nBackstopJS CWD: ', config.customBackstop);
+  logger.info('BackstopJS CWD: ' + config.customBackstop);
 
   // LOAD CONFIG
   var userConfig = {};
   if (CMD_REQUIRES_CONFIG && config.backstopConfigFileName) {
     try {
-      console.log('BackstopJS loading config: ', config.backstopConfigFileName, '\n');
+      logger.info('BackstopJS loading config: ', config.backstopConfigFileName, '\n');
       userConfig = require(config.backstopConfigFileName);
     } catch (e) {
-      console.error('Error ' + e);
+      logger.error('Error ' + e);
       process.exit(1);
     }
   }

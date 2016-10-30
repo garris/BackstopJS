@@ -21,7 +21,7 @@ var typeToTitleColor = {
   success: chalk.green
 };
 
-var longestTitle = 5;
+var longestTitle = 15;
 
 function paddedString (length, string) {
   var padding = makeSpaces(length + 3);
@@ -57,7 +57,7 @@ function message (type, subject, string) {
       subject = appendChar + subject;
     }
   } else {
-    longestTitle = subject.length;
+    longestTitle = Math.max(longestTitle, subject.length);
   }
 
   console.log(typeToTitleColor[type](subject + ' ') + '| ' + paddedString(longestTitle, typeToColor[type](string)));

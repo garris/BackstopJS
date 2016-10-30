@@ -53,13 +53,15 @@ module.exports = function (config, isReference) {
     return new Promise(function (resolve, reject) {
       casperChild.on('close', function (code) {
         var success = code === 0; // Will be 1 in the event of failure
-        var result = (success) ? 'Bitmap file generation completed.' : 'Testing script failed with code: ' + code;
-
-        console.log('\n' + result);
+        if (success) {
+          logger.success('Bitmap file generation completed.');
+        } else {
+          logger.error('Testing script failed with code: ' + code);
+        }
 
         // exit if there was some kind of failure in the casperChild process
         if (code !== 0) {
-          console.log('\nAn unexpected error occured. You may want to try setting the debug option to `true` in your config file.');
+          logger.error('\nAn unexpected error occured. You may want to try setting the debug option to `true` in your config file.');
           reject(new Error('An unexpected error occured. You may want to try setting the debug option to `true` in your config file.'));
           return;
         }
