@@ -33,20 +33,16 @@ module.exports = function (config, tests) {
 
   casperChild.stdout.on('data', function (data) {
     var lines = data.toString().slice(0, -1).split('\n');
-    for (var i = 0; i < lines.length; i++)
-    {
+    for (var i = 0; i < lines.length; i++) {
       logger.info(lines[i]);
     }
-    //console.log(prefix, data.toString().slice(0, -1).split('\n').join('\n' + prefix)); // Remove \n
   });
 
   casperChild.stderr.on('data', function (data) {
     var lines = data.toString().slice(0, -1).split('\n');
-    for (var i = 0; i < lines.length; i++)
-    {
+    for (var i = 0; i < lines.length; i++) {
       logger.error(lines[i]);
     }
-    //console.error(prefix, data.toString().slice(0, -1).split('\n').join('\n' + prefix)); // Remove \n
   });
 
   return casperChild;
