@@ -27,7 +27,7 @@
     "eslint": "^3.3.0",
     "eslint-config-semistandard": "^7.0.0-beta.0",
     "eslint-config-standard": "^6.0.0",
-    "eslint-plugin-promise": "^2.0.1",
+    "eslint-plugin-promise": "^3.3.0",
     "eslint-plugin-standard": "^2.0.0",
     "mocha": "^1.21.5",
     "mockery": "^1.4.0"
