@@ -13,7 +13,8 @@
     "reference": "node ./cli/index.js reference",
     "test": "node ./cli/index.js test",
     "openReport": "node ./cli/index.js openReport",
-    "echo": "node ./cli/index.js echo"
+    "echo": "node ./cli/index.js echo",
+    "unit-test": "mocha --reporter spec test/**/*spec*.js"
   },
   "repository": {
     "type": "git",

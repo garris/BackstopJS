@@ -7,4 +7,4 @@ node_js:
 install:
   - npm install
 script:
-  - mkdir newdir && cd newdir && node ../cli/index.js genConfig && node ../cli/index.js reference && node ../cli/index.js test
+  - npm run unit-test && mkdir newdir && cd newdir && node ../cli/index.js genConfig && node ../cli/index.js reference && node ../cli/index.js test
