@@ -36,7 +36,7 @@ var leftPaddingOfDescription = Object.keys(commandsDescription)
     return Math.max(max, length);
   }, 0);
 
-const usage = '\
+var usage = '\
 Welcome to BackstopJS ' + version + ' CLI\n\
 \n\
 Commands:\n\
