@@ -35,7 +35,7 @@ if (!commandName) {
   usage();
   process.exit();
 } else {
-  var config = makeConfig(argsOptions);
+  var config = makeConfig(commandName, argsOptions);
   var exitCode = 0;
   executeCommand(commandName, config).catch(function () {
     exitCode = 1;
