@@ -22,7 +22,7 @@
   },
   "author": "https://github.com/garris/BackstopJS/graphs/contributors",
   "license": "MIT",
-  "main": "",
+  "main": "core/runner.js",
   "devDependencies": {
     "chai": "^1.9.2",
     "eslint": "^3.3.0",
