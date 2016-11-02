@@ -2,6 +2,7 @@ var path = require('path');
 var spawn = require('child_process').spawn;
 var isWin = require('./isWin');
 var findExecutable = require('./findExecutable');
+var logger = require('./logger')('casper');
 
 function getCasperArgs (config, tests) {
   var args = [];
@@ -23,20 +24,25 @@ function getCasperArgs (config, tests) {
 module.exports = function (config, tests) {
   var casperArgs = getCasperArgs(config, tests);
 
-  console.log('\nRunning CasperJS with: ', casperArgs);
+  logger.info('Running CasperJS with: ' + casperArgs.join(', '));
 
   process.env.PHANTOMJS_EXECUTABLE = findExecutable('phantomjs-prebuilt', 'phantomjs');
 
   var casperProcess = findExecutable('casperjs', 'casperjs');
   var casperChild = spawn(casperProcess, casperArgs, {cwd: config.customBackstop});
 
-  var prefix = 'CasperJS: ';
   casperChild.stdout.on('data', function (data) {
-    console.log(prefix, data.toString().slice(0, -1).split('\n').join('\n' + prefix)); // Remove \n
+    var lines = data.toString().slice(0, -1).split('\n');
+    for (var i = 0; i < lines.length; i++) {
+      logger.info(lines[i]);
+    }
   });
 
   casperChild.stderr.on('data', function (data) {
-    console.error(prefix, data.toString().slice(0, -1).split('\n').join('\n' + prefix)); // Remove \n
+    var lines = data.toString().slice(0, -1).split('\n');
+    for (var i = 0; i < lines.length; i++) {
+      logger.error(lines[i]);
+    }
   });
 
   return casperChild;

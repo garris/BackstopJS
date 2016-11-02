@@ -1,6 +1,6 @@
 var createBitmaps = require('../util/createBitmaps');
 var fs = require('../util/fs');
-var logger = require('../util/logger')('clean');
+var logger = require('../util/logger')('reference');
 
 module.exports = {
   execute: function (config) {
@@ -18,7 +18,7 @@ module.exports = {
     return firstStep.then(function () {
       return createBitmaps(config, true);
     }).then(function () {
-      console.log('\nRun `$ backstop test` to generate diff report.\n');
+      logger.info('Run `$ backstop test` to generate diff report.');
     });
   }
 };

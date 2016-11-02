@@ -97,14 +97,14 @@ module.exports = {
     return compare(config).then(function (report) {
       var failed = report.failed();
       var passTag = '\x1b[32m', failTag = '\x1b[31m';
-      logger.log('\nTest completed...');
+      logger.log('Test completed...');
       logger.log(passTag + report.passed() + ' Passed' + '\x1b[0m');
-      logger.log((failed ? failTag : passTag) + failed + ' Failed\n' + '\x1b[0m');
+      logger.log((failed ? failTag : passTag) + failed + ' Failed' + '\x1b[0m');
 
       return writeReport(config, report).then(function () {
         if (failed) {
           logger.error('*** Mismatch errors found ***');
-          logger.log('For a detailed report run `backstop openReport`\n');
+          logger.log('For a detailed report run `backstop openReport`');
           throw new Error('Mismatch errors found.');
         }
       });
