@@ -574,7 +574,38 @@ This is for you if for some reason you find yourself needing advanced configurat
 ```
 
 ###Installing BackstopJS Locally
-The main reason to install backstop locally is likely to be a managed integration with a build implementation.
+The main reason to install backstop locally is likely to be a managed integration with a build implementation. There are two ways to run a local installation of backstop
+
+#### Using it in a build system
+
+You can simply require a local backstop installation in your project.
+```js
+const backstop = require('backstopjs');
+
+backstop('reference');
+
+// handle the response like this
+backstop('test')
+  .then(() => {
+    // test successful
+  }).catch() => {
+    // test failed
+  });
+
+// pass options to the command
+backstop('test', {config:'custom/backstop/config.json'});
+```
+
+Since the backstop runner returns promises it can easily be integrated in build systems like gulp
+```js
+const gulp = require('gulp');
+const backstopjs = require('backstopjs');
+
+gulp.task('backstop_reference', () => backstopjs('reference'));
+gulp.task('backstop_test', () => backstopjs('test'));
+```
+
+#### Using npm run scripts
 
 From the...
 ```

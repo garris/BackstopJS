@@ -14,7 +14,6 @@ describe('cli', function () {
     process.argv = ['node', 'backstop', 'test'];
     mockery.registerMock('../core/runner', function (command, options) {
       assert.equal(command, 'test');
-      assert.equal(options.config, 'backstop.json');
       done();
       return Promise.resolve();
     });

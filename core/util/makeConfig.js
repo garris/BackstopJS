@@ -1,6 +1,5 @@
 var path = require('path');
 var temp = require('temp');
-var fs = require('./fs');
 
 function makeConfig (command, options) {
   var config = {};
@@ -8,7 +7,7 @@ function makeConfig (command, options) {
   //We don't need to load a config if the user is *generating* a config.
   var CMD_REQUIRES_CONFIG = command !== 'genConfig';
 
-  config.args = options;
+  config.args = options || {};
 
   // BACKSTOP MODULE PATH
   config.backstop = path.join(__dirname, '../..'); // backstop module
@@ -21,7 +20,7 @@ function makeConfig (command, options) {
   }
 
   // BACKSTOP CONFIG PATH
-  var configPathArg = options.backstopConfigFilePath || options.configPath || options.config || null;
+  var configPathArg = options && (options.backstopConfigFilePath || options.configPath || options.config || null);
   if (configPathArg) {
     if (path.isAbsolute(configPathArg)) {
       config.backstopConfigFileName = configPathArg;

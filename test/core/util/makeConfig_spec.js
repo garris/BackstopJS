@@ -6,4 +6,9 @@ describe('make config', function () {
     var actualConfig = makeConfig('genConfig', {filter: true});
     assert.equal(actualConfig.args.filter, true);
   });
+
+  it('should work without an option param', function () {
+    var actualConfig = makeConfig('genConfig');
+    assert.deepEqual(actualConfig.args, {});
+  });
 });
