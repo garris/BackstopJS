@@ -1,17 +1,18 @@
 var path = require('path');
 
-module.exports = function(module, bin) {
+module.exports = function (module, bin) {
 
-  if (module === 'phantomjs-prebuilt') {
-    return require('phantomjs-prebuilt').path;
+  try {
+    if (module === 'phantomjs-prebuilt') {
+      return require('phantomjs-prebuilt').path;
+    }
+
+    var pathToExecutableModulePackageJson = require.resolve(path.join(module, 'package.json'));
+    var executableModulePackageJson = require(pathToExecutableModulePackageJson);
+    var relativePathToExecutableBinary = executableModulePackageJson.bin[bin] || executableModulePackageJson.bin;
+    var pathToExecutableModule = pathToExecutableModulePackageJson.replace('package.json', '');
+    return path.join(pathToExecutableModule, relativePathToExecutableBinary);
+  } catch (e) {
+    throw new Error('Couldn\'t find executable for module "' + module + '" and bin "' + bin + '"\n' + e.message)
   }
-
-  // get the absolute path for package.json of a node_module
-  var packageJSON = require.resolve(path.join(module, 'package.json'));
-
-  // then get the executable name
-  var relativeBinary = require(packageJSON).bin[bin];
-
-  // return a path to the executable inside the execuatable's package
-  return path.join(packageJSON.replace('package.json', ''), relativeBinary);
 };
