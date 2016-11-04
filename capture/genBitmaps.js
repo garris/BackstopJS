@@ -178,6 +178,10 @@ function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabe
             return [].slice.call(document.querySelectorAll(selector)).map(function(element, expandedIndex) {
               var indexPartial = '__n' + expandedIndex;
 
+              if (element.classList.contains('__86d')) {
+                return '';
+              }
+
               if (!expandedIndex) {
                 // only first element is used for screenshots -- even if multiple instances exist.
                 // therefore index 0 does not need extended qualification.
@@ -194,7 +198,9 @@ function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabe
 
           // concat arrays of fully-qualified classnames
           return acc.concat(expandedSelector);
-        }, []);
+        }, []).filter(function(selector) {
+          return selector !== '';
+        });
       } else {
         scenario.selectorsExpanded = scenario.selectors;
       }
