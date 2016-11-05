@@ -14,12 +14,12 @@ var argsOptions = parseArgs(process.argv.slice(2), {
 });
 
 // Catch errors from failing promises
-process.on('unhandledRejection', function (error, promise) {
+process.on('unhandledRejection', function (error) {
   console.error(error.stack);
 });
 
 if (argsOptions.h || argsOptions.help) {
-  usage();
+  console.log(usage);
   process.exit();
 }
 
@@ -31,7 +31,7 @@ if (argsOptions.v || argsOptions.version) {
 var commandName = argsOptions['_'][0];
 
 if (!commandName) {
-  usage();
+  console.log(usage);
   process.exit();
 } else {
   var exitCode = 0;

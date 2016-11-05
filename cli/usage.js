@@ -10,11 +10,24 @@ var commandsDescription = {
 
 var optionsDescription = {
   '-h, --help': 'Display usage',
-  '-v, --version': 'Display version'
+  '-v, --version': 'Display version',
+  '-i': 'Incremental reference generation'
 };
 
-// Number of spaces to echap before writing description
-var padding = Object.keys(commandsDescription)
+function makeDescription (descriptions) {
+  return Object.keys(descriptions)
+    .map(function (commandName) {
+      return makeSpaces(4) + commandName + spacesBetweenCommandAndDescription(commandName) + descriptions[commandName];
+    })
+    .join('\n');
+}
+
+function spacesBetweenCommandAndDescription(commandName) {
+  return makeSpaces(2 + leftPaddingOfDescription - commandName.length);
+}
+
+// Number of spaces to echo before writing description
+var leftPaddingOfDescription = Object.keys(commandsDescription)
   .concat(Object.keys(optionsDescription))
   .map(function (string) {
     return string.length;
@@ -23,16 +36,7 @@ var padding = Object.keys(commandsDescription)
     return Math.max(max, length);
   }, 0);
 
-function makeDescription (descriptions) {
-  return Object.keys(descriptions)
-    .map(function (commandName) {
-      return makeSpaces(4) + commandName + makeSpaces(2 + padding - commandName.length) + descriptions[commandName];
-    })
-    .join('\n');
-}
-
-function usage () {
-  console.log('\
+var usage = '\
 Welcome to BackstopJS ' + version + ' CLI\n\
 \n\
 Commands:\n\
@@ -40,7 +44,6 @@ Commands:\n\
 \n\
 Options:\n\
 ' + makeDescription(optionsDescription) + '\n\
-  \n');
-}
+\n';
 
 module.exports = usage;
