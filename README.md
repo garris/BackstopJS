@@ -6,7 +6,15 @@
 
 BackstopJS automates visual regression testing of your responsive web UI by comparing DOM screenshots over time.
 
-**Features:** Plays nice with multiple config files – Simulate user interactions with CasperJS scripts – Fast inline-CLI reports – detailed in-browser reports – CI Integration with JUnit reports – Test html5 elements like webfonts and flexbox – also plays nice with source control share your gold master with your team.
+**Features:** 
+
+- Plays nice with multiple config files
+- Simulate user interactions with CasperJS scripts 
+- Fast inline-CLI reports 
+- Detailed in-browser reports 
+- CI Integration with JUnit reports 
+- Test html5 elements like webfonts and flexbox 
+- Also plays nice with source control share your gold master with your team.
 
 ## Version 2.0 is released!
 
