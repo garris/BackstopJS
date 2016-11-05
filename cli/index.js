@@ -2,9 +2,8 @@
 
 var parseArgs = require('minimist');
 var usage = require('./usage');
-var makeConfig = require('../core/util/makeConfig');
-var executeCommand = require('../core/command');
 var version = require('../package.json').version;
+var runner = require('../core/runner');
 
 var argsOptions = parseArgs(process.argv.slice(2), {
   boolean: ['h', 'help', 'v', 'version', 'i'],
@@ -35,9 +34,8 @@ if (!commandName) {
   usage();
   process.exit();
 } else {
-  var config = makeConfig(argsOptions);
   var exitCode = 0;
-  executeCommand(commandName, config).catch(function () {
+  runner(commandName, argsOptions).catch(function () {
     exitCode = 1;
   });
 
