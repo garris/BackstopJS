@@ -1,11 +1,13 @@
 var resemble = require('node-resemble-js');
 var path = require('path');
-var map = require('lodash.map');
+var map = require('bluebird').map;
 
 var fs = require('./fs');
 var streamToPromise = require('./streamToPromise');
 var Reporter = require('./Reporter');
 var logger = require('./logger')('compare');
+
+var MAX_COMPARISONS_CONCURRENCY = 20;
 
 function storeFailedDiffImage (testPath, data) {
   var failedDiffFilename = getFailedDiffFilename(testPath);
@@ -46,7 +48,7 @@ module.exports = function (config) {
 
   var report = new Reporter(config.ciReport.testSuiteName);
 
-  var tests = map(compareConfig.testPairs, function (pair) {
+  return tests = map(compareConfig.testPairs, function (pair) {
     var Test = report.addTest(pair);
 
     var referencePath = path.join(config.customBackstop, pair.reference);
@@ -72,9 +74,7 @@ module.exports = function (config) {
           return pair;
         });
       });
-  });
-
-  return Promise.all(tests).then(function () {
+  }, {concurrency: MAX_COMPARISONS_CONCURRENCY}).then(function () {
     return report;
   });
 };
