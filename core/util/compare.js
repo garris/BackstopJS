@@ -51,8 +51,8 @@ module.exports = function (config) {
   return tests = map(compareConfig.testPairs, function (pair) {
     var Test = report.addTest(pair);
 
-    var referencePath = path.join(config.customBackstop, pair.reference);
-    var testPath = path.join(config.customBackstop, pair.test);
+    var referencePath = path.join(config.projectPath, pair.reference);
+    var testPath = path.join(config.projectPath, pair.test);
 
     return compareImage(referencePath, testPath)
       .then(function logCompareResult (data) {

@@ -28,7 +28,7 @@ module.exports = function (config, tests) {
   process.env.PHANTOMJS_EXECUTABLE = findExecutable('phantomjs-prebuilt', 'phantomjs');
 
   var casperProcess = findExecutable('casperjs', 'casperjs');
-  var casperChild = spawn(casperProcess, casperArgs, {cwd: config.customBackstop});
+  var casperChild = spawn(casperProcess, casperArgs, {cwd: config.projectPath});
 
   var prefix = 'CasperJS: ';
   casperChild.stdout.on('data', function (data) {

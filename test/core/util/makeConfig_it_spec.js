@@ -34,7 +34,7 @@ describe('make config', function () {
     var actualConfig = makeConfig('test');
     delete actualConfig.tempCompareConfigFileName;
     delete actualConfig.backstopConfigFileName;
-    delete actualConfig.customBackstop;
+    delete actualConfig.projectPath;
     assert.deepEqual(actualConfig, expectedConfig);
   });
 });

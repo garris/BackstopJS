@@ -9,7 +9,7 @@ module.exports = {
       if (path.isAbsolute(p)) {
         return p;
       }
-      return path.join(config.customBackstop, p);
+      return path.join(config.projectPath, p);
     }
 
     return new Promise(function (resolve, reject) {

@@ -16,10 +16,10 @@ function loadProjectConfig(command, options, config) {
     if (path.isAbsolute(configPathArg)) {
       config.backstopConfigFileName = configPathArg;
     } else {
-      config.backstopConfigFileName = path.join(config.customBackstop, configPathArg);
+      config.backstopConfigFileName = path.join(config.projectPath, configPathArg);
     }
   } else {
-    config.backstopConfigFileName = path.join(config.customBackstop, 'backstop.json');
+    config.backstopConfigFileName = path.join(config.projectPath, 'backstop.json');
   }
 
   var userConfig = {};
@@ -37,8 +37,8 @@ function loadProjectConfig(command, options, config) {
 }
 
 function bitmapPaths(config, userConfig) {
-  config.bitmaps_reference = path.join(config.customBackstop, 'backstop_data', 'bitmaps_reference');
-  config.bitmaps_test = path.join(config.customBackstop, 'backstop_data', 'bitmaps_test');
+  config.bitmaps_reference = path.join(config.projectPath, 'backstop_data', 'bitmaps_reference');
+  config.bitmaps_test = path.join(config.projectPath, 'backstop_data', 'bitmaps_test');
   if (userConfig.paths) {
     config.bitmaps_reference = userConfig.paths.bitmaps_reference || config.bitmaps_reference;
     config.bitmaps_test = userConfig.paths.bitmaps_test || config.bitmaps_test;
@@ -46,7 +46,7 @@ function bitmapPaths(config, userConfig) {
 }
 
 function ci(config, userConfig) {
-  config.ci_report = path.join(config.customBackstop, 'backstop_data', 'ci_report');
+  config.ci_report = path.join(config.projectPath, 'backstop_data', 'ci_report');
   if (userConfig.paths) {
     config.ci_report = userConfig.paths.ci_report || config.ci_report;
   }
@@ -67,7 +67,7 @@ function ci(config, userConfig) {
   }
 }
 function htmlReport(config, userConfig) {
-  config.html_report = path.join(config.customBackstop, 'backstop_data', 'html_report');
+  config.html_report = path.join(config.projectPath, 'backstop_data', 'html_report');
   config.openReport = true;
   if ('openReport' in userConfig) {
     config.openReport = userConfig.openReport;
@@ -90,7 +90,7 @@ function captureConfigPaths(config) {
   config.captureConfigFileNameDefault = path.join(config.backstop, 'capture', 'config.default.json');
 }
 function casper(config, userConfig) {
-  config.casper_scripts = path.join(config.customBackstop, 'backstop_data', 'casper_scripts');
+  config.casper_scripts = path.join(config.projectPath, 'backstop_data', 'casper_scripts');
   config.casper_scripts_default = path.join(config.backstop, 'capture', 'casper_scripts');
 
   config.casperFlags = userConfig.casperFlags || null;
@@ -105,8 +105,8 @@ function makeConfig(command, options) {
 
   config.args = options || {};
 
-  config.backstop = path.join(__dirname, '../..'); // backstop module
-  config.customBackstop = projectPath(config);
+  config.backstop = path.join(__dirname, '../..');
+  config.projectPath = projectPath(config);
 
   var userConfig = loadProjectConfig(command, options, config);
 
