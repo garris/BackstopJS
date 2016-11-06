@@ -11,12 +11,12 @@ function projectPath(config) {
 }
 
 function loadProjectConfig(command, options, config) {
-  var configPathArg = options && (options.backstopConfigFilePath || options.configPath || options.config || null);
-  if (configPathArg) {
-    if (path.isAbsolute(configPathArg)) {
-      config.backstopConfigFileName = configPathArg;
+  var customConfigPath = options && (options.backstopConfigFilePath || options.configPath || options.config);
+  if (customConfigPath) {
+    if (path.isAbsolute(customConfigPath)) {
+      config.backstopConfigFileName = customConfigPath;
     } else {
-      config.backstopConfigFileName = path.join(config.projectPath, configPathArg);
+      config.backstopConfigFileName = path.join(config.projectPath, customConfigPath);
     }
   } else {
     config.backstopConfigFileName = path.join(config.projectPath, 'backstop.json');
@@ -50,7 +50,7 @@ function ci(config, userConfig) {
   if (userConfig.paths) {
     config.ci_report = userConfig.paths.ci_report || config.ci_report;
   }
-  config.ci = {
+  config.ciReport = {
     format: 'junit',
     testReportFileName: 'xunit',
     testSuiteName: 'BackstopJS'
@@ -58,20 +58,15 @@ function ci(config, userConfig) {
 
   if (userConfig.ci) {
     config.ciReport = {
-      format: userConfig.ci.format || config.ci.format,
-      testReportFileName: userConfig.ci.testReportFileName || config.ci.testReportFileName,
-      testSuiteName: userConfig.ci.testSuiteName || config.ci.testSuiteName
+      format: userConfig.ci.format || config.ciReport.format,
+      testReportFileName: userConfig.ci.testReportFileName || config.ciReport.testReportFileName,
+      testSuiteName: userConfig.ci.testSuiteName || config.ciReport.testSuiteName
     };
-  } else {
-    config.ciReport = config.ci;
   }
 }
 function htmlReport(config, userConfig) {
   config.html_report = path.join(config.projectPath, 'backstop_data', 'html_report');
-  config.openReport = true;
-  if ('openReport' in userConfig) {
-    config.openReport = userConfig.openReport;
-  }
+  config.openReport = userConfig.openReport || true;
 
   if (userConfig.paths) {
     config.html_report = userConfig.paths.html_report || config.html_report;
@@ -85,10 +80,12 @@ function comparePaths(config) {
   config.comparePath = path.join(config.backstop, 'compare');
   config.tempCompareConfigFileName = temp.path({suffix: '.json'});
 }
+
 function captureConfigPaths(config) {
   config.captureConfigFileName = path.join(config.backstop, 'capture', 'config.json');
   config.captureConfigFileNameDefault = path.join(config.backstop, 'capture', 'config.default.json');
 }
+
 function casper(config, userConfig) {
   config.casper_scripts = path.join(config.projectPath, 'backstop_data', 'casper_scripts');
   config.casper_scripts_default = path.join(config.backstop, 'capture', 'casper_scripts');
