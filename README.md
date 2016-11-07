@@ -19,8 +19,16 @@ BackstopJS automates visual regression testing of your responsive web UI by comp
 ## Version 2.0 is released!
 
 ```sh
+# install latest
 $ npm install -g backstopjs
+
+# Check out the new selector expansion feature in here.
+$ npm install -g backstopjs@beta
+
+# New elector expansion
+$ npm install -g backstopjs@beta
 ```
+
 ### Here's whats new...
 
 <ul>
@@ -87,18 +95,23 @@ $ npm install -g backstopjs
 ```
 #### Local installation (advanced)
 
-Before installing locally, keep in mind that local installs do not put the `Backstop` command on your application path. _Please refer to the Local Install Usage section of the documentation._
+Before installing locally, keep in mind that local installs do not put the `Backstop` command on your application path. _Please refer to the [#installing-backstopjs-locally](#installing-backstopjs-locally) section of the documentation._
 
-To install locally, `cd` into your project directory then...
+To install locally, `cd` into your project directory and...
+```sh
+$ npm install backstopjs
 ```
-npm install backstopjs
+```js
+// This allows you to do...   (version 2.2.0+)
+const backstop = require('backstopjs');
 ```
 
+See [#installing-backstopjs-locally](#installing-backstopjs-locally) to learn about cool BackstopJS integration options!
 
 
 ###Installing a development version
 ```sh
-$ npm install -g garris/backstopjs#master
+$ npm install -g backstopjs@beta
 ```
 
 ###Generating your configuration file
