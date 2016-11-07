@@ -1,7 +1,7 @@
 var usage = require('../../cli/usage');
 var assert = require('assert');
 
-var expectedUsage = "Welcome to BackstopJS 2.1.3 CLI\n\
+var expectedUsage = "Welcome to BackstopJS 2.1.4 CLI\n\
 \n\
 Commands:\n\
     reference      Create reference screenshots of your web content at multiple sceen sizes.\n\

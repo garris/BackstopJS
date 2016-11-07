@@ -1,15 +1,12 @@
 var assert = require('assert');
 var makeConfig = require('../../../core/util/makeConfig');
 
-const expectedConfig = { args: {},
+const expectedConfig = {
+  args: {},
   backstop: process.cwd() + '',
   bitmaps_reference: 'backstop_data/bitmaps_reference',
   bitmaps_test: 'backstop_data/bitmaps_test',
   ci_report: 'backstop_data/ci_report',
-  ci:
-  { format: 'junit',
-    testReportFileName: 'xunit',
-    testSuiteName: 'BackstopJS' },
   html_report: 'backstop_data/html_report',
   openReport: true,
   comparePath: process.cwd() + '/compare',
@@ -19,15 +16,18 @@ const expectedConfig = { args: {},
   casper_scripts_default: process.cwd() + '/capture/casper_scripts',
   casperFlags: [],
   engine: 'phantomjs',
-  report: [ 'browser' ],
-  ciReport:
-  { format: 'junit',
+  report: ['browser'],
+  ciReport: {
+    format: 'junit',
     testReportFileName: 'xunit',
-    testSuiteName: 'BackstopJS' },
+    testSuiteName: 'BackstopJS'
+  },
   compareConfigFileName: 'backstop_data/html_report/config.js',
   compareReportURL: 'backstop_data/html_report/index.html',
   defaultMisMatchThreshold: 0.1,
-  debug: false };
+  debug: false,
+  resembleOutputOptions: undefined
+};
 
 describe('make config', function () {
   it('should return the default config correctly', function () {
