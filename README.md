@@ -16,22 +16,19 @@ BackstopJS automates visual regression testing of your responsive web UI by comp
 - Test html5 elements like webfonts and flexbox 
 - Also plays nice with source control share your gold master with your team.
 
-## Version 2.0 is released!
+## Upgrade to 2.0 for enhanced speed and new features! 
 
 ```sh
 # install latest
 $ npm install -g backstopjs
-
-# Check out the new selector expansion feature in here.
-$ npm install -g backstopjs@beta
-
-# New elector expansion
-$ npm install -g backstopjs@beta
 ```
 
 ### Here's whats new...
 
+
 <ul>
+  <li>Import BackstopJS into your node scripts with new local install option</li>
+  <li>Selector expansion</li>
   <li>All-new, all-optimized CLI core</li>
   <li>Huge performance gains from 1.x versions</li>
   <li>Global or local install options</li>
@@ -40,7 +37,7 @@ $ npm install -g backstopjs@beta
   <li>Scenario filtering</li>
   <li>Custom screenshot file naming</li>
   <li>More bug fixes than you can shake a stick at</li>
-  <li>Removed Gulp dependency and more!</li>
+  <li>Removed Gulp dependency entirely</li>
 </ul>
 
 
@@ -102,7 +99,8 @@ To install locally, `cd` into your project directory and...
 $ npm install backstopjs
 ```
 ```js
-// This allows you to do...   (version 2.2.0+)
+// This allows you to import BackstopJS into your node scripts!   
+// see #installing-backstopjs-locally 
 const backstop = require('backstopjs');
 ```
 
