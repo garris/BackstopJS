@@ -6,14 +6,14 @@
 
 BackstopJS automates visual regression testing of your responsive web UI by comparing DOM screenshots over time.
 
-**Features:** 
+**Features:**
 
 - Plays nice with multiple config files
-- Simulate user interactions with CasperJS scripts 
-- Fast inline-CLI reports 
-- Detailed in-browser reports 
-- CI Integration with JUnit reports 
-- Test html5 elements like webfonts and flexbox 
+- Simulate user interactions with CasperJS scripts
+- Fast inline-CLI reports
+- Detailed in-browser reports
+- CI Integration with JUnit reports
+- Test html5 elements like webfonts and flexbox
 - Also plays nice with source control share your gold master with your team.
 
 ## Upgrade to 2.0 for enhanced speed and new features! 
@@ -650,6 +650,22 @@ scripts: {
 
 The above is a crude example -- there are other fancy mappings you can create as well -- check out the NPM documentation for more info.
 
+### Modifying output settings of image-diffs
+
+By specifying `resembleOutputOptions` in your backstop.json file you can modify the image-diffs transparency, errorcolor, etc. (See [Resemble.js outputSettings](https://github.com/Huddle/Resemble.js) for the full list.
+
+e.g.
+```json
+  "resembleOutputOptions": {
+    "errorColor": {
+      "red": 255,
+      "green": 0,
+      "blue": 255
+    },
+    "errorType": "movement",
+    "transparency": 0.3
+  }
+```
 
 ##Troubleshooting
 
@@ -700,8 +716,6 @@ To enable verbose console output when running your tests set the `debug` propert
 -  A lovely article on [Making Visual Regression Useful](https://medium.com/@philgourley/making-visual-regression-useful-acfae27e5031#.y3mw9tnxt) by [Phillip Gourley](https://medium.com/@philgourley?source=post_header_lockup)
 
 - Automated regression testing for AngularJS (and other) web-apps -- article on [DWB](http://davidwalsh.name/visual-regression-testing-angular-applications)
-
-- Want to add BackstopJS to your existing *gulp* build?  Turns out to be pretty easy – use [gulp-chug](https://github.com/robatron/gulp-chug). Learn how in this article by [Filip Bartos](http://blog.bartos.me/css-regression-testing/).
 
 - *Grunt fans* -- check out [grunt-backstop](https://github.com/ddluc/grunt-backstop) and this [very nicely written article by Joe Watkins](http://joe-watkins.io/css-visual-regression-testing-with-grunt-backstopjs/)
 

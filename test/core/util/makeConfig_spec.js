@@ -1,5 +1,5 @@
-var makeConfig = require('../../../core/util/makeConfig');
 var assert = require('assert');
+var makeConfig = require('../../../core/util/makeConfig');
 
 describe('make config', function () {
   it('should pass the filter arg correctly', function () {

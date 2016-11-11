@@ -26,7 +26,7 @@ function getFailedDiffFilename (testPath) {
   return testPath.slice(0, lastSlash + 1) + 'failed_diff_' + testPath.slice(lastSlash + 1, testPath.length);
 }
 
-function compareImage (referencePath, testPath) {
+function compareImage (referencePath, testPath, resembleOutputSettings) {
   return new Promise(function (resolve, reject) {
     if (!fs.existsSync(referencePath)) {
       reject('Reference image not found: ' + referencePath);
@@ -36,6 +36,7 @@ function compareImage (referencePath, testPath) {
       reject('Test image not found: ' + testPath);
     }
 
+    resemble.outputSettings(resembleOutputSettings || {});
     resemble(referencePath).compareTo(testPath)
       .onComplete(function (data) {
         resolve(data);
@@ -51,10 +52,10 @@ module.exports = function (config) {
   return tests = map(compareConfig.testPairs, function (pair) {
     var Test = report.addTest(pair);
 
-    var referencePath = path.join(config.customBackstop, pair.reference);
-    var testPath = path.join(config.customBackstop, pair.test);
+    var referencePath = path.join(config.projectPath, pair.reference);
+    var testPath = path.join(config.projectPath, pair.test);
 
-    return compareImage(referencePath, testPath)
+    return compareImage(referencePath, testPath, config.resembleOutputOptions)
       .then(function logCompareResult (data) {
         pair.diff = data;
 
