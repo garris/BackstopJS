@@ -607,7 +607,7 @@ backstop('reference');
 backstop('test')
   .then(() => {
     // test successful
-  }).catch() => {
+  }).catch(() => {
     // test failed
   });
 
