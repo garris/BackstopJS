@@ -1,4 +1,5 @@
 /* eslint-disable no-path-concat */
+var DOCUMENT_SELECTOR = 'document';
 
 var fs = require('fs');
 var cwd = fs.workingDirectory;
@@ -167,13 +168,17 @@ function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabe
       }
 
       // CREATE SCREEN SHOTS AND TEST COMPARE CONFIGURATION (CONFIG FILE WILL BE SAVED WHEN THIS PROCESS RETURNS)
-      // If no selectors are provided then set the default 'body'
+      // If no selectors are provided then set the default DOCUMENT_SELECTOR
       if (!scenario.hasOwnProperty('selectors') || !scenario.selectors.length) {
-        scenario.selectors = ['document'];
+        scenario.selectors = [DOCUMENT_SELECTOR];
       }
 
       if (scenario.selectorExpansion === true) {
         scenario.selectorsExpanded = scenario.selectors.reduce(function(acc, selector) {
+          if (selector === DOCUMENT_SELECTOR) {
+            return acc.concat([DOCUMENT_SELECTOR])
+          }
+
           var expandedSelector = casper.evaluate(function(selector) {
             return [].slice.call(document.querySelectorAll(selector)).map(function(element, expandedIndex) {
               var indexPartial = '__n' + expandedIndex;
