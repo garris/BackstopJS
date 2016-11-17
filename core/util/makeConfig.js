@@ -11,6 +11,9 @@ function projectPath(config) {
 }
 
 function loadProjectConfig(command, options, config) {
+  // TEST REPORT FILE NAME
+  config.testReportFileName = options.testReportFileName || null;
+
   var customConfigPath = options && (options.backstopConfigFilePath || options.configPath || options.config);
   if (customConfigPath) {
     if (path.isAbsolute(customConfigPath)) {

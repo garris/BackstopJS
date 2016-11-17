@@ -498,6 +498,12 @@ You may customize the testsuite name and/or a report file (xunit.xml) path to yo
 },
 ```
 
+Also you can override test report file name by passing a --testReportFileName argument when running any command. e.g.
+
+```# example: run test with custom report file name
+$ backstop test --testReportFileName=custom-xunit
+```
+
 ####CLI error handling
 
 When a layout error is found in CLI mode, BackstopJS will let you know in a general report displayed in the console. In addition, BackstopJS will throw an error that will be passed to calling process.
