@@ -60,6 +60,8 @@ Many many thanks for all who helped with this monumental task! 💙㊗️🙇 [@
 [The BackstopJS workflow](#the-backstopjs-workflow)
 
 [Installation](#installation)
+  [global install](#installation)
+  [local install for use inside your node app](#importing-into-your-node-scripts)
 
 [Getting Started](#getting-started)
 
@@ -90,7 +92,7 @@ Run this in your terminal from anywhere...
 ```sh
 $ npm install -g backstopjs
 ```
-#### Local installation (advanced)
+#### Local installation
 
 Before installing locally, keep in mind that local installs do not put the `Backstop` command on your application path. _Please refer to the [#installing-backstopjs-locally](#installing-backstopjs-locally) section of the documentation._
 
@@ -595,9 +597,9 @@ This is for you if for some reason you find yourself needing advanced configurat
 ###Installing BackstopJS Locally
 The main reason to install backstop locally is likely to be a managed integration with a build implementation. There are two ways to run a local installation of backstop
 
-#### Using it in a build system
+#### Importing into your node scripts
 
-You can simply require a local backstop installation in your project.
+To Using it in a build system you can simply require a local backstop installation in your project.
 ```js
 const backstop = require('backstopjs');
 
