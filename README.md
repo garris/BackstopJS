@@ -60,8 +60,6 @@ Many many thanks for all who helped with this monumental task! 💙㊗️🙇 [@
 [The BackstopJS workflow](#the-backstopjs-workflow)
 
 [Installation](#installation)
-  [global install](#installation)
-  [local install for use inside your node app](#importing-into-your-node-scripts)
 
 [Getting Started](#getting-started)
 
