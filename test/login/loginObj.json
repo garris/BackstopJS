@@ -1,8 +1,0 @@
-{
-  "url": "https://www.yourUrl.com/login",
-  "form_id": "form#login",
-  "creds": {
-    "session_key": "username",
-    "session_password": "password"
-  }
-}

@@ -14,6 +14,7 @@ pids
 # Commenting this out is preferred by some people, see
 # https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git-
 node_modules
+yarn.lock
 
 # Users Environment Variables
 .lock-wscript
@@ -23,7 +24,7 @@ node_modules
 
 compare/bower_components/**/.*
 
-bitmaps_test
-bitmaps_reference
-compare/config.json
+/backstop_data/bitmaps_test/
+/backstop_data/html_report/
+compare/config.js
 capture/config.json

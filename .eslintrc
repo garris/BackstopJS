@@ -1,0 +1,6 @@
+{
+  "extends": "eslint-config-semistandard",
+  "rules": {
+    "no-multi-str": 0
+  }
+}
