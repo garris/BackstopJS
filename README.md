@@ -45,7 +45,7 @@ $ npm install -g backstopjs
 - BackstopJS CLI can be installed globally (and it's recommended)
 - All config paths are now relative to your current working directory `$(pwd)`.
 - There are new config properties
-    - `fileNameTemplate` Important if you are migrating [1.x configs](#2_0-configs-and-resources)
+    - `fileNameTemplate` Important if you are migrating [1.x configs](#migrating-to-20)
     - `id` Use this if you are [sharing config files](#working-with-your-config-file)
 
 
