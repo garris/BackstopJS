@@ -46,7 +46,7 @@ $ npm install -g backstopjs
 - All config paths are now relative to your current working directory `$(pwd)`.
 - There are new config properties
     - `fileNameTemplate` Important if you are migrating [1.x configs](#2_0-configs-and-resources)
-    - `id` Use this if you are [sharing config files](#getting-started)
+    - `id` Use this if you are [sharing config files](#working-with-your-config-file)
 
 
 ----
