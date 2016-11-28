@@ -7,7 +7,7 @@ var streamToPromise = require('./streamToPromise');
 var Reporter = require('./Reporter');
 var logger = require('./logger')('compare');
 
-var MAX_COMPARISONS_CONCURRENCY = 20;
+var MAX_COMPARISONS_CONCURRENCY = 1;
 
 function storeFailedDiffImage (testPath, data) {
   var failedDiffFilename = getFailedDiffFilename(testPath);
@@ -62,6 +62,8 @@ module.exports = function (config) {
         if (data.isSameDimensions && data.misMatchPercentage <= pair.misMatchThreshold) {
           Test.status = 'pass';
           logger.success('OK: ' + pair.label + ' ' + pair.fileName);
+          data=null;
+          pair.diff.getDiffImage=null;
 
           return pair;
         }
@@ -71,6 +73,8 @@ module.exports = function (config) {
 
         return storeFailedDiffImage(testPath, data).then(function (compare) {
           pair.diffImage = compare;
+          data=null;
+          pair.diff.getDiffImage=null;
 
           return pair;
         });
