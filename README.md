@@ -242,7 +242,7 @@ scenarios: [
 ]
 // captures all li children of the .aListOfStuff node
 ```
-If you want very explicit controll of what you capture then you can disable `selectorExpansion` and explictly select what you want...
+(Default behavior) If you want very explicit controll of what you capture then you can disable `selectorExpansion` and explictly select what you want...
 
 ```
 scenarios: [
@@ -255,7 +255,7 @@ scenarios: [
     ]
   }
 ]
-// does the same thing as above -- but more explicity.
+// Attempts to capture these three elements explicitly.
 ```
 
 
@@ -662,6 +662,20 @@ e.g.
     "transparency": 0.3
   }
 ```
+
+###Tuning BackstopJS performance 
+During a test, BackstopJS processes image comparisons in parallel. By default, this value is limited to 50. Used this way, BackstopJS can utilize available processor power while keeping RAM usage under control.
+
+This value can be adjusted as needed to increase/decrease the amount of RAM required during a test.
+
+As a (very approximate) rule of thumb, BackstopJS will use 100MB RAM plus approximately 5 MB for each concurrent image comparison.
+
+To adjust this value add the following to the root of your config...
+```
+"asyncCompareLimit": 100
+// Would require 600MB to run tests.
+``` 
+
 
 ##Troubleshooting
 

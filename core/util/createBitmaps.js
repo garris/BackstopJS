@@ -6,6 +6,8 @@ var runCasper = require('./runCasper');
 
 var logger = require('./logger')('createBitmaps');
 
+var GENERATE_BITMAPS_SCRIPT = 'capture/genBitmaps.js';
+
 function includes (string, search, start) {
   if (typeof start !== 'number') {
     start = 0;
@@ -18,6 +20,13 @@ function includes (string, search, start) {
   }
 }
 
+
+/**
+ * Utility for generating a temporary config file required by GENERATE_BITMAPS_SCRIPT.
+ * @config  {Object}        Base user config object (derrived by user config file + CL param overrides).
+ * @isReference  {Boolean}  True if running reference flow.
+ * @return {Promise}        Resolves when fs.writeFile has completed.
+ */
 function writeReferenceCreateConfig (config, isReference) {
   var configJSON = require(config.backstopConfigFileName);
 
@@ -47,7 +56,7 @@ function writeReferenceCreateConfig (config, isReference) {
 
 module.exports = function (config, isReference) {
   return writeReferenceCreateConfig(config, isReference).then(function () {
-    var tests = [path.join(config.backstop, 'capture/genBitmaps.js')];
+    var tests = [path.join(config.backstop, GENERATE_BITMAPS_SCRIPT)];
     var casperChild = runCasper(config, tests);
 
     return new Promise(function (resolve, reject) {

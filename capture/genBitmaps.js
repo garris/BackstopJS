@@ -173,7 +173,7 @@ function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabe
         scenario.selectors = [DOCUMENT_SELECTOR];
       }
 
-      if (scenario.selectorExpansion === true) {
+      if (scenario.selectorExpansion) {
         scenario.selectorsExpanded = scenario.selectors.reduce(function(acc, selector) {
           if (selector === DOCUMENT_SELECTOR) {
             return acc.concat([DOCUMENT_SELECTOR])
