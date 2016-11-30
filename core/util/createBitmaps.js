@@ -46,7 +46,7 @@ function writeReferenceCreateConfig (config, isReference) {
       });
     });
 
-    logger.log('Will generate ' + scenarii.length + ' out of ' + configJSON.scenarios.length + ' scenarii');
+    logger.log('Will generate ' + scenarii.length + ' out of ' + configJSON.scenarios.length + ' scenarios');
 
     configJSON.scenarios = scenarii;
   }
