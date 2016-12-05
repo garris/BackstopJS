@@ -9,6 +9,12 @@ function extendConfig(config, userConfig) {
   captureConfigPaths(config);
   casper(config, userConfig);
 
+  var expect = userConfig.scenarios && userConfig.scenarios.reduce(function(acc, val) {
+    return acc + val.expect;
+  }, 0);
+  if (expect) {
+    config.expect = expect;
+  }
   config.engine = userConfig.engine || null;
   config.report = userConfig.report || ['browser'];
   config.defaultMisMatchThreshold = 0.1;
