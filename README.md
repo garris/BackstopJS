@@ -230,7 +230,7 @@ BackstopJS makes it super easy to capture screenshots of your entire layout or j
 
 #### selectorExpansion
 
-If you want BackstopJS to find and take screenshots of _all_ matching selector instances then there is a handy switch for that...
+If you want BackstopJS to find and take screenshots of _all_ matching selector instances then there is a handy switch for that. Set `selectorExpansion` to `true` like so...
 ```
 scenarios: [
   {
