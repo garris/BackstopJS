@@ -14,6 +14,7 @@ function extendConfig(config, userConfig) {
   config.defaultMisMatchThreshold = 0.1;
   config.debug = userConfig.debug || false;
   config.resembleOutputOptions = userConfig.resembleOutputOptions;
+  config.asyncCompareLimit = userConfig.asyncCompareLimit;
   return config;
 }
 
@@ -45,6 +46,7 @@ function ci(config, userConfig) {
     };
   }
 }
+
 function htmlReport(config, userConfig) {
   config.html_report = path.join(config.projectPath, 'backstop_data', 'html_report');
   config.openReport = userConfig.openReport || true;

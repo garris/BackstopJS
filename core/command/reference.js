@@ -11,7 +11,7 @@ module.exports = {
       firstStep = Promise.resolve();
     } else {
       firstStep = fs.remove(config.bitmaps_reference).then(function () {
-        logger.success('bitmaps_reference was cleaned.');
+        logger.success(config.bitmaps_reference + ' was cleaned.');
       });
     }
 

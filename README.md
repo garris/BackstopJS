@@ -8,13 +8,13 @@ BackstopJS automates visual regression testing of your responsive web UI by comp
 
 **Features:**
 
-- Plays nice with multiple config files
-- Simulate user interactions with CasperJS scripts
-- Fast inline-CLI reports
-- Detailed in-browser reports
-- CI Integration with JUnit reports
-- Test html5 elements like webfonts and flexbox
-- Also plays nice with source control share your gold master with your team.
+- Simulate user interactions with CasperJS scripts.
+- Fast inline-CLI reports.
+- Detailed in-browser reports.
+- CI Integration with JUnit reports.
+- Test html5 elements like webfonts and flexbox.
+- Use as a standalone global app, a standalone local npm script or import right into your node app.
+- Also plays nice with source control -- share your gold master with your team.
 
 ## Upgrade to 2.0 for enhanced speed and new features! 
 
@@ -23,16 +23,15 @@ BackstopJS automates visual regression testing of your responsive web UI by comp
 $ npm install -g backstopjs
 ```
 
-### Here's whats new...
+### If you've been using 1.x you will love the new performance and features in 2.x -- here's whats new...
 
 
 <ul>
-  <li>Import BackstopJS into your node scripts with new local install option</li>
+  <li>Install globally and invoke from anywhere with <code>`backstop &lt;command&gt;`</code></li>
+  <li>Install locally and import BackstopJS directly into your node app.</li>
   <li>Selector expansion</li>
   <li>All-new, all-optimized CLI core</li>
   <li>Huge performance gains from 1.x versions</li>
-  <li>Global or local install options</li>
-  <li>Invoke from anywhere with <code>`backstop &lt;command&gt;`</code></li>
   <li>Incremental reference generation</li>
   <li>Scenario filtering</li>
   <li>Custom screenshot file naming</li>
@@ -46,11 +45,8 @@ $ npm install -g backstopjs
 - BackstopJS CLI can be installed globally (and it's recommended)
 - All config paths are now relative to your current working directory `$(pwd)`.
 - There are new config properties
-    - `fileNameTemplate` Important if you are migrating [1.x configs](#2_0-configs-and-resources)
-    - `id` Use this if you are [sharing config files](#getting-started)
-
-
-Many many thanks for all who helped with this monumental task! 💙㊗️🙇 [@JulienPradet](https://github.com/JulienPradet), [@onigoetz](https://github.com/onigoetz), [@borys-rudenko](https://github.com/borys-rudenko), [@ksushik](https://github.com/ksushik), [@dmitriyilchgmailcom](https://github.com/dmitriyilchgmailcom), [@Primajin](https://github.com/Primajin)
+    - `fileNameTemplate` Important if you are migrating [1.x configs](#migrating-to-20)
+    - `id` Use this if you are [sharing config files](#working-with-your-config-file)
 
 
 ----
@@ -234,7 +230,7 @@ BackstopJS makes it super easy to capture screenshots of your entire layout or j
 
 #### selectorExpansion
 
-If you want BackstopJS to find and take screenshots of _all_ matching selector instances then there is a handy switch for that...
+If you want BackstopJS to find and take screenshots of _all_ matching selector instances then there is a handy switch for that. Set `selectorExpansion` to `true` like so...
 ```
 scenarios: [
   {
@@ -246,7 +242,7 @@ scenarios: [
 ]
 // captures all li children of the .aListOfStuff node
 ```
-If you want very explicit controll of what you capture then you can disable `selectorExpansion` and explictly select what you want...
+(Default behavior) If you want very explicit controll of what you capture then you can disable `selectorExpansion` and explictly select what you want...
 
 ```
 scenarios: [
@@ -259,7 +255,7 @@ scenarios: [
     ]
   }
 ]
-// does the same thing as above -- but more explicity.
+// Attempts to capture these three elements explicitly.
 ```
 
 
@@ -667,6 +663,20 @@ e.g.
   }
 ```
 
+###Tuning BackstopJS performance 
+During a test, BackstopJS processes image comparisons in parallel. By default, this value is limited to 50. Used this way, BackstopJS can utilize available processor power while keeping RAM usage under control.
+
+This value can be adjusted as needed to increase/decrease the amount of RAM required during a test.
+
+As a (very approximate) rule of thumb, BackstopJS will use 100MB RAM plus approximately 5 MB for each concurrent image comparison.
+
+To adjust this value add the following to the root of your config...
+```
+"asyncCompareLimit": 100
+// Would require 600MB to run tests.
+``` 
+
+
 ##Troubleshooting
 
 ###Migrating to 2.0
@@ -737,8 +747,11 @@ BackstopJS was created by [Garris Shipon](expanded.me) during the [Art.com labs]
 
 ---
 
-##Gratitude
+##Gratitude 💙㊗️🙇
 Many many thanks to [all the contributors](https://github.com/garris/BackstopJS/graphs/contributors) with special thanks to...
+- [Klaus Bayrhammer](https://github.com/klausbayrhammer) for making BackstopJS a "requireable" node module in 2.3.1
+- [Suresh Kumar. M](https://github.com/garris/BackstopJS/commits/master?author=nobso) for selector expansion in 1.3.2
+- [@JulienPradet](https://github.com/JulienPradet), [@onigoetz](https://github.com/onigoetz), [@borys-rudenko](https://github.com/borys-rudenko), [@ksushik](https://github.com/ksushik), [@dmitriyilchgmailcom](https://github.com/dmitriyilchgmailcom), [@Primajin](https://github.com/Primajin) for giving the world BackstopJS version 2.0!
 - [Suresh Kumar. M](https://github.com/garris/BackstopJS/commits/master?author=nobso) for help on the 1.3.2 release
 - [Klaus Bayrhammer](https://github.com/klausbayrhammer) for all the incredible effort leading up to 1.0 -- the cli reports and compatibility fixes are awesome!
 - [Evan Lovely](https://github.com/EvanLovely) and [Klaus Bayrhammer](https://github.com/klausbayrhammer) for help on the 0.9.0 release
