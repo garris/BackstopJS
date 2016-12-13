@@ -15,6 +15,7 @@ if (!config.paths) {
   config.paths = {};
 }
 
+var outputFormat = config.outputFormat || 'png';
 var bitmapsReferencePath = config.paths.bitmaps_reference || 'bitmaps_reference';
 var bitmapsTestPath = config.paths.bitmaps_test || 'bitmaps_test';
 var casperScriptsPath = config.paths.casper_scripts || null;
@@ -224,8 +225,9 @@ function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabe
           .replace(/\{viewportLabel\}/, makeSafe(vp.name))
           .replace(/[^a-z0-9_\-]/gi, ''); // remove anything that's not a letter or a number or dash or underscore.
 
-        if (!/\.png$/i.test(fileName)) {
-          fileName = fileName + '.png';
+        var extRegExp = new RegExp('.'+outputFormat,"i");
+        if (!extRegExp.test(fileName)) {
+            fileName = fileName + '.'+outputFormat;
         }
 
         var referenceFilePath = bitmapsReferencePath + '/' + fileName;
