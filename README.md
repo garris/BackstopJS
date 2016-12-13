@@ -721,6 +721,8 @@ To enable verbose console output when running your tests set the `debug` propert
 ---
 ##Tutorials, Extensions and more
 
+- Regression testing with BackstopJS, in-depth tutorial by [Angela Riggs](https://twitter.com/AngelaRiggs_) http://www.metaltoad.com/blog/regression-testing-backstopjs
+
 - BackstopJS tutorial on [css-tricks.com](http://css-tricks.com/automating-css-regression-testing/)
 
 -  A lovely article on [Making Visual Regression Useful](https://medium.com/@philgourley/making-visual-regression-useful-acfae27e5031#.y3mw9tnxt) by [Phillip Gourley](https://medium.com/@philgourley?source=post_header_lockup)
