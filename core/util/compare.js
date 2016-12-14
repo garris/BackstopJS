@@ -14,16 +14,16 @@ function storeFailedDiffImage (testPath, data) {
   console.log('   See:', failedDiffFilename);
 
   var failedDiffStream = fs.createWriteStream(failedDiffFilename);
-  var ext = failedDiffFilename.substring(failedDiffFilename.lastIndexOf(".")+1);
+  var ext = failedDiffFilename.substring(failedDiffFilename.lastIndexOf('.') + 1);
 
-  if(ext=="png") {
+  if (ext === 'png') {
     var storageStream = data.getDiffImage()
         .pack()
         .pipe(failedDiffStream);
     return streamToPromise(storageStream, failedDiffFilename);
   }
 
-  if(ext=="jpg" || ext=="jpeg") {
+  if (ext === 'jpg' || ext === 'jpeg') {
     fs.writeFileSync(failedDiffFilename, data.getDiffImageAsJPEG());
     return Promise.resolve(failedDiffFilename);
   }
