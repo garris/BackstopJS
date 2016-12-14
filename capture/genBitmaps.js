@@ -225,9 +225,9 @@ function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabe
           .replace(/\{viewportLabel\}/, makeSafe(vp.name))
           .replace(/[^a-z0-9_\-]/gi, ''); // remove anything that's not a letter or a number or dash or underscore.
 
-        var extRegExp = new RegExp('.'+outputFormat,"i");
+        var extRegExp = new RegExp('.' + outputFormat + '$', 'i');
         if (!extRegExp.test(fileName)) {
-            fileName = fileName + '.'+outputFormat;
+            fileName = fileName + '.' + outputFormat;
         }
 
         var referenceFilePath = bitmapsReferencePath + '/' + fileName;
