@@ -227,7 +227,7 @@ function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabe
 
         var extRegExp = new RegExp('.' + outputFormat + '$', 'i');
         if (!extRegExp.test(fileName)) {
-            fileName = fileName + '.' + outputFormat;
+          fileName = fileName + '.' + outputFormat;
         }
 
         var referenceFilePath = bitmapsReferencePath + '/' + fileName;
