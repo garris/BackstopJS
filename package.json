@@ -35,6 +35,8 @@
     "mockery": "^1.4.0"
   },
   "dependencies": {
+    "object-hash": "1.1.5",
+    "os": "^0.1.1",
     "bluebird": "^3.4.6",
     "casperjs": "^1.1.0-beta5",
     "chalk": "^1.1.3",
