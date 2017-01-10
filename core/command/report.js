@@ -22,7 +22,7 @@ function writeBrowserReport (config, reporter) {
     if (path.isAbsolute(p)) {
       return p;
     }
-    return path.join(config.customBackstop, p);
+    return path.join(config.projectPath, p);
   }
   logger.log('Writing browser report');
   return fs.copy(config.comparePath, toAbsolute(config.html_report)).then(function () {

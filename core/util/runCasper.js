@@ -17,6 +17,10 @@ function getCasperArgs (config, tests) {
     }
   }
 
+  if(process.env.npm_config_user && process.env.npm_config_password){
+      args = args.concat(['--user=' + process.env.npm_config_user, '--password=' + process.env.npm_config_password]);
+  }
+
   return tests.concat(args);
 }
 
@@ -28,7 +32,7 @@ module.exports = function (config, tests) {
   process.env.PHANTOMJS_EXECUTABLE = findExecutable('phantomjs-prebuilt', 'phantomjs');
 
   var casperProcess = findExecutable('casperjs', 'casperjs');
-  var casperChild = spawn(casperProcess, casperArgs, {cwd: config.customBackstop});
+  var casperChild = spawn(casperProcess, casperArgs, {cwd: config.projectPath});
 
   var prefix = 'CasperJS: ';
   casperChild.stdout.on('data', function (data) {
