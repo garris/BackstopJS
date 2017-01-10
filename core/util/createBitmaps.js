@@ -25,7 +25,7 @@ function writeReferenceCreateConfig (config, isReference) {
   configJSON.paths.tempCompareConfigFileName = config.tempCompareConfigFileName;
   configJSON.defaultMisMatchThreshold = config.defaultMisMatchThreshold;
   configJSON.backstopConfigFileName = config.backstopConfigFileName;
-  configJSON.defaultIsSameDimensions = config.defaultIsSameDimensions;
+  configJSON.defaultrequireSameDimensions = config.defaultrequireSameDimensions;
 
   if (config.args.filter) {
     var scenarii = [];

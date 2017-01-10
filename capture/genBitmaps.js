@@ -231,7 +231,7 @@ function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabe
             selector: o,
             fileName: fileName,
             label: scenario.label,
-            isSameDimensions: scenario.isSameDimensions || config.isSameDimensions || config.defaultIsSameDimensions,
+            requireSameDimensions: scenario.requireSameDimensions || config.requireSameDimensions || config.defaultrequireSameDimensions,
             misMatchThreshold: scenario.misMatchThreshold || config.misMatchThreshold || config.defaultMisMatchThreshold
           });
         }
