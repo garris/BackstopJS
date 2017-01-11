@@ -6,25 +6,37 @@
 
 BackstopJS automates visual regression testing of your responsive web UI by comparing DOM screenshots over time.
 
-**Features:** Plays nice with multiple config files – Simulate user interactions with CasperJS scripts – Fast inline-CLI reports – detailed in-browser reports – CI Integration with JUnit reports – Test html5 elements like webfonts and flexbox – also plays nice with source control share your gold master with your team.
+**Features:**
 
-## Version 2.0 is released!
+- Simulate user interactions with CasperJS scripts.
+- Fast inline-CLI reports.
+- Detailed in-browser reports.
+- CI Integration with JUnit reports.
+- Test html5 elements like webfonts and flexbox.
+- Use as a standalone global app, a standalone local npm script or import right into your node app.
+- Also plays nice with source control -- share your gold master with your team.
+
+## Upgrade to 2.0 for enhanced speed and new features! 
 
 ```sh
+# install latest
 $ npm install -g backstopjs
 ```
-### Here's whats new...
+
+### If you've been using 1.x you will love the new performance and features in 2.x -- here's whats new...
+
 
 <ul>
+  <li>Install globally and invoke from anywhere with <code>`backstop &lt;command&gt;`</code></li>
+  <li>Install locally and import BackstopJS directly into your node app.</li>
+  <li>Selector expansion</li>
   <li>All-new, all-optimized CLI core</li>
   <li>Huge performance gains from 1.x versions</li>
-  <li>Global or local install options</li>
-  <li>Invoke from anywhere with <code>`backstop &lt;command&gt;`</code></li>
   <li>Incremental reference generation</li>
   <li>Scenario filtering</li>
   <li>Custom screenshot file naming</li>
   <li>More bug fixes than you can shake a stick at</li>
-  <li>Removed Gulp dependency and more!</li>
+  <li>Removed Gulp dependency entirely</li>
 </ul>
 
 
@@ -33,11 +45,8 @@ $ npm install -g backstopjs
 - BackstopJS CLI can be installed globally (and it's recommended)
 - All config paths are now relative to your current working directory `$(pwd)`.
 - There are new config properties
-    - `fileNameTemplate` Important if you are migrating [1.x configs](#2_0-configs-and-resources)
-    - `id` Use this if you are [sharing config files](#getting-started)
-
-
-Many many thanks for all who helped with this monumental task! 💙㊗️🙇 [@JulienPradet](https://github.com/JulienPradet), [@onigoetz](https://github.com/onigoetz), [@borys-rudenko](https://github.com/borys-rudenko), [@ksushik](https://github.com/ksushik), [@dmitriyilchgmailcom](https://github.com/dmitriyilchgmailcom), [@Primajin](https://github.com/Primajin)
+    - `fileNameTemplate` Important if you are migrating [1.x configs](#migrating-to-20)
+    - `id` Use this if you are [sharing config files](#working-with-your-config-file)
 
 
 ----
@@ -77,20 +86,26 @@ Run this in your terminal from anywhere...
 ```sh
 $ npm install -g backstopjs
 ```
-#### Local installation (advanced)
+#### Local installation
 
-Before installing locally, keep in mind that local installs do not put the `Backstop` command on your application path. _Please refer to the Local Install Usage section of the documentation._
+Before installing locally, keep in mind that local installs do not put the `Backstop` command on your application path. _Please refer to the [#installing-backstopjs-locally](#installing-backstopjs-locally) section of the documentation._
 
-To install locally, `cd` into your project directory then...
+To install locally, `cd` into your project directory and...
+```sh
+$ npm install backstopjs
 ```
-npm install backstopjs
+```js
+// This allows you to import BackstopJS into your node scripts!   
+// see #installing-backstopjs-locally 
+const backstop = require('backstopjs');
 ```
 
+See [#installing-backstopjs-locally](#installing-backstopjs-locally) to learn about cool BackstopJS integration options!
 
 
 ###Installing a development version
 ```sh
-$ npm install -g garris/backstopjs#master
+$ npm install -g backstopjs@beta
 ```
 
 ###Generating your configuration file
@@ -215,7 +230,7 @@ BackstopJS makes it super easy to capture screenshots of your entire layout or j
 
 #### selectorExpansion
 
-If you want BackstopJS to find and take screenshots of _all_ matching selector instances then there is a handy switch for that...
+If you want BackstopJS to find and take screenshots of _all_ matching selector instances then there is a handy switch for that. Set `selectorExpansion` to `true` like so...
 ```
 scenarios: [
   {
@@ -227,7 +242,7 @@ scenarios: [
 ]
 // captures all li children of the .aListOfStuff node
 ```
-If you want very explicit controll of what you capture then you can disable `selectorExpansion` and explictly select what you want...
+(Default behavior) If you want very explicit controll of what you capture then you can disable `selectorExpansion` and explictly select what you want...
 
 ```
 scenarios: [
@@ -240,7 +255,7 @@ scenarios: [
     ]
   }
 ]
-// does the same thing as above -- but more explicity.
+// Attempts to capture these three elements explicitly.
 ```
 
 
@@ -574,7 +589,38 @@ This is for you if for some reason you find yourself needing advanced configurat
 ```
 
 ###Installing BackstopJS Locally
-The main reason to install backstop locally is likely to be a managed integration with a build implementation.
+The main reason to install backstop locally is likely to be a managed integration with a build implementation. There are two ways to run a local installation of backstop
+
+#### Importing into your node scripts
+
+To Using it in a build system you can simply require a local backstop installation in your project.
+```js
+const backstop = require('backstopjs');
+
+backstop('reference');
+
+// handle the response like this
+backstop('test')
+  .then(() => {
+    // test successful
+  }).catch(() => {
+    // test failed
+  });
+
+// pass options to the command
+backstop('test', {config:'custom/backstop/config.json'});
+```
+
+Since the backstop runner returns promises it can easily be integrated in build systems like gulp
+```js
+const gulp = require('gulp');
+const backstopjs = require('backstopjs');
+
+gulp.task('backstop_reference', () => backstopjs('reference'));
+gulp.task('backstop_test', () => backstopjs('test'));
+```
+
+#### Using npm run scripts
 
 From the...
 ```
@@ -599,6 +645,36 @@ scripts: {
 ```
 
 The above is a crude example -- there are other fancy mappings you can create as well -- check out the NPM documentation for more info.
+
+### Modifying output settings of image-diffs
+
+By specifying `resembleOutputOptions` in your backstop.json file you can modify the image-diffs transparency, errorcolor, etc. (See [Resemble.js outputSettings](https://github.com/Huddle/Resemble.js) for the full list.
+
+e.g.
+```json
+  "resembleOutputOptions": {
+    "errorColor": {
+      "red": 255,
+      "green": 0,
+      "blue": 255
+    },
+    "errorType": "movement",
+    "transparency": 0.3
+  }
+```
+
+###Tuning BackstopJS performance 
+During a test, BackstopJS processes image comparisons in parallel. By default, this value is limited to 50. Used this way, BackstopJS can utilize available processor power while keeping RAM usage under control.
+
+This value can be adjusted as needed to increase/decrease the amount of RAM required during a test.
+
+As a (very approximate) rule of thumb, BackstopJS will use 100MB RAM plus approximately 5 MB for each concurrent image comparison.
+
+To adjust this value add the following to the root of your config...
+```
+"asyncCompareLimit": 100
+// Would require 600MB to run tests.
+``` 
 
 
 ##Troubleshooting
@@ -645,13 +721,13 @@ To enable verbose console output when running your tests set the `debug` propert
 ---
 ##Tutorials, Extensions and more
 
-- BackstopJS tutorial on [css-tricks.com](http://css-tricks.com/automating-css-regression-testing/)
+- (RECOMMEDED Updated for version 2) Regression testing with BackstopJS, in-depth tutorial by [Angela Riggs](https://twitter.com/AngelaRiggs_) http://www.metaltoad.com/blog/regression-testing-backstopjs
+
+- BackstopJS tutorial on [css-tricks.com](http://css-tricks.com/automating-css-regression-testing/) 
 
 -  A lovely article on [Making Visual Regression Useful](https://medium.com/@philgourley/making-visual-regression-useful-acfae27e5031#.y3mw9tnxt) by [Phillip Gourley](https://medium.com/@philgourley?source=post_header_lockup)
 
 - Automated regression testing for AngularJS (and other) web-apps -- article on [DWB](http://davidwalsh.name/visual-regression-testing-angular-applications)
-
-- Want to add BackstopJS to your existing *gulp* build?  Turns out to be pretty easy – use [gulp-chug](https://github.com/robatron/gulp-chug). Learn how in this article by [Filip Bartos](http://blog.bartos.me/css-regression-testing/).
 
 - *Grunt fans* -- check out [grunt-backstop](https://github.com/ddluc/grunt-backstop) and this [very nicely written article by Joe Watkins](http://joe-watkins.io/css-visual-regression-testing-with-grunt-backstopjs/)
 
@@ -673,8 +749,11 @@ BackstopJS was created by [Garris Shipon](expanded.me) during the [Art.com labs]
 
 ---
 
-##Gratitude
+##Gratitude 💙㊗️🙇
 Many many thanks to [all the contributors](https://github.com/garris/BackstopJS/graphs/contributors) with special thanks to...
+- [Klaus Bayrhammer](https://github.com/klausbayrhammer) for making BackstopJS a "requireable" node module in 2.3.1
+- [Suresh Kumar. M](https://github.com/garris/BackstopJS/commits/master?author=nobso) for selector expansion in 1.3.2
+- [@JulienPradet](https://github.com/JulienPradet), [@onigoetz](https://github.com/onigoetz), [@borys-rudenko](https://github.com/borys-rudenko), [@ksushik](https://github.com/ksushik), [@dmitriyilchgmailcom](https://github.com/dmitriyilchgmailcom), [@Primajin](https://github.com/Primajin) for giving the world BackstopJS version 2.0!
 - [Suresh Kumar. M](https://github.com/garris/BackstopJS/commits/master?author=nobso) for help on the 1.3.2 release
 - [Klaus Bayrhammer](https://github.com/klausbayrhammer) for all the incredible effort leading up to 1.0 -- the cli reports and compatibility fixes are awesome!
 - [Evan Lovely](https://github.com/EvanLovely) and [Klaus Bayrhammer](https://github.com/klausbayrhammer) for help on the 0.9.0 release
