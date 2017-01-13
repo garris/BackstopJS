@@ -263,15 +263,16 @@ scenarios: [
 
 By default `backstop.reference` will first remove all files in your reference directory then generate screenshots of all selectors specified in your config file.
 
-If you need to update references (or test) _for just one scenario_ you can do so by invoking BackstopJS with the `--filter` argument...
-```
-$ backstop reference --filter=<scenario.label>
-```
-
-Aleternatively, if you don't want BackstopJS do first delete all files in your reference directory you can enable the `incremental` flag.
+If you don't want BackstopJS do first delete all files in your reference directory you can enable the `incremental` flag.
 ```
 $ backstop reference --i
 ```
+
+If you need to run references or tests **only for _specific_ scenarios** you can do so by invoking BackstopJS with the `--filter` argument. (takes a regEx string)
+```
+$ backstop reference --i --filter=<scenario.label>
+```
+
 
 
 
