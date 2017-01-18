@@ -42,6 +42,10 @@ function writeBrowserReport (config, reporter) {
       }
     }
 
+    if (config.expect) {
+      reporter.expect = config.expect;
+    }
+
     var jsonp = 'report(' + JSON.stringify(reporter, null, 2) + ');';
     return fs.writeFile(toAbsolute(config.compareConfigFileName), jsonp).then(function () {
       logger.log('Copied configuration to: ' + toAbsolute(config.compareConfigFileName));
@@ -96,13 +100,20 @@ module.exports = {
   execute: function (config) {
     return compare(config).then(function (report) {
       var failed = report.failed();
-      var passTag = '\x1b[32m', failTag = '\x1b[31m';
+      var passed = report.passed();
+      var total = passed + failed;
+      var matchedExpected = (typeof config.expect === 'undefined' || total === config.expect);
+      var passTag = '\x1b[32m';
+      var failTag = '\x1b[31m';
       logger.log('\nTest completed...');
-      logger.log(passTag + report.passed() + ' Passed' + '\x1b[0m');
+      if (config.expect) {
+        logger.log((!matchedExpected ? failTag : passTag) + total + '/' + config.expect + ' tests' + '\x1b[0m');
+      }
+      logger.log(passTag + passed + ' Passed' + '\x1b[0m');
       logger.log((failed ? failTag : passTag) + failed + ' Failed\n' + '\x1b[0m');
 
       return writeReport(config, report).then(function () {
-        if (failed) {
+        if (failed || !matchedExpected) {
           logger.error('*** Mismatch errors found ***');
           logger.log('For a detailed report run `backstop openReport`\n');
           throw new Error('Mismatch errors found.');

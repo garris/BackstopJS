@@ -22,8 +22,11 @@
   <h1>{{name}} Report</h1>
   <div class="summaryBlock">
     <h3 class="statContainer">
-            <span class="stat">Passed <span class='label label-success'>{{passedCount}}</span>&nbsp;&nbsp; Failed <span
-                    class='label label-danger'>{{testPairs.length-passedCount}}</span></span>
+      <span class="stat">
+        Passed <span class='label label-success'>{{passedCount}}</span>&nbsp;&nbsp;
+        Failed <span class='label label-danger'>{{testPairs.length-passedCount}}</span>
+      </span>
+      <span class="stat" ng-if="expect">Expected <span ng-class="{'label': true, 'label-danger': expect!=testPairs.length, 'label-success':expect==testPairs.length}">{{expect}}</span>&nbsp;&nbsp;</span>
       <span class="stat">{{testDuration/1000 | number : 2}}s</span>
     </h3>
     <button class="btn btn-default summaryListButton" type="button" class="btn btn-default" ng-click="isSummaryListCollapsed = !isSummaryListCollapsed">

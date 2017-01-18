@@ -16,7 +16,7 @@ BackstopJS automates visual regression testing of your responsive web UI by comp
 - Use as a standalone global app, a standalone local npm script or import right into your node app.
 - Also plays nice with source control -- share your gold master with your team.
 
-## Upgrade to 2.0 for enhanced speed and new features! 
+## Upgrade to 2.0 for enhanced speed and new features!
 
 ```sh
 # install latest
@@ -95,8 +95,8 @@ To install locally, `cd` into your project directory and...
 $ npm install backstopjs
 ```
 ```js
-// This allows you to import BackstopJS into your node scripts!   
-// see #installing-backstopjs-locally 
+// This allows you to import BackstopJS into your node scripts!
+// see #installing-backstopjs-locally
 const backstop = require('backstopjs');
 ```
 
@@ -249,14 +249,33 @@ scenarios: [
   {
     "selectorExpansion": false,
     "selectors": [
-      ".aListOfStuff li:nth-of-type(1)"
-      ".aListOfStuff li:nth-of-type(2)"
+      ".aListOfStuff li:nth-of-type(1)",
+      ".aListOfStuff li:nth-of-type(2)",
       ".aListOfStuff li:nth-of-type(3)"
     ]
   }
 ]
 // Attempts to capture these three elements explicitly.
 ```
+
+#### Expecting a certain number of tests
+
+When working with selector expansion you might want to explicitly set the number of tests that you expect to run. Missing this number will fail the test even if all comparisons that are made do pass.
+
+```
+scenarios: [
+  {
+    "selectorExpansion": true,
+    "selectors": [
+      ".aListOfStuff li"
+    ],
+    "expect": 3
+  }
+]
+// Will fail if the number of tests is not 3
+```
+
+Note that you will have to set `expect` for every scenario you have if you choose to use it.
 
 
 ###Incremental scenario reference/testing (filtering)
@@ -314,7 +333,6 @@ In the following case, BackstopJS would wait for one second after the string `ba
   "delay": 1000 //delay in ms
 }
 ```
-
 
 ### Dealing with dynamic content
 
@@ -664,7 +682,7 @@ e.g.
   }
 ```
 
-###Tuning BackstopJS performance 
+###Tuning BackstopJS performance
 During a test, BackstopJS processes image comparisons in parallel. By default, this value is limited to 50. Used this way, BackstopJS can utilize available processor power while keeping RAM usage under control.
 
 This value can be adjusted as needed to increase/decrease the amount of RAM required during a test.
@@ -675,7 +693,7 @@ To adjust this value add the following to the root of your config...
 ```
 "asyncCompareLimit": 100
 // Would require 600MB to run tests.
-``` 
+```
 
 
 ##Troubleshooting
