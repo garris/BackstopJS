@@ -64,3 +64,11 @@ th{text-align: left;background: #ddd;padding: 10px;white-space: nowrap;}
 .btn-group {
   margin-bottom: 10px;
 }
+
+#showPairStats {
+  display: initial;
+}
+
+.control-label {
+  margin-right: 3ex;
+}
