@@ -11,7 +11,11 @@ function projectPath(config) {
 }
 
 function loadProjectConfig(command, options, config) {
-  var customConfigPath = options && (options.backstopConfigFilePath || options.configPath || options.config);
+  var customConfigPath = options && (options.backstopConfigFilePath || options.configPath);
+
+  if(options && typeof options.config === "string"){
+      customConfigPath = options.config;
+  }
   if (customConfigPath) {
     if (path.isAbsolute(customConfigPath)) {
       config.backstopConfigFileName = customConfigPath;
@@ -24,7 +28,10 @@ function loadProjectConfig(command, options, config) {
 
   var userConfig = {};
   var CMD_REQUIRES_CONFIG = command !== 'genConfig';
-  if (CMD_REQUIRES_CONFIG && config.backstopConfigFileName) {
+    if(options && typeof options.config === 'object') {
+      console.log('BackstopJS uses a passed object as config');
+      userConfig = options.config;
+    } else if (CMD_REQUIRES_CONFIG && config.backstopConfigFileName) {
     try {
       console.log('BackstopJS loading config: ', config.backstopConfigFileName, '\n');
       userConfig = require(config.backstopConfigFileName);
