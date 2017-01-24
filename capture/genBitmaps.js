@@ -3,12 +3,29 @@ var DOCUMENT_SELECTOR = 'document';
 
 var fs = require('fs');
 var cwd = fs.workingDirectory;
+var system = require('system');
+var args = system.args;
+var val, index, captureConfigFileName;
+if (args.length !== 1) {
+  args.forEach(function (arg, i) {
+    arg = arg.split('--');
+    if (arg[1]) {
+      arg = arg[1].split('=');
+      val = arg[1];
+      index = arg[0];
+      if (index === 'captureConfigFileName') {
+        captureConfigFileName = val;
+      }
+    }
+  });
+}
+
 var scriptName = fs.absolute(require('system').args[3]);
 var __dirname = scriptName.substring(0, scriptName.lastIndexOf('/'));
 
 var selectorNotFoundPath = __dirname + '/resources/selectorNotFound_noun_164558_cc.png';
 var hiddenSelectorPath = __dirname + '/resources/hiddenSelector_noun_63405.png';
-var genConfigPath = __dirname + '/config.json'; // TODO :: find a way to use that directly from the main configuration
+var genConfigPath = captureConfigFileName; // TODO :: find a way to use that directly from the main configuration
 
 var config = require(genConfigPath);
 if (!config.paths) {

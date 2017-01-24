@@ -59,7 +59,8 @@ function writeBrowserReport (config, reporter) {
 
 function writeJunitReport (config, reporter) {
   logger.log('Writing jUnit Report');
-  var testReportFileName = config.ciReport.testReportFileName.replace(/\.xml$/, '') + '.xml';
+  var testReportFilename = config.testReportFileName || config.ciReport.testReportFileName;
+  testReportFileName = testReportFilename.replace(/\.xml$/, '') + '.xml';
 
   var testSuite = junitWriter.addTestsuite(reporter.testSuite);
 
