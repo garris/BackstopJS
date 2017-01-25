@@ -24,7 +24,7 @@ function storeFailedDiffImage (testPath, data) {
   }
 
   if (ext === 'jpg' || ext === 'jpeg') {
-    fs.writeFileSync(failedDiffFilename, data.getDiffImageAsJPEG());
+    fs.writeFileSync(failedDiffFilename, data.getDiffImageAsJPEG(85));
     return Promise.resolve(failedDiffFilename);
   }
 }

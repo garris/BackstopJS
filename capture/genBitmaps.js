@@ -15,7 +15,7 @@ if (!config.paths) {
   config.paths = {};
 }
 
-var outputFormat = (config.outputFormat && /^jpg$|^jpeg$/i.test(config.outputFormat)) ? '.' + config.outputFormat : '.png';
+var outputFormat = "." + (config.outputFormat && config.outputFormat.match(/jpg|jpeg/) || 'png');
 var bitmapsReferencePath = config.paths.bitmaps_reference || 'bitmaps_reference';
 var bitmapsTestPath = config.paths.bitmaps_test || 'bitmaps_test';
 var casperScriptsPath = config.paths.casper_scripts || null;
