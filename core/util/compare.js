@@ -2,7 +2,7 @@ var resemble = require('node-resemble-js');
 var path = require('path');
 var map = require('bluebird').map;
 
-var fs = require('./fs');
+var fs = require('fs');
 var streamToPromise = require('./streamToPromise');
 var Reporter = require('./Reporter');
 var logger = require('./logger')('compare');
@@ -14,11 +14,19 @@ function storeFailedDiffImage (testPath, data) {
   console.log('   See:', failedDiffFilename);
 
   var failedDiffStream = fs.createWriteStream(failedDiffFilename);
-  var storageStream = data.getDiffImage()
-    .pack()
-    .pipe(failedDiffStream);
+  var ext = failedDiffFilename.substring(failedDiffFilename.lastIndexOf('.') + 1);
 
-  return streamToPromise(storageStream, failedDiffFilename);
+  if (ext === 'png') {
+    var storageStream = data.getDiffImage()
+        .pack()
+        .pipe(failedDiffStream);
+    return streamToPromise(storageStream, failedDiffFilename);
+  }
+
+  if (ext === 'jpg' || ext === 'jpeg') {
+    fs.writeFileSync(failedDiffFilename, data.getDiffImageAsJPEG(85));
+    return Promise.resolve(failedDiffFilename);
+  }
 }
 
 function getFailedDiffFilename (testPath) {
