@@ -42,7 +42,7 @@
     "junitwriter": "~0.3.1",
     "lodash.map": "^4.6.0",
     "minimist": "^1.2.0",
-    "node-resemble-js": "^0.1.1",
+    "node-resemble-js": "^0.2.0",
     "open": "0.0.5",
     "phantomjs-prebuilt": "^2.1.7",
     "temp": "^0.8.3"
