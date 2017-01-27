@@ -28,3 +28,4 @@ compare/bower_components/**/.*
 /backstop_data/html_report/
 compare/config.js
 capture/config.json
+/examples/nodeIntegration/backstop_data/
