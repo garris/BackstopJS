@@ -1,0 +1,22 @@
+{
+  "name": "node-integration",
+  "version": "1.0.0",
+  "description": "A simple example of using BackstopJS with NodeJS and passing the config some parameters",
+  "main": "backstop.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "backstopjs",
+    "regression testing"
+  ],
+  "author": "Alex Bondarev",
+  "license": "ISC",
+  "devDependencies": {
+    "backstopjs": "^2.3.7",
+    "koa": "^1.2.4",
+    "koa-serve": "^0.1.7",
+    "lodash": "^4.17.4",
+    "yargs": "^6.6.0"
+  }
+}
