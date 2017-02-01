@@ -118,7 +118,7 @@ From your projects's directory ...
 $ backstop genConfig
 ```
 
-By default, `genConfig` will put `backstop.json` at your current working path -- *if you're not sure where this is, run `echo $(pad)`, that's your current path*. Also by default, a `backstop_data` directory will be created at this same location.
+By default, `genConfig` will put `backstop.json` at your current working path -- *if you're not sure where this is, run `echo $(pwd)`, that's your current path*. Also by default, a `backstop_data` directory will be created at this same location.
 
 The location of the `backstop.json` file as well as all resource directories can be specified -- see [Setting the config file path](#setting-the-config-file-path-version-090) below.
 
