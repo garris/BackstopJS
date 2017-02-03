@@ -612,6 +612,39 @@ backstop('test')
 backstop('test', {config:'custom/backstop/config.json'});
 ```
 
+##### You can pass a config object directly
+
+```
+backstop('test', {
+    config: {
+        id: "foo",
+        scenarios: [
+            //some scenarios here
+        ]
+    }
+});
+```
+
+It can also be useful if you want to pass the config some parameters and return a JS object.
+
+```
+backstop('test', {
+    config: require("./backstop.config.js")({
+        "foo": "bar"
+    })
+});
+```
+
+Inside of `backstop.config.js` we export a function that returns the configuration object
+
+```
+module.exports = options => {
+    return {
+        //you can access options.foo here
+    }
+}
+```
+
 Since the backstop runner returns promises it can easily be integrated in build systems like gulp
 ```js
 const gulp = require('gulp');
