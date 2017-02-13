@@ -24,7 +24,6 @@
     <h3 class="statContainer">
             <span class="stat">Passed <span class='label label-success'>{{passedCount}}</span>&nbsp;&nbsp; Failed <span
                     class='label label-danger'>{{testPairs.length-passedCount}}</span></span>
-      <span class="stat">{{testDuration/1000 | number : 2}}s</span>
     </h3>
     <button class="btn btn-default summaryListButton" type="button" class="btn btn-default" ng-click="isSummaryListCollapsed = !isSummaryListCollapsed">
       <span ng-if="!isSummaryListCollapsed">Collapse Summary List</span>
@@ -45,8 +44,12 @@
   </div> <!-- end summaryBlock -->
 
   <div class='filterGroup form-group'>
-    <label for="statusFilter" class="control-label">status filter</label>
-    <select id="statusFilter" class="form-control" ng-model="statusFilter" ng-options="status for status in detailFilterOptions"></select>
+    <label for="statusFilter" class="control-label statusFilter">status filter
+      <select id="statusFilter" class="form-control" ng-model="statusFilter" ng-options="status for status in detailFilterOptions"></select>
+    </label>
+    <label for="showPairStats" class="control-label showPairStats">show stats
+      <input id="showPairStats" type="checkbox" ng-model="showPairStats" />
+    </label>
   </div> <!-- end filterGroup -->
 
   <div class="results" ng-repeat="thisTestPair in testPairs | filter : displayOnStatusFilter">
@@ -61,7 +64,7 @@
       <div>Reference</div>
       <div>Test</div>
       <div ng-if="!thisTestPair.passed">Diff</div>
-      <div>Report</div>
+      <div ng-if="showPairStats">Report</div>
     </div>
     <div class="flex-container">
       <div>
@@ -73,7 +76,7 @@
       <div ng-if="!thisTestPair.passed">
         <img ng-src="{{ thisTestPair.c.src }}" image-name="c" alt="Difference" />
       </div>
-      <div>
+      <div ng-if="showPairStats">
         <div class="statusInds">
           <div class="indicator failed" ng-if="!thisTestPair.passed"><span class="dot red"></span>failed</div>
           <div class="indicator passed" ng-if="thisTestPair.passed"><span class="dot green"></span>passed</div>

@@ -29,6 +29,7 @@ compareApp.controller('MainCtrl', ['$scope', '$uibModal', 'clipboard', function 
   $scope.testDuration = 0;
   $scope.testIsRunning = true;
   $scope.isSummaryListCollapsed = true;
+  $scope.showPairStats = false;
 
   if (!clipboard.supported) {
     $scope.alerts.push({type: 'danger', msg: 'Sorry, copy to clipboard is not supported'});

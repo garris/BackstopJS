@@ -118,7 +118,7 @@ From your projects's directory ...
 $ backstop genConfig
 ```
 
-By default, `genConfig` will put `backstop.json` at your current working path -- *if you're not sure where this is, run `echo $(pad)`, that's your current path*. Also by default, a `backstop_data` directory will be created at this same location.
+By default, `genConfig` will put `backstop.json` at your current working path -- *if you're not sure where this is, run `echo $(pwd)`, that's your current path*. Also by default, a `backstop_data` directory will be created at this same location.
 
 The location of the `backstop.json` file as well as all resource directories can be specified -- see [Setting the config file path](#setting-the-config-file-path-version-090) below.
 
@@ -264,15 +264,16 @@ scenarios: [
 
 By default `backstop.reference` will first remove all files in your reference directory then generate screenshots of all selectors specified in your config file.
 
-If you need to update references (or test) _for just one scenario_ you can do so by invoking BackstopJS with the `--filter` argument...
-```
-$ backstop reference --filter=<scenario.label>
-```
-
-Aleternatively, if you don't want BackstopJS do first delete all files in your reference directory you can enable the `incremental` flag.
+If you don't want BackstopJS do first delete all files in your reference directory you can enable the `incremental` flag.
 ```
 $ backstop reference --i
 ```
+
+If you need to run references or tests **only for _specific_ scenarios** you can do so by invoking BackstopJS with the `--filter` argument. (takes a regEx string)
+```
+$ backstop reference --i --filter=<scenario.label>
+```
+
 
 
 

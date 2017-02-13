@@ -8,18 +8,10 @@ var logger = require('./logger')('createBitmaps');
 
 var GENERATE_BITMAPS_SCRIPT = 'capture/genBitmaps.js';
 
-function includes (string, search, start) {
-  if (typeof start !== 'number') {
-    start = 0;
-  }
-
-  if (start + search.length > this.length) {
-    return false;
-  } else {
-    return string.indexOf(search, start) !== -1;
-  }
+function regexTest (string, search) {
+  var re = new RegExp(search);
+  return re.test(string);
 }
-
 
 /**
  * Utility for generating a temporary config file required by GENERATE_BITMAPS_SCRIPT.
@@ -41,7 +33,7 @@ function writeReferenceCreateConfig (config, isReference) {
 
     config.args.filter.split(',').forEach(function (filteredTest) {
       each(configJSON.scenarios, function (scenario) {
-        if (includes(scenario.label, filteredTest)) {
+        if (regexTest(scenario.label, filteredTest)) {
           scenarii.push(scenario);
         }
       });
