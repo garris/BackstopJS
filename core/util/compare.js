@@ -1,6 +1,6 @@
 var resemble = require('node-resemble-js');
 var path = require('path');
-var map = require('bluebird').map;
+var map = require('p-map');
 
 var fs = require('fs');
 var streamToPromise = require('./streamToPromise');
@@ -37,18 +37,17 @@ function getFailedDiffFilename (testPath) {
 function compareImage (referencePath, testPath, resembleOutputSettings) {
   return new Promise(function (resolve, reject) {
     if (!fs.existsSync(referencePath)) {
-      reject('Reference image not found: ' + referencePath);
+      // Returning the error as a "resolve" so all errors can be caught instead of just the first one
+      return resolve(new Error('Reference image not found: ' + referencePath));
     }
 
     if (!fs.existsSync(testPath)) {
-      reject('Test image not found: ' + testPath);
+      // Returning the error as a "resolve" so all errors can be caught instead of just the first one
+      return resolve(new Error('Test image not found: ' + testPath));
     }
 
     resemble.outputSettings(resembleOutputSettings || {});
-    resemble(referencePath).compareTo(testPath)
-      .onComplete(function (data) {
-        resolve(data);
-      });
+    resemble(referencePath).compareTo(testPath).onComplete(resolve);
   });
 }
 
@@ -77,7 +76,13 @@ module.exports = function (config) {
         }
 
         Test.status = 'fail';
-        logger.error('ERROR { size: ' + (data.isSameDimensions ? 'ok' : 'isDifferent') + ', content: ' + data.misMatchPercentage + '%, threshold: ' + pair.misMatchThreshold + '% }: ' + pair.label + ' ' + pair.fileName);
+        if (data instanceof Error) {
+          logger.error('ERROR ' + data.message + ': ' + pair.label + ' ' + pair.fileName);
+          pair.error = data;
+          return pair;
+        } else {
+          logger.error('ERROR { size: ' + (data.isSameDimensions ? 'ok' : 'isDifferent') + ', content: ' + data.misMatchPercentage + '%, threshold: ' + pair.misMatchThreshold + '% }: ' + pair.label + ' ' + pair.fileName);
+        }
 
         return storeFailedDiffImage(testPath, data).then(function (compare) {
           pair.diffImage = compare;
@@ -89,5 +94,7 @@ module.exports = function (config) {
       });
   }, { concurrency: config.asyncCompareLimit || ASYNC_COMPARE_LIMIT }).then(function () {
     return report;
+  }, function(e) {
+    logger.error("The comparison failed with error: " + e);
   });
 };

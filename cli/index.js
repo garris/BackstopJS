@@ -45,4 +45,9 @@ if (!commandName) {
   process.on('exit', function () {
     process.exit(exitCode);
   });
+
+  process.on('uncaughtException', function(err) {
+    console.log("Uncaught exception:", err.message, err.stack);
+    throw err;
+  });
 }
