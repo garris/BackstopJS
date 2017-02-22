@@ -52,7 +52,7 @@ function ci (config, userConfig) {
 
 function htmlReport (config, userConfig) {
   config.html_report = path.join(config.projectPath, 'backstop_data', 'html_report');
-  config.openReport = userConfig.openReport || true;
+  config.openReport = userConfig.openReport === undefined ? true : userConfig.openReport;
 
   if (userConfig.paths) {
     config.html_report = userConfig.paths.html_report || config.html_report;
