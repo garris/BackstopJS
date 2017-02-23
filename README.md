@@ -118,7 +118,7 @@ From your projects's directory ...
 $ backstop genConfig
 ```
 
-By default, `genConfig` will put `backstop.json` at your current working path -- *if you're not sure where this is, run `echo $(pwd)`, that's your current path*. Also by default, a `backstop_data` directory will be created at this same location.
+By default, `genConfig` will put `backstop.json` at your current working path -- *if you're not sure where this is, run `echo $(pad)`, that's your current path*. Also by default, a `backstop_data` directory will be created at this same location.
 
 The location of the `backstop.json` file as well as all resource directories can be specified -- see [Setting the config file path](#setting-the-config-file-path-version-090) below.
 
@@ -197,6 +197,7 @@ As a new user setting up tests for your project, you will be primarily concerned
 - **`scenarios[n].label`** – Required. Used for screenshot naming.
 - **`scenarios[n].url`** – Required. Tells BackstopJS what endpoint/document you want to test.  This can be an absolute URL or local to your current working directory.
 - **`scenarios[n].selectors`** – An array of CSS selector strings enabling you specify what part of your DOM you want to test.  The default value is `document`, which will attempt to capture your entire layout.
+- **`engine`** - by default is phantomjs, but you can set it to chrome to use webdriverio
 
 
 ###Creating or updating reference bitmaps
@@ -282,7 +283,7 @@ It is very common for client-side web apps is to initially download a small chun
 
 The problem testing these scenarios is knowing _when_ to take the screenshot.  BackstopJS solves this problem with two config properties: `readyEvent` and `delay`.
 
-**NOTE: Advanced options also include very cool CasperJS features like waitForSelector() and waitUntilVisible() – see [adding custom CasperJS scripts](https://github.com/garris/BackstopJS#running-custom-casperjs-scripts) for more info...**
+**NOTE: Advanced options also include very cool CasperJS features like waitForSelector() and waitUntilVisible() – see [adding custom CasperJS scripts](https://github.com/garris/BackstopJS#running-custom-casperjs-scripts-version-080) for more info...**
 
 ####Trigger screen capture via console.log()
 
@@ -326,7 +327,7 @@ That said, for a use case where you are testing a DOM with say an ad banner or a
 
 ```json
   "hideSelectors": [
-	"#someFixedSizeDomSelector"
+  "#someFixedSizeDomSelector"
 ]
 ```
 
@@ -610,39 +611,6 @@ backstop('test')
 
 // pass options to the command
 backstop('test', {config:'custom/backstop/config.json'});
-```
-
-##### You can pass a config object directly
-
-```
-backstop('test', {
-    config: {
-        id: "foo",
-        scenarios: [
-            //some scenarios here
-        ]
-    }
-});
-```
-
-It can also be useful if you want to pass the config some parameters and return a JS object.
-
-```
-backstop('test', {
-    config: require("./backstop.config.js")({
-        "foo": "bar"
-    })
-});
-```
-
-Inside of `backstop.config.js` we export a function that returns the configuration object
-
-```
-module.exports = options => {
-    return {
-        //you can access options.foo here
-    }
-}
 ```
 
 Since the backstop runner returns promises it can easily be integrated in build systems like gulp
