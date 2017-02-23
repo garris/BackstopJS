@@ -59,8 +59,7 @@ function writeBrowserReport (config, reporter) {
 
 function writeJunitReport (config, reporter) {
   logger.log('Writing jUnit Report');
-  var testReportFilename = config.testReportFileName || config.ciReport.testReportFileName;
-  testReportFileName = testReportFilename.replace(/\.xml$/, '') + '.xml';
+  var testReportFileName = config.ciReport.testReportFileName.replace(/\.xml$/, '') + '.xml';
 
   var testSuite = junitWriter.addTestsuite(reporter.testSuite);
 
@@ -95,6 +94,9 @@ function writeJunitReport (config, reporter) {
 
 module.exports = {
   execute: function (config) {
+
+    // console.log("run compare with config", config);
+
     return compare(config).then(function (report) {
       var failed = report.failed();
       var passTag = '\x1b[32m', failTag = '\x1b[31m';
