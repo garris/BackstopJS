@@ -3,6 +3,7 @@ var path = require('path');
 var fs = require('./fs');
 var each = require('./each');
 var runCasper = require('./runCasper');
+var runWebdriverio = require('./runWebdriverio');
 
 var logger = require('./logger')('createBitmaps');
 
@@ -19,14 +20,8 @@ function regexTest (string, search) {
  * @isReference  {Boolean}  True if running reference flow.
  * @return {Promise}        Resolves when fs.writeFile has completed.
  */
-function writeReferenceCreateConfig (config, isReference) {
-    var configJSON;
-
-    if( typeof config.args.config === "object" ) {
-        configJSON = config.args.config;
-    } else {
-        configJSON = require(config.backstopConfigFileName);
-    }
+ function writeReferenceCreateConfig (config, isReference) {
+  var configJSON = require(config.backstopConfigFileName);
 
   configJSON.isReference = isReference;
   configJSON.paths.tempCompareConfigFileName = config.tempCompareConfigFileName;
@@ -55,24 +50,31 @@ function writeReferenceCreateConfig (config, isReference) {
 module.exports = function (config, isReference) {
   return writeReferenceCreateConfig(config, isReference).then(function () {
     var tests = [path.join(config.backstop, GENERATE_BITMAPS_SCRIPT)];
-    var casperChild = runCasper(config, tests);
-
     return new Promise(function (resolve, reject) {
+      if(config.engine == "chrome") {
+
+        var casperChild =  runWebdriverio(config, tests);
+
+      } else {
+        var casperChild = runCasper(config, tests);
+      }
+
       casperChild.on('close', function (code) {
-        var success = code === 0; // Will be 1 in the event of failure
-        var result = (success) ? 'Bitmap file generation completed.' : 'Testing script failed with code: ' + code;
+          var success = code === 0; // Will be 1 in the event of failure
+          var result = (success) ? 'Bitmap file generation completed.' : 'Testing script failed with code: ' + code;
 
-        console.log('\n' + result);
+          console.log('\n' + result);
 
-        // exit if there was some kind of failure in the casperChild process
-        if (code !== 0) {
-          console.log('\nAn unexpected error occured. You may want to try setting the debug option to `true` in your config file.');
-          reject(new Error('An unexpected error occured. You may want to try setting the debug option to `true` in your config file.'));
-          return;
-        }
+          // exit if there was some kind of failure in the casperChild process
+          if (code !== 0) {
+            throw code;
+            console.log('\nAn unexpected error occured. You may want to try setting the debug option to `true` in your config file.');
+            reject(new Error('An unexpected error occured. You may want to try setting the debug option to `true` in your config file.'));
+            return;
+          }
 
-        resolve();
-      });
+          resolve();
+        });
     });
   });
 };
