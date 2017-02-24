@@ -19,17 +19,21 @@
 <div id="root" ng-controller="MainCtrl" class="container-fluid">
   <div uib-alert ng-repeat="alert in alerts" ng-class="'alert-' + alert.type"
        dismiss-on-timeout="2000" close="closeAlert($index)">{{alert.msg}}</div>
+
   <h1>{{name}} Report</h1>
-  <div class="summaryBlock">
-    <h3 class="statContainer">
-            <span class="stat">Passed <span class='label label-success'>{{passedCount}}</span>&nbsp;&nbsp; Failed <span
-                    class='label label-danger'>{{testPairs.length-passedCount}}</span></span>
-    </h3>
+
+  <h3 class="statContainer">
+    <span class="stat">Passed <span class='label label-success'>{{passedCount}}</span>&nbsp;&nbsp; Failed <span class='label label-danger'>{{testPairs.length-passedCount}}</span></span>
+  </h3>
+
+  <div class="no-print summaryControls">
     <button class="btn btn-default summaryListButton" type="button" class="btn btn-default" ng-click="isSummaryListCollapsed = !isSummaryListCollapsed">
-      <span ng-if="!isSummaryListCollapsed">Collapse Summary List</span>
-      <span ng-if="isSummaryListCollapsed">Expand Summary List</span>
+      <span ng-if="!isSummaryListCollapsed">Collapse Summary</span>
+      <span ng-if="isSummaryListCollapsed">Expand Summary</span>
     </button>
-    <button class="btn btn-default summaryListButton" type="button" class="btn btn-default" ng-click="copyFailedTestsIds()">Copy failed tests to clipboard</button>
+    <!-- <button class="btn btn-default summaryListButton" type="button" class="btn btn-default" ng-click="copyFailedTestsIds()">Copy failed tests to clipboard</button> -->
+  </div>
+  <div class="summaryBlock">
     <table class="summaryList" ng-class="{'hide' : isSummaryListCollapsed}">
       <tr ng-repeat="thisTestPair in testPairs">
         <td class="statusInds">
@@ -43,19 +47,19 @@
     </table>
   </div> <!-- end summaryBlock -->
 
-  <div class='filterGroup form-group'>
+  <div class='no-print filterGroup form-group'>
     <label for="statusFilter" class="control-label statusFilter">status filter
       <select id="statusFilter" class="form-control" ng-model="statusFilter" ng-options="status for status in detailFilterOptions"></select>
     </label>
     <label for="showPairStats" class="control-label showPairStats">show stats
-      <input id="showPairStats" type="checkbox" ng-model="showPairStats" />
+      <input id="showPairStats" type="checkbox" ng-model="showPairStats" class="showPairStats" />
     </label>
   </div> <!-- end filterGroup -->
 
   <div class="results" ng-repeat="thisTestPair in testPairs | filter : displayOnStatusFilter">
     <div class="flex-container">
       <div class="selector">{{ thisTestPair.meta.pair.label }} - {{ thisTestPair.meta.pair.selector }}
-        <button type="button" class="btn btn-default btn-sm"
+        <button type="button" class="btn btn-default btn-sm show-diff no-print"
                 ng-click="openModal('lg', thisTestPair.a.src, thisTestPair.b.src)">Show diff</button>
       </div>
       <div class="filename">{{ thisTestPair.meta.pair.fileName }}</div>
