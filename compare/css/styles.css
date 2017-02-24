@@ -65,10 +65,19 @@ th{text-align: left;background: #ddd;padding: 10px;white-space: nowrap;}
   margin-bottom: 10px;
 }
 
-#showPairStats {
+.showPairStats {
   display: initial;
+  width: auto;
 }
 
 .control-label {
   margin-right: 3ex;
 }
+
+@media print {
+  .no-print, .no-print *
+  {
+    display: none !important;
+  }
+}
+
