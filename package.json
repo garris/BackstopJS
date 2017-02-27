@@ -30,7 +30,7 @@
     "object-hash": "^1.1.5",
     "open": "0.0.5",
     "phantomjs-prebuilt": "^2.1.7",
-    "selenium-standalone": "^6.0.1",
+//    "selenium-standalone": "^6.0.1",
     "temp": "^0.8.3",
     "wdio-element-screenshot": "^1.0.4",
     "webdriverio": "^4.6.2"

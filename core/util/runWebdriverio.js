@@ -1,7 +1,7 @@
 var spawn = require('child_process').spawn;
 
 module.exports = function (config, tests) {
-  var seleniumChild = spawn("./node_modules/selenium-standalone/bin/selenium-standalone", ["start"], {cwd: config.projectPath + "/node_modules/ing-kit-visual-regression/tests/"})
+  var seleniumChild = spawn("./node_modules/selenium-standalone/bin/selenium-standalone", ["start"], {cwd: config.projectPath + "/node_modules/ing-kit-visual-regression-tests/"})
   var seleniumPrefix = 'Selenium: ';
   var prefix = 'WebdriverIO: ';
 
