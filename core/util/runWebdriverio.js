@@ -10,7 +10,7 @@ module.exports = function (config, tests) {
         // console.log("data", data)
         if(data.indexOf("Selenium started") !== -1) {
           console.log("starting webdriver...");
-          var casperChild = spawn("node", [tests[0].replace("genBitmaps", "genBitmapsWebdriver")], {cwd: config.projectPath});
+          var casperChild = spawn("node", [tests[0].replace("genBitmaps", "genBitmapsWebdriver"), config.backstopConfigFileName], {cwd: config.projectPath});
 
           casperChild.stdout.on('data', function (data) {
             console.log(prefix, data.toString().slice(0, -1).split('\n').join('\n' + prefix)); // Remove \n
