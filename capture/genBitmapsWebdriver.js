@@ -16,12 +16,14 @@ const args = process.argv;
 // var hiddenSelectorPath = __dirname + '/resources/hiddenSelector_noun_63405.png';
 var genConfigPath = args[2]; //__dirname + "/../config.json"; // TODO :: find a way to use that directly from the main configuration
 
+// console.log("genConfigPath", genConfigPath)
+
 const config = require(genConfigPath);
 if (!config.paths) {
     config.paths = {};
 }
 
-// console.log("config", config)
+console.log("config", config)
 
 const isReference = config.isReference;
 if (isReference) {
@@ -120,11 +122,10 @@ function processScenario(scenario, scenarioLabel, screenshotDateTime) {
                       console.log("counter >= l", counter, l)
                       if (counter >= l) {
                           client.end();
-                          complete();
-                          setTimeout(function () {
+                          complete(function () {
                               console.log("finished all screenshots");
                               process.exit();
-                          }, 500);
+                          });
                       }
                   });
                 
@@ -136,11 +137,17 @@ function processScenario(scenario, scenarioLabel, screenshotDateTime) {
     });
 }
 
-function complete() {
+function complete(cb) {
+    console.log("try to complete bitmaps", comparePairsFileName);
     // console.log("comparePairsFileName", comparePairsFileName)
     var compareConfigJSON = {compareConfig: compareConfig};
-    fs.writeFileSync(comparePairsFileName, JSON.stringify(compareConfigJSON, null, 2));
-    console.log('Comparison config file updated.');
+    fs.writeFile(comparePairsFileName, JSON.stringify(compareConfigJSON, null, 2), (err) => {
+        console.log("err", err)
+        if (err) throw err;
+        console.log('Comparison config file updated.');
+        cb();
+    });
+    
 }
 
 function pad(number) {
