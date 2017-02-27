@@ -73,9 +73,11 @@ $ npm install -g backstopjs
 
   - **Configure:** Specify URLs, screen sizes, DOM selectors, ready events, interactions etc. (see examples directory)
 
-  - **Reference:** Create a set of *reference* screenshots. BackstopJS will consider this your *source of truth*. (Update this whenever you want).
+  - **Reference:** Create a set of *reference* screenshots. BackstopJS will consider this your *source of truth*.
 
-  - **Test:** BackstopJS creates a set of *test* screenshots and compares them with your *reference* screenshots. Any unwanted/unforeseen changes show up in a nice report.
+  - **Test:** BackstopJS creates a set of *test* screenshots and compares them with your *reference* screenshots. Any changes show up in a visual report. (Run this after making CSS changes as many times as needed.)
+
+  -  **Approve:** Often changes are exactly what you want. Approving changes will update your reference files with the results from your last test.
 
 
 ##Getting started
@@ -220,7 +222,21 @@ This will create a new set of bitmaps in `bitmaps_test/<timestamp>/`
 
 Once the test bitmaps are generated, a report comparing the most recent test bitmaps against the current reference bitmaps will run.
 
-Significant differences will be detected and displayed in the browser report.
+Changes will be detected and displayed in the browser report and a summary will show up in your terminal.
+
+
+
+
+###Approving changes
+
+```sh
+$ backstop approve
+```
+
+This will copy bitmaps from your latest test into your reference directory.  Subsequent tests will be compared against your updated reference files.
+
+SEE: [filtering tests and references by scenario](#Filtering-tests-and-references-by-scenario) for a note on approving changes after running `backstop test` using the `--filter` argument.
+
 
 ##Using BackstopJS
 
@@ -259,18 +275,23 @@ scenarios: [
 ```
 
 
-###Incremental scenario reference/testing (filtering)
+###Filtering tests and references by scenario
+
+If you only want to run a subset of your BackstopJS tests you can do so by invoking BackstopJS with the `--filter` argument. `--filter` takes a regEx string and compares it against your scenario labels. Non-matching scenarios are ignored.
+```
+$ backstop reference --filter=<scenario.label>
+```
+
+Note: If you run `backstop approve` after running a filtered test -- only matching test bitmaps will be promoted to your reference directory.
+
+
+###Incremental reference updates
 
 By default `backstop.reference` will first remove all files in your reference directory then generate screenshots of all selectors specified in your config file.
 
 If you don't want BackstopJS do first delete all files in your reference directory you can enable the `incremental` flag.
 ```
 $ backstop reference --i
-```
-
-If you need to run references or tests **only for _specific_ scenarios** you can do so by invoking BackstopJS with the `--filter` argument. (takes a regEx string)
-```
-$ backstop reference --i --filter=<scenario.label>
 ```
 
 
