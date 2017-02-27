@@ -94,6 +94,25 @@ function capturePageSelectors (scenarios, viewports, bitmapsReferencePath, bitma
   });// end casper.each scenario
 }
 
+function getFilename(scenarioIndex, scenarioLabel, selectorIndex, selectorLabel, viewportIndex, viewportLabel) {
+  var fileName = fileNameTemplate
+    .replace(/\{configId\}/, configId)
+    .replace(/\{scenarioIndex\}/, scenarioIndex)
+    .replace(/\{scenarioLabel\}/, scenarioLabel)
+    .replace(/\{selectorIndex\}/, selectorIndex)
+    .replace(/\{selectorLabel\}/, selectorLabel)
+    .replace(/\{viewportIndex\}/, viewportIndex)
+    .replace(/\{viewportLabel\}/, makeSafe(viewportLabel))
+    .replace(/[^a-z0-9_\-]/gi, ''); // remove anything that's not a letter or a number or dash or underscore.
+
+  var extRegExp = new RegExp(outputFormat + '$', 'i');
+  if (!extRegExp.test(fileName)) {
+    fileName = fileName + outputFormat;
+  }
+
+  return fileName;
+}
+
 function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabel, viewports, bitmapsReferencePath, bitmapsTestPath, screenshotDateTime) {
   var scriptTimeout = 20000;
 
@@ -235,24 +254,10 @@ function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabe
 
       scenario.selectorsExpanded.forEach(function (o, i, a) {
         var cleanedSelectorName = o.replace(/[^a-z0-9_\-]/gi, ''); // remove anything that's not a letter or a number
-        var switchedScenarioOrVariantLabel = (isReference) ? scenarioLabel : scenarioOrVariantLabel;
 
-        var fileName = fileNameTemplate
-          .replace(/\{configId\}/, configId)
-          .replace(/\{scenarioIndex\}/, scenario.sIndex)
-          .replace(/\{scenarioLabel\}/, switchedScenarioOrVariantLabel) // derrived from scenario.label & variant.label
-          .replace(/\{selectorIndex\}/, i)
-          .replace(/\{selectorLabel\}/, cleanedSelectorName)
-          .replace(/\{viewportIndex\}/, viewportIndex)
-          .replace(/\{viewportLabel\}/, makeSafe(vp.name))
-          .replace(/[^a-z0-9_\-]/gi, ''); // remove anything that's not a letter or a number or dash or underscore.
+        var fileName = getFilename(scenario.sIndex, scenarioOrVariantLabel, i, cleanedSelectorName, viewportIndex, vp.name);
 
-        var extRegExp = new RegExp(outputFormat + '$', 'i');
-        if (!extRegExp.test(fileName)) {
-          fileName = fileName + outputFormat;
-        }
-
-        var referenceFilePath = bitmapsReferencePath + '/' + fileName;
+        var referenceFilePath = bitmapsReferencePath + '/' + getFilename(scenario.sIndex, scenarioLabel, i, cleanedSelectorName, viewportIndex, vp.name);
         var testFilePath = bitmapsTestPath + '/' + screenshotDateTime + '/' + fileName;
 
         var filePath = (isReference) ? referenceFilePath : testFilePath;
