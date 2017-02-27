@@ -16,7 +16,7 @@ module.exports = {
           if (FAILED_DIFF_RE.test(file)) {
             return true;
           }
-          console.log("Copy > ", file));
+          console.log("Approved > " + file);
           return fs.copy(path.join(src, file), path.join(config.bitmaps_reference, file))
         })
       });
