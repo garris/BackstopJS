@@ -65,10 +65,10 @@
       <div class="filename">{{ thisTestPair.meta.pair.fileName }}</div>
     </div>
     <div class="flex-container small">
-      <div>Reference</div>
-      <div>Test</div>
-      <div ng-if="!thisTestPair.passed">Diff</div>
-      <div ng-if="showPairStats">Report</div>
+      <div class="asset-heading">REFERENCE</div>
+      <div class="asset-heading">TEST</div>
+      <div ng-if="!thisTestPair.passed" class="asset-heading">DIFF</div>
+      <div ng-if="showPairStats" class="asset-heading">REPORT</div>
     </div>
     <div class="flex-container">
       <div>
