@@ -9,14 +9,7 @@ const exec = require('child_process').exec;
 
 const args = process.argv;
 
-// var scriptName = __filename; //fs.absolute(require('system').args[3]);
-//  __dirname = __dirname; //scriptName.substring(0, scriptName.lastIndexOf('/'));
-
-// var selectorNotFoundPath = __dirname + '/resources/selectorNotFound_noun_164558_cc.png';
-// var hiddenSelectorPath = __dirname + '/resources/hiddenSelector_noun_63405.png';
-var genConfigPath = args[2]; //__dirname + "/../config.json"; // TODO :: find a way to use that directly from the main configuration
-
-// console.log("genConfigPath", genConfigPath)
+var genConfigPath = args[2];
 
 const config = require(genConfigPath);
 if (!config.paths) {
@@ -111,28 +104,26 @@ function processScenario(scenario, scenarioLabel, screenshotDateTime) {
                         label            : scenario.label,
                         misMatchThreshold: scenario.misMatchThreshold || config.misMatchThreshold || config.defaultMisMatchThreshold
                     });
-                    
                 }
                 
-                console.log("saving screenshot at", selector, path.resolve(__dirname + "/../../../" + filePath));
+                // console.log("saving screenshot at", selector, path.resolve(__dirname + "/../../../" + filePath));
                 
-                client.saveElementScreenshot(selector, path.resolve(__dirname + "/../../../" + filePath))
-                  .then(function () {
-                      counter++;
-                      console.log("counter >= l", counter, l)
-                      if (counter >= l) {
-                          client.end();
-                          complete(function () {
-                              console.log("finished all screenshots");
-                              process.exit();
-                          });
-                      }
-                  });
+                setTimeout(function () {
+                    client.saveElementScreenshot(selector, path.resolve(__dirname + "/../../../" + filePath))
+                      .then(function () {
+                          counter++;
+                          console.log("counter >= l", counter, l)
+                          if (counter >= l) {
+                              client.end();
+                              complete(function () {
+                                  console.log("finished all screenshots");
+                                  process.exit();
+                              });
+                          }
+                      });
+                }, 500);
                 
             });
-            
-            
-            // casper.echo('remote capture to > '+filePath,'info');
         });// end topLevelModules.forEach
     });
 }
