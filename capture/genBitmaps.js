@@ -266,13 +266,23 @@ function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabe
             selector: o,
             fileName: fileName,
             label: scenario.label,
-            misMatchThreshold: scenario.misMatchThreshold || config.misMatchThreshold || config.defaultMisMatchThreshold
+            misMatchThreshold: getMisMatchThreshHold(scenario)
           });
         }
         // casper.echo('remote capture to > '+filePath,'info');
       });// end topLevelModules.forEach
     });
   });// end casper.each viewports
+}
+
+function getMisMatchThreshHold(scenario) {
+  if (typeof scenario.misMatchThreshold != 'undefined')
+    return scenario.misMatchThreshold;
+
+  if (typeof config.misMatchThreshold != 'undefined')
+    return config.misMatchThreshold;
+
+  return config.defaultMisMatchThreshold
 }
 
 function captureScreenshot (casper, filePath, selector) {
