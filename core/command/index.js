@@ -16,7 +16,8 @@ var commandNames = [
   'openReport',
   'reference',
   'report',
-  'test'
+  'test',
+  'approve'
 ];
 
 /* Commands that are only exposed to higher levels */
@@ -24,7 +25,8 @@ var exposedCommandNames = [
   'genConfig',
   'reference',
   'test',
-  'openReport'
+  'openReport',
+  'approve'
 ];
 
 /* Used to convert an array of objects {name, execute} to a unique object {[name]: execute} */
