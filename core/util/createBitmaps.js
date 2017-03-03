@@ -20,7 +20,13 @@ function regexTest (string, search) {
  * @return {Promise}        Resolves when fs.writeFile has completed.
  */
 function writeReferenceCreateConfig (config, isReference) {
-  var configJSON = require(config.backstopConfigFileName);
+    var configJSON;
+
+    if( typeof config.args.config === "object" ) {
+        configJSON = config.args.config;
+    } else {
+        configJSON = require(config.backstopConfigFileName);
+    }
 
   configJSON.isReference = isReference;
   configJSON.paths.tempCompareConfigFileName = config.tempCompareConfigFileName;

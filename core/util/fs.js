@@ -3,6 +3,7 @@ var fsExtra = require('fs-extra');
 var promisify = require('./promisify');
 
 var fsPromisified = {
+  readdir: promisify(fs.readdir),
   createWriteStream: fs.createWriteStream,
   existsSync: fs.existsSync,
   readFile: promisify(fs.readFile),

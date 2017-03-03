@@ -3,18 +3,36 @@ var DOCUMENT_SELECTOR = 'document';
 
 var fs = require('fs');
 var cwd = fs.workingDirectory;
+var system = require('system');
+var args = system.args;
+var val, index, captureConfigFileName;
+if (args.length !== 1) {
+  args.forEach(function (arg, i) {
+    arg = arg.split('--');
+    if (arg[1]) {
+      arg = arg[1].split('=');
+      val = arg[1];
+      index = arg[0];
+      if (index === 'captureConfigFileName') {
+        captureConfigFileName = val;
+      }
+    }
+  });
+}
+
 var scriptName = fs.absolute(require('system').args[3]);
 var __dirname = scriptName.substring(0, scriptName.lastIndexOf('/'));
 
 var selectorNotFoundPath = __dirname + '/resources/selectorNotFound_noun_164558_cc.png';
 var hiddenSelectorPath = __dirname + '/resources/hiddenSelector_noun_63405.png';
-var genConfigPath = __dirname + '/config.json'; // TODO :: find a way to use that directly from the main configuration
+var genConfigPath = captureConfigFileName; // TODO :: find a way to use that directly from the main configuration
 
 var config = require(genConfigPath);
 if (!config.paths) {
   config.paths = {};
 }
 
+var outputFormat = "." + (config.outputFormat && config.outputFormat.match(/jpg|jpeg/) || 'png');
 var bitmapsReferencePath = config.paths.bitmaps_reference || 'bitmaps_reference';
 var bitmapsTestPath = config.paths.bitmaps_test || 'bitmaps_test';
 var casperScriptsPath = config.paths.casper_scripts || null;
@@ -74,6 +92,25 @@ function capturePageSelectors (scenarios, viewports, bitmapsReferencePath, bitma
       });
     }
   });// end casper.each scenario
+}
+
+function getFilename(scenarioIndex, scenarioLabel, selectorIndex, selectorLabel, viewportIndex, viewportLabel) {
+  var fileName = fileNameTemplate
+    .replace(/\{configId\}/, configId)
+    .replace(/\{scenarioIndex\}/, scenarioIndex)
+    .replace(/\{scenarioLabel\}/, scenarioLabel)
+    .replace(/\{selectorIndex\}/, selectorIndex)
+    .replace(/\{selectorLabel\}/, selectorLabel)
+    .replace(/\{viewportIndex\}/, viewportIndex)
+    .replace(/\{viewportLabel\}/, makeSafe(viewportLabel))
+    .replace(/[^a-z0-9_\-]/gi, ''); // remove anything that's not a letter or a number or dash or underscore.
+
+  var extRegExp = new RegExp(outputFormat + '$', 'i');
+  if (!extRegExp.test(fileName)) {
+    fileName = fileName + outputFormat;
+  }
+
+  return fileName;
 }
 
 function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabel, viewports, bitmapsReferencePath, bitmapsTestPath, screenshotDateTime) {
@@ -217,23 +254,10 @@ function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabe
 
       scenario.selectorsExpanded.forEach(function (o, i, a) {
         var cleanedSelectorName = o.replace(/[^a-z0-9_\-]/gi, ''); // remove anything that's not a letter or a number
-        var switchedScenarioOrVariantLabel = (isReference) ? scenarioLabel : scenarioOrVariantLabel;
 
-        var fileName = fileNameTemplate
-          .replace(/\{configId\}/, configId)
-          .replace(/\{scenarioIndex\}/, scenario.sIndex)
-          .replace(/\{scenarioLabel\}/, switchedScenarioOrVariantLabel) // derrived from scenario.label & variant.label
-          .replace(/\{selectorIndex\}/, i)
-          .replace(/\{selectorLabel\}/, cleanedSelectorName)
-          .replace(/\{viewportIndex\}/, viewportIndex)
-          .replace(/\{viewportLabel\}/, makeSafe(vp.name))
-          .replace(/[^a-z0-9_\-]/gi, ''); // remove anything that's not a letter or a number or dash or underscore.
+        var fileName = getFilename(scenario.sIndex, scenarioOrVariantLabel, i, cleanedSelectorName, viewportIndex, vp.name);
 
-        if (!/\.png$/i.test(fileName)) {
-          fileName = fileName + '.png';
-        }
-
-        var referenceFilePath = bitmapsReferencePath + '/' + fileName;
+        var referenceFilePath = bitmapsReferencePath + '/' + getFilename(scenario.sIndex, scenarioLabel, i, cleanedSelectorName, viewportIndex, vp.name);
         var testFilePath = bitmapsTestPath + '/' + screenshotDateTime + '/' + fileName;
 
         var filePath = (isReference) ? referenceFilePath : testFilePath;
@@ -256,13 +280,23 @@ function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabe
             fileName: fileName,
             label: scenario.label,
             requireSameDimensions: requireSameDimensions,
-            misMatchThreshold: scenario.misMatchThreshold || config.misMatchThreshold || config.defaultMisMatchThreshold
+            misMatchThreshold: getMisMatchThreshHold(scenario)
           });
         }
         // casper.echo('remote capture to > '+filePath,'info');
       });// end topLevelModules.forEach
     });
   });// end casper.each viewports
+}
+
+function getMisMatchThreshHold(scenario) {
+  if (typeof scenario.misMatchThreshold != 'undefined')
+    return scenario.misMatchThreshold;
+
+  if (typeof config.misMatchThreshold != 'undefined')
+    return config.misMatchThreshold;
+
+  return config.defaultMisMatchThreshold
 }
 
 function captureScreenshot (casper, filePath, selector) {

@@ -73,9 +73,11 @@ $ npm install -g backstopjs
 
   - **Configure:** Specify URLs, screen sizes, DOM selectors, ready events, interactions etc. (see examples directory)
 
-  - **Reference:** Create a set of *reference* screenshots. BackstopJS will consider this your *source of truth*. (Update this whenever you want).
+  - **Reference:** Create a set of *reference* screenshots. BackstopJS will consider this your *source of truth*.
 
-  - **Test:** BackstopJS creates a set of *test* screenshots and compares them with your *reference* screenshots. Any unwanted/unforeseen changes show up in a nice report.
+  - **Test:** BackstopJS creates a set of *test* screenshots and compares them with your *reference* screenshots. Any changes show up in a visual report. (Run this after making CSS changes as many times as needed.)
+
+  -  **Approve:** Often changes are exactly what you want. Approving changes will update your reference files with the results from your last test.
 
 
 ##Getting started
@@ -221,7 +223,21 @@ This will create a new set of bitmaps in `bitmaps_test/<timestamp>/`
 
 Once the test bitmaps are generated, a report comparing the most recent test bitmaps against the current reference bitmaps will run.
 
-Significant differences will be detected and displayed in the browser report.
+Changes will be detected and displayed in the browser report and a summary will show up in your terminal.
+
+
+
+
+###Approving changes
+
+```sh
+$ backstop approve
+```
+
+This will copy bitmaps from your latest test into your reference directory.  Subsequent tests will be compared against your updated reference files.
+
+SEE: [filtering tests and references by scenario](#Filtering-tests-and-references-by-scenario) for a note on approving changes after running `backstop test` using the `--filter` argument.
+
 
 ##Using BackstopJS
 
@@ -260,18 +276,23 @@ scenarios: [
 ```
 
 
-###Incremental scenario reference/testing (filtering)
+###Filtering tests and references by scenario
+
+If you only want to run a subset of your BackstopJS tests you can do so by invoking BackstopJS with the `--filter` argument. `--filter` takes a regEx string and compares it against your scenario labels. Non-matching scenarios are ignored.
+```
+$ backstop reference --filter=<scenario.label>
+```
+
+Note: If you run `backstop approve` after running a filtered test -- only matching test bitmaps will be promoted to your reference directory.
+
+
+###Incremental reference updates
 
 By default `backstop.reference` will first remove all files in your reference directory then generate screenshots of all selectors specified in your config file.
 
 If you don't want BackstopJS do first delete all files in your reference directory you can enable the `incremental` flag.
 ```
 $ backstop reference --i
-```
-
-If you need to run references or tests **only for _specific_ scenarios** you can do so by invoking BackstopJS with the `--filter` argument. (takes a regEx string)
-```
-$ backstop reference --i --filter=<scenario.label>
 ```
 
 
@@ -283,7 +304,7 @@ It is very common for client-side web apps is to initially download a small chun
 
 The problem testing these scenarios is knowing _when_ to take the screenshot.  BackstopJS solves this problem with two config properties: `readyEvent` and `delay`.
 
-**NOTE: Advanced options also include very cool CasperJS features like waitForSelector() and waitUntilVisible() – see [adding custom CasperJS scripts](https://github.com/garris/BackstopJS#running-custom-casperjs-scripts-version-080) for more info...**
+**NOTE: Advanced options also include very cool CasperJS features like waitForSelector() and waitUntilVisible() – see [adding custom CasperJS scripts](https://github.com/garris/BackstopJS#running-custom-casperjs-scripts) for more info...**
 
 ####Trigger screen capture via console.log()
 
@@ -617,6 +638,39 @@ backstop('test')
 backstop('test', {config:'custom/backstop/config.json'});
 ```
 
+##### You can pass a config object directly
+
+```
+backstop('test', {
+    config: {
+        id: "foo",
+        scenarios: [
+            //some scenarios here
+        ]
+    }
+});
+```
+
+It can also be useful if you want to pass the config some parameters and return a JS object.
+
+```
+backstop('test', {
+    config: require("./backstop.config.js")({
+        "foo": "bar"
+    })
+});
+```
+
+Inside of `backstop.config.js` we export a function that returns the configuration object
+
+```
+module.exports = options => {
+    return {
+        //you can access options.foo here
+    }
+}
+```
+
 Since the backstop runner returns promises it can easily be integrated in build systems like gulp
 ```js
 const gulp = require('gulp');
@@ -756,7 +810,15 @@ BackstopJS was created by [Garris Shipon](expanded.me) during the [Art.com labs]
 ---
 
 ##Gratitude 💙㊗️🙇
-Many many thanks to [all the contributors](https://github.com/garris/BackstopJS/graphs/contributors) with special thanks to...
+Many many thanks to [all the contributors](https://github.com/garris/BackstopJS/graphs/contributors) with special thanks to our BackstopJS core contributors...
+
+Ongoing Reviews by:
+- [Steve Fischer](https://github.com/stevecfischer)
+- [uğur mirza zeyrek](mirzazeyrek)
+- [Sven Wütherich](svwu)
+
+Features by:
+- [Steve Fischer](https://github.com/stevecfischer), [uğur mirza zeyrek](mirzazeyrek), [Sven Wütherich](svwu), [Alex Bondarev](https://github.com/skip405) for concurrency support, JS config passing, JPEG support, CLI Auth support.
 - [Klaus Bayrhammer](https://github.com/klausbayrhammer) for making BackstopJS a "requireable" node module in 2.3.1
 - [Suresh Kumar. M](https://github.com/garris/BackstopJS/commits/master?author=nobso) for selector expansion in 1.3.2
 - [@JulienPradet](https://github.com/JulienPradet), [@onigoetz](https://github.com/onigoetz), [@borys-rudenko](https://github.com/borys-rudenko), [@ksushik](https://github.com/ksushik), [@dmitriyilchgmailcom](https://github.com/dmitriyilchgmailcom), [@Primajin](https://github.com/Primajin) for giving the world BackstopJS version 2.0!

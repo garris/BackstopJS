@@ -1,6 +1,8 @@
 var path = require('path');
+var chalk = require('chalk');
 var junitWriter = new (require('junitwriter'))();
 
+var allSettled = require('../util/allSettled');
 var fs = require('../util/fs');
 var logger = require('../util/logger')('report');
 var compare = require('../util/compare');
@@ -14,15 +16,12 @@ function writeReport (config, reporter) {
 
   promises.push(writeBrowserReport(config, reporter));
 
-  return Promise.all(promises);
+  return allSettled(promises);
 }
 
 function writeBrowserReport (config, reporter) {
   function toAbsolute (p) {
-    if (path.isAbsolute(p)) {
-      return p;
-    }
-    return path.join(config.projectPath, p);
+    return (path.isAbsolute(p))? p : path.join(config.projectPath, p);
   }
   logger.log('Writing browser report');
   return fs.copy(config.comparePath, toAbsolute(config.html_report)).then(function () {
@@ -59,7 +58,6 @@ function writeBrowserReport (config, reporter) {
 
 function writeJunitReport (config, reporter) {
   logger.log('Writing jUnit Report');
-  var testReportFileName = config.ciReport.testReportFileName.replace(/\.xml$/, '') + '.xml';
 
   var testSuite = junitWriter.addTestsuite(reporter.testSuite);
 
@@ -79,7 +77,9 @@ function writeJunitReport (config, reporter) {
   }
 
   return new Promise(function (resolve, reject) {
-    var destination = path.join(config.ci_report, testReportFileName);
+    var testReportFilename = config.testReportFileName || config.ciReport.testReportFileName;
+    testReportFilename = testReportFilename.replace(/\.xml$/, '') + '.xml';
+    var destination = path.join(config.ci_report, testReportFilename);
     junitWriter.save(destination, function (err) {
       if (err) {
         return reject(err);
@@ -96,18 +96,25 @@ module.exports = {
   execute: function (config) {
     return compare(config).then(function (report) {
       var failed = report.failed();
-      var passTag = '\x1b[32m', failTag = '\x1b[31m';
-      logger.log('\nTest completed...');
-      logger.log(passTag + report.passed() + ' Passed' + '\x1b[0m');
-      logger.log((failed ? failTag : passTag) + failed + ' Failed\n' + '\x1b[0m');
+      logger.log('Test completed...');
+      logger.log(chalk.green(report.passed() + ' Passed'));
+      logger.log(chalk[(failed ? 'red' : 'green')]( + failed + ' Failed'));
 
-      return writeReport(config, report).then(function () {
+      return writeReport(config, report).then(function (results) {
+        for (var i = 0; i < results.length; i++) {
+          if (results[i].state != 'fulfilled') {
+            logger.error("Failed writing report with error: " + results[i].value);
+          }
+        }
+
         if (failed) {
           logger.error('*** Mismatch errors found ***');
           logger.log('For a detailed report run `backstop openReport`\n');
           throw new Error('Mismatch errors found.');
         }
       });
+    }, function(e) {
+      logger.error("Comparison failed with error:" + e);
     });
   }
 };
