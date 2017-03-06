@@ -56,7 +56,7 @@ module.exports = function (config) {
 
   var report = new Reporter(config.ciReport.testSuiteName);
 
-  return tests = map(compareConfig.testPairs, function (pair) {
+  return map(compareConfig.testPairs, function (pair) {
     var Test = report.addTest(pair);
 
     var referencePath = path.join(config.projectPath, pair.reference);
@@ -94,7 +94,7 @@ module.exports = function (config) {
       });
   }, { concurrency: config.asyncCompareLimit || ASYNC_COMPARE_LIMIT }).then(function () {
     return report;
-  }, function(e) {
-    logger.error("The comparison failed with error: " + e);
+  }, function (e) {
+    logger.error('The comparison failed with error: ' + e);
   });
 };
