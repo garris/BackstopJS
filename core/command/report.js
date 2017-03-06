@@ -21,7 +21,7 @@ function writeReport (config, reporter) {
 
 function writeBrowserReport (config, reporter) {
   function toAbsolute (p) {
-    return (path.isAbsolute(p))? p : path.join(config.projectPath, p);
+    return (path.isAbsolute(p)) ? p : path.join(config.projectPath, p);
   }
   logger.log('Writing browser report');
   return fs.copy(config.comparePath, toAbsolute(config.html_report)).then(function () {
@@ -98,12 +98,12 @@ module.exports = {
       var failed = report.failed();
       logger.log('Test completed...');
       logger.log(chalk.green(report.passed() + ' Passed'));
-      logger.log(chalk[(failed ? 'red' : 'green')]( + failed + ' Failed'));
+      logger.log(chalk[(failed ? 'red' : 'green')](+failed + ' Failed'));
 
       return writeReport(config, report).then(function (results) {
         for (var i = 0; i < results.length; i++) {
-          if (results[i].state != 'fulfilled') {
-            logger.error("Failed writing report with error: " + results[i].value);
+          if (results[i].state !== 'fulfilled') {
+            logger.error('Failed writing report with error: ' + results[i].value);
           }
         }
 
@@ -113,8 +113,8 @@ module.exports = {
           throw new Error('Mismatch errors found.');
         }
       });
-    }, function(e) {
-      logger.error("Comparison failed with error:" + e);
+    }, function (e) {
+      logger.error('Comparison failed with error:' + e);
     });
   }
 };

@@ -5,7 +5,7 @@ var commandsDescription = {
   reference: 'Create reference screenshots of your web content at multiple sceen sizes.',
   test: 'Create test screenshots of your web content and compare against the set you created using `backstop reference`.',
   genConfig: 'Generate a configuration file boilerplate in your current directory. PLEASE NOTE: this will force overwrite any existing config.',
-  openReport: 'View your last test screenshots in your browser.',
+  openReport: 'View your last test screenshots in your browser.'
 };
 
 var optionsDescription = {
@@ -22,7 +22,7 @@ function makeDescription (descriptions) {
     .join('\n');
 }
 
-function spacesBetweenCommandAndDescription(commandName) {
+function spacesBetweenCommandAndDescription (commandName) {
   return makeSpaces(2 + leftPaddingOfDescription - commandName.length);
 }
 
