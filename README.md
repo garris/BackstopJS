@@ -233,7 +233,7 @@ Changes will be detected and displayed in the browser report and a summary will 
 $ backstop approve
 ```
 
-This will copy bitmaps from your latest test into your reference directory.  Subsequent tests will be compared against your updated reference files.
+Sometimes, change is good!  When running this command, all images (with changes) from your most recent test batch will be promoted to your reference collection. Subsequent tests will be compared against your updated reference files.
 
 SEE: [filtering tests and references by scenario](#Filtering-tests-and-references-by-scenario) for a note on approving changes after running `backstop test` using the `--filter` argument.
 
