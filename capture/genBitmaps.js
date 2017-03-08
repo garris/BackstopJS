@@ -223,7 +223,9 @@ function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabe
 
           var expandedSelector = casper.evaluate(function (selector) {
             return [].slice.call(document.querySelectorAll(selector)).map(function (element, expandedIndex) {
-              var indexPartial = '__n' + expandedIndex;
+              var dataBackstopName = element.getAttribute('data-backstop-name');
+              var id = element.getAttribute('id');
+              var indexPartial = '__' + (dataBackstopName ? dataBackstopName : (id ? id : 'n' + expandedIndex));
 
               if (element.classList.contains('__86d')) {
                 return '';

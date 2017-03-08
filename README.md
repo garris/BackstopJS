@@ -258,7 +258,7 @@ scenarios: [
 ]
 // captures all li children of the .aListOfStuff node
 ```
-(Default behavior) If you want very explicit controll of what you capture then you can disable `selectorExpansion` and explictly select what you want...
+(Default behavior) If you want very explicit control of what you capture then you can disable `selectorExpansion` and explictly select what you want...
 
 ```
 scenarios: [
@@ -273,6 +273,15 @@ scenarios: [
 ]
 // Attempts to capture these three elements explicitly.
 ```
+
+
+###Screenshots naming
+
+To avoid file overwriting, BackstopJS will automatically add a unique prefix (`'__nx'`, `x` being the index of the matched element) to the generated screenshot filename.
+
+If you want more control over generated filenames, you can add a `data-backstop-name` attribute or an `id` to the targeted elements, that will be used instead of the elements index.
+
+To sum up fallback order, the generated suffix will be `'__'` + (__`data-backstop-name` attribute__ then __`id`__ then __element index__).
 
 
 ###Filtering tests and references by scenario
