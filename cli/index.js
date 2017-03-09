@@ -15,7 +15,7 @@ var argsOptions = parseArgs(process.argv.slice(2), {
 
 // Catch errors from failing promises
 process.on('unhandledRejection', function (error) {
-  console.error(error.stack);
+  console.error(error && error.stack);
 });
 
 if (argsOptions.h || argsOptions.help) {
