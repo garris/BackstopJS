@@ -1,8 +1,8 @@
-var compareResemble = require('./compare-resemble');
 var path = require('path');
 var map = require('p-map');
 var fs = require('fs');
 
+var compare = require('./compare');
 var Reporter = require('./../Reporter');
 var logger = require('./../logger')('compare');
 var storeFailedDiff = require('./store-failed-diff.js');
@@ -34,7 +34,7 @@ function comparePair(pair, report, config) {
 }
 
 function compareImages(referencePath, testPath, pair, resembleOutputSettings, Test) {
-  return compareResemble(referencePath, testPath, pair.misMatchThreshold, resembleOutputSettings)
+  return compare(referencePath, testPath, pair.misMatchThreshold, resembleOutputSettings)
     .then(function (data) {
       pair.diff = data;
       Test.status = 'pass';
