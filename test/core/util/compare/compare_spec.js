@@ -3,9 +3,9 @@ const sinon = require('sinon');
 const assert = require('assert');
 
 describe('compare', function () {
-  let compare;
-  let compareHashes = sinon.stub();
-  let compareResemble = sinon.stub();
+  var compare;
+  var compareHashes = sinon.stub();
+  var compareResemble = sinon.stub();
 
   before(function () {
     mockery.enable({warnOnUnregistered: false, warnOnReplace: false, useCleanCache: true});
