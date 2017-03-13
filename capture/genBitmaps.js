@@ -32,7 +32,7 @@ if (!config.paths) {
   config.paths = {};
 }
 
-var outputFormat = "." + (config.outputFormat && config.outputFormat.match(/jpg|jpeg/) || 'png');
+var outputFormat = '.' + (config.outputFormat && config.outputFormat.match(/jpg|jpeg/) || 'png');
 var bitmapsReferencePath = config.paths.bitmaps_reference || 'bitmaps_reference';
 var bitmapsTestPath = config.paths.bitmaps_test || 'bitmaps_test';
 var casperScriptsPath = config.paths.casper_scripts || null;
@@ -94,7 +94,7 @@ function capturePageSelectors (scenarios, viewports, bitmapsReferencePath, bitma
   });// end casper.each scenario
 }
 
-function getFilename(scenarioIndex, scenarioLabel, selectorIndex, selectorLabel, viewportIndex, viewportLabel) {
+function getFilename (scenarioIndex, scenarioLabel, selectorIndex, selectorLabel, viewportIndex, viewportLabel) {
   var fileName = fileNameTemplate
     .replace(/\{configId\}/, configId)
     .replace(/\{scenarioIndex\}/, scenarioIndex)
@@ -103,7 +103,7 @@ function getFilename(scenarioIndex, scenarioLabel, selectorIndex, selectorLabel,
     .replace(/\{selectorLabel\}/, selectorLabel)
     .replace(/\{viewportIndex\}/, viewportIndex)
     .replace(/\{viewportLabel\}/, makeSafe(viewportLabel))
-    .replace(/[^a-z0-9_\-]/gi, ''); // remove anything that's not a letter or a number or dash or underscore.
+    .replace(/[^a-z0-9_-]/gi, ''); // remove anything that's not a letter or a number or dash or underscore.
 
   var extRegExp = new RegExp(outputFormat + '$', 'i');
   if (!extRegExp.test(fileName)) {
@@ -116,7 +116,7 @@ function getFilename(scenarioIndex, scenarioLabel, selectorIndex, selectorLabel,
 function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabel, viewports, bitmapsReferencePath, bitmapsTestPath, screenshotDateTime) {
   var scriptTimeout = 20000;
 
-  if(casper.cli.options.user && casper.cli.options.password) {
+  if (casper.cli.options.user && casper.cli.options.password) {
     console.log('Auth User via CLI: ' + casper.cli.options.user);
     casper.setHttpAuth(casper.cli.options.user, casper.cli.options.password);
   }
@@ -203,7 +203,7 @@ function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabe
           casper.evaluate(function (o) {
             Array.prototype.forEach.call(document.querySelectorAll(o), function (s, j) {
               s.style.display = 'none';
-              s.classList.add('__86d')
+              s.classList.add('__86d');
             });
           }, o);
         });
@@ -216,13 +216,13 @@ function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabe
       }
 
       if (scenario.selectorExpansion) {
-        scenario.selectorsExpanded = scenario.selectors.reduce(function(acc, selector) {
+        scenario.selectorsExpanded = scenario.selectors.reduce(function (acc, selector) {
           if (selector === DOCUMENT_SELECTOR) {
-            return acc.concat([DOCUMENT_SELECTOR])
+            return acc.concat([DOCUMENT_SELECTOR]);
           }
 
-          var expandedSelector = casper.evaluate(function(selector) {
-            return [].slice.call(document.querySelectorAll(selector)).map(function(element, expandedIndex) {
+          var expandedSelector = casper.evaluate(function (selector) {
+            return [].slice.call(document.querySelectorAll(selector)).map(function (element, expandedIndex) {
               var indexPartial = '__n' + expandedIndex;
 
               if (element.classList.contains('__86d')) {
@@ -245,7 +245,7 @@ function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabe
 
           // concat arrays of fully-qualified classnames
           return acc.concat(expandedSelector);
-        }, []).filter(function(selector) {
+        }, []).filter(function (selector) {
           return selector !== '';
         });
       } else {
@@ -253,7 +253,7 @@ function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabe
       }
 
       scenario.selectorsExpanded.forEach(function (o, i, a) {
-        var cleanedSelectorName = o.replace(/[^a-z0-9_\-]/gi, ''); // remove anything that's not a letter or a number
+        var cleanedSelectorName = o.replace(/[^a-z0-9_-]/gi, ''); // remove anything that's not a letter or a number
 
         var fileName = getFilename(scenario.sIndex, scenarioOrVariantLabel, i, cleanedSelectorName, viewportIndex, vp.name);
 
@@ -271,13 +271,21 @@ function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabe
             selector: o,
             fileName: fileName,
             label: scenario.label,
-            misMatchThreshold: scenario.misMatchThreshold || config.misMatchThreshold || config.defaultMisMatchThreshold
+            misMatchThreshold: getMisMatchThreshHold(scenario)
           });
         }
         // casper.echo('remote capture to > '+filePath,'info');
       });// end topLevelModules.forEach
     });
   });// end casper.each viewports
+}
+
+function getMisMatchThreshHold (scenario) {
+  if (typeof scenario.misMatchThreshold !== 'undefined') { return scenario.misMatchThreshold; }
+
+  if (typeof config.misMatchThreshold !== 'undefined') { return config.misMatchThreshold; }
+
+  return config.defaultMisMatchThreshold;
 }
 
 function captureScreenshot (casper, filePath, selector) {
@@ -348,7 +356,10 @@ function glueStringsWithSlash (stringA, stringB) {
 }
 
 function genHash (str) {
-  var hash = 0, i, chr, len;
+  var hash = 0;
+  var i;
+  var chr;
+  var len;
   if (!str) return hash;
   str = str.toString();
   for (i = 0, len = str.length; i < len; i++) {
@@ -357,9 +368,9 @@ function genHash (str) {
     hash |= 0; // Convert to 32bit integer
   }
   // return a string and replace a negative sign with a zero
-  return hash.toString().replace(/^-/,0);
+  return hash.toString().replace(/^-/, 0);
 }
 
 function makeSafe (str) {
-  return str.replace(/[ \/]/g, '_');
+  return str.replace(/[ /]/g, '_');
 }

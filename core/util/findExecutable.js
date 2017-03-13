@@ -1,7 +1,6 @@
 var path = require('path');
 
 module.exports = function (module, bin) {
-
   try {
     if (module === 'phantomjs-prebuilt') {
       return require('phantomjs-prebuilt').path;
@@ -13,6 +12,6 @@ module.exports = function (module, bin) {
     var pathToExecutableModule = pathToExecutableModulePackageJson.replace('package.json', '');
     return path.join(pathToExecutableModule, relativePathToExecutableBinary);
   } catch (e) {
-    throw new Error('Couldn\'t find executable for module "' + module + '" and bin "' + bin + '"\n' + e.message)
+    throw new Error('Couldn\'t find executable for module "' + module + '" and bin "' + bin + '"\n' + e.message);
   }
 };
