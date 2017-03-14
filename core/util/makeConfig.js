@@ -18,8 +18,7 @@ function loadProjectConfig (command, options, config) {
   }
 
   var customConfigPath = options && (options.backstopConfigFilePath || options.configPath);
-
-  if(options && typeof options.config === "string"){
+  if(options && typeof options.config === "string"  && !customConfigPath){
     customConfigPath = options.config;
   }
 
