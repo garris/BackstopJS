@@ -17,7 +17,12 @@ function loadProjectConfig (command, options, config) {
     config.testReportFileName = options.testReportFileName || null;
   }
 
-  var customConfigPath = options && (options.backstopConfigFilePath || options.configPath || options.config);
+  var customConfigPath = options && (options.backstopConfigFilePath || options.configPath);
+
+  if(options && typeof options.config === "string"){
+    customConfigPath = options.config;
+  }
+
   if (customConfigPath) {
     if (path.isAbsolute(customConfigPath)) {
       config.backstopConfigFileName = customConfigPath;
