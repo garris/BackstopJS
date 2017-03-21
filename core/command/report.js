@@ -5,7 +5,7 @@ var junitWriter = new (require('junitwriter'))();
 var allSettled = require('../util/allSettled');
 var fs = require('../util/fs');
 var logger = require('../util/logger')('report');
-var compare = require('../util/compare');
+var compare = require('../util/compare/');
 
 function writeReport (config, reporter) {
   var promises = [];
