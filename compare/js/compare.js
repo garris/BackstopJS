@@ -38,7 +38,7 @@ compareApp.controller('MainCtrl', ['$scope', '$uibModal', 'clipboard', function 
   tests.tests.forEach(function (o) {
     $scope.testDuration += o.pair.diff.analysisTime;
 
-    if (o.pair.diff.isSameDimensions) {
+    if (o.pair.diff.requireSameDimensions) {
       delete o.pair.diff.dimensionDifference;
     }
 

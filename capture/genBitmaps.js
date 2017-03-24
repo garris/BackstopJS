@@ -265,12 +265,21 @@ function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabe
         captureScreenshot(casper, filePath, o);
 
         if (!isReference) {
+            var requireSameDimensions;
+            if (scenario.requireSameDimensions !== undefined) {
+                requireSameDimensions = scenario.requireSameDimensions;
+            } else if (config.requireSameDimensions !== undefined) {
+                requireSameDimensions = config.requireSameDimensions;
+            } else {
+                requireSameDimensions = config.defaultRequireSameDimensions;
+            }
           compareConfig.testPairs.push({
             reference: referenceFilePath,
             test: testFilePath,
             selector: o,
             fileName: fileName,
             label: scenario.label,
+            requireSameDimensions: requireSameDimensions,
             misMatchThreshold: getMisMatchThreshHold(scenario)
           });
         }

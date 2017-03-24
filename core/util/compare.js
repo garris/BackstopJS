@@ -66,7 +66,7 @@ module.exports = function (config) {
       .then(function logCompareResult (data) {
         pair.diff = data;
 
-        if (data.isSameDimensions && data.misMatchPercentage <= pair.misMatchThreshold) {
+        if ((pair.requireSameDimensions === false || data.isSameDimensions === true) && data.misMatchPercentage <= pair.misMatchThreshold) {
           Test.status = 'pass';
           logger.success('OK: ' + pair.label + ' ' + pair.fileName);
           data = null;
@@ -81,7 +81,7 @@ module.exports = function (config) {
           pair.error = data;
           return pair;
         } else {
-          logger.error('ERROR { size: ' + (data.isSameDimensions ? 'ok' : 'isDifferent') + ', content: ' + data.misMatchPercentage + '%, threshold: ' + pair.misMatchThreshold + '% }: ' + pair.label + ' ' + pair.fileName);
+          logger.error('ERROR { requireSameDimensions: ' + (data.requireSameDimensions ? 'true' : 'false') + ' size: ' + (data.isSameDimensions ? 'ok' : 'isDifferent') + ', content: ' + data.misMatchPercentage + '%, threshold: ' + pair.misMatchThreshold + '% }: ' + pair.label + ' ' + pair.fileName);
         }
 
         return storeFailedDiffImage(testPath, data).then(function (compare) {
