@@ -34,7 +34,7 @@ function comparePair(pair, report, config) {
 }
 
 function compareImages(referencePath, testPath, pair, resembleOutputSettings, Test) {
-  return compare(referencePath, testPath, pair.misMatchThreshold, resembleOutputSettings)
+  return compare(referencePath, testPath, pair.misMatchThreshold, resembleOutputSettings, pair.requireSameDimensions)
     .then(function (data) {
       pair.diff = data;
       Test.status = 'pass';
@@ -46,7 +46,7 @@ function compareImages(referencePath, testPath, pair, resembleOutputSettings, Te
     .catch(function (data) {
       pair.diff = data;
       Test.status = 'fail';
-      logger.error('ERROR { size: ' + (data.isSameDimensions ? 'ok' : 'isDifferent') + ', content: ' + data.misMatchPercentage + '%, threshold: ' + pair.misMatchThreshold + '% }: ' + pair.label + ' ' + pair.fileName);
+      logger.error('ERROR { requireSameDimensions: ' + (data.requireSameDimensions ? 'true' : 'false') + ' size: ' + (data.isSameDimensions ? 'ok' : 'isDifferent') + ', content: ' + data.misMatchPercentage + '%, threshold: ' + pair.misMatchThreshold + '% }: ' + pair.label + ' ' + pair.fileName);
 
       return storeFailedDiff(testPath, data).then(function (compare) {
         pair.diffImage = compare;
