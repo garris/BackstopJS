@@ -532,7 +532,7 @@ JSON-based configs cramping your style? Well, here's some good news -- BackstopJ
 To use a js module based config file, explicitly specify your config filepath when running a command. e.g.
 
 ```sh
-$ backstop test --configPath=backstopTests/someTest.js
+$ backstop test --config=backstopTests/someTest.js
 ```
 _See the next section for more info on setting the config file path._
 
@@ -541,23 +541,23 @@ Be sure to export your config object as a node module.
 
 
 ### Setting the config file path
-Often, users have multiple config files to test various different scenarios or even different projects. By default, BackstopJS looks for `backstop.json` in your project's root directory (in parallel with your `node_modules` directory). You can override this by passing a `--configPath` argument when running any command. e.g.
+Often, users have multiple config files to test various different scenarios or even different projects. By default, BackstopJS looks for `backstop.json` in your project's root directory (in parallel with your `node_modules` directory). You can override this by passing a `--config` argument when running any command. e.g.
 
 ```sh
 # example 1: run reference generation with absolute path
-$ backstop reference --configPath=~/backstopTests/someTest.json
+$ backstop reference --config=~/backstopTests/someTest.json
 # Will capture reference files using scenarios from someTest.json inside backstopTests inside your home folder.
 
 # example 2: run test with absolute path
-$ backstop test --configPath=~/backstopTests/someTest.json
+$ backstop test --config=~/backstopTests/someTest.json
 # Will run tests using scenarios from `someTest.json` inside `backstopTests` inside your home folder.
 
 # example 3: run test with relative path
-$ backstop test --configPath=backstopTests/someTest.json
+$ backstop test --config=backstopTests/someTest.json
 # Will run tests using scenarios from `someTest.json` inside `backstopTests` inside your project root folder.
 
 # example 4: run test with relative path and JS module
-$ backstop test --configPath=backstopTests/someTest.js
+$ backstop test --config=backstopTests/someTest.js
 # You can also specify your config parameters as a node module. This will import `someTest.js` from `backstopTests` inside your project root folder.
 ```
 
