@@ -598,7 +598,7 @@ Then, in your `backstop.json` config file, update the engine property to...
 Thats it.
 
 <!--
-###Changing the reporting server port
+### Changing the reporting server port
 
 The default port used by BackstopJS is 3001.   You can change it by setting the `port` parameter in the `backstop.json` file.
 -->
