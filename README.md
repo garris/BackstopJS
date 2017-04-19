@@ -296,6 +296,7 @@ $ backstop reference --i
 ```
 
 
+For change mismatch threshold set `misMatchThreshold` property in config file. *Note: it is equal 1 precent by default.*
 
 
 ### Testing SPAs and AJAX content
