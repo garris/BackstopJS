@@ -1,0 +1,32 @@
+{
+  "viewports" : [
+    {
+     "name": "phone",
+     "viewport": {"width": 320, "height": 480}
+    },
+    {
+     "name": "tablets",
+     "viewport": {"width": 568, "height": 1024}
+    },
+    { "name": "desktop",
+     "viewport": {"width": 1024, "height": 768}
+    }
+  ],
+  "scenarios": [
+    {
+      "label": "homepage",
+      "url": "http://www.google.com",
+      "hideSelectors": [
+
+      ],
+      "removeSelectors": [
+
+      ],
+      "selectors": [
+        "body"
+      ],
+      "readyEvent": null,
+      "delay": 800
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "name": "visual-regression",
+  "version": "0.0.0",
+  "description": "Visual regression",
+  "dependencies": {
+    "phantomjs": "*",
+    "casperjs" : "*",
+    "backstopjs": "*"
+  },
+  "license": "MIT"
+}
