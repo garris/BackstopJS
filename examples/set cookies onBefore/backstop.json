@@ -1,0 +1,65 @@
+{
+  "id": "prod_test",
+  "viewports": [
+    {
+      "name": "tablet_v",
+      "width": 568,
+      "height": 1024
+    }
+  ],
+  "scenarios": [
+    {
+      "label": "no_cookies_1",
+      "url": "index.html",
+      "selectors": [],
+      "readyEvent": null,
+      "delay": 50,
+      "misMatchThreshold" : 0.1,
+      "onBeforeScript": "onBefore.js",
+      "onReadyScript": "onReady.js"
+    },
+    {
+      "label": "cookie1",
+      "url": "index.html",
+      "selectors": [],
+      "readyEvent": null,
+      "delay": 50,
+      "misMatchThreshold" : 0.1,
+      "testCookieValue": "cookie1",
+      "onBeforeScript": "onBefore.js",
+      "onReadyScript": "onReady.js"
+    },
+    {
+      "label": "no_cookies_2",
+      "url": "index.html",
+      "selectors": [],
+      "readyEvent": null,
+      "delay": 50,
+      "misMatchThreshold" : 0.1,
+      "onBeforeScript": "onBefore.js",
+      "onReadyScript": "onReady.js"
+    },
+    {
+      "label": "cookie2",
+      "url": "index.html",
+      "selectors": [],
+      "readyEvent": null,
+      "delay": 50,
+      "misMatchThreshold" : 0.1,
+      "testCookieValue": "cookie2",
+      "onBeforeScript": "onBefore.js",
+      "onReadyScript": "onReady.js"
+    }
+  ],
+  "paths": {
+    "bitmaps_reference": "backstop_data/bitmaps_reference",
+    "bitmaps_test": "backstop_data/bitmaps_test",
+    "casper_scripts": "backstop_data/casper_scripts",
+    "html_report": "backstop_data/html_report",
+    "ci_report": "backstop_data/ci_report"
+  },
+  "casperFlags": [],
+  "engine": "phantomjs",
+  "report": ["browser"],
+  "debug": false
+}

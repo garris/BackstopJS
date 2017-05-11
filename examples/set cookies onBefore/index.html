@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>TEST FOR COOKIE VALUE</title>
+  <style type="text/css">h1,p{font-size: 70px}</style>
+</head>
+<body>
+  <h1>COOKIE VALUE...</h1>
+  <p id="cookieValue"></p>
+</body>
+<script type="text/javascript">
+  var pTag = document.getElementById('cookieValue');
+  pTag.innerText = document.cookie || 'no value';
+</script>
+</html>
