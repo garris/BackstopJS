@@ -123,17 +123,16 @@ function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabe
 
   casper.each(viewports, function (casper, vp, viewportIndex) {
     this.then(function () {
+      var onBeforeScript = scenario.onBeforeScript || config.onBeforeScript;
+      if (onBeforeScript) {
+        require(getScriptPath(onBeforeScript))(casper, scenario, vp, isReference);
+      }
       this.viewport(vp.width || vp.viewport.width, vp.height || vp.viewport.height);
     });
 
     var url = scenario.url;
     if (isReference && scenario.referenceUrl) {
       url = scenario.referenceUrl;
-    }
-
-    var onBeforeScript = scenario.onBeforeScript || config.onBeforeScript;
-    if (onBeforeScript) {
-      require(getScriptPath(onBeforeScript))(casper, scenario, vp, isReference);
     }
 
     this.thenOpen(url, function () {
