@@ -23,6 +23,7 @@ yarn.lock
 .idea
 
 compare/bower_components/**/.*
+examples/**/html_report/
 
 /backstop_data/bitmaps_test/
 /backstop_data/html_report/

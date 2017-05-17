@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/garris/BackstopJS.svg)](https://travis-ci.org/garris/BackstopJS)
 
-#BackstopJS
+# BackstopJS
 **Catch CSS curve balls.**
 
 
@@ -69,16 +69,18 @@ $ npm install -g backstopjs
 
 ----
 
-##The BackstopJS workflow
+## The BackstopJS workflow
 
   - **Configure:** Specify URLs, screen sizes, DOM selectors, ready events, interactions etc. (see examples directory)
 
-  - **Reference:** Create a set of *reference* screenshots. BackstopJS will consider this your *source of truth*. (Update this whenever you want).
+  - **Reference:** Create a set of *reference* screenshots. BackstopJS will consider this your *source of truth*.
 
-  - **Test:** BackstopJS creates a set of *test* screenshots and compares them with your *reference* screenshots. Any unwanted/unforeseen changes show up in a nice report.
+  - **Test:** BackstopJS creates a set of *test* screenshots and compares them with your *reference* screenshots. Any changes show up in a visual report. (Run this after making CSS changes as many times as needed.)
+
+  -  **Approve:** Often changes are exactly what you want. Approving changes will update your reference files with the results from your last test.
 
 
-##Getting started
+## Getting started
 ### Installation
 
 #### Global installation (recommended)
@@ -103,12 +105,12 @@ const backstop = require('backstopjs');
 See [#installing-backstopjs-locally](#installing-backstopjs-locally) to learn about cool BackstopJS integration options!
 
 
-###Installing a development version
+### Installing a development version
 ```sh
 $ npm install -g backstopjs@beta
 ```
 
-###Generating your configuration file
+### Generating your configuration file
 
 **If you don't already have a BackstopJS config file.** The following command will create a config template file which you can modify in your root directory. **Note: this will overwrite any existing backstopjs config file.**
 
@@ -118,14 +120,14 @@ From your projects's directory ...
 $ backstop genConfig
 ```
 
-By default, `genConfig` will put `backstop.json` at your current working path -- *if you're not sure where this is, run `echo $(pad)`, that's your current path*. Also by default, a `backstop_data` directory will be created at this same location.
+By default, `genConfig` will put `backstop.json` at your current working path -- *if you're not sure where this is, run `echo $(pwd)`, that's your current path*. Also by default, a `backstop_data` directory will be created at this same location.
 
 The location of the `backstop.json` file as well as all resource directories can be specified -- see [Setting the config file path](#setting-the-config-file-path-version-090) below.
 
 
-###Working with your config file
+### Working with your config file
 
-####Here is the configuration that `backstop genConfig` generates...
+#### Here is the configuration that `backstop genConfig` generates...
 ```json
 {
   "id": "backstop_prod_test",
@@ -166,6 +168,7 @@ The location of the `backstop.json` file as well as all resource directories can
       "readyEvent": null,
       "delay": 500,
       "misMatchThreshold" : 0.1,
+      "requireSameDimensions" : true,
       "onBeforeScript": "onBefore.js",
       "onReadyScript": "onReady.js"
     }
@@ -184,7 +187,7 @@ The location of the `backstop.json` file as well as all resource directories can
 }
 ```
 
-####Required config properties
+#### Required config properties
 
 As a new user setting up tests for your project, you will be primarily concerned with these properties...
 
@@ -199,7 +202,7 @@ As a new user setting up tests for your project, you will be primarily concerned
 - **`scenarios[n].selectors`** – An array of CSS selector strings enabling you specify what part of your DOM you want to test.  The default value is `document`, which will attempt to capture your entire layout.
 
 
-###Creating or updating reference bitmaps
+### Creating or updating reference bitmaps
 
 From your project directory...
 ```sh
@@ -210,7 +213,7 @@ This will create a `bitmaps_reference` directory with screen captures of all DOM
 
 
 
-###Generating test bitmaps
+### Generating test bitmaps
 
 ```sh
 $ backstop test
@@ -220,11 +223,25 @@ This will create a new set of bitmaps in `bitmaps_test/<timestamp>/`
 
 Once the test bitmaps are generated, a report comparing the most recent test bitmaps against the current reference bitmaps will run.
 
-Significant differences will be detected and displayed in the browser report.
+Changes will be detected and displayed in the browser report and a summary will show up in your terminal.
 
-##Using BackstopJS
 
-###Targeting elements
+
+
+### Approving changes
+
+```sh
+$ backstop approve
+```
+
+Sometimes, change is good!  When running this command, all images (with changes) from your most recent test batch will be promoted to your reference collection. Subsequent tests will be compared against your updated reference files.
+
+SEE: [filtering tests and references by scenario](#Filtering-tests-and-references-by-scenario) for a note on approving changes after running `backstop test` using the `--filter` argument.
+
+
+## Using BackstopJS
+
+### Targeting elements
 
 BackstopJS makes it super easy to capture screenshots of your entire layout or just parts of your layout.  This is defined in the your scenario.selectors array. Each element of your array accepts standard CSS notation. By default BackstopJS takes a screenshot of the first occurance of any selector found in your DOM.  e.g. If you have three `li` tags in your layout only the first will used.
 
@@ -259,18 +276,23 @@ scenarios: [
 ```
 
 
-###Incremental scenario reference/testing (filtering)
+### Filtering tests and references by scenario
+
+If you only want to run a subset of your BackstopJS tests you can do so by invoking BackstopJS with the `--filter` argument. `--filter` takes a regEx string and compares it against your scenario labels. Non-matching scenarios are ignored.
+```
+$ backstop reference --filter=<scenario.label>
+```
+
+Note: If you run `backstop approve` after running a filtered test -- only matching test bitmaps will be promoted to your reference directory.
+
+
+### Incremental reference updates
 
 By default `backstop.reference` will first remove all files in your reference directory then generate screenshots of all selectors specified in your config file.
 
 If you don't want BackstopJS do first delete all files in your reference directory you can enable the `incremental` flag.
 ```
 $ backstop reference --i
-```
-
-If you need to run references or tests **only for _specific_ scenarios** you can do so by invoking BackstopJS with the `--filter` argument. (takes a regEx string)
-```
-$ backstop reference --i --filter=<scenario.label>
 ```
 
 
@@ -282,9 +304,9 @@ It is very common for client-side web apps is to initially download a small chun
 
 The problem testing these scenarios is knowing _when_ to take the screenshot.  BackstopJS solves this problem with two config properties: `readyEvent` and `delay`.
 
-**NOTE: Advanced options also include very cool CasperJS features like waitForSelector() and waitUntilVisible() – see [adding custom CasperJS scripts](https://github.com/garris/BackstopJS#running-custom-casperjs-scripts-version-080) for more info...**
+**NOTE: Advanced options also include very cool CasperJS features like waitForSelector() and waitUntilVisible() – see [adding custom CasperJS scripts](https://github.com/garris/BackstopJS#running-custom-casperjs-scripts) for more info...**
 
-####Trigger screen capture via console.log()
+#### Trigger screen capture via console.log()
 
 The `readyEvent` property enables you to trigger the screen capture by logging a predefined string to the console. For example, the following line will delay screen capture until your web app calls `console.log("backstopjs_ready")`...
 
@@ -295,7 +317,7 @@ The `readyEvent` property enables you to trigger the screen capture by logging a
 In the above case it would be up to you to wait for all dependencies to complete before calling logging `"backstopjs_ready"` string to the console.
 
 
-####Delay screen capture
+#### Delay screen capture
 
 The `delay` property enables you to pause screen capturing for a specified duration of time. This delay is applied after `readyEvent` (if also applied).
 
@@ -343,6 +365,10 @@ There may also be elements which need to be completely removed during testing. F
 `"misMatchThreshold"` (percentage 0.00%-100.00%) will change the amount of difference BackstopJS will tolerate before marking a test screenshot as "failed".  The default setting is `0.1`, this may need to be adjusted based on the kinds of testing you're doing.
 
 More info on how misMatchThreshold is derrived can be found here... https://github.com/Huddle/Resemble.js/blob/af57cb2f4edfbe718d24b350b2be1d956b764298/resemble.js#L495
+
+`"requireSameDimensions"` (true || false) will change whether BackstopJS will accept any change in dimensions. The default setting is `true`. If set to true then the test must be the same dimensions as the reference. If set to false the test does not have to be the same dimensions as the reference.
+
+This setting can be used in conjunction with `"misMatchThreshold"`, for example, when setting a `"misMatchThreshold"` of more than 0.00% and the mismatch causing a change in dimensions, setting `"requireSameDimensions"` to false will allow the test to still pass, setting it to true would still make it fail. 
 
 
 ### Capturing the entire document
@@ -495,18 +521,18 @@ You may customize the testsuite name and/or a report file (xunit.xml) path to yo
 },
 ```
 
-####CLI error handling
+#### CLI error handling
 
 When a layout error is found in CLI mode, BackstopJS will let you know in a general report displayed in the console. In addition, BackstopJS will throw an error that will be passed to calling process.
 
-###Using a js based config file
+### Using a js based config file
 
 JSON-based configs cramping your style? Well, here's some good news -- BackstopJS allows you to import all config parameters as a node module (as an option instead of JSON) which allows you to use comments, variables and logic etc. inside of your config.
 
 To use a js module based config file, explicitly specify your config filepath when running a command. e.g.
 
 ```sh
-$ backstop test --configPath=backstopTests/someTest.js
+$ backstop test --config=backstopTests/someTest.js
 ```
 _See the next section for more info on setting the config file path._
 
@@ -514,24 +540,24 @@ Be sure to export your config object as a node module.
 
 
 
-###Setting the config file path
-Often, users have multiple config files to test various different scenarios or even different projects. By default, BackstopJS looks for `backstop.json` in your project's root directory (in parallel with your `node_modules` directory). You can override this by passing a `--configPath` argument when running any command. e.g.
+### Setting the config file path
+Often, users have multiple config files to test various different scenarios or even different projects. By default, BackstopJS looks for `backstop.json` in your project's root directory (in parallel with your `node_modules` directory). You can override this by passing a `--config` argument when running any command. e.g.
 
 ```sh
 # example 1: run reference generation with absolute path
-$ backstop reference --configPath=~/backstopTests/someTest.json
+$ backstop reference --config=~/backstopTests/someTest.json
 # Will capture reference files using scenarios from someTest.json inside backstopTests inside your home folder.
 
 # example 2: run test with absolute path
-$ backstop test --configPath=~/backstopTests/someTest.json
+$ backstop test --config=~/backstopTests/someTest.json
 # Will run tests using scenarios from `someTest.json` inside `backstopTests` inside your home folder.
 
 # example 3: run test with relative path
-$ backstop test --configPath=backstopTests/someTest.json
+$ backstop test --config=backstopTests/someTest.json
 # Will run tests using scenarios from `someTest.json` inside `backstopTests` inside your project root folder.
 
 # example 4: run test with relative path and JS module
-$ backstop test --configPath=backstopTests/someTest.js
+$ backstop test --config=backstopTests/someTest.js
 # You can also specify your config parameters as a node module. This will import `someTest.js` from `backstopTests` inside your project root folder.
 ```
 
@@ -539,7 +565,7 @@ NOTES:
 - all paths are relative to the location of the BackstopJS install directory _(which is either inside your project's `node_modules` or `bower_components` depending on how BackstopJS was installed)._
 - _Remember to add that extra `--` after the `backstop test` and `backstop reference` commands._
 
-###Setting the bitmap and script directory paths
+### Setting the bitmap and script directory paths
 By default, BackstopJS saves generated resources into the `backstop_data` directory in parallel with your `backstop.json` config file. The location of the various resource types are configurable so they can easily be moved inside or outside your source control or file sharing environment. See below for the options...
 
 _Please note: these file paths are relative to your current working directory $(pwd)._
@@ -555,7 +581,7 @@ _Please note: these file paths are relative to your current working directory $(
   }
 ```
 
-###Changing the rendering engine
+### Changing the rendering engine
 BackstopJS supports using PhantomJS or SlimerJS for web app rendering. (With thanks to CasperJS for doing the heavy lifting here.)
 
 First, be sure to have SlimerJS installed. From your root directory run...
@@ -572,12 +598,12 @@ Then, in your `backstop.json` config file, update the engine property to...
 Thats it.
 
 <!--
-###Changing the reporting server port
+### Changing the reporting server port
 
 The default port used by BackstopJS is 3001.   You can change it by setting the `port` parameter in the `backstop.json` file.
 -->
 
-###Setting Casper command-line flags
+### Setting Casper command-line flags
 This is for you if for some reason you find yourself needing advanced configuration access to CasperJS.  You can set CasperJS flags via `casperFlags` like so...
 
 ```json
@@ -589,7 +615,7 @@ This is for you if for some reason you find yourself needing advanced configurat
 ]
 ```
 
-###Installing BackstopJS Locally
+### Installing BackstopJS Locally
 The main reason to install backstop locally is likely to be a managed integration with a build implementation. There are two ways to run a local installation of backstop
 
 #### Importing into your node scripts
@@ -610,6 +636,39 @@ backstop('test')
 
 // pass options to the command
 backstop('test', {config:'custom/backstop/config.json'});
+```
+
+##### You can pass a config object directly
+
+```
+backstop('test', {
+    config: {
+        id: "foo",
+        scenarios: [
+            //some scenarios here
+        ]
+    }
+});
+```
+
+It can also be useful if you want to pass the config some parameters and return a JS object.
+
+```
+backstop('test', {
+    config: require("./backstop.config.js")({
+        "foo": "bar"
+    })
+});
+```
+
+Inside of `backstop.config.js` we export a function that returns the configuration object
+
+```
+module.exports = options => {
+    return {
+        //you can access options.foo here
+    }
+}
 ```
 
 Since the backstop runner returns promises it can easily be integrated in build systems like gulp
@@ -664,7 +723,7 @@ e.g.
   }
 ```
 
-###Tuning BackstopJS performance 
+### Tuning BackstopJS performance 
 During a test, BackstopJS processes image comparisons in parallel. By default, this value is limited to 50. Used this way, BackstopJS can utilize available processor power while keeping RAM usage under control.
 
 This value can be adjusted as needed to increase/decrease the amount of RAM required during a test.
@@ -678,13 +737,13 @@ To adjust this value add the following to the root of your config...
 ``` 
 
 
-##Troubleshooting
+## Troubleshooting
 
-###Migrating to 2.0
+### Migrating to 2.0
 
 _Filename issue: Projects don't work when I share with other users or run in different environments._
 
-####If you just upgraded to 2.x from 1.x
+#### If you just upgraded to 2.x from 1.x
 
 Filename formats have changed.  To use the 1.x (compatible) file format, use the `fileNameTemplate` property like so...
 
@@ -695,22 +754,22 @@ fileNameTemplate: '{scenarioIndex}_{scenarioLabel}_{selectorIndex}_{selectorLabe
 ...
 ```
 
-####If you are not migrating scripts but have recently upgraded BackstopJS
+#### If you are not migrating scripts but have recently upgraded BackstopJS
 
 Be sure to use a config `id` in your config file. See https://github.com/garris/BackstopJS/issues/291
 
-###Windows users...
+### Windows users...
 
 PhantomJS needs Python -- please make sure you have Python installed...
 _see https://github.com/garris/BackstopJS/issues/185_
 
 
-###The dreaded _command-not-found_ error...
+### The dreaded _command-not-found_ error...
 
 Did you install BackstopJS with the global option?  If installing globally remember to add that `-g` when installing with npm *i.e.* `npm install backstop -g`.     If you installed *locally*, remember that the `backstop <command>` pattern will only be available to your npm scripts -- see the local installation section above for more info.
 
 
-###Debugging
+### Debugging
 
 To enable verbose console output when running your tests set the `debug` property to `true` in `backstop.json`.  This will also output your  payload to the terminal so you can make sure to check that the server is sending what you expect. 😉
 
@@ -720,7 +779,7 @@ To enable verbose console output when running your tests set the `debug` propert
 
 
 ---
-##Tutorials, Extensions and more
+## Tutorials, Extensions and more
 
 - (RECOMMEDED Updated for version 2) Regression testing with BackstopJS, in-depth tutorial by [Angela Riggs](https://twitter.com/AngelaRiggs_) http://www.metaltoad.com/blog/regression-testing-backstopjs
 
@@ -737,7 +796,7 @@ To enable verbose console output when running your tests set the `debug` propert
 - BackstopJS brochure at [http://BackstopJS.org/](http://garris.github.io/BackstopJS/).
 
 
-##Backstory
+## Backstory
 BackstopJS is a useful wrapper around the very fabulous [Resemble.js](https://github.com/Huddle/Resemble.js) component written by [James Cryer](https://github.com/jamescryer). Other implementations of Resemble.js, namely [PhantomCSS](https://github.com/Huddle/PhantomCSS) require writing long form [CasperJS](http://casperjs.org) tests -- which is of course great for testing complex UI interactions –- but kind of cumbersome for testing simple applications like static CMS templates, lots and lots of app states and different screen sizes.
 
 BackstopJS may be just the thing if you develop custom WordPress, Drupal or other CMS templates.  Tested on OSX.
@@ -750,8 +809,16 @@ BackstopJS was created by [Garris Shipon](expanded.me) during the [Art.com labs]
 
 ---
 
-##Gratitude 💙㊗️🙇
-Many many thanks to [all the contributors](https://github.com/garris/BackstopJS/graphs/contributors) with special thanks to...
+## Gratitude 💙㊗️🙇
+Many many thanks to [all the contributors](https://github.com/garris/BackstopJS/graphs/contributors) with special thanks to our BackstopJS core contributors...
+
+Ongoing Reviews by:
+- [Steve Fischer](https://github.com/stevecfischer)
+- [uğur mirza zeyrek](mirzazeyrek)
+- [Sven Wütherich](svwu)
+
+Features by:
+- [Steve Fischer](https://github.com/stevecfischer), [uğur mirza zeyrek](mirzazeyrek), [Sven Wütherich](svwu), [Alex Bondarev](https://github.com/skip405) for concurrency support, JS config passing, JPEG support, CLI Auth support.
 - [Klaus Bayrhammer](https://github.com/klausbayrhammer) for making BackstopJS a "requireable" node module in 2.3.1
 - [Suresh Kumar. M](https://github.com/garris/BackstopJS/commits/master?author=nobso) for selector expansion in 1.3.2
 - [@JulienPradet](https://github.com/JulienPradet), [@onigoetz](https://github.com/onigoetz), [@borys-rudenko](https://github.com/borys-rudenko), [@ksushik](https://github.com/ksushik), [@dmitriyilchgmailcom](https://github.com/dmitriyilchgmailcom), [@Primajin](https://github.com/Primajin) for giving the world BackstopJS version 2.0!

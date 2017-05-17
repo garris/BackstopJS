@@ -29,6 +29,7 @@ compareApp.controller('MainCtrl', ['$scope', '$uibModal', 'clipboard', function 
   $scope.testDuration = 0;
   $scope.testIsRunning = true;
   $scope.isSummaryListCollapsed = true;
+  $scope.showPairStats = false;
 
   if (!clipboard.supported) {
     $scope.alerts.push({type: 'danger', msg: 'Sorry, copy to clipboard is not supported'});
@@ -37,7 +38,7 @@ compareApp.controller('MainCtrl', ['$scope', '$uibModal', 'clipboard', function 
   tests.tests.forEach(function (o) {
     $scope.testDuration += o.pair.diff.analysisTime;
 
-    if (o.pair.diff.isSameDimensions) {
+    if (o.pair.diff.requireSameDimensions) {
       delete o.pair.diff.dimensionDifference;
     }
 

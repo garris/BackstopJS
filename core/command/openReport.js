@@ -4,7 +4,6 @@ var path = require('path');
 
 module.exports = {
   execute: function (config) {
-
     function toAbsolute (p) {
       if (path.isAbsolute(p)) {
         return p;

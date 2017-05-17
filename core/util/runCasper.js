@@ -1,6 +1,4 @@
-var path = require('path');
 var spawn = require('child_process').spawn;
-var isWin = require('./isWin');
 var findExecutable = require('./findExecutable');
 
 function getCasperArgs (config, tests) {
@@ -16,8 +14,8 @@ function getCasperArgs (config, tests) {
       args = args.concat(config.casperFlags);
     }
   }
-  
-  if(config.args.user && config.args.password){
+
+  if (config.args.user && config.args.password) {
     args = args.concat(['--user=' + config.args.user, '--password=' + config.args.password]);
   }
 
@@ -26,6 +24,9 @@ function getCasperArgs (config, tests) {
 
 module.exports = function (config, tests) {
   var casperArgs = getCasperArgs(config, tests);
+  if (config.captureConfigFileName) {
+    casperArgs[casperArgs.length] = '--captureConfigFileName=' + config.captureConfigFileName;
+  }
 
   if (config.debug) {
     console.log('\nRunning CasperJS with: ', casperArgs);
