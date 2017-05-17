@@ -80,6 +80,13 @@ casper.on('page.error', function(msg, trace) {
   casper.echo('Page Error: ' + msg, 'ERROR');
 });
 
+// host header with IP
+casper.on('started', function () {
+  if (config.host) {
+    this.page.customHeaders = { 'Host':  config.host }
+  }
+});
+
 function capturePageSelectors (scenarios, viewports, bitmapsReferencePath, bitmapsTestPath, isReference) {
   var screenshotNow = new Date();
   var screenshotDateTime = screenshotNow.getFullYear() + pad(screenshotNow.getMonth() + 1) + pad(screenshotNow.getDate()) + '-' + pad(screenshotNow.getHours()) + pad(screenshotNow.getMinutes()) + pad(screenshotNow.getSeconds());
