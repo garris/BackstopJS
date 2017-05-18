@@ -15,6 +15,10 @@
   <script type="text/javascript" src="js/compare.js"></script>
   <script type="text/javascript" src="js/revealer.js"></script>
   <script type="text/javascript" src="config.js"></script>
+  <script type="text/javascript">
+    // 1x1 transparent gif
+    var BASE64_PNG_STUB = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
+  </script>
 </head>
 
 <body ng-app="compareApp">
@@ -74,13 +78,13 @@
     </div>
     <div class="flex-container">
       <div>
-        <img ng-src="{{ thisTestPair.a.src }}" alt="Reference" ng-click="openModal('lg', thisTestPair.a.src, thisTestPair.b.src)" />
+        <img ng-src="{{ thisTestPair.a.src }}" alt="Reference" ng-click="openModal('lg', thisTestPair.a.src, thisTestPair.b.src)" onerror="this.src=BASE64_PNG_STUB"/>
       </div>
       <div>
-        <img ng-src="{{ thisTestPair.b.src }}" alt="Test" ng-click="openModal('lg', thisTestPair.a.src, thisTestPair.b.src)" />
+        <img ng-src="{{ thisTestPair.b.src }}" alt="Test" ng-click="openModal('lg', thisTestPair.a.src, thisTestPair.b.src)" onerror="this.src=BASE64_PNG_STUB"/>
       </div>
       <div ng-if="!thisTestPair.passed">
-        <img ng-src="{{ thisTestPair.c.src }}" image-name="c" alt="Difference" />
+        <img ng-src="{{ thisTestPair.c.src || 'missingImg.png' }}" image-name="c" alt="Difference" onerror="this.src=BASE64_PNG_STUB"/>
       </div>
       <div ng-if="showPairStats">
         <div class="statusInds">

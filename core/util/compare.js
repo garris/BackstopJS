@@ -9,6 +9,15 @@ var logger = require('./logger')('compare');
 
 var ASYNC_COMPARE_LIMIT = 20;
 
+// BASE64_PNG_STUB is 1x1 white pixel
+var BASE64_PNG_STUB = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=';
+
+// storeFailedImageStub() is called to ensure `backstop approve` finds a diff image
+// required when no reference image exists.
+function storeFailedImageStub (testPath) {
+  fs.writeFileSync(getFailedDiffFilename(testPath), BASE64_PNG_STUB, 'base64');
+}
+
 function storeFailedDiffImage (testPath, data) {
   var failedDiffFilename = getFailedDiffFilename(testPath);
   console.log('   See:', failedDiffFilename);
@@ -37,6 +46,7 @@ function getFailedDiffFilename (testPath) {
 function compareImage (referencePath, testPath, resembleOutputSettings) {
   return new Promise(function (resolve, reject) {
     if (!fs.existsSync(referencePath)) {
+      storeFailedImageStub(testPath);
       // Returning the error as a "resolve" so all errors can be caught instead of just the first one
       return resolve(new Error('Reference image not found: ' + referencePath));
     }
