@@ -20,6 +20,7 @@ if (args.length !== 1) {
   });
 }
 
+var colorizer = require('colorizer').create('Colorizer');
 var scriptName = fs.absolute(require('system').args[3]);
 var __dirname = scriptName.substring(0, scriptName.lastIndexOf('/'));
 
@@ -72,6 +73,19 @@ casper.on('remote.message', function (message) {
   casper.echo(message);
   consoleBuffer = consoleBuffer + '\n' + message;
 });
+casper.on('error', function(msg, trace) {
+  casper.echo('Error: ' + msg, 'ERROR');
+});
+casper.on('page.error', function(msg, trace) {
+  casper.echo('Page Error: ' + msg, 'ERROR');
+});
+
+// host header with IP
+casper.on('started', function () {
+  if (config.host) {
+    this.page.customHeaders = { 'Host':  config.host }
+  }
+});
 
 function capturePageSelectors (scenarios, viewports, bitmapsReferencePath, bitmapsTestPath, isReference) {
   var screenshotNow = new Date();
@@ -96,14 +110,14 @@ function capturePageSelectors (scenarios, viewports, bitmapsReferencePath, bitma
 
 function getFilename (scenarioIndex, scenarioLabel, selectorIndex, selectorLabel, viewportIndex, viewportLabel) {
   var fileName = fileNameTemplate
-    .replace(/\{configId\}/, configId)
-    .replace(/\{scenarioIndex\}/, scenarioIndex)
-    .replace(/\{scenarioLabel\}/, scenarioLabel)
-    .replace(/\{selectorIndex\}/, selectorIndex)
-    .replace(/\{selectorLabel\}/, selectorLabel)
-    .replace(/\{viewportIndex\}/, viewportIndex)
-    .replace(/\{viewportLabel\}/, makeSafe(viewportLabel))
-    .replace(/[^a-z0-9_-]/gi, ''); // remove anything that's not a letter or a number or dash or underscore.
+      .replace(/\{configId\}/, configId)
+      .replace(/\{scenarioIndex\}/, scenarioIndex)
+      .replace(/\{scenarioLabel\}/, scenarioLabel)
+      .replace(/\{selectorIndex\}/, selectorIndex)
+      .replace(/\{selectorLabel\}/, selectorLabel)
+      .replace(/\{viewportIndex\}/, viewportIndex)
+      .replace(/\{viewportLabel\}/, makeSafe(viewportLabel))
+      .replace(/[^a-z0-9_-]/gi, ''); // remove anything that's not a letter or a number or dash or underscore.
 
   var extRegExp = new RegExp(outputFormat + '$', 'i');
   if (!extRegExp.test(fileName)) {
@@ -137,28 +151,29 @@ function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabe
 
     this.thenOpen(url, function () {
       casper.waitFor(
-        function () { // test
-          var readyEvent = scenario.readyEvent || config.readyEvent;
-          if (!readyEvent) {
-            return true;
-          }
-          var regExReadyFlag = new RegExp(readyEvent, 'i');
-          return consoleBuffer.search(regExReadyFlag) > -1;
-        },
-        function () { // on done
-          consoleBuffer = '';
-          casper.echo('Ready event received.');
-        },
-        function () {
-          casper.echo('Error while waiting for ready event.');
-        }, // on timeout
-        scriptTimeout
+          function () { // test
+            var readyEvent = scenario.readyEvent || config.readyEvent;
+            if (!readyEvent) {
+              return true;
+            }
+            var regExReadyFlag = new RegExp(readyEvent, 'i');
+            return consoleBuffer.search(regExReadyFlag) > -1;
+          },
+          function () { // on done
+            consoleBuffer = '';
+            casper.echo('Ready event received.');
+          },
+          function () {
+            casper.echo('Error while waiting for ready event.');
+          }, // on timeout
+          scriptTimeout
       );
       casper.wait(scenario.delay || 1);
     });
 
     casper.then(function () {
-      this.echo('Current location is ' + url, 'info');
+      // this.echo('Current location is ' + url, 'info');
+      console.log(colorizer.colorize('Scenario: ', 'COMMENT') + scenario.label + ' | ' + colorizer.colorize('Location: ', 'COMMENT') + url + ' | ' + colorizer.colorize('Viewport: ', 'COMMENT') + makeSafe(vp.name) + ' (' + (vp.width || vp.viewport.width) + 'x' + (vp.height || vp.viewport.height) + ')');
 
       if (config.debug) {
         var src = this.evaluate(function () {
@@ -183,7 +198,7 @@ function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabe
     });
 
     this.then(function () {
-      this.echo('Capturing screenshots for ' + makeSafe(vp.name) + ' (' + (vp.width || vp.viewport.width) + 'x' + (vp.height || vp.viewport.height) + ')', 'info');
+      // this.echo('Capturing screenshots for ' + makeSafe(vp.name) + ' (' + (vp.width || vp.viewport.width) + 'x' + (vp.height || vp.viewport.height) + ')', 'info');
 
       // HIDE SELECTORS WE WANT TO AVOID
       if (scenario.hasOwnProperty('hideSelectors')) {
@@ -264,14 +279,14 @@ function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabe
         captureScreenshot(casper, filePath, o);
 
         if (!isReference) {
-            var requireSameDimensions;
-            if (scenario.requireSameDimensions !== undefined) {
-                requireSameDimensions = scenario.requireSameDimensions;
-            } else if (config.requireSameDimensions !== undefined) {
-                requireSameDimensions = config.requireSameDimensions;
-            } else {
-                requireSameDimensions = config.defaultRequireSameDimensions;
-            }
+          var requireSameDimensions;
+          if (scenario.requireSameDimensions !== undefined) {
+            requireSameDimensions = scenario.requireSameDimensions;
+          } else if (config.requireSameDimensions !== undefined) {
+            requireSameDimensions = config.requireSameDimensions;
+          } else {
+            requireSameDimensions = config.defaultRequireSameDimensions;
+          }
           compareConfig.testPairs.push({
             reference: referenceFilePath,
             test: testFilePath,

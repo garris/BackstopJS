@@ -28,7 +28,9 @@ module.exports = function (config, tests) {
     casperArgs[casperArgs.length] = '--captureConfigFileName=' + config.captureConfigFileName;
   }
 
-  console.log('\nRunning CasperJS with: ', casperArgs);
+  if (config.debug) {
+    console.log('\nRunning CasperJS with: ', casperArgs);
+  }
 
   process.env.PHANTOMJS_EXECUTABLE = findExecutable('phantomjs-prebuilt', 'phantomjs');
 
