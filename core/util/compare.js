@@ -69,8 +69,8 @@ module.exports = function (config) {
   return map(compareConfig.testPairs, function (pair) {
     var Test = report.addTest(pair);
 
-    var referencePath = path.join(config.projectPath, pair.reference);
-    var testPath = path.join(config.projectPath, pair.test);
+    var referencePath = path.resolve(config.projectPath, pair.reference);
+    var testPath = path.resolve(config.projectPath, pair.test);
 
     return compareImage(referencePath, testPath, config.resembleOutputOptions)
       .then(function logCompareResult (data) {
