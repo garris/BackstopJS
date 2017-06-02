@@ -1,0 +1,11 @@
+{
+  "port": "8000",
+  "open": false,
+  "ui": false,
+  "ghostMode": false,
+  "notify": false,
+  "logLevel": "silent",
+  "server": {
+    "baseDir": "./static"
+  }
+}
