@@ -1,0 +1,17 @@
+{
+  "name": "absolute-paths-example",
+  "version": "1.0.0",
+  "private": true,
+  "author": "katashin",
+  "license": "MIT",
+  "scripts": {
+    "start": "run-p serve test",
+    "test": "backstop reference --config=backstop.js && backstop test --config=backstop.js",
+    "serve": "lite-server -c server.json"
+  },
+  "dependencies": {
+    "backstopjs": "^2.6.14",
+    "lite-server": "^2.3.0",
+    "npm-run-all": "^4.0.2"
+  }
+}
