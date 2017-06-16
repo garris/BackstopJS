@@ -6,6 +6,7 @@ var compare = require('./compare');
 var Reporter = require('./../Reporter');
 var logger = require('./../logger')('compare');
 var storeFailedDiff = require('./store-failed-diff.js');
+var storeFailedDiffStub = require('./store-failed-diff-stub.js');
 
 var ASYNC_COMPARE_LIMIT = 20;
 
@@ -16,6 +17,9 @@ function comparePair(pair, report, config) {
   var testPath = path.join(config.projectPath, pair.test);
 
   if (!fs.existsSync(referencePath)) {
+    // save a failed image stub
+    storeFailedDiffStub(testPath);
+
     Test.status = 'fail';
     logger.error('ERROR reference image not found' + referencePath + ': ' + pair.label + ' ' + pair.fileName);
     pair.error = 'Reference file not found' + referencePath;
@@ -54,7 +58,7 @@ function compareImages(referencePath, testPath, pair, resembleOutputSettings, Te
         pair.diff.getDiffImage = null;
         return pair;
       });
-    })
+    });
 }
 
 module.exports = function (config) {
