@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/garris/BackstopJS.svg)](https://travis-ci.org/garris/BackstopJS)
+[![Build Status](https://travis-ci.org/garris/BackstopJS.svg?branch=master)](https://travis-ci.org/garris/BackstopJS)
 
 # BackstopJS
 **Catch CSS curve balls.**
