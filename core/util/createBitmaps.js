@@ -65,8 +65,8 @@ function writeReferenceCreateConfig (config, isReference) {
 }
 
 function delegateScenarios (config) {
-  // var screenshotNow = new Date();
-  // var screenshotDateTime = screenshotNow.getFullYear() + pad(screenshotNow.getMonth() + 1) + pad(screenshotNow.getDate()) + '-' + pad(screenshotNow.getHours()) + pad(screenshotNow.getMinutes()) + pad(screenshotNow.getSeconds());
+  var screenshotNow = new Date();
+  var screenshotDateTime = screenshotNow.getFullYear() + pad(screenshotNow.getMonth() + 1) + pad(screenshotNow.getDate()) + '-' + pad(screenshotNow.getHours()) + pad(screenshotNow.getMinutes()) + pad(screenshotNow.getSeconds());
 
   // TODO: start chromy here?  Or later?  maybe later because maybe changing resoloutions doesn't work after starting?
   // casper.start();
@@ -83,7 +83,6 @@ function delegateScenarios (config) {
     // var scenarioLabelSafe = makeSafe(scenario.label);
     scenario.sIndex = i;
     scenarios.push(scenario);
-    // processScenario(scenario, scenarioLabelSafe, scenarioLabelSafe, viewports, bitmapsReferencePath, bitmapsTestPath, screenshotDateTime);
 
     if (!config.isReference && scenario.hasOwnProperty('variants')) {
       scenario.variants.forEach(function (variant) {
@@ -119,7 +118,7 @@ function pad (number) {
 
 module.exports = function (config, isReference) {
   if (/chromy/.test(config.engine)) {
-    return delegateScenarios(decorateConfigForCapture(config, isReference));
+    return delegateScenarios(decorateConfigForCapture(config, isReference)).then(_ => {console.log('delegateScenarios ran')});
     // return runChromy(decorateConfigForCapture(config, isReference));
   }
 

@@ -1,21 +1,21 @@
 const Chromy = require('chromy');
-// const path = require('path');
+const path = require('path');
+const fs = require('fs');
+const cwd = fs.workingDirectory;
 
-var fs = require('fs');
-var cwd = fs.workingDirectory;
-
-var scriptTimeout = 20000;
+const scriptTimeout = 20000;
 
 module.exports = function (args) {
+
   var scenario = args.scenario;
   var viewport = args.viewport;
   var config = args.config;
 
   var scenarioLabelSafe = makeSafe(scenario.label);
   var variantOrScenarioLabelSafe = scenario._parent ? makeSafe(scenario._parent.label) : scenarioLabelSafe;
-  var viewportLabelSafe = makeSafe(viewport.label);
+  var viewportNameSafe = makeSafe(viewport.name);
 
-  return processScenarioView(scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, viewportLabelSafe, config);
+  return processScenarioView(scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, viewportNameSafe, config);
 };
 
 /**
@@ -24,13 +24,11 @@ module.exports = function (args) {
  * @param  {[type]} variantOrScenarioLabelSafe [description]
  * @param  {[type]} scenarioLabel          [description]
  * @param  {[type]} viewport               [description]
- * @param  {[type]} viewportLabelSafe      [description]
+ * @param  {[type]} viewportNameSafe      [description]
  * @param  {[type]} config                 [description]
  * @return {[type]}                        [description]
  */
-function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabel, viewport, viewportLabelSafe, config) {
-  console.log('processScenarioView >>', scenarioLabel, viewport.name)
-
+function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabel, viewport, viewportNameSafe, config) {
   var DOCUMENT_SELECTOR = 'document';
 
   if (!config.paths) {
@@ -58,12 +56,6 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
     config.paths = {};
   }
   var compareConfig = {testPairs: []};
-
-  //=====================EARLY RETURN======================
-    // return Promise.reject(new Error('chromy does not yet do the thing'));
-    return Promise.resolve(new Error('chromy does not yet do the thing'));
-  //=====================EARLY RETURN======================
-
   /**
    *  =============
    *  START CHROMY SESSION
@@ -72,8 +64,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
 
   // TODO: start chromy in blank and set viewport
   // this.viewport(vp.width || vp.viewport.width, vp.height || vp.viewport.height);
-
-
+  const chromy = new Chromy({chromeFlags: ['--window-size=1200,800'], visible:false}).chain();
 
   /**
    * =================
@@ -125,6 +116,12 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
    *  =============
    */
 
+  // //  --- REFERENCE URL ---
+  var url = scenario.url;
+  if (isReference && scenario.referenceUrl) {
+    url = scenario.referenceUrl;
+  }
+
   // // --- BEFORE SCRIPT ---
   // /* ============
   //   onBeforeScript files should export a module like so:
@@ -142,12 +139,6 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   // if (casper.cli.options.user && casper.cli.options.password) {
   //   console.log('Auth User via CLI: ' + casper.cli.options.user);
   //   casper.setHttpAuth(casper.cli.options.user, casper.cli.options.password);
-  // }
-
-  // //  --- REFERENCE URL ---
-  // var url = scenario.url;
-  // if (isReference && scenario.referenceUrl) {
-  //   url = scenario.referenceUrl;
   // }
 
   // //  --- OPEN URL + WAIT FOR READY EVENT + CONFIG DELAY ---
@@ -269,25 +260,27 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
     scenario.selectorsExpanded = scenario.selectors;
   // }
 
+  var selectorJobs = [];
   // --- CAPTURE EACH SELECTOR + BUILD TEST CONFIG FILE ---
   scenario.selectorsExpanded.forEach(function (o, i, a) {
     var cleanedSelectorName = o.replace(/[^a-z0-9_-]/gi, ''); // remove anything that's not a letter or a number
-    var fileName = getFilename(scenario.sIndex, variantOrScenarioLabelSafe, i, cleanedSelectorName, viewport.vIndex, viewportLabelSafe);
-    var referenceFilePath = bitmapsReferencePath + '/' + getFilename(scenario.sIndex, scenarioLabel, i, cleanedSelectorName, viewport.vIndex, viewportLabelSafe);
+    var fileName = getFilename(fileNameTemplate, outputFormat, configId, scenario.sIndex, variantOrScenarioLabelSafe, i, cleanedSelectorName, viewport.vIndex, viewportNameSafe);
+    var referenceFilePath = bitmapsReferencePath + '/' + getFilename(fileNameTemplate, outputFormat, configId, scenario.sIndex, scenarioLabel, i, cleanedSelectorName, viewport.vIndex, viewportNameSafe);
     var testFilePath = bitmapsTestPath + '/' + screenshotDateTime + '/' + fileName;
     var filePath = isReference ? referenceFilePath : testFilePath;
 
-    captureScreenshot(casper, filePath, o);
+    var result = captureScreenshot(chromy, filePath, o, url); // TODO:  do a .then() here!å
+    selectorJobs.push(result);
 
     if (!isReference) {
-        var requireSameDimensions;
-        if (scenario.requireSameDimensions !== undefined) {
-            requireSameDimensions = scenario.requireSameDimensions;
-        } else if (config.requireSameDimensions !== undefined) {
-            requireSameDimensions = config.requireSameDimensions;
-        } else {
-            requireSameDimensions = config.defaultRequireSameDimensions;
-        }
+      var requireSameDimensions;
+      if (scenario.requireSameDimensions !== undefined) {
+        requireSameDimensions = scenario.requireSameDimensions;
+      } else if (config.requireSameDimensions !== undefined) {
+        requireSameDimensions = config.requireSameDimensions;
+      } else {
+        requireSameDimensions = config.defaultRequireSameDimensions;
+      }
       compareConfig.testPairs.push({
         reference: referenceFilePath,
         test: testFilePath,
@@ -299,6 +292,14 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
       });
     }
   });// END scenario.selectorsExpanded.forEach
+
+  // =====================EARLY RETURN======================
+  // return Promise.resolve(new Error('chromy does not yet do the thing'));
+  return Promise.all(selectorJobs).then(
+    function() {console.log('OK!')},
+    function() {console.log('boo.')}
+  );
+  // =====================EARLY RETURN======================
 }
 
 // vvv HELPERS vvv
@@ -309,18 +310,45 @@ function getMisMatchThreshHold (scenario) {
   return config.defaultMisMatchThreshold;
 }
 
-function captureScreenshot (casper, filePath, selector) {
-  if (selector === 'body:noclip' || selector === 'document') {
-    casper.capture(filePath);
-  } else if (casper.exists(selector)) {
-    if (casper.visible(selector)) {
-      casper.captureSelector(filePath, selector);
-    } else {
-      fs.write(filePath, fs.read(hiddenSelectorPath, 'b'), 'b');
-    }
-  } else {
-    fs.write(filePath, fs.read(selectorNotFoundPath, 'b'), 'b');
-  }
+function captureScreenshot (chromy, filePath, selector, url) {
+  console.log('saving >', filePath);
+  ensureDirectoryExistence(filePath);
+  return new Promise (function(resolve, reject){
+    chromy
+      .goto(url)
+      .screenshotSelector(selector)
+      .result((png) => {
+        fs.writeFile(filePath, png, err => {
+          if (err) {
+            console.log('problem saving', err);
+          }
+          console.log('saved!')
+        });
+      })
+      .end()
+      .then(_ => {
+        chromy.close();
+        console.log('SCREENSHOT WORKED')
+        resolve();
+      })
+      .catch(e => {
+        chromy.close();
+        console.log('SCREENSHOT BAD')
+        reject();
+      });
+  });
+
+  // if (selector === 'body:noclip' || selector === 'document') {
+  //   casper.capture(filePath);
+  // } else if (casper.exists(selector)) {
+  //   if (casper.visible(selector)) {
+  //     casper.captureSelector(filePath, selector);
+  //   } else {
+  //     fs.write(filePath, fs.read(hiddenSelectorPath, 'b'), 'b');
+  //   }
+  // } else {
+  //   fs.write(filePath, fs.read(selectorNotFoundPath, 'b'), 'b');
+  // }
 }
 
 // function complete () {
@@ -375,7 +403,7 @@ function makeSafe (str) {
   return str.replace(/[ /]/g, '_');
 }
 
-function getFilename (scenarioIndex, scenarioLabel, selectorIndex, selectorLabel, viewportIndex, viewportLabel) {
+function getFilename (fileNameTemplate, outputFormat, configId, scenarioIndex, scenarioLabel, selectorIndex, selectorLabel, viewportIndex, viewportLabel) {
   var fileName = fileNameTemplate
     .replace(/\{configId\}/, configId)
     .replace(/\{scenarioIndex\}/, scenarioIndex)
@@ -393,7 +421,14 @@ function getFilename (scenarioIndex, scenarioLabel, selectorIndex, selectorLabel
   return fileName;
 }
 
-
+function ensureDirectoryExistence(filePath) {
+  var dirname = path.dirname(filePath);
+  if (fs.existsSync(dirname)) {
+    return true;
+  }
+  ensureDirectoryExistence(dirname);
+  fs.mkdirSync(dirname);
+}
 
 
 // function testChromy (config) {
