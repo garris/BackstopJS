@@ -3,19 +3,21 @@ const path = require('path');
 const fs = require('fs');
 const cwd = fs.workingDirectory;
 
-const scriptTimeout = 20000;
+const TEST_TIMEOUT = 20000;
+const CHROMY_PORT = 9222;
 
 module.exports = function (args) {
 
   var scenario = args.scenario;
   var viewport = args.viewport;
   var config = args.config;
+  var runId = args.id;
 
   var scenarioLabelSafe = makeSafe(scenario.label);
   var variantOrScenarioLabelSafe = scenario._parent ? makeSafe(scenario._parent.label) : scenarioLabelSafe;
   var viewportNameSafe = makeSafe(viewport.name);
 
-  return processScenarioView(scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, viewportNameSafe, config);
+  return processScenarioView(scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, viewportNameSafe, config, runId);
 };
 
 /**
@@ -28,7 +30,7 @@ module.exports = function (args) {
  * @param  {[type]} config                 [description]
  * @return {[type]}                        [description]
  */
-function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabel, viewport, viewportNameSafe, config) {
+function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabel, viewport, viewportNameSafe, config, runId) {
   var DOCUMENT_SELECTOR = 'document';
 
   if (!config.paths) {
@@ -56,15 +58,24 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
     config.paths = {};
   }
   var compareConfig = {testPairs: []};
+
   /**
    *  =============
    *  START CHROMY SESSION
    *  =============
    */
+  const w = viewport.width || viewport.viewport.width;
+  const h = viewport.height || viewport.viewport.height;
+  const flags = ['--window-size={w},{h}'.replace(/{w}/, w).replace(/{h}/, h)];
+  const port = CHROMY_PORT + runId;
 
-  // TODO: start chromy in blank and set viewport
-  // this.viewport(vp.width || vp.viewport.width, vp.height || vp.viewport.height);
-  const chromy = new Chromy({chromeFlags: ['--window-size=1200,800'], visible:false}).chain();
+  const chromy = new Chromy({
+    chromeFlags: flags,
+    port: port,
+    visible: true
+  }).chain();
+
+  console.log('Starting Chromy:', `port:${port}`, flags);
 
   /**
    * =================
@@ -159,7 +170,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   //     function () {
   //       casper.echo('Error while waiting for ready event.');
   //     }, // on timeout
-  //     scriptTimeout
+  //     TEST_TIMEOUT
   //   );
   //   casper.wait(scenario.delay || 1);
   // });

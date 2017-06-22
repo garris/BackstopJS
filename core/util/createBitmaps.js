@@ -8,6 +8,7 @@ var runChromy = require('./runChromy');
 
 var logger = require('./logger')('createBitmaps');
 
+var CONCURRENCY = 10;
 var GENERATE_BITMAPS_SCRIPT = 'capture/genBitmaps.js';
 
 function regexTest (string, search) {
@@ -94,18 +95,20 @@ function delegateScenarios (config) {
     }
   });
 
+  var scenarioViewId = 0;
   scenarios.forEach(function (scenario) {
     config.viewports.forEach(function (viewport) {
       scenarioViews.push({
         scenario: scenario,
         viewport: viewport,
-        config: config
+        config: config,
+        id: scenarioViewId++
       });
     });
   });
 
   // return Promise.reject(new Error('note yet delegating'));
-  return pMap(scenarioViews, runChromy, { concurrency: 2 });
+  return pMap(scenarioViews, runChromy, { concurrency: CONCURRENCY });
 }
 
 function pad (number) {
