@@ -271,7 +271,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
     scenario.selectorsExpanded = scenario.selectors;
   // }
 
-  var selectorJobs = [];
+  var captureJobs = [];
   // --- CAPTURE EACH SELECTOR + BUILD TEST CONFIG FILE ---
   scenario.selectorsExpanded.forEach(function (o, i, a) {
     var cleanedSelectorName = o.replace(/[^a-z0-9_-]/gi, ''); // remove anything that's not a letter or a number
@@ -279,9 +279,6 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
     var referenceFilePath = bitmapsReferencePath + '/' + getFilename(fileNameTemplate, outputFormat, configId, scenario.sIndex, scenarioLabel, i, cleanedSelectorName, viewport.vIndex, viewportNameSafe);
     var testFilePath = bitmapsTestPath + '/' + screenshotDateTime + '/' + fileName;
     var filePath = isReference ? referenceFilePath : testFilePath;
-
-    var result = captureScreenshot(chromy, filePath, o, url); // TODO:  do a .then() here!å
-    selectorJobs.push(result);
 
     if (!isReference) {
       var requireSameDimensions;
@@ -302,14 +299,23 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
         misMatchThreshold: getMisMatchThreshHold(scenario)
       });
     }
+
+    var result = captureScreenshot(chromy, filePath, o, url); // TODO:  do a .then() here!å
+    captureJobs.push(result);
+
   });// END scenario.selectorsExpanded.forEach
 
   // =====================EARLY RETURN======================
   // return Promise.resolve(new Error('chromy does not yet do the thing'));
-  return Promise.all(selectorJobs).then(
-    function() {console.log('OK!')},
-    function() {console.log('boo.')}
-  );
+  return Promise.all(captureJobs)
+          .then(_ => console.log('OK!'))
+          .catch(err => console.log('boo.', err))
+          // .then(_ => {
+          //   chromy.end();
+          // })
+          .then(_ => {
+            chromy.close();
+          });
   // =====================EARLY RETURN======================
 }
 
@@ -323,28 +329,27 @@ function getMisMatchThreshHold (scenario) {
 
 function captureScreenshot (chromy, filePath, selector, url) {
   console.log('saving >', filePath);
-  ensureDirectoryExistence(filePath);
-  return new Promise (function(resolve, reject){
+  ensureDirectoryPath(filePath);
+  return new Promise (function (resolve, reject) {
     chromy
       .goto(url)
       .screenshotSelector(selector)
       .result((png) => {
-        fs.writeFile(filePath, png, err => {
+        return fs.writeFile(filePath, png, err => {
           if (err) {
-            console.log('problem saving', err);
+            console.log('BAD SAVE', err);
+            return new Error(err);
           }
-          console.log('saved!')
+          console.log('GOOD SAVE');
         });
       })
       .end()
       .then(_ => {
-        chromy.close();
-        console.log('SCREENSHOT WORKED')
+        console.log('GOOD')
         resolve();
       })
       .catch(e => {
-        chromy.close();
-        console.log('SCREENSHOT BAD')
+        console.log('BAD', e)
         reject();
       });
   });
@@ -432,35 +437,12 @@ function getFilename (fileNameTemplate, outputFormat, configId, scenarioIndex, s
   return fileName;
 }
 
-function ensureDirectoryExistence(filePath) {
+function ensureDirectoryPath (filePath) {
   var dirname = path.dirname(filePath);
   if (fs.existsSync(dirname)) {
     return true;
   }
-  ensureDirectoryExistence(dirname);
+  ensureDirectoryPath(dirname);
   fs.mkdirSync(dirname);
 }
 
-
-// function testChromy (config) {
-//   const chromy = new Chromy({additionalChromeFlags: ['--window-size=2000,1000'], visible:true});
-//   let p = chromy.chain()
-//     .goto('https://garris.github.io/BackstopJS/')
-//     .screenshot()
-//     .result((png) => {
-//       fs.writeFile(config.env.projectPath + '/out.png', png);
-//     })
-
-//     // .evaluate(() => {
-//     //   return document.querySelector('#fsl').innerHTML;
-//     // })
-//     // .result((r) => console.log('>>>',r.toString()))
-//     .end()
-//     .then(_ => chromy.close())
-//     .catch(e => chromy.close());
-
-//   return p.then(() => {
-//     console.log('CHROMY DONE vvv');
-//     return Promise.reject(new Error('chromy does not yet do the thing'));
-//   });
-// }
