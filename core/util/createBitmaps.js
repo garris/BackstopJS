@@ -34,7 +34,7 @@ function decorateConfigForCapture (config, isReference) {
   configJSON.screenshotDateTime = screenshotDateTime;
   configJSON.env = config;
   configJSON.isReference = isReference;
-  // configJSON.paths.tempCompareConfigFileName = config.tempCompareConfigFileName;
+  configJSON.paths.tempCompareConfigFileName = config.tempCompareConfigFileName;
   configJSON.defaultMisMatchThreshold = config.defaultMisMatchThreshold;
   configJSON.backstopConfigFileName = config.backstopConfigFileName;
   configJSON.defaultRequireSameDimensions = config.defaultRequireSameDimensions;
@@ -120,22 +120,18 @@ function pad (number) {
 }
 
 function writeCompareConfigFile (comparePairsFileName, compareConfig) {
-  var compareConfigJSON = {compareConfig: compareConfig};
+  var compareConfigJSON = JSON.stringify(compareConfig, null, 2);
   ensureDirectoryPath(comparePairsFileName);
-  fs.writeFile(comparePairsFileName, JSON.stringify(compareConfigJSON, null, 2), err => {
-    if (err) {
-      throw new Error('Error during file save. ', err);
-    }
-  });
-  console.log('Comparison config file updated.');
+  return fs.writeFile(comparePairsFileName, compareConfigJSON);
 }
 
 module.exports = function (config, isReference) {
   if (/chromy/.test(config.engine)) {
     return delegateScenarios(decorateConfigForCapture(config, isReference)).then(output => {
-      output = {compareConfig: output};
-      console.log('delegateScenarios ran >', JSON.stringify(output, null, 2));
-      writeCompareConfigFile(config.tempCompareConfigFileName, JSON.stringify(output, null, 2));
+      var testPairsFlatMap = output.reduce((acc, result) => {
+        return acc.concat(result.testPairs);
+      }, []);
+      return writeCompareConfigFile(config.tempCompareConfigFileName, { compareConfig: { testPairs: testPairsFlatMap } });
     });
   }
 
