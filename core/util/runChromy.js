@@ -3,6 +3,7 @@ const path = require('path');
 const fs = require('fs');
 const cwd = fs.workingDirectory;
 
+const VISIBLE = false;
 const TEST_TIMEOUT = 20000;
 const CHROMY_PORT = 9222;
 
@@ -72,7 +73,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   const chromy = new Chromy({
     chromeFlags: flags,
     port: port,
-    visible: true
+    visible: VISIBLE
   }).chain();
 
   console.log('Starting Chromy:', `port:${port}`, flags);
@@ -271,9 +272,8 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
     scenario.selectorsExpanded = scenario.selectors;
   // }
 
-  var captureJobs = [];
   // --- CAPTURE EACH SELECTOR + BUILD TEST CONFIG FILE ---
-  scenario.selectorsExpanded.forEach(function (o, i, a) {
+  var captureJobs = scenario.selectorsExpanded.map(function (o, i, a) {
     var cleanedSelectorName = o.replace(/[^a-z0-9_-]/gi, ''); // remove anything that's not a letter or a number
     var fileName = getFilename(fileNameTemplate, outputFormat, configId, scenario.sIndex, variantOrScenarioLabelSafe, i, cleanedSelectorName, viewport.vIndex, viewportNameSafe);
     var referenceFilePath = bitmapsReferencePath + '/' + getFilename(fileNameTemplate, outputFormat, configId, scenario.sIndex, scenarioLabel, i, cleanedSelectorName, viewport.vIndex, viewportNameSafe);
@@ -300,23 +300,40 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
       });
     }
 
-    var result = captureScreenshot(chromy, filePath, o, url); // TODO:  do a .then() here!å
-    captureJobs.push(result);
-
+    return function () {
+      return captureScreenshot(chromy, filePath, o, url); // TODO:  do a .then() here!å
+    };
   });// END scenario.selectorsExpanded.forEach
 
-  // =====================EARLY RETURN======================
-  // return Promise.resolve(new Error('chromy does not yet do the thing'));
-  return Promise.all(captureJobs)
-          .then(_ => console.log('OK!'))
-          .catch(err => console.log('boo.', err))
-          // .then(_ => {
-          //   chromy.end();
-          // })
-          .then(_ => {
-            chromy.close();
-          });
-  // =====================EARLY RETURN======================
+  return new Promise(function (resolve, reject) {
+    var job = null;
+    var errors = [];
+    var next = function () {
+      if (captureJobs.length === 0) {
+        if (errors.length === 0) {
+          resolve();
+        } else {
+          reject(errors);
+        }
+        return;
+      }
+      job = captureJobs.shift();
+      job.apply().catch(function (e) {
+        errors.push(e);
+      }).then(function () {
+        next();
+      });
+    };
+    next();
+  }).then(function () {
+    console.log('OK!');
+    return chromy.close().end();
+  }).catch(function (errs) {
+    console.log('BOO.', JSON.stringify(errs));
+    return chromy.close().end().then(function () {
+      throw errs;
+    });
+  });
 }
 
 // vvv HELPERS vvv
@@ -345,11 +362,11 @@ function captureScreenshot (chromy, filePath, selector, url) {
       })
       .end()
       .then(_ => {
-        console.log('GOOD')
+        console.log('GOOD');
         resolve();
       })
       .catch(e => {
-        console.log('BAD', e)
+        console.log('BAD', e);
         reject();
       });
   });
@@ -445,4 +462,3 @@ function ensureDirectoryPath (filePath) {
   ensureDirectoryPath(dirname);
   fs.mkdirSync(dirname);
 }
-
