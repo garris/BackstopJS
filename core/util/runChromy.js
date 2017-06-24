@@ -1,9 +1,9 @@
 const Chromy = require('chromy');
-const path = require('path');
 const fs = require('fs');
+const ensureDirectoryPath = require('./ensureDirectoryPath');
 const cwd = fs.workingDirectory;
 
-const VISIBLE = false;
+const VISIBLE = true;
 const TEST_TIMEOUT = 20000;
 const CHROMY_PORT = 9222;
 
@@ -42,7 +42,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   var bitmapsReferencePath = config.paths.bitmaps_reference || 'bitmaps_reference';
   var bitmapsTestPath = config.paths.bitmaps_test || 'bitmaps_test';
   var casperScriptsPath = config.paths.casper_scripts || null;
-  var comparePairsFileName = config.paths.tempCompareConfigFileName;
+  // var comparePairsFileName = config.paths.tempCompareConfigFileName;
   var screenshotDateTime = config.screenshotDateTime;
   var configId = config.id || genHash(config.backstopConfigFileName);
   var fileNameTemplate = config.fileNameTemplate || '{configId}_{scenarioLabel}_{selectorIndex}_{selectorLabel}_{viewportIndex}_{viewportLabel}';
@@ -58,7 +58,6 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   if (!config.paths) {
     config.paths = {};
   }
-  var compareConfig = {testPairs: []};
 
   /**
    *  =============
@@ -273,6 +272,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   // }
 
   // --- CAPTURE EACH SELECTOR + BUILD TEST CONFIG FILE ---
+  var compareConfig = {testPairs: []};
   var captureJobs = scenario.selectorsExpanded.map(function (o, i, a) {
     var cleanedSelectorName = o.replace(/[^a-z0-9_-]/gi, ''); // remove anything that's not a letter or a number
     var fileName = getFilename(fileNameTemplate, outputFormat, configId, scenario.sIndex, variantOrScenarioLabelSafe, i, cleanedSelectorName, viewport.vIndex, viewportNameSafe);
@@ -303,7 +303,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
     return function () {
       return captureScreenshot(chromy, filePath, o, url); // TODO:  do a .then() here!å
     };
-  });// END scenario.selectorsExpanded.forEach
+  });
 
   return new Promise(function (resolve, reject) {
     var job = null;
@@ -326,14 +326,12 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
     };
     next();
   }).then(function () {
-    console.log('OK!');
     return chromy.close().end();
-  }).catch(function (errs) {
-    console.log('BOO.', JSON.stringify(errs));
+  }).catch(function (err) {
     return chromy.close().end().then(function () {
-      throw errs;
+      throw err;
     });
-  });
+  }).then(_ => compareConfig);
 }
 
 // vvv HELPERS vvv
@@ -354,20 +352,17 @@ function captureScreenshot (chromy, filePath, selector, url) {
       .result((png) => {
         return fs.writeFile(filePath, png, err => {
           if (err) {
-            console.log('BAD SAVE', err);
-            return new Error(err);
+            throw new Error('Error during file save. ', err);
           }
-          console.log('GOOD SAVE');
+          console.log('SAVED >', filePath);
         });
       })
       .end()
       .then(_ => {
-        console.log('GOOD');
         resolve();
       })
       .catch(e => {
-        console.log('BAD', e);
-        reject();
+        reject(e);
       });
   });
 
@@ -384,9 +379,14 @@ function captureScreenshot (chromy, filePath, selector, url) {
   // }
 }
 
-// function complete () {
+// function writeCompareConfigFile (comparePairsFileName, compareConfig) {
 //   var compareConfigJSON = {compareConfig: compareConfig};
-//   fs.write(comparePairsFileName, JSON.stringify(compareConfigJSON, null, 2), 'w');
+//   ensureDirectoryPath(comparePairsFileName);
+//   fs.writeFile(comparePairsFileName, JSON.stringify(compareConfigJSON, null, 2), err => {
+//     if (err) {
+//       throw new Error('Error during file save. ', err);
+//     }
+//   });
 //   console.log('Comparison config file updated.');
 // }
 
@@ -452,13 +452,4 @@ function getFilename (fileNameTemplate, outputFormat, configId, scenarioIndex, s
     fileName = fileName + outputFormat;
   }
   return fileName;
-}
-
-function ensureDirectoryPath (filePath) {
-  var dirname = path.dirname(filePath);
-  if (fs.existsSync(dirname)) {
-    return true;
-  }
-  ensureDirectoryPath(dirname);
-  fs.mkdirSync(dirname);
 }

@@ -5,7 +5,7 @@ var pMap = require('p-map');
 
 var runCasper = require('./runCasper');
 var runChromy = require('./runChromy');
-
+const ensureDirectoryPath = require('./ensureDirectoryPath');
 var logger = require('./logger')('createBitmaps');
 
 var CONCURRENCY = 10;
@@ -34,7 +34,7 @@ function decorateConfigForCapture (config, isReference) {
   configJSON.screenshotDateTime = screenshotDateTime;
   configJSON.env = config;
   configJSON.isReference = isReference;
-  configJSON.paths.tempCompareConfigFileName = config.tempCompareConfigFileName;
+  // configJSON.paths.tempCompareConfigFileName = config.tempCompareConfigFileName;
   configJSON.defaultMisMatchThreshold = config.defaultMisMatchThreshold;
   configJSON.backstopConfigFileName = config.backstopConfigFileName;
   configJSON.defaultRequireSameDimensions = config.defaultRequireSameDimensions;
@@ -119,10 +119,24 @@ function pad (number) {
   return r;
 }
 
+function writeCompareConfigFile (comparePairsFileName, compareConfig) {
+  var compareConfigJSON = {compareConfig: compareConfig};
+  ensureDirectoryPath(comparePairsFileName);
+  fs.writeFile(comparePairsFileName, JSON.stringify(compareConfigJSON, null, 2), err => {
+    if (err) {
+      throw new Error('Error during file save. ', err);
+    }
+  });
+  console.log('Comparison config file updated.');
+}
+
 module.exports = function (config, isReference) {
   if (/chromy/.test(config.engine)) {
-    return delegateScenarios(decorateConfigForCapture(config, isReference)).then(_ => {console.log('delegateScenarios ran')});
-    // return runChromy(decorateConfigForCapture(config, isReference));
+    return delegateScenarios(decorateConfigForCapture(config, isReference)).then(output => {
+      output = {compareConfig: output};
+      console.log('delegateScenarios ran >', JSON.stringify(output, null, 2));
+      writeCompareConfigFile(config.tempCompareConfigFileName, JSON.stringify(output, null, 2));
+    });
   }
 
   return writeReferenceCreateConfig(config, isReference).then(function () {
