@@ -36,16 +36,14 @@ compareApp.controller('MainCtrl', ['$scope', '$uibModal', 'clipboard', function 
   }
 
   tests.tests.forEach(function (o) {
-    $scope.testDuration += o.pair.diff.analysisTime;
-
-    if (o.pair.diff.requireSameDimensions) {
-      delete o.pair.diff.dimensionDifference;
-    }
-
-    delete o.pair.diff.analysisTime;
-
     if (o.status === 'pass') {
       $scope.passedCount++;
+
+      $scope.testDuration += o.pair.diff.analysisTime;
+      if (o.pair.diff.requireSameDimensions) {
+        delete o.pair.diff.dimensionDifference;
+      }
+      delete o.pair.diff.analysisTime;
     }
 
     $scope.testPairs.push(new TestPair(o));
