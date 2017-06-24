@@ -343,7 +343,6 @@ function getMisMatchThreshHold (scenario) {
 }
 
 function captureScreenshot (chromy, filePath, selector, url) {
-  console.log('saving >', filePath);
   ensureDirectoryPath(filePath);
   return new Promise (function (resolve, reject) {
     chromy
@@ -354,7 +353,6 @@ function captureScreenshot (chromy, filePath, selector, url) {
           if (err) {
             throw new Error('Error during file save. ', err);
           }
-          console.log('SAVED >', filePath);
         });
       })
       .end()
