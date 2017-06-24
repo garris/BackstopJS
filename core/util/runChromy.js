@@ -175,7 +175,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   //   casper.wait(scenario.delay || 1);
   // });
 
-  // //  --- OPTION DEBUG TO CONAOLE ---
+  // //  --- OPTION DEBUG TO CONSOLE ---
   // casper.then(function () {
   //   if (config.debug) {
   //     var src = this.evaluate(function () {
@@ -197,7 +197,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   // casper.then(function () {
   //   var onReadyScript = scenario.onReadyScript || config.onReadyScript;
   //   if (onReadyScript) {
-  //     require(getScriptPath(onReadyScript))(casper, scenario, vp, isReference);
+  //     require(getScriptPath(onReadyScript, casperScriptsPath))(casper, scenario, vp, isReference);
   //   }
   // });
 
@@ -377,30 +377,15 @@ function captureScreenshot (chromy, filePath, selector, url) {
   // }
 }
 
-// function writeCompareConfigFile (comparePairsFileName, compareConfig) {
-//   var compareConfigJSON = {compareConfig: compareConfig};
-//   ensureDirectoryPath(comparePairsFileName);
-//   fs.writeFile(comparePairsFileName, JSON.stringify(compareConfigJSON, null, 2), err => {
-//     if (err) {
-//       throw new Error('Error during file save. ', err);
-//     }
-//   });
-//   console.log('Comparison config file updated.');
-// }
-
-function getScriptPath (scriptFilePath) {
+function getScriptPath (scriptFilePath, casperScriptsPath) {
   var scriptPath = ensureFileSuffix(scriptFilePath, 'js');
-
   if (casperScriptsPath) {
     scriptPath = glueStringsWithSlash(casperScriptsPath, scriptPath);
   }
-
-  // make sure it's there...
   if (!fs.isFile(scriptPath)) {
-    casper.echo(scriptPath + ' was not found.', 'ERROR');
+    console.log(scriptPath + ' was not found.', 'ERROR');
     return;
   }
-
   return cwd + fs.separator + scriptPath;
 }
 
