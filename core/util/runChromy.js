@@ -273,8 +273,8 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
 
   // --- CAPTURE EACH SELECTOR + BUILD TEST CONFIG FILE ---
   var compareConfig = {testPairs: []};
-  var captureJobs = scenario.selectorsExpanded.map(function (o, i, a) {
-    var cleanedSelectorName = o.replace(/[^a-z0-9_-]/gi, ''); // remove anything that's not a letter or a number
+  var captureJobs = scenario.selectorsExpanded.map(function (selector, i, a) {
+    var cleanedSelectorName = selector.replace(/[^a-z0-9_-]/gi, ''); // remove anything that's not a letter or a number
     var fileName = getFilename(fileNameTemplate, outputFormat, configId, scenario.sIndex, variantOrScenarioLabelSafe, i, cleanedSelectorName, viewport.vIndex, viewportNameSafe);
     var referenceFilePath = bitmapsReferencePath + '/' + getFilename(fileNameTemplate, outputFormat, configId, scenario.sIndex, scenarioLabel, i, cleanedSelectorName, viewport.vIndex, viewportNameSafe);
     var testFilePath = bitmapsTestPath + '/' + screenshotDateTime + '/' + fileName;
@@ -292,7 +292,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
       compareConfig.testPairs.push({
         reference: referenceFilePath,
         test: testFilePath,
-        selector: o,
+        selector: selector,
         fileName: fileName,
         label: scenario.label,
         requireSameDimensions: requireSameDimensions,
@@ -301,7 +301,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
     }
 
     return function () {
-      return captureScreenshot(chromy, filePath, o, url); // TODO:  do a .then() here!å
+      return captureScreenshot(chromy, filePath, url, selector);
     };
   });
 
@@ -336,17 +336,21 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
 
 // vvv HELPERS vvv
 
-function getMisMatchThreshHold (scenario) {
-  if (typeof scenario.misMatchThreshold !== 'undefined') { return scenario.misMatchThreshold; }
-  if (typeof config.misMatchThreshold !== 'undefined') { return config.misMatchThreshold; }
-  return config.defaultMisMatchThreshold;
-}
-
-function captureScreenshot (chromy, filePath, selector, url) {
+function captureScreenshot (chromy, filePath, url, selector) {
   ensureDirectoryPath(filePath);
   return new Promise (function (resolve, reject) {
     chromy
-      .goto(url)
+      .goto(url);
+
+    chromy
+      .evaluate(() => {
+        return document.getElementsByTagName('h2')[0].innerText;
+      })
+      .result((result) => {
+        console.log('RESULT >', result);
+      });
+
+    chromy
       .screenshotSelector(selector)
       .result((png) => {
         return fs.writeFile(filePath, png, err => {
@@ -375,6 +379,12 @@ function captureScreenshot (chromy, filePath, selector, url) {
   // } else {
   //   fs.write(filePath, fs.read(selectorNotFoundPath, 'b'), 'b');
   // }
+}
+
+function getMisMatchThreshHold (scenario) {
+  if (typeof scenario.misMatchThreshold !== 'undefined') { return scenario.misMatchThreshold; }
+  if (typeof config.misMatchThreshold !== 'undefined') { return config.misMatchThreshold; }
+  return config.defaultMisMatchThreshold;
 }
 
 function getScriptPath (scriptFilePath, casperScriptsPath) {
