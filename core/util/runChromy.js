@@ -350,15 +350,22 @@ function captureScreenshot (chromy, filePath, url, selector) {
         console.log('RESULT >', result);
       });
 
+    if (selector === 'body:noclip' || selector === 'document') {
+      chromy.screenshotDocument();
+    } else {
+      chromy.screenshotSelector(selector);
+    }
+
     chromy
-      .screenshotSelector(selector)
       .result((png) => {
         return fs.writeFile(filePath, png, err => {
           if (err) {
             throw new Error('Error during file save. ', err);
           }
         });
-      })
+      });
+
+    chromy
       .end()
       .then(_ => {
         resolve();
@@ -368,9 +375,7 @@ function captureScreenshot (chromy, filePath, url, selector) {
       });
   });
 
-  // if (selector === 'body:noclip' || selector === 'document') {
-  //   casper.capture(filePath);
-  // } else if (casper.exists(selector)) {
+  // if (casper.exists(selector)) {
   //   if (casper.visible(selector)) {
   //     casper.captureSelector(filePath, selector);
   //   } else {
