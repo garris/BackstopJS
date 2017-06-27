@@ -261,27 +261,36 @@ function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabe
 
         var filePath = (isReference) ? referenceFilePath : testFilePath;
 
-        captureScreenshot(casper, filePath, o);
+        casper.then(function() {
+          var onSelectorBeforeScript = scenario.onSelectorBeforeScript || config.onSelectorBeforeScript;
+          if (onSelectorBeforeScript) {
+            require(getScriptPath(onSelectorBeforeScript))(casper, o, vp, isReference);
+          }
+        })
 
-        if (!isReference) {
+        casper.then(function() {
+          captureScreenshot(casper, filePath, o);
+
+          if (!isReference) {
             var requireSameDimensions;
             if (scenario.requireSameDimensions !== undefined) {
-                requireSameDimensions = scenario.requireSameDimensions;
+              requireSameDimensions = scenario.requireSameDimensions;
             } else if (config.requireSameDimensions !== undefined) {
-                requireSameDimensions = config.requireSameDimensions;
+              requireSameDimensions = config.requireSameDimensions;
             } else {
-                requireSameDimensions = config.defaultRequireSameDimensions;
+              requireSameDimensions = config.defaultRequireSameDimensions;
             }
-          compareConfig.testPairs.push({
-            reference: referenceFilePath,
-            test: testFilePath,
-            selector: o,
-            fileName: fileName,
-            label: scenario.label,
-            requireSameDimensions: requireSameDimensions,
-            misMatchThreshold: getMisMatchThreshHold(scenario)
-          });
-        }
+            compareConfig.testPairs.push({
+              reference: referenceFilePath,
+              test: testFilePath,
+              selector: o,
+              fileName: fileName,
+              label: scenario.label,
+              requireSameDimensions: requireSameDimensions,
+              misMatchThreshold: getMisMatchThreshHold(scenario)
+            });
+          }
+        });
         // casper.echo('remote capture to > '+filePath,'info');
       });// end topLevelModules.forEach
     });
