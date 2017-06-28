@@ -105,12 +105,12 @@
       <div class="modal-body" id="modal-body">
 
         <div class="btn-group " role="group">
-          <button type="button" class="btn btn-success" ng-click="setImgPositionValue(0)">Reference</button>
-          <button type="button" class="btn btn-warning" ng-click="setImgPositionValue(100)">Test</button>
+          <button type="button" class="btn btn-success" ng-click="setImgPositionValue(100)">Reference</button>
+          <button type="button" class="btn btn-warning" ng-click="setImgPositionValue(0)">Test</button>
         </div>
 
-        <revealer top-image="{{ selected.testImg }}"
-                  bottom-image="{{ selected.referenceImg }}"
+        <revealer top-image="{{ selected.referenceImg }}"
+                  bottom-image="{{ selected.testImg }}"
                   start-position = "imgPositionValue">
         </revealer>
 
