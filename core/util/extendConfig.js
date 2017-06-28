@@ -3,6 +3,7 @@ var temp = require('temp');
 var fs = require('fs');
 var hash = require('object-hash');
 const tmpdir = require('os').tmpdir();
+const version = require('../../package.json').version;
 
 function extendConfig (config, userConfig) {
   bitmapPaths(config, userConfig);
@@ -18,6 +19,7 @@ function extendConfig (config, userConfig) {
   config.debug = userConfig.debug || false;
   config.resembleOutputOptions = userConfig.resembleOutputOptions;
   config.asyncCompareLimit = userConfig.asyncCompareLimit;
+  config.backstopVersion = version;
   return config;
 }
 

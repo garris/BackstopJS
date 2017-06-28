@@ -1,5 +1,6 @@
 const Chromy = require('chromy');
 const fs = require('fs');
+const path = require('path');
 const ensureDirectoryPath = require('./ensureDirectoryPath');
 const cwd = fs.workingDirectory;
 
@@ -41,7 +42,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   var outputFormat = '.' + (config.outputFormat && config.outputFormat.match(/jpg|jpeg/) || 'png');
   var bitmapsReferencePath = config.paths.bitmaps_reference || 'bitmaps_reference';
   var bitmapsTestPath = config.paths.bitmaps_test || 'bitmaps_test';
-  var casperScriptsPath = config.paths.casper_scripts || null;
+  var casperScriptsPath = config.env.casper_scripts || config.env.casper_scripts_default;
   // var comparePairsFileName = config.paths.tempCompareConfigFileName;
   var screenshotDateTime = config.screenshotDateTime;
   var configId = config.id || genHash(config.backstopConfigFileName);
@@ -72,7 +73,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   const chromy = new Chromy({
     chromeFlags: flags,
     port: port,
-    visible: VISIBLE
+    visible: config.debugWindow || false
   }).chain();
 
   console.log('Starting Chromy:', `port:${port}`, flags);
@@ -83,10 +84,11 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
    * =================
    */
 
-  // var isReference = config.isReference;
-  // if (isReference) {
-  //   console.log('CREATING NEW REFERENCE FILES');
-  // }
+  var isReference = config.isReference;
+  if (isReference) {
+    console.log('CREATING NEW REFERENCE FILES');
+  }
+
 
   // // verbose console errors
   // if (config.debug) {
@@ -113,13 +115,14 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
    *  =============
    */
 
-  // TODO: REQUIRED!!!
-  // // set up consoleBuffer
+  // set up consoleBuffer
   var consoleBuffer = '';
-  // casper.on('remote.message', function (message) {
-  //   casper.echo(message);
-  //   consoleBuffer = consoleBuffer + '\n' + message;
-  // });
+  chromy.console((text, consoleObj) => {
+    if (console[consoleObj.level]) {
+      console[consoleObj.level](text);
+    }
+    consoleBuffer = consoleBuffer + '\n' + text;
+  });
 
   /**
    *  =============
@@ -133,18 +136,23 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
     url = scenario.referenceUrl;
   }
 
-  // // --- BEFORE SCRIPT ---
-  // /* ============
-  //   onBeforeScript files should export a module like so:
+  // --- BEFORE SCRIPT ---
+  /* ============
+    onBeforeScript files should export a module like so:
 
-  //   module.exports = function(casper, scenario, vp) {
-  //     // run custom casperjs code
-  //   };
-  // ============ */
-  // var onBeforeScript = scenario.onBeforeScript || config.onBeforeScript;
-  // if (onBeforeScript) {
-  //   require(getScriptPath(onBeforeScript))(casper, scenario, vp, isReference);
-  // }
+    module.exports = function(renderer, scenario, vp) {
+      // run custom casperjs code
+    };
+  ============ */
+  var onBeforeScript = scenario.onBeforeScript || config.onBeforeScript;
+  if (onBeforeScript) {
+    var beforeScriptPath = path.resolve(casperScriptsPath, onBeforeScript);
+    if (fs.existsSync(beforeScriptPath)) {
+      require(beforeScriptPath)(chromy, scenario, viewport, isReference);
+    } else {
+      console.warn('WARNING: script not found: ' + beforeScriptPath);
+    }
+  }
 
   // // --- SIMPLE AUTH ---
   // if (casper.cli.options.user && casper.cli.options.password) {
@@ -392,17 +400,17 @@ function getMisMatchThreshHold (scenario) {
   return config.defaultMisMatchThreshold;
 }
 
-function getScriptPath (scriptFilePath, casperScriptsPath) {
-  var scriptPath = ensureFileSuffix(scriptFilePath, 'js');
-  if (casperScriptsPath) {
-    scriptPath = glueStringsWithSlash(casperScriptsPath, scriptPath);
-  }
-  if (!fs.isFile(scriptPath)) {
-    console.log(scriptPath + ' was not found.', 'ERROR');
-    return;
-  }
-  return cwd + fs.separator + scriptPath;
-}
+// function getScriptPath (scriptFilePath, casperScriptsPath) {
+//   var scriptPath = ensureFileSuffix(scriptFilePath, 'js');
+//   if (casperScriptsPath) {
+//     scriptPath = glueStringsWithSlash(casperScriptsPath, scriptPath);
+//   }
+//   if (!fs.existsSync(scriptPath)) {
+//     console.log(scriptPath + ' was not found.', 'ERROR');
+//     return;
+//   }
+//   return cwd + fs.separator + scriptPath;
+// }
 
 function ensureFileSuffix (filename, suffix) {
   var re = new RegExp('\.' + suffix + '$', ''); // eslint-disable-line no-useless-escape

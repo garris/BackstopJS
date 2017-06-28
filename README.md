@@ -459,7 +459,7 @@ module.exports = function(casper, scenario, vp) {
 }
 ```
 
-#### Setting the base path for custom CasperJS scripts
+#### Setting the base path for custom onBefore and onReady scripts
 
 By default the base path is a folder called `scripts` inside your BackstopJS installation directory. You can override this by setting the `paths.scripts` property in your `backstop.json` file to point to somewhere in your project directory (recommended).
 
@@ -582,9 +582,19 @@ _Please note: these file paths are relative to your current working directory $(
 ```
 
 ### Changing the rendering engine
-BackstopJS supports using PhantomJS or SlimerJS for web app rendering. (With thanks to CasperJS for doing the heavy lifting here.)
+BackstopJS supports using Chrome-Headless, PhantomJS or SlimerJS for web app rendering. PhantomJS is currently the default value and will be installed by default.
 
-First, be sure to have SlimerJS installed. From your root directory run...
+#### Chrome-Headless (The latest webkit library)
+This will also enable the very cool [Chromy](https://github.com/OnetapInc/chromy) library.  (When creating onBefore and onReady scripts please make sure you are referring to the [Chromy script documentation](https://github.com/OnetapInc/chromy).  Casper features will not work with this setting.)
+
+You must also have [Chrome installed](https://www.google.com/chrome/browser/), version 59 or greater is required.
+```json
+  "engine": "chromy"
+```
+
+
+#### Slimer (Gecko/Mozilla rendering) 
+To run in Slimer, be sure to have SlimerJS installed. From your root directory run...
 
 ```sh
 $ sudo npm install -g slimerjs
@@ -770,8 +780,13 @@ Did you install BackstopJS with the global option?  If installing globally remem
 
 
 ### Debugging
+If you are using Chrome-Headless engine then you have the option of displaying the Chrome window as tests are running.  This can be helpful for visually monitoring your app state at the time of your test.  To enable use...
+```son
+    "debugWindow": true
+```
 
-To enable verbose console output when running your tests set the `debug` property to `true` in `backstop.json`.  This will also output your  payload to the terminal so you can make sure to check that the server is sending what you expect. 😉
+
+For all engines there is also the `debug` setting.  This enables verbose console output.This will also output your source payload to the terminal so you can make sure to check that the server is sending what you expect. 😉
 
 ```json
   "debug": true

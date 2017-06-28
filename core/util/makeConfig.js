@@ -36,11 +36,11 @@ function loadProjectConfig (command, options, config) {
   var CMD_REQUIRES_CONFIG = command !== 'genConfig';
   if (CMD_REQUIRES_CONFIG) {
     if (options && typeof options.config === 'object') {
-      console.log('BackstopJS uses a passed object as config');
+      console.log('Config detected:');
       userConfig = options.config;
     } else if (config.backstopConfigFileName) {
       try {
-        console.log('BackstopJS loading config: ', config.backstopConfigFileName, '\n');
+        console.log('Loading config: ', config.backstopConfigFileName, '\n');
         userConfig = require(config.backstopConfigFileName);
       } catch (e) {
         console.error('Error ' + e);
