@@ -16,7 +16,7 @@ BackstopJS automates visual regression testing of your responsive web UI by comp
 - Use as a standalone global app, a standalone local npm script or import right into your node app.
 - Also plays nice with source control -- share your gold master with your team.
 
-## Upgrade to 2.0 for enhanced speed and new features! 
+## Upgrade to 2.0 for enhanced speed and new features!
 
 ```sh
 # install latest
@@ -97,8 +97,8 @@ To install locally, `cd` into your project directory and...
 $ npm install backstopjs
 ```
 ```js
-// This allows you to import BackstopJS into your node scripts!   
-// see #installing-backstopjs-locally 
+// This allows you to import BackstopJS into your node scripts!
+// see #installing-backstopjs-locally
 const backstop = require('backstopjs');
 ```
 
@@ -302,9 +302,21 @@ $ backstop reference --i
 
 It is very common for client-side web apps is to initially download a small chunk of bootstrapping code/content and render it to the screen as soon as it arrives at the browser. Once this has completed, various JS components often take over to progressively load more content.
 
-The problem testing these scenarios is knowing _when_ to take the screenshot.  BackstopJS solves this problem with two config properties: `readyEvent` and `delay`.
+The problem testing these scenarios is knowing _when_ to take the screenshot.  BackstopJS solves this problem with two config properties: `readySelector`, `readyEvent` and `delay`.
 
-**NOTE: Advanced options also include very cool CasperJS features like waitForSelector() and waitUntilVisible() – see [adding custom CasperJS scripts](https://github.com/garris/BackstopJS#running-custom-casperjs-scripts) for more info...**
+#### Trigger screen capture via selector
+
+The `readySelctor` property tells BackstopJS to wait until a selector exists before takeing a screenshot. For example, the following line will delay screen capture until a selctor with the id '#catOfTheDayResult' is present somewhere in the DOM.
+
+```json
+"readySelctor": "#catOfTheDayResult"
+```
+
+Another approach might look like this...
+
+```json
+"readySelctor": "body.ember-has-rendered"
+```
 
 #### Trigger screen capture via console.log()
 
@@ -368,7 +380,7 @@ More info on how misMatchThreshold is derrived can be found here... https://gith
 
 `"requireSameDimensions"` (true || false) will change whether BackstopJS will accept any change in dimensions. The default setting is `true`. If set to true then the test must be the same dimensions as the reference. If set to false the test does not have to be the same dimensions as the reference.
 
-This setting can be used in conjunction with `"misMatchThreshold"`, for example, when setting a `"misMatchThreshold"` of more than 0.00% and the mismatch causing a change in dimensions, setting `"requireSameDimensions"` to false will allow the test to still pass, setting it to true would still make it fail. 
+This setting can be used in conjunction with `"misMatchThreshold"`, for example, when setting a `"misMatchThreshold"` of more than 0.00% and the mismatch causing a change in dimensions, setting `"requireSameDimensions"` to false will allow the test to still pass, setting it to true would still make it fail.
 
 
 ### Capturing the entire document
@@ -593,7 +605,7 @@ You must also have [Chrome installed](https://www.google.com/chrome/browser/), v
 ```
 
 
-#### Slimer (Gecko/Mozilla rendering) 
+#### Slimer (Gecko/Mozilla rendering)
 To run in Slimer, be sure to have SlimerJS installed. From your root directory run...
 
 ```sh
@@ -733,18 +745,27 @@ e.g.
   }
 ```
 
-### Tuning BackstopJS performance 
-During a test, BackstopJS processes image comparisons in parallel. By default, this value is limited to 50. Used this way, BackstopJS can utilize available processor power while keeping RAM usage under control.
+### Tuning BackstopJS performance
+During a test, BackstopJS processes image capture and image comparisons in parallel. You can adjust how much BackstopJS does at one time by changing
 
-This value can be adjusted as needed to increase/decrease the amount of RAM required during a test.
+#### Capturing screens in parallel
+By default, this value is limited to 10.  This value can be adjusted as needed to increase/decrease the amount of RAM required during a test.
+
+The example below would capture 100 screens at a time...
+```json
+asyncCaptureLimit: 100
+```
+
+#### Comparing screens in parallel
+By default, this value is limited to 50. This value can be adjusted as needed to increase/decrease the amount of RAM required during a test.
 
 As a (very approximate) rule of thumb, BackstopJS will use 100MB RAM plus approximately 5 MB for each concurrent image comparison.
 
 To adjust this value add the following to the root of your config...
 ```
 "asyncCompareLimit": 100
-// Would require 600MB to run tests.
-``` 
+// Would require 600MB to run tests. Your milage most likely will vary ;)
+```
 
 
 ## Troubleshooting
@@ -798,7 +819,7 @@ For all engines there is also the `debug` setting.  This enables verbose console
 
 - (RECOMMEDED Updated for version 2) Regression testing with BackstopJS, in-depth tutorial by [Angela Riggs](https://twitter.com/AngelaRiggs_) http://www.metaltoad.com/blog/regression-testing-backstopjs
 
-- BackstopJS tutorial on [css-tricks.com](http://css-tricks.com/automating-css-regression-testing/) 
+- BackstopJS tutorial on [css-tricks.com](http://css-tricks.com/automating-css-regression-testing/)
 
 -  A lovely article on [Making Visual Regression Useful](https://medium.com/@philgourley/making-visual-regression-useful-acfae27e5031#.y3mw9tnxt) by [Phillip Gourley](https://medium.com/@philgourley?source=post_header_lockup)
 

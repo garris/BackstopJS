@@ -8,7 +8,7 @@ var runChromy = require('./runChromy');
 const ensureDirectoryPath = require('./ensureDirectoryPath');
 var logger = require('./logger')('createBitmaps');
 
-var CONCURRENCY = 10;
+var CONCURRENCY_DEFAULT = 10;
 var GENERATE_BITMAPS_SCRIPT = 'capture/genBitmaps.js';
 
 function regexTest (string, search) {
@@ -107,8 +107,9 @@ function delegateScenarios (config) {
     });
   });
 
-  // return Promise.reject(new Error('note yet delegating'));
-  return pMap(scenarioViews, runChromy, { concurrency: CONCURRENCY });
+  var asyncCaptureLimit = config.asyncCaptureLimit === 0 ? 1 : config.asyncCaptureLimit || CONCURRENCY_DEFAULT;
+
+  return pMap(scenarioViews, runChromy, {concurrency: asyncCaptureLimit});
 }
 
 function pad (number) {

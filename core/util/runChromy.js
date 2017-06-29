@@ -5,7 +5,7 @@ const ensureDirectoryPath = require('./ensureDirectoryPath');
 const cwd = fs.workingDirectory;
 
 const VISIBLE = true;
-const TEST_TIMEOUT = 20000;
+const TEST_TIMEOUT = 8000;
 const CHROMY_PORT = 9222;
 
 module.exports = function (args) {
@@ -73,6 +73,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   const chromy = new Chromy({
     chromeFlags: flags,
     port: port,
+    waitTimeout: TEST_TIMEOUT,
     visible: config.debugWindow || false
   }).chain();
 
@@ -141,7 +142,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
     onBeforeScript files should export a module like so:
 
     module.exports = function(renderer, scenario, vp) {
-      // run custom casperjs code
+      // run custom renderer (casper or chromy) code
     };
   ============ */
   var onBeforeScript = scenario.onBeforeScript || config.onBeforeScript;
@@ -159,6 +160,12 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   //   console.log('Auth User via CLI: ' + casper.cli.options.user);
   //   casper.setHttpAuth(casper.cli.options.user, casper.cli.options.password);
   // }
+
+  //  --- OPEN URL ---
+  chromy.goto(url);
+
+  // --- WAIT FOR SELECTOR ---
+  chromy.wait(scenario.readySelector || 1);
 
   // //  --- OPEN URL + WAIT FOR READY EVENT + CONFIG DELAY ---
   // this.thenOpen(url, function () {
@@ -183,6 +190,17 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   //   casper.wait(scenario.delay || 1);
   // });
 
+  // --- WAIT FOR READY EVENT + CONFIG DELAY ---
+  chromy.wait(scenario.delay || 1);
+
+  // chromy
+  //   .evaluate(() => {
+  //     return document.getElementsByTagName('h2')[0].innerText;
+  //   })
+  //   .result((result) => {
+  //     console.log('RESULT >', result);
+  //   });
+
   // //  --- OPTION DEBUG TO CONSOLE ---
   // casper.then(function () {
   //   if (config.debug) {
@@ -193,22 +211,45 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   //   }
   // });
 
-  // //  --- ON READY SCRIPT ---
-  // /* ============
-  //   onReadyScript files should export a module like so:
+  //  --- ON READY SCRIPT ---
+  /* ============
+    onReadyScript files should export a module like so:
 
-  //   module.exports = function(casper, scenario, vp) {
-  //     // run custom casperjs code
-  //   };
-  // ============ */
-  // // Custom casperjs scripting after ready event + delay
-  // casper.then(function () {
+    module.exports = function(renderer, scenario, vp, isReference) {
+      // run custom renderer (casper or chromy) code
+    };
+  ============ */
+  // function onReady () {
   //   var onReadyScript = scenario.onReadyScript || config.onReadyScript;
   //   if (onReadyScript) {
-  //     require(getScriptPath(onReadyScript, casperScriptsPath))(casper, scenario, vp, isReference);
+  //     var readyScriptPath = path.resolve(casperScriptsPath, onReadyScript);
+  //     if (fs.existsSync(readyScriptPath)) {
+  //       require(readyScriptPath)(chromy, scenario, viewport, isReference);
+  //     } else {
+  //       console.warn('WARNING: script not found: ' + readyScriptPath);
+  //     }
   //   }
-  // });
+  // }
 
+  chromy
+    .evaluate(() => {
+      return document.getElementsByTagName('h2')[0].innerText;
+    })
+    .result((result) => {
+      console.log('RESULT >', result);
+
+      var onReadyScript = scenario.onReadyScript || config.onReadyScript;
+      if (onReadyScript) {
+        var readyScriptPath = path.resolve(casperScriptsPath, onReadyScript);
+        if (fs.existsSync(readyScriptPath)) {
+          require(readyScriptPath)(chromy, scenario, viewport, isReference);
+        } else {
+          console.warn('WARNING: script not found: ' + readyScriptPath);
+        }
+      }
+
+
+    });
   // this.echo('Capturing screenshots for ' + makeSafe(vp.name) + ' (' + (vp.width || vp.viewport.width) + 'x' + (vp.height || vp.viewport.height) + ')', 'info');
 
   // // --- HIDE SELECTORS ---
@@ -347,17 +388,6 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
 function captureScreenshot (chromy, filePath, url, selector) {
   ensureDirectoryPath(filePath);
   return new Promise (function (resolve, reject) {
-    chromy
-      .goto(url);
-
-    chromy
-      .evaluate(() => {
-        return document.getElementsByTagName('h2')[0].innerText;
-      })
-      .result((result) => {
-        console.log('RESULT >', result);
-      });
-
     if (selector === 'body:noclip' || selector === 'document') {
       chromy.screenshotDocument();
     } else {
