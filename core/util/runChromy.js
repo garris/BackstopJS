@@ -70,7 +70,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   const flags = ['--window-size={w},{h}'.replace(/{w}/, w).replace(/{h}/, h)];
   const port = CHROMY_PORT + runId;
 
-  const chromy = new Chromy({
+  let chromy = new Chromy({
     chromeFlags: flags,
     port: port,
     waitTimeout: TEST_TIMEOUT,
@@ -118,9 +118,12 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
 
   // set up consoleBuffer
   var consoleBuffer = '';
+  function getConsoleBuffer () {
+    return consoleBuffer;
+  }
   chromy.console((text, consoleObj) => {
     if (console[consoleObj.level]) {
-      console[consoleObj.level](text);
+      console[consoleObj.level]((consoleObj.level).toUpperCase() + ' > ', text);
     }
     consoleBuffer = consoleBuffer + '\n' + text;
   });
@@ -167,7 +170,17 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   // --- WAIT FOR SELECTOR ---
   chromy.wait(scenario.readySelector || 1);
 
-  // //  --- OPEN URL + WAIT FOR READY EVENT + CONFIG DELAY ---
+  //  --- WAIT FOR READY EVENT ---
+  // var readyEvent = scenario.readyEvent || config.readyEvent;
+  // if (readyEvent) {
+  //   var regExReadyFlag = new RegExp(readyEvent, 'i');
+  //   console.log('>>>',regExReadyFlag.test(getConsoleBuffer()))
+  //   var regExReadyFn = function () { return consoleBuffer.search(regExReadyFlag) > -1; };
+  //   chromy.wait(regExReadyFn);
+  // }
+
+
+
   // this.thenOpen(url, function () {
   //   casper.waitFor(
   //     function () { // test
@@ -219,37 +232,16 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
       // run custom renderer (casper or chromy) code
     };
   ============ */
-  // function onReady () {
-  //   var onReadyScript = scenario.onReadyScript || config.onReadyScript;
-  //   if (onReadyScript) {
-  //     var readyScriptPath = path.resolve(casperScriptsPath, onReadyScript);
-  //     if (fs.existsSync(readyScriptPath)) {
-  //       require(readyScriptPath)(chromy, scenario, viewport, isReference);
-  //     } else {
-  //       console.warn('WARNING: script not found: ' + readyScriptPath);
-  //     }
-  //   }
-  // }
+  var onReadyScript = scenario.onReadyScript || config.onReadyScript;
+  if (onReadyScript) {
+    var readyScriptPath = path.resolve(casperScriptsPath, onReadyScript);
+    if (fs.existsSync(readyScriptPath)) {
+      chromy = require(readyScriptPath)(chromy, scenario, viewport, isReference) || chromy;
+    } else {
+      console.warn('WARNING: script not found: ' + readyScriptPath);
+    }
+  }
 
-  chromy
-    .evaluate(() => {
-      return document.getElementsByTagName('h2')[0].innerText;
-    })
-    .result((result) => {
-      console.log('RESULT >', result);
-
-      var onReadyScript = scenario.onReadyScript || config.onReadyScript;
-      if (onReadyScript) {
-        var readyScriptPath = path.resolve(casperScriptsPath, onReadyScript);
-        if (fs.existsSync(readyScriptPath)) {
-          require(readyScriptPath)(chromy, scenario, viewport, isReference);
-        } else {
-          console.warn('WARNING: script not found: ' + readyScriptPath);
-        }
-      }
-
-
-    });
   // this.echo('Capturing screenshots for ' + makeSafe(vp.name) + ' (' + (vp.width || vp.viewport.width) + 'x' + (vp.height || vp.viewport.height) + ')', 'info');
 
   // // --- HIDE SELECTORS ---
