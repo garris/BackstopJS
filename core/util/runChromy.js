@@ -350,7 +350,6 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
 // vvv HELPERS vvv
 
 function captureScreenshot (chromy, filePath, url, selector) {
-  ensureDirectoryPath(filePath);
   return new Promise (function (resolve, reject) {
     if (selector === 'body:noclip' || selector === 'document') {
       chromy.screenshotDocument();
@@ -358,14 +357,14 @@ function captureScreenshot (chromy, filePath, url, selector) {
       chromy.screenshotSelector(selector);
     }
 
-    chromy
-      .result((png) => {
-        return fs.writeFile(filePath, png, err => {
-          if (err) {
-            throw new Error('Error during file save. ', err);
-          }
-        });
+    chromy.result((png) => {
+      ensureDirectoryPath(filePath);
+      return fs.writeFile(filePath, png, err => {
+        if (err) {
+          throw new Error('Error during file save. ', err);
+        }
       });
+    });
 
     chromy
       .end()
