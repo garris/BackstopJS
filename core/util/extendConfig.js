@@ -13,7 +13,6 @@ function extendConfig (config, userConfig) {
   captureConfigPaths(config);
   casper(config, userConfig);
   engine(config, userConfig);
-  ensureViewportLabel(config);
 
   config.engine = userConfig.engine || null;
   config.report = userConfig.report || ['browser'];
@@ -100,16 +99,6 @@ function engine (config, userConfig) {
 
   if (userConfig.paths) {
     config.engine_scripts = userConfig.paths.engine_scripts || config.engine_scripts;
-  }
-}
-
-function ensureViewportLabel (config) {
-  if (typeof config.viewports === 'object') {
-    config.viewports.forEach(function (viewport) {
-      if (!viewport.label) {
-        viewport.label = viewport.name;
-      }
-    });
   }
 }
 

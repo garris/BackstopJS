@@ -16,6 +16,16 @@ function regexTest (string, search) {
   return re.test(string);
 }
 
+function ensureViewportLabel (config) {
+  if (typeof config.viewports === 'object') {
+    config.viewports.forEach(function (viewport) {
+      if (!viewport.label) {
+        viewport.label = viewport.name;
+      }
+    });
+  }
+}
+
 function decorateConfigForCapture (config, isReference) {
   var configJSON;
 
@@ -25,6 +35,7 @@ function decorateConfigForCapture (config, isReference) {
     configJSON = require(config.backstopConfigFileName);
   }
   configJSON.scenarios = configJSON.scenarios || [];
+  ensureViewportLabel(configJSON);
 
   var totalScenarioCount = configJSON.scenarios.length;
 
