@@ -119,7 +119,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   // --- set up console output ---
   chromy.console(function (text, consoleObj) {
     if (console[consoleObj.level]) {
-      console[consoleObj.level]((consoleObj.level).toUpperCase() + ' > ', text);
+      console[consoleObj.level](port + ' ' + (consoleObj.level).toUpperCase() + ' > ', text);
     }
   });
 
@@ -149,7 +149,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
     if (fs.existsSync(beforeScriptPath)) {
       require(beforeScriptPath)(chromy, scenario, viewport, isReference);
     } else {
-      console.warn('WARNING: script not found: ' + beforeScriptPath);
+      console.warn(port, ' WARNING: script not found: ' + beforeScriptPath);
     }
   }
 
@@ -165,9 +165,6 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   // --- load in backstopTools into client app ---
   chromy.inject('js', backstopToolsPath);
 
-  // --- WAIT FOR SELECTOR ---
-  chromy.wait(scenario.readySelector || 1);
-
   //  --- WAIT FOR READY EVENT ---
   var readyEvent = scenario.readyEvent || config.readyEvent;
   if (readyEvent) {
@@ -179,50 +176,18 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
       .evaluate(_ => console.info('readyEvent ok'));
   }
 
+  // --- WAIT FOR SELECTOR ---
+  chromy.wait(scenario.readySelector || 0);
 
+  // --- DELAY ---
+  chromy.wait(scenario.delay || 0);
 
-  // this.thenOpen(url, function () {
-  //   casper.waitFor(
-  //     function () { // test
-  //       var readyEvent = scenario.readyEvent || config.readyEvent;
-  //       if (!readyEvent) {
-  //         return true;
-  //       }
-  //       var regExReadyFlag = new RegExp(readyEvent, 'i');
-  //       return consoleBuffer.search(regExReadyFlag) > -1;
-  //     },
-  //     function () { // on done
-  //       consoleBuffer = '';
-  //       casper.echo('Ready event received.');
-  //     },
-  //     function () {
-  //       casper.echo('Error while waiting for ready event.');
-  //     }, // on timeout
-  //     TEST_TIMEOUT
-  //   );
-  //   casper.wait(scenario.delay || 1);
-  // });
-
-  // --- WAIT FOR READY EVENT + CONFIG DELAY ---
-  chromy.wait(scenario.delay || 1);
-
-  // chromy
-  //   .evaluate(() => {
-  //     return document.getElementsByTagName('h2')[0].innerText;
-  //   })
-  //   .result((result) => {
-  //     console.log('RESULT >', result);
-  //   });
-
-  // //  --- OPTION DEBUG TO CONSOLE ---
-  // casper.then(function () {
-  //   if (config.debug) {
-  //     var src = this.evaluate(function () {
-  //       return document.body.outerHTML;
-  //     });
-  //     this.echo(src);
-  //   }
-  // });
+  //  --- OPTION DEBUG TO CONSOLE ---
+  if (config.debug) {
+    chromy
+      .evaluate(_ => document.body.outerHTML)
+      .result(htmlStr => console.log(port + 'SRC >', htmlStr));
+  }
 
   //  --- ON READY SCRIPT ---
   /* ============
@@ -238,35 +203,42 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
     if (fs.existsSync(readyScriptPath)) {
       chromy = require(readyScriptPath)(chromy, scenario, viewport, isReference) || chromy;
     } else {
-      console.warn('WARNING: script not found: ' + readyScriptPath);
+      console.warn(port, 'WARNING: script not found: ' + readyScriptPath);
     }
   }
 
   // this.echo('Capturing screenshots for ' + makeSafe(vp.name) + ' (' + (vp.width || vp.viewport.width) + 'x' + (vp.height || vp.viewport.height) + ')', 'info');
 
-  // // --- HIDE SELECTORS ---
-  // if (scenario.hasOwnProperty('hideSelectors')) {
-  //   scenario.hideSelectors.forEach(function (o, i, a) {
-  //     casper.evaluate(function (o) {
-  //       Array.prototype.forEach.call(document.querySelectorAll(o), function (s, j) {
-  //         s.style.visibility = 'hidden';
-  //       });
-  //     }, o);
-  //   });
-  // }
+  // --- HIDE SELECTORS ---
+  if (scenario.hasOwnProperty('hideSelectors')) {
+    scenario.hideSelectors.forEach(function (selector) {
+      chromy
+      .evaluate(`window._backstopSelector = '${selector}'`)
+      .evaluate(
+        () => {
+          Array.prototype.forEach.call(document.querySelectorAll(window._backstopSelector), function (s, j) {
+            s.style.visibility = 'hidden';
+          });
+        }
+      );
+    });
+  }
 
-  // // --- REMOVE SELECTORS ---
-  // if (scenario.hasOwnProperty('removeSelectors')) {
-  //   scenario.removeSelectors.forEach(function (o, i, a) {
-  //     casper.evaluate(function (o) {
-  //       Array.prototype.forEach.call(document.querySelectorAll(o), function (s, j) {
-  //         s.style.display = 'none';
-  //         s.classList.add('__86d');
-  //       });
-  //     }, o);
-  //   });
-  // }
-
+  // --- REMOVE SELECTORS ---
+  if (scenario.hasOwnProperty('removeSelectors')) {
+    scenario.removeSelectors.forEach(function (selector) {
+      chromy
+      .evaluate(`window._backstopSelector = '${selector}'`)
+      .evaluate(
+        () => {
+          Array.prototype.forEach.call(document.querySelectorAll(window._backstopSelector), function (s, j) {
+            s.style.display = 'none';
+            s.classList.add('__86d');
+          });
+        }
+      );
+    });
+  }
   // CREATE SCREEN SHOTS AND TEST COMPARE CONFIGURATION (CONFIG FILE WILL BE SAVED WHEN THIS PROCESS RETURNS)
 
   // --- HANDLE NO-SELCTORS ---
