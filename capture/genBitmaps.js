@@ -35,7 +35,7 @@ if (!config.paths) {
 var outputFormat = '.' + (config.outputFormat && config.outputFormat.match(/jpg|jpeg/) || 'png');
 var bitmapsReferencePath = config.paths.bitmaps_reference || 'bitmaps_reference';
 var bitmapsTestPath = config.paths.bitmaps_test || 'bitmaps_test';
-var casperScriptsPath = config.paths.casper_scripts || null;
+var casperScriptsPath = config.paths.engine_scripts || config.paths.casper_scripts || null;
 var comparePairsFileName = config.paths.tempCompareConfigFileName;
 var viewports = config.viewports;
 var scenarios = config.scenarios || config.grabConfigs;

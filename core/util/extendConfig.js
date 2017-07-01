@@ -12,6 +12,7 @@ function extendConfig (config, userConfig) {
   comparePaths(config);
   captureConfigPaths(config);
   casper(config, userConfig);
+  engine(config, userConfig);
   ensureViewportLabel(config);
 
   config.engine = userConfig.engine || null;
@@ -88,6 +89,17 @@ function casper (config, userConfig) {
 
   if (userConfig.paths) {
     config.casper_scripts = userConfig.paths.casper_scripts || config.casper_scripts;
+  }
+}
+
+function engine (config, userConfig) {
+  config.engine_scripts = path.join(config.projectPath, 'backstop_data', 'engine_scripts');
+  config.engine_scripts_default = path.join(config.backstop, 'capture', 'engine_scripts');
+
+  config.casperFlags = userConfig.casperFlags || null;
+
+  if (userConfig.paths) {
+    config.engine_scripts = userConfig.paths.engine_scripts || config.engine_scripts;
   }
 }
 

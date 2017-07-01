@@ -176,7 +176,7 @@ The location of the `backstop.json` file as well as all resource directories can
   "paths": {
     "bitmaps_reference": "backstop_data/bitmaps_reference",
     "bitmaps_test": "backstop_data/bitmaps_test",
-    "casper_scripts": "backstop_data/casper_scripts",
+    "engine_scripts": "backstop_data/engine_scripts",
     "html_report": "backstop_data/html_report",
     "ci_report": "backstop_data/ci_report"
   },
@@ -423,7 +423,7 @@ Simulate user actions (click, scroll, hover, wait, etc.) or states (cookie value
 From your project root, place your scripts in...
 
 ```sh
-./backstop_data/casper_scripts
+./backstop_data/engine_scripts
 ```
 
 at the root of your config or in your scenario...
@@ -479,7 +479,7 @@ _**NOTE:** SlimerJS currently requires an absolute path -- so be sure to include
 
 ```json
   "paths": {
-    "casper_scripts": "backstop_data/scripts"
+    "engine_scripts": "backstop_data/scripts"
   }
 ```
 
@@ -587,7 +587,7 @@ _Please note: these file paths are relative to your current working directory $(
   "paths": {
     "bitmaps_reference": "backstop_data/bitmaps_reference",
     "bitmaps_test": "backstop_data/bitmaps_test",
-    "casper_scripts": "backstop_data/casper_scripts",
+    "engine_scripts": "backstop_data/engine_scripts",
     "html_report": "backstop_data/html_report",
     "ci_report": "backstop_data/ci_report"
   }
