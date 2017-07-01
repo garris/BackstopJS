@@ -171,13 +171,12 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   chromy.wait(scenario.readySelector || 1);
 
   //  --- WAIT FOR READY EVENT ---
-  // var readyEvent = scenario.readyEvent || config.readyEvent;
-  // if (readyEvent) {
-  //   var regExReadyFlag = new RegExp(readyEvent, 'i');
-  //   console.log('>>>',regExReadyFlag.test(getConsoleBuffer()))
-  //   var regExReadyFn = function () { return consoleBuffer.search(regExReadyFlag) > -1; };
-  //   chromy.wait(regExReadyFn);
-  // }
+  var readyEvent = scenario.readyEvent || config.readyEvent;
+  if (readyEvent) {
+    var regExReadyFlag = new RegExp(readyEvent, 'i');
+    var regExReadyFn = function () { return regExReadyFlag.test(getConsoleBuffer()); };
+    // chromy.wait(function () {});
+  }
 
 
 
