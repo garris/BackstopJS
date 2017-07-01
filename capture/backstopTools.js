@@ -10,3 +10,5 @@ function startConsoleLogger () {
   };
 }
 startConsoleLogger();
+
+console.info('backstopTools are running');

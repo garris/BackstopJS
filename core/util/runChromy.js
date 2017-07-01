@@ -42,12 +42,13 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   var outputFormat = '.' + (config.outputFormat && config.outputFormat.match(/jpg|jpeg/) || 'png');
   var bitmapsReferencePath = config.paths.bitmaps_reference || 'bitmaps_reference';
   var bitmapsTestPath = config.paths.bitmaps_test || 'bitmaps_test';
-  var casperScriptsPath = config.env.casper_scripts || config.env.casper_scripts_default;
+  var casperScriptsPath = config.env.engine_scripts || config.env.casper_scripts || config.env.engine_scripts_default;
   // var comparePairsFileName = config.paths.tempCompareConfigFileName;
   var screenshotDateTime = config.screenshotDateTime;
   var configId = config.id || genHash(config.backstopConfigFileName);
   var fileNameTemplate = config.fileNameTemplate || '{configId}_{scenarioLabel}_{selectorIndex}_{selectorLabel}_{viewportIndex}_{viewportLabel}';
 
+  var backstopToolsPath = config.env.backstop + '/capture/backstopTools.js';
   var selectorNotFoundPath = config.env.backstop + '/capture/resources/selectorNotFound_noun_164558_cc.png';
   var hiddenSelectorPath = config.env.backstop + '/capture/resources/hiddenSelector_noun_63405.png';
 
@@ -70,14 +71,13 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   const flags = ['--window-size={w},{h}'.replace(/{w}/, w).replace(/{h}/, h)];
   const port = CHROMY_PORT + runId;
 
+  console.log('Starting Chromy:', `port:${port}`, flags);
   let chromy = new Chromy({
     chromeFlags: flags,
     port: port,
     waitTimeout: TEST_TIMEOUT,
     visible: config.debugWindow || false
   }).chain();
-
-  console.log('Starting Chromy:', `port:${port}`, flags);
 
   /**
    * =================
@@ -116,16 +116,11 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
    *  =============
    */
 
-  // set up consoleBuffer
-  var consoleBuffer = '';
-  function getConsoleBuffer () {
-    return consoleBuffer;
-  }
-  chromy.console((text, consoleObj) => {
+  // --- set up console output ---
+  chromy.console(function (text, consoleObj) {
     if (console[consoleObj.level]) {
       console[consoleObj.level]((consoleObj.level).toUpperCase() + ' > ', text);
     }
-    consoleBuffer = consoleBuffer + '\n' + text;
   });
 
   /**
@@ -167,15 +162,21 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   //  --- OPEN URL ---
   chromy.goto(url);
 
+  // --- load in backstopTools into client app ---
+  chromy.inject('js', backstopToolsPath);
+
   // --- WAIT FOR SELECTOR ---
   chromy.wait(scenario.readySelector || 1);
 
   //  --- WAIT FOR READY EVENT ---
   var readyEvent = scenario.readyEvent || config.readyEvent;
   if (readyEvent) {
-    var regExReadyFlag = new RegExp(readyEvent, 'i');
-    var regExReadyFn = function () { return regExReadyFlag.test(getConsoleBuffer()); };
-    // chromy.wait(function () {});
+    chromy
+      .evaluate(`_readyEvent = '${readyEvent}'`)
+      .wait(_ => {
+        return window._hasLogged(_readyEvent);
+      })
+      .evaluate(_ => console.info('readyEvent ok'));
   }
 
 
