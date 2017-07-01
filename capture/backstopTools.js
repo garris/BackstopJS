@@ -1,5 +1,9 @@
 window.isVisible = function (selector) {
-  var style = window.getComputedStyle(selector);
+  if (!window.exists(selector)) {
+    return false;
+  }
+  const element = document.querySelector(selector);
+  const style = window.getComputedStyle(element);
   return (style.display !== 'none' && style.visibility !== 'hidden' && style.opacity !== '0');
 };
 

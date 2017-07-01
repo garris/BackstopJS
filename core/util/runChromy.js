@@ -349,8 +349,20 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
 
 // vvv HELPERS vvv
 
-function captureScreenshot (chromy, filePath, url, selector) {
+function captureScreenshot (chromy, filePath, url, selector_) {
   return new Promise (function (resolve, reject) {
+  const selector = selector_;
+        console.log('WAT>>>',selector);
+
+    // chromy
+    //   .evaluate(`window._backstopSelector = '${selector}'`)
+    //   .evaluate(function () {
+    //     console.log('>>>>>>', window._backstopSelector);
+    //     return {exists: window.exists(window._backstopSelector), isVisible: window.isVisible(window._backstopSelector)}
+    //   })
+    //   .result(result => { console.log('PROPS OF E >>>', result); });
+
+
     if (selector === 'body:noclip' || selector === 'document') {
       chromy.screenshotDocument();
     } else {
