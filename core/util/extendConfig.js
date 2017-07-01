@@ -12,6 +12,7 @@ function extendConfig (config, userConfig) {
   comparePaths(config);
   captureConfigPaths(config);
   casper(config, userConfig);
+  ensureViewportLabel(config);
 
   config.engine = userConfig.engine || null;
   config.report = userConfig.report || ['browser'];
@@ -87,6 +88,16 @@ function casper (config, userConfig) {
 
   if (userConfig.paths) {
     config.casper_scripts = userConfig.paths.casper_scripts || config.casper_scripts;
+  }
+}
+
+function ensureViewportLabel (config) {
+  if (typeof config.viewports === 'object') {
+    config.viewports.forEach(function (viewport) {
+      if (!viewport.label) {
+        viewport.label = viewport.name;
+      }
+    });
   }
 }
 

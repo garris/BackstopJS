@@ -133,17 +133,17 @@ The location of the `backstop.json` file as well as all resource directories can
   "id": "backstop_prod_test",
   "viewports": [
     {
-      "name": "phone",
+      "label": "phone",
       "width": 320,
       "height": 480
     },
     {
-      "name": "tablet_v",
+      "label": "tablet_v",
       "width": 568,
       "height": 1024
     },
     {
-      "name": "tablet_h",
+      "label": "tablet_h",
       "width": 1024,
       "height": 768
     }
@@ -463,7 +463,7 @@ module.exports = function(casper, scenario, vp) {
   casper.wait( 250 );
 
   // Example: changing behavior based on config values
-  if (vp.name === 'phone') {
+  if (vp.label === 'phone') {
     casper.echo( 'doing stuff for just phone viewport here' );
   }
 
