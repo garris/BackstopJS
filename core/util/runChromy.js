@@ -1,5 +1,7 @@
 const Chromy = require('chromy');
-const fs = require('fs');
+// const fs = require('fs');
+var fs = require('./fs');
+
 const path = require('path');
 const ensureDirectoryPath = require('./ensureDirectoryPath');
 const cwd = fs.workingDirectory;
@@ -7,6 +9,8 @@ const cwd = fs.workingDirectory;
 const VISIBLE = true;
 const TEST_TIMEOUT = 8000;
 const CHROMY_PORT = 9222;
+
+var fp;
 
 module.exports = function (args) {
 
@@ -51,6 +55,8 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   var backstopToolsPath = config.env.backstop + '/capture/backstopTools.js';
   var selectorNotFoundPath = config.env.backstop + '/capture/resources/selectorNotFound_noun_164558_cc.png';
   var hiddenSelectorPath = config.env.backstop + '/capture/resources/hiddenSelector_noun_63405.png';
+
+fp = hiddenSelectorPath;
 
   var isReference = config.isReference;
   if (isReference) {
@@ -349,33 +355,51 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
 
 // vvv HELPERS vvv
 
-function captureScreenshot (chromy, filePath, url, selector_) {
+function captureScreenshot (chromy, filePath, url, selector) {
   return new Promise (function (resolve, reject) {
-  const selector = selector_;
-        console.log('WAT>>>',selector);
-
-    // chromy
-    //   .evaluate(`window._backstopSelector = '${selector}'`)
-    //   .evaluate(function () {
-    //     console.log('>>>>>>', window._backstopSelector);
-    //     return {exists: window.exists(window._backstopSelector), isVisible: window.isVisible(window._backstopSelector)}
-    //   })
-    //   .result(result => { console.log('PROPS OF E >>>', result); });
-
+    let result;
 
     if (selector === 'body:noclip' || selector === 'document') {
       chromy.screenshotDocument();
     } else {
+      chromy
+        .evaluate(`window._backstopSelector = '${selector}'`)
+        .evaluate(
+          () => {
+            return {
+              exists: window.exists(window._backstopSelector),
+              isVisible: window.isVisible(window._backstopSelector)
+            };
+          })
+        .result(_result => result = _result);
+
       chromy.screenshotSelector(selector);
     }
 
     chromy.result((png) => {
-      ensureDirectoryPath(filePath);
-      return fs.writeFile(filePath, png, err => {
-        if (err) {
-          throw new Error('Error during file save. ', err);
-        }
-      });
+
+      if (result.exists) {
+        // if (result.isVisible) {
+          console.log('EXISTS + VISIBLE >>>');
+          ensureDirectoryPath(filePath);
+          return fs.writeFileSync(filePath, png, err => {
+            if (err) {
+              throw new Error('Error during file save. ', err);
+            }
+          });
+        // } else {
+        //   console.log('WAS HIDDEN >>>');
+      //     // fs.write(filePath, fs.readSync(hiddenSelectorPath, 'b'), 'b');
+      //     // fs.readSync(fp, 'b'), 'b');
+      //   }
+      } else {
+        console.log('NOT EXIST >>>', fp);
+        return fs.copy(fp, filePath)
+        // ensureDirectoryPath(filePath);
+        // fs.write(filePath, fs.read(fp, 'b'), 'b');
+      //   // fs.write(filePath, fs.read(selectorNotFoundPath, 'b'), 'b');
+      }
+
     });
 
     chromy
@@ -387,16 +411,6 @@ function captureScreenshot (chromy, filePath, url, selector_) {
         reject(e);
       });
   });
-
-  // if (casper.exists(selector)) {
-  //   if (casper.visible(selector)) {
-  //     casper.captureSelector(filePath, selector);
-  //   } else {
-  //     fs.write(filePath, fs.read(hiddenSelectorPath, 'b'), 'b');
-  //   }
-  // } else {
-  //   fs.write(filePath, fs.read(selectorNotFoundPath, 'b'), 'b');
-  // }
 }
 
 function getMisMatchThreshHold (scenario) {
