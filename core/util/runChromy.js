@@ -10,6 +10,10 @@ const VISIBLE = true;
 const TEST_TIMEOUT = 8000;
 const CHROMY_PORT = 9222;
 
+const BACKSTOP_TOOLS_PATH = '/capture/backstopTools.js';
+const SELECTOR_NOT_FOUND_PATH = '/capture/resources/selectorNotFound_noun_164558_cc.png';
+const HIDDEN_SELECTOR_PATH = '/capture/resources/hiddenSelector_noun_63405.png';
+
 var fp;
 
 module.exports = function (args) {
@@ -169,7 +173,7 @@ fp = hiddenSelectorPath;
   chromy.goto(url);
 
   // --- load in backstopTools into client app ---
-  chromy.inject('js', backstopToolsPath);
+  chromy.inject('js', config.env.backstop + BACKSTOP_TOOLS_PATH);
 
   //  --- WAIT FOR READY EVENT ---
   var readyEvent = scenario.readyEvent || config.readyEvent;
@@ -320,7 +324,7 @@ fp = hiddenSelectorPath;
     }
 
     return function () {
-      return captureScreenshot(chromy, filePath, url, selector);
+      return captureScreenshot(chromy, filePath, url, selector, config);
     };
   });
 
@@ -355,9 +359,12 @@ fp = hiddenSelectorPath;
 
 // vvv HELPERS vvv
 
-function captureScreenshot (chromy, filePath, url, selector) {
+function captureScreenshot (chromy, filePath, url, selector, config) {
   return new Promise (function (resolve, reject) {
-    let result;
+    let result = {
+      exists: true,
+      isVisible: true
+    };
 
     if (selector === 'body:noclip' || selector === 'document') {
       chromy.screenshotDocument();
@@ -371,35 +378,28 @@ function captureScreenshot (chromy, filePath, url, selector) {
               isVisible: window.isVisible(window._backstopSelector)
             };
           })
-        .result(_result => result = _result);
+        .result(_result => {
+          result = _result;
+        });
 
       chromy.screenshotSelector(selector);
     }
 
-    chromy.result((png) => {
-
+    chromy.result(png => {
       if (result.exists) {
-        // if (result.isVisible) {
-          console.log('EXISTS + VISIBLE >>>');
+        if (result.isVisible) {
           ensureDirectoryPath(filePath);
-          return fs.writeFileSync(filePath, png, err => {
+          return fs.writeFile(filePath, png, err => {
             if (err) {
               throw new Error('Error during file save. ', err);
             }
           });
-        // } else {
-        //   console.log('WAS HIDDEN >>>');
-      //     // fs.write(filePath, fs.readSync(hiddenSelectorPath, 'b'), 'b');
-      //     // fs.readSync(fp, 'b'), 'b');
-      //   }
+        } else {
+          return fs.copy(config.env.backstop + HIDDEN_SELECTOR_PATH, filePath);
+        }
       } else {
-        console.log('NOT EXIST >>>', fp);
-        return fs.copy(fp, filePath)
-        // ensureDirectoryPath(filePath);
-        // fs.write(filePath, fs.read(fp, 'b'), 'b');
-      //   // fs.write(filePath, fs.read(selectorNotFoundPath, 'b'), 'b');
+        return fs.copy(config.env.backstop + SELECTOR_NOT_FOUND_PATH, filePath);
       }
-
     });
 
     chromy
@@ -418,18 +418,6 @@ function getMisMatchThreshHold (scenario) {
   if (typeof config.misMatchThreshold !== 'undefined') { return config.misMatchThreshold; }
   return config.defaultMisMatchThreshold;
 }
-
-// function getScriptPath (scriptFilePath, casperScriptsPath) {
-//   var scriptPath = ensureFileSuffix(scriptFilePath, 'js');
-//   if (casperScriptsPath) {
-//     scriptPath = glueStringsWithSlash(casperScriptsPath, scriptPath);
-//   }
-//   if (!fs.existsSync(scriptPath)) {
-//     console.log(scriptPath + ' was not found.', 'ERROR');
-//     return;
-//   }
-//   return cwd + fs.separator + scriptPath;
-// }
 
 function ensureFileSuffix (filename, suffix) {
   var re = new RegExp('\.' + suffix + '$', ''); // eslint-disable-line no-useless-escape
