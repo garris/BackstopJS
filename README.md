@@ -200,6 +200,7 @@ As a new user setting up tests for your project, you will be primarily concerned
 - **`scenarios[n].label`** – Required. Used for screenshot naming.
 - **`scenarios[n].url`** – Required. Tells BackstopJS what endpoint/document you want to test.  This can be an absolute URL or local to your current working directory.
 - **`scenarios[n].selectors`** – An array of CSS selector strings enabling you specify what part of your DOM you want to test.  The default value is `document`, which will attempt to capture your entire layout.
+- **`scenarios[n].viewports`** – An array of screen size objects your DOM will be tested against.  Add as many as you like.
 
 
 ### Creating or updating reference bitmaps
@@ -273,6 +274,26 @@ scenarios: [
   }
 ]
 // Attempts to capture these three elements explicitly.
+```
+#### viewports
+
+This is helpful if you want to test few scenarios explicitly for certain viewports without having second config file. For e.g. after navigating you have different selectors for laptop and mobile before taking screen shot, then you can split those scenarios.
+```
+"scenarios": [
+    {
+      "viewports": [
+        {
+          "name": "phone_s",
+          "width": 320,
+          "height": 480
+        },
+        {
+          "name": "tablet_h_s",
+          "width": 1024,
+          "height": 768
+        }
+      ],
+   ]
 ```
 
 
