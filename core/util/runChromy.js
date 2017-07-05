@@ -358,7 +358,7 @@ function captureScreenshot (chromy, filePath, url, selector, config) {
       isVisible: true
     };
 
-    if (selector === 'body') {
+    if (selector === BODY_SELECTOR) {
       chromy.screenshot();
     } else if (selector === 'body:noclip' || selector === 'document') {
       chromy.screenshotDocument();
