@@ -13,8 +13,7 @@ const CHROMY_PORT = 9222;
 const BACKSTOP_TOOLS_PATH = '/capture/backstopTools.js';
 const SELECTOR_NOT_FOUND_PATH = '/capture/resources/selectorNotFound_noun_164558_cc.png';
 const HIDDEN_SELECTOR_PATH = '/capture/resources/hiddenSelector_noun_63405.png';
-
-var fp;
+var BODY_SELECTOR = 'body';
 
 module.exports = function (args) {
 
@@ -41,7 +40,6 @@ module.exports = function (args) {
  * @return {[type]}                        [description]
  */
 function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabel, viewport, viewportNameSafe, config, runId) {
-  var DOCUMENT_SELECTOR = 'document';
 
   if (!config.paths) {
     config.paths = {};
@@ -55,12 +53,6 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   var screenshotDateTime = config.screenshotDateTime;
   var configId = config.id || genHash(config.backstopConfigFileName);
   var fileNameTemplate = config.fileNameTemplate || '{configId}_{scenarioLabel}_{selectorIndex}_{selectorLabel}_{viewportIndex}_{viewportLabel}';
-
-  var backstopToolsPath = config.env.backstop + '/capture/backstopTools.js';
-  var selectorNotFoundPath = config.env.backstop + '/capture/resources/selectorNotFound_noun_164558_cc.png';
-  var hiddenSelectorPath = config.env.backstop + '/capture/resources/hiddenSelector_noun_63405.png';
-
-fp = hiddenSelectorPath;
 
   var isReference = config.isReference;
   if (isReference) {
@@ -253,14 +245,14 @@ fp = hiddenSelectorPath;
 
   // --- HANDLE NO-SELCTORS ---
   if (!scenario.hasOwnProperty('selectors') || !scenario.selectors.length) {
-    scenario.selectors = [DOCUMENT_SELECTOR];
+    scenario.selectors = [BODY_SELECTOR];
   }
 
   // --- SELECTOR EXPANSION ---
   // if (scenario.selectorExpansion) {
   //   scenario.selectorsExpanded = scenario.selectors.reduce(function (acc, selector) {
-  //     if (selector === DOCUMENT_SELECTOR) {
-  //       return acc.concat([DOCUMENT_SELECTOR]);
+  //     if (selector === BODY_SELECTOR) {
+  //       return acc.concat([BODY_SELECTOR]);
   //     }
 
   //     var expandedSelector = casper.evaluate(function (selector) {
@@ -366,7 +358,9 @@ function captureScreenshot (chromy, filePath, url, selector, config) {
       isVisible: true
     };
 
-    if (selector === 'body:noclip' || selector === 'document') {
+    if (selector === 'body') {
+      chromy.screenshot();
+    } else if (selector === 'body:noclip' || selector === 'document') {
       chromy.screenshotDocument();
     } else {
       chromy
