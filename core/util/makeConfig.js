@@ -59,6 +59,7 @@ function makeConfig (command, options) {
 
   config.backstop = path.join(__dirname, '../..');
   config.projectPath = projectPath(config);
+  config.perf = {};
 
   var userConfig = loadProjectConfig(command, options, config);
 
