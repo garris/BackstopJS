@@ -14,6 +14,8 @@ const BACKSTOP_TOOLS_PATH = '/capture/backstopTools.js';
 const SELECTOR_NOT_FOUND_PATH = '/capture/resources/selectorNotFound_noun_164558_cc.png';
 const HIDDEN_SELECTOR_PATH = '/capture/resources/hiddenSelector_noun_63405.png';
 var BODY_SELECTOR = 'body';
+var DOCUMENT_SELECTOR = 'document';
+var NOCLIP_SELECTOR = 'body:noclip';
 
 module.exports = function (args) {
 
@@ -359,9 +361,13 @@ function captureScreenshot (chromy, filePath, url, selector, config) {
     };
 
     if (selector === BODY_SELECTOR) {
-      chromy.screenshot();
-    } else if (selector === 'body:noclip' || selector === 'document') {
-      chromy.screenshotDocument();
+      chromy
+        .screenshot()
+        .result(png => {
+          return saveFile(png);
+        });
+    } else if (selector === NOCLIP_SELECTOR || selector === DOCUMENT_SELECTOR) {
+      chromy.screenshotMultipleSelectors(['body'], handleResultCb);
     } else {
       chromy
         .evaluate(`window._backstopSelector = '${selector}'`)
@@ -374,12 +380,24 @@ function captureScreenshot (chromy, filePath, url, selector, config) {
           })
         .result(_result => {
           result = _result;
-        });
-
-      chromy.screenshotSelector(selector);
+        })
+        .screenshotMultipleSelectors([selector], handleResultCb);
     }
 
-    chromy.result(png => {
+    chromy
+      .end()
+      .then(_ => {
+        resolve();
+      })
+      .catch(e => {
+        reject(e);
+      });
+
+    // result helpers
+    function handleResultCb (error, png, index, selectors, sub) {
+      return saveFile(png);
+    }
+    function saveFile (png) {
       if (result.exists) {
         if (result.isVisible) {
           ensureDirectoryPath(filePath);
@@ -394,16 +412,7 @@ function captureScreenshot (chromy, filePath, url, selector, config) {
       } else {
         return fs.copy(config.env.backstop + SELECTOR_NOT_FOUND_PATH, filePath);
       }
-    });
-
-    chromy
-      .end()
-      .then(_ => {
-        resolve();
-      })
-      .catch(e => {
-        reject(e);
-      });
+    }
   });
 }
 
