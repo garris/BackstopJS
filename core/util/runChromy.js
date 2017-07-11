@@ -1,5 +1,5 @@
 const Chromy = require('chromy');
-// const fs = require('fs');
+const writeFileSync = require('fs').writeFileSync;
 var fs = require('./fs');
 
 const path = require('path');
@@ -367,7 +367,7 @@ function captureScreenshot (chromy, filePath, url, selector, config) {
           return saveFile(png);
         });
     } else if (selector === NOCLIP_SELECTOR || selector === DOCUMENT_SELECTOR) {
-      chromy.screenshotMultipleSelectors(['body'], handleResultCb);
+      chromy.screenshotMultipleSelectors(['body'], saveFile);
     } else {
       chromy
         .evaluate(`window._backstopSelector = '${selector}'`)
@@ -381,7 +381,7 @@ function captureScreenshot (chromy, filePath, url, selector, config) {
         .result(_result => {
           result = _result;
         })
-        .screenshotMultipleSelectors([selector], handleResultCb);
+        .screenshotMultipleSelectors([selector], saveFile);
     }
 
     chromy
@@ -393,19 +393,13 @@ function captureScreenshot (chromy, filePath, url, selector, config) {
         reject(e);
       });
 
-    // result helpers
-    function handleResultCb (error, png, index, selectors, sub) {
-      return saveFile(png);
-    }
-    function saveFile (png) {
+    // result helper
+    function saveFile () {
+      const imgData = arguments.length > 1 ? arguments[1] : arguments[0];
       if (result.exists) {
         if (result.isVisible) {
           ensureDirectoryPath(filePath);
-          return fs.writeFile(filePath, png, err => {
-            if (err) {
-              throw new Error('Error during file save. ', err);
-            }
-          });
+          return writeFileSync(filePath, imgData);
         } else {
           return fs.copy(config.env.backstop + HIDDEN_SELECTOR_PATH, filePath);
         }
