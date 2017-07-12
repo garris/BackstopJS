@@ -173,9 +173,9 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   var readyEvent = scenario.readyEvent || config.readyEvent;
   if (readyEvent) {
     chromy
-      .evaluate(`_readyEvent = '${readyEvent}'`)
+      .evaluate(`window._readyEvent = '${readyEvent}'`)
       .wait(_ => {
-        return window._hasLogged(_readyEvent);
+        return window._hasLogged(window._readyEvent);
       })
       .evaluate(_ => console.info('readyEvent ok'));
   }
