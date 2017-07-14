@@ -1,69 +1,47 @@
 const Chromy = require('chromy');
 const writeFileSync = require('fs').writeFileSync;
-var fs = require('./fs');
-
+const fs = require('./fs');
 const path = require('path');
 const ensureDirectoryPath = require('./ensureDirectoryPath');
-const cwd = fs.workingDirectory;
 
-const VISIBLE = true;
 const TEST_TIMEOUT = 8000;
-const CHROMY_PORT = 9222;
-
+const CHROMY_STARTING_PORT_NUMBER = 9222;
+const DEFAULT_FILENAME_TEMPLATE = '{configId}_{scenarioLabel}_{selectorIndex}_{selectorLabel}_{viewportIndex}_{viewportLabel}';
+const DEFAULT_BITMAPS_TEST_DIR = 'bitmaps_test';
+const DEFAULT_BITMAPS_REFERENCE_DIR = 'bitmaps_reference';
 const BACKSTOP_TOOLS_PATH = '/capture/backstopTools.js';
 const SELECTOR_NOT_FOUND_PATH = '/capture/resources/selectorNotFound_noun_164558_cc.png';
 const HIDDEN_SELECTOR_PATH = '/capture/resources/hiddenSelector_noun_63405.png';
-var BODY_SELECTOR = 'body';
-var DOCUMENT_SELECTOR = 'document';
-var NOCLIP_SELECTOR = 'body:noclip';
+const BODY_SELECTOR = 'body';
+const DOCUMENT_SELECTOR = 'document';
+const NOCLIP_SELECTOR = 'body:noclip';
 
 module.exports = function (args) {
+  const scenario = args.scenario;
+  const viewport = args.viewport;
+  const config = args.config;
+  const runId = args.id;
+  const scenarioLabelSafe = makeSafe(scenario.label);
+  const variantOrScenarioLabelSafe = scenario._parent ? makeSafe(scenario._parent.label) : scenarioLabelSafe;
 
-  var scenario = args.scenario;
-  var viewport = args.viewport;
-  var config = args.config;
-  var runId = args.id;
-
-  var scenarioLabelSafe = makeSafe(scenario.label);
-  var variantOrScenarioLabelSafe = scenario._parent ? makeSafe(scenario._parent.label) : scenarioLabelSafe;
-  var viewportNameSafe = makeSafe(viewport.name);
-
-  return processScenarioView(scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, viewportNameSafe, config, runId);
+  return processScenarioView(scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, config, runId);
 };
 
 /**
  * [processScenarioView description]
  * @param  {[type]} scenario               [description]
  * @param  {[type]} variantOrScenarioLabelSafe [description]
- * @param  {[type]} scenarioLabel          [description]
+ * @param  {[type]} scenarioLabelSafe          [description]
  * @param  {[type]} viewport               [description]
- * @param  {[type]} viewportNameSafe      [description]
  * @param  {[type]} config                 [description]
  * @return {[type]}                        [description]
  */
-function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabel, viewport, viewportNameSafe, config, runId) {
-
+function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, config, runId) {
   if (!config.paths) {
     config.paths = {};
   }
-
-  var outputFormat = '.' + (config.outputFormat && config.outputFormat.match(/jpg|jpeg/) || 'png');
-  var bitmapsReferencePath = config.paths.bitmaps_reference || 'bitmaps_reference';
-  var bitmapsTestPath = config.paths.bitmaps_test || 'bitmaps_test';
-  var casperScriptsPath = config.env.engine_scripts || config.env.casper_scripts || config.env.engine_scripts_default;
-  // var comparePairsFileName = config.paths.tempCompareConfigFileName;
-  var screenshotDateTime = config.screenshotDateTime;
-  var configId = config.id || genHash(config.backstopConfigFileName);
-  var fileNameTemplate = config.fileNameTemplate || '{configId}_{scenarioLabel}_{selectorIndex}_{selectorLabel}_{viewportIndex}_{viewportLabel}';
-
-  var isReference = config.isReference;
-  if (isReference) {
-    console.log('CREATING NEW REFERENCE FILES');
-  }
-
-  if (!config.paths) {
-    config.paths = {};
-  }
+  const engineScriptsPath = config.env.engine_scripts || config.env.casper_scripts || config.env.engine_scripts_default;
+  const isReference = config.isReference;
 
   /**
    *  =============
@@ -73,7 +51,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   const w = viewport.width || viewport.viewport.width;
   const h = viewport.height || viewport.viewport.height;
   const flags = ['--window-size={w},{h}'.replace(/{w}/, w).replace(/{h}/, h)];
-  const port = CHROMY_PORT + runId;
+  const port = CHROMY_STARTING_PORT_NUMBER + runId;
 
   console.log('Starting Chromy:', `port:${port}`, flags);
   let chromy = new Chromy({
@@ -89,11 +67,9 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
    * =================
    */
 
-  var isReference = config.isReference;
   if (isReference) {
     console.log('CREATING NEW REFERENCE FILES');
   }
-
 
   // // verbose console errors
   // if (config.debug) {
@@ -133,12 +109,6 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
    *  =============
    */
 
-  // //  --- REFERENCE URL ---
-  var url = scenario.url;
-  if (isReference && scenario.referenceUrl) {
-    url = scenario.referenceUrl;
-  }
-
   // --- BEFORE SCRIPT ---
   /* ============
     onBeforeScript files should export a module like so:
@@ -149,7 +119,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   ============ */
   var onBeforeScript = scenario.onBeforeScript || config.onBeforeScript;
   if (onBeforeScript) {
-    var beforeScriptPath = path.resolve(casperScriptsPath, onBeforeScript);
+    var beforeScriptPath = path.resolve(engineScriptsPath, onBeforeScript);
     if (fs.existsSync(beforeScriptPath)) {
       require(beforeScriptPath)(chromy, scenario, viewport, isReference);
     } else {
@@ -164,6 +134,10 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   // }
 
   //  --- OPEN URL ---
+  var url = scenario.url;
+  if (isReference && scenario.referenceUrl) {
+    url = scenario.referenceUrl;
+  }
   chromy.goto(url);
 
   // --- load in backstopTools into client app ---
@@ -203,7 +177,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   ============ */
   var onReadyScript = scenario.onReadyScript || config.onReadyScript;
   if (onReadyScript) {
-    var readyScriptPath = path.resolve(casperScriptsPath, onReadyScript);
+    var readyScriptPath = path.resolve(engineScriptsPath, onReadyScript);
     if (fs.existsSync(readyScriptPath)) {
       chromy = require(readyScriptPath)(chromy, scenario, viewport, isReference) || chromy;
     } else {
@@ -288,16 +262,35 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
     scenario.selectorsExpanded = scenario.selectors;
   // }
 
-  // --- CAPTURE EACH SELECTOR + BUILD TEST CONFIG FILE ---
-  var compareConfig = {testPairs: []};
-  var captureJobs = scenario.selectorsExpanded.map(function (selector, i, a) {
-    var cleanedSelectorName = selector.replace(/[^a-z0-9_-]/gi, ''); // remove anything that's not a letter or a number
-    var fileName = getFilename(fileNameTemplate, outputFormat, configId, scenario.sIndex, variantOrScenarioLabelSafe, i, cleanedSelectorName, viewport.vIndex, viewportNameSafe);
-    var referenceFilePath = bitmapsReferencePath + '/' + getFilename(fileNameTemplate, outputFormat, configId, scenario.sIndex, scenarioLabel, i, cleanedSelectorName, viewport.vIndex, viewportNameSafe);
-    var testFilePath = bitmapsTestPath + '/' + screenshotDateTime + '/' + fileName;
-    var filePath = isReference ? referenceFilePath : testFilePath;
+  return delegateSelectors(chromy, scenario, viewport, variantOrScenarioLabelSafe, scenarioLabelSafe, config);
+}
 
-    if (!isReference) {
+// vvv HELPERS vvv
+/**
+ * [delegateSelectors description]
+ * @param  {[type]} chromy                     [description]
+ * @param  {[type]} scenario                   [description]
+ * @param  {[type]} viewport                   [description]
+ * @param  {[type]} variantOrScenarioLabelSafe [description]
+ * @param  {[type]} config                     [description]
+ * @return {[type]}                            [description]
+ */
+function delegateSelectors (chromy, scenario, viewport, variantOrScenarioLabelSafe, scenarioLabelSafe, config) {
+  const fileNameTemplate = config.fileNameTemplate || DEFAULT_FILENAME_TEMPLATE;
+  const configId = config.id || genHash(config.backstopConfigFileName);
+  const bitmapsTestPath = config.paths.bitmaps_test || DEFAULT_BITMAPS_TEST_DIR;
+  const bitmapsReferencePath = config.paths.bitmaps_reference || DEFAULT_BITMAPS_REFERENCE_DIR;
+  const outputFileFormatSuffix = '.' + (config.outputFormat && config.outputFormat.match(/jpg|jpeg/) || 'png');
+
+  var compareConfig = {testPairs: []};
+  var captureJobs = scenario.selectorsExpanded.map(function (selector, i) {
+    var cleanedSelectorName = selector.replace(/[^a-z0-9_-]/gi, ''); // remove anything that's not a letter or a number
+    var fileName = getFilename(fileNameTemplate, outputFileFormatSuffix, configId, scenario.sIndex, variantOrScenarioLabelSafe, i, cleanedSelectorName, viewport.vIndex, viewport.name);
+    var referenceFilePath = bitmapsReferencePath + '/' + getFilename(fileNameTemplate, outputFileFormatSuffix, configId, scenario.sIndex, scenarioLabelSafe, i, cleanedSelectorName, viewport.vIndex, viewport.name);
+    var testFilePath = bitmapsTestPath + '/' + config.screenshotDateTime + '/' + fileName;
+    var filePath = config.isReference ? referenceFilePath : testFilePath;
+
+    if (!config.isReference) {
       var requireSameDimensions;
       if (scenario.requireSameDimensions !== undefined) {
         requireSameDimensions = scenario.requireSameDimensions;
@@ -318,7 +311,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
     }
 
     return function () {
-      return captureScreenshot(chromy, filePath, url, selector, config);
+      return captureScreenshot(chromy, filePath, selector, config);
     };
   });
 
@@ -351,9 +344,15 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   }).then(_ => compareConfig);
 }
 
-// vvv HELPERS vvv
-
-function captureScreenshot (chromy, filePath, url, selector, config) {
+/**
+ * [captureScreenshot description]
+ * @param  {[type]} chromy   [description]
+ * @param  {[type]} filePath [description]
+ * @param  {[type]} selector [description]
+ * @param  {[type]} config   [description]
+ * @return {[type]}          [description]
+ */
+function captureScreenshot (chromy, filePath, selector, config) {
   return new Promise (function (resolve, reject) {
     let result = {
       exists: true,
@@ -446,20 +445,20 @@ function makeSafe (str) {
   return str.replace(/[ /]/g, '_');
 }
 
-function getFilename (fileNameTemplate, outputFormat, configId, scenarioIndex, scenarioLabel, selectorIndex, selectorLabel, viewportIndex, viewportLabel) {
+function getFilename (fileNameTemplate, outputFileFormatSuffix, configId, scenarioIndex, scenarioLabelSafe, selectorIndex, selectorLabel, viewportIndex, viewportLabel) {
   var fileName = fileNameTemplate
     .replace(/\{configId\}/, configId)
     .replace(/\{scenarioIndex\}/, scenarioIndex)
-    .replace(/\{scenarioLabel\}/, scenarioLabel)
+    .replace(/\{scenarioLabel\}/, scenarioLabelSafe)
     .replace(/\{selectorIndex\}/, selectorIndex)
     .replace(/\{selectorLabel\}/, selectorLabel)
     .replace(/\{viewportIndex\}/, viewportIndex)
     .replace(/\{viewportLabel\}/, makeSafe(viewportLabel))
     .replace(/[^a-z0-9_-]/gi, ''); // remove anything that's not a letter or a number or dash or underscore.
 
-  var extRegExp = new RegExp(outputFormat + '$', 'i');
+  var extRegExp = new RegExp(outputFileFormatSuffix + '$', 'i');
   if (!extRegExp.test(fileName)) {
-    fileName = fileName + outputFormat;
+    fileName = fileName + outputFileFormatSuffix;
   }
   return fileName;
 }
