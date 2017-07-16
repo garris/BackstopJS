@@ -50,7 +50,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
    */
   const w = viewport.width || viewport.viewport.width;
   const h = viewport.height || viewport.viewport.height;
-  const flags = ['--window-size={w},{h}'.replace(/{w}/, w).replace(/{h}/, h)];
+  const flags = ['--ignore-certificate-errors', '--window-size={w},{h}'.replace(/{w}/, w).replace(/{h}/, h)];
   const port = CHROMY_STARTING_PORT_NUMBER + runId;
 
   console.log('Starting Chromy:', `port:${port}`, flags);

@@ -1,5 +1,6 @@
 /* eslint-disable no-path-concat */
 var DOCUMENT_SELECTOR = 'document';
+var BODY_SELECTOR = 'body';
 
 var fs = require('fs');
 var cwd = fs.workingDirectory;
@@ -154,8 +155,23 @@ function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabe
         }, // on timeout
         scriptTimeout
       );
-      casper.wait(scenario.delay || 1);
     });
+
+    casper.then(function () {
+      if (scenario.readySelector) {
+        casper.waitForSelector(
+          scenario.readySelector,
+          function () {
+            casper.echo('readySelector found.');
+          },
+          function () {
+            casper.echo('readySelector NOT found.');
+          }
+        );
+      }
+    });
+
+    casper.wait(scenario.delay || 1);
 
     casper.then(function () {
       this.echo('Current location is ' + url, 'info');
@@ -211,13 +227,16 @@ function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabe
       // CREATE SCREEN SHOTS AND TEST COMPARE CONFIGURATION (CONFIG FILE WILL BE SAVED WHEN THIS PROCESS RETURNS)
       // If no selectors are provided then set the default DOCUMENT_SELECTOR
       if (!scenario.hasOwnProperty('selectors') || !scenario.selectors.length) {
-        scenario.selectors = [DOCUMENT_SELECTOR];
+        scenario.selectors = [BODY_SELECTOR];
       }
 
       if (scenario.selectorExpansion) {
         scenario.selectorsExpanded = scenario.selectors.reduce(function (acc, selector) {
           if (selector === DOCUMENT_SELECTOR) {
             return acc.concat([DOCUMENT_SELECTOR]);
+          }
+          if (selector === BODY_SELECTOR) {
+            return acc.concat([BODY_SELECTOR]);
           }
 
           var expandedSelector = casper.evaluate(function (selector) {
@@ -261,7 +280,7 @@ function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabe
 
         var filePath = (isReference) ? referenceFilePath : testFilePath;
 
-        captureScreenshot(casper, filePath, o);
+        captureScreenshot(casper, filePath, o, vp);
 
         if (!isReference) {
             var requireSameDimensions;
@@ -296,9 +315,16 @@ function getMisMatchThreshHold (scenario) {
   return config.defaultMisMatchThreshold;
 }
 
-function captureScreenshot (casper, filePath, selector) {
+function captureScreenshot (casper, filePath, selector, vp) {
   if (selector === 'body:noclip' || selector === 'document') {
     casper.capture(filePath);
+  } else if (selector === 'body') {
+    casper.capture(filePath, {
+      top: 0,
+      left: 0,
+      width: vp.width || vp.viewport.width,
+      height: vp.height || vp.viewport.height
+    });
   } else if (casper.exists(selector)) {
     if (casper.visible(selector)) {
       casper.captureSelector(filePath, selector);
