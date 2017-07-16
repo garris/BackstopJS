@@ -230,8 +230,8 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
       .evaluate(`window._backstopSelectors = '${scenario.selectors}'`)
       .evaluate(_ => window.expandSelectors(window._backstopSelectors))
       .result(_result => {
-        console.log('scenario.selectorsExpanded >>>', _result);
         scenario.selectorsExpanded = _result;
+        console.log('scenario.selectorsExpanded >>>', scenario.selectorsExpanded);
       });
   }
 
@@ -270,10 +270,10 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   //     return selector !== '';
   //   });
   // } else {
-    scenario.selectorsExpanded = scenario.selectors;
+    scenario.selectorsExpanded = scenario.selectors; // <<<<<<
   // }
 
-  return delegateSelectors(chromy, scenario, viewport, variantOrScenarioLabelSafe, scenarioLabelSafe, config);
+  return delegateSelectors(chromy, scenario, viewport, variantOrScenarioLabelSafe, scenarioLabelSafe, config);  //<<<<<
 }
 
 // vvv HELPERS vvv
