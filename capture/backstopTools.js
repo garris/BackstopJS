@@ -1,3 +1,40 @@
+var BODY_SELECTOR = 'body';
+var DOCUMENT_SELECTOR = 'document';
+
+window.expandSelectors = function (selectors) {
+  if (!Array.isArray(selectors)) {
+    selectors = selectors.split(',');
+  }
+  return selectors.reduce(function (acc, selector) {
+    if (selector === BODY_SELECTOR) {
+      return acc.concat([BODY_SELECTOR]);
+    }
+    if (selector === DOCUMENT_SELECTOR) {
+      return acc.concat([DOCUMENT_SELECTOR]);
+    }
+    var expandedSelector = [].slice.call(document.querySelectorAll(selector))
+      .map(function (element, expandedIndex) {
+        var indexPartial = '__n' + expandedIndex;
+        if (element.classList.contains('__86d')) {
+          return '';
+        }
+        if (!expandedIndex) {
+          // only first element is used for screenshots -- even if multiple instances exist.
+          // therefore index 0 does not need extended qualification.
+          return selector;
+        }
+        // update all matching selectors with additional indexPartial class
+        element.classList.add(indexPartial);
+        // return array of fully-qualified classnames
+        return selector + '.' + indexPartial;
+      });
+    // concat arrays of fully-qualified classnames
+    return acc.concat(expandedSelector);
+  }, []).filter(function (selector) {
+    return selector !== '';
+  });
+};
+
 window.isVisible = function (selector) {
   if (!window.exists(selector)) {
     return false;

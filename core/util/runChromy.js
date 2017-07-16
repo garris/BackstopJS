@@ -224,6 +224,17 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
     scenario.selectors = [BODY_SELECTOR];
   }
 
+  if (scenario.selectorExpansion) {
+    console.log('scenario.selectors >>>', scenario.selectors);
+    chromy
+      .evaluate(`window._backstopSelectors = '${scenario.selectors}'`)
+      .evaluate(_ => window.expandSelectors(window._backstopSelectors))
+      .result(_result => {
+        console.log('scenario.selectorsExpanded >>>', _result);
+        scenario.selectorsExpanded = _result;
+      });
+  }
+
   // --- SELECTOR EXPANSION ---
   // if (scenario.selectorExpansion) {
   //   scenario.selectorsExpanded = scenario.selectors.reduce(function (acc, selector) {
