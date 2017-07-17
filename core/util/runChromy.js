@@ -235,45 +235,8 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
       });
   }
 
-  // --- SELECTOR EXPANSION ---
-  // if (scenario.selectorExpansion) {
-  //   scenario.selectorsExpanded = scenario.selectors.reduce(function (acc, selector) {
-  //     if (selector === BODY_SELECTOR) {
-  //       return acc.concat([BODY_SELECTOR]);
-  //     }
-
-  //     var expandedSelector = casper.evaluate(function (selector) {
-  //       return [].slice.call(document.querySelectorAll(selector)).map(function (element, expandedIndex) {
-  //         var indexPartial = '__n' + expandedIndex;
-
-  //         if (element.classList.contains('__86d')) {
-  //           return '';
-  //         }
-
-  //         if (!expandedIndex) {
-  //           // only first element is used for screenshots -- even if multiple instances exist.
-  //           // therefore index 0 does not need extended qualification.
-  //           return selector;
-  //         }
-
-  //         // update all matching selectors with additional indexPartial class
-  //         element.classList.add(indexPartial);
-
-  //         // return array of fully-qualified classnames
-  //         return selector + '.' + indexPartial;
-  //       });
-  //     }, selector);
-
-  //     // concat arrays of fully-qualified classnames
-  //     return acc.concat(expandedSelector);
-  //   }, []).filter(function (selector) {
-  //     return selector !== '';
-  //   });
-  // } else {
-    scenario.selectorsExpanded = scenario.selectors; // <<<<<<
-  // }
-
-  return delegateSelectors(chromy, scenario, viewport, variantOrScenarioLabelSafe, scenarioLabelSafe, config);  //<<<<<
+  scenario.selectorsExpanded = scenario.selectors;
+  return delegateSelectors(chromy, scenario, viewport, variantOrScenarioLabelSafe, scenarioLabelSafe, config);
 }
 
 // vvv HELPERS vvv
