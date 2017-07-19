@@ -42,7 +42,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   }
   const engineScriptsPath = config.env.engine_scripts || config.env.casper_scripts || config.env.engine_scripts_default;
   const isReference = config.isReference;
-
+  const hostFlags = Array.isArray(scenario.hostFlags) && scenario.hostFlags || [];
   /**
    *  =============
    *  START CHROMY SESSION
@@ -50,7 +50,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
    */
   const w = viewport.width || viewport.viewport.width;
   const h = viewport.height || viewport.viewport.height;
-  const flags = ['--ignore-certificate-errors', '--window-size={w},{h}'.replace(/{w}/, w).replace(/{h}/, h)];
+  const flags = ['--window-size={w},{h}'.replace(/{w}/, w).replace(/{h}/, h)].concat(hostFlags);
   const port = CHROMY_STARTING_PORT_NUMBER + runId;
 
   console.log('Starting Chromy:', `port:${port}`, flags);
