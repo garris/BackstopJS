@@ -243,14 +243,14 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
         .end();
     } else {
       scenario.selectorsExpanded = scenario.selectors;
-      delegateSelectors(
+      resolve(delegateSelectors(
         chromy,
         scenario,
         viewport,
         variantOrScenarioLabelSafe,
         scenarioLabelSafe,
         config
-      );
+      ));
     }
   });
 }
