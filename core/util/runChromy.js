@@ -268,8 +268,20 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
 function delegateSelectors (chromy, scenario, viewport, variantOrScenarioLabelSafe, scenarioLabelSafe, config) {
   const fileNameTemplate = config.fileNameTemplate || DEFAULT_FILENAME_TEMPLATE;
   const configId = config.id || genHash(config.backstopConfigFileName);
-  const bitmapsTestPath = config.paths.bitmaps_test || DEFAULT_BITMAPS_TEST_DIR;
-  const bitmapsReferencePath = config.paths.bitmaps_reference || DEFAULT_BITMAPS_REFERENCE_DIR;
+  var bitmapsTestPath = config.paths.bitmaps_test || DEFAULT_BITMAPS_TEST_DIR;
+  var bitmapsReferencePath = config.paths.bitmaps_reference || DEFAULT_BITMAPS_REFERENCE_DIR;
+  
+  if (config.paths.bitmaps_reference) {
+    bitmapsReferencePath = path.resolve(config.env.projectPath, config.paths.bitmaps_reference);
+  }
+  if (config.paths.bitmaps_test) {
+    bitmapsTestPath = path.resolve(config.env.projectPath, config.paths.bitmaps_test);
+  }
+  console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+  console.log("bitmapsReferencePath: " + bitmapsReferencePath);
+  console.log("bitmapsTestPath: " + bitmapsTestPath);
+  console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+  
   const outputFileFormatSuffix = '.' + (config.outputFormat && config.outputFormat.match(/jpg|jpeg/) || 'png');
 
   var compareConfig = {testPairs: []};
