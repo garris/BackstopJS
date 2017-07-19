@@ -227,7 +227,7 @@ function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabe
       // CREATE SCREEN SHOTS AND TEST COMPARE CONFIGURATION (CONFIG FILE WILL BE SAVED WHEN THIS PROCESS RETURNS)
       // If no selectors are provided then set the default DOCUMENT_SELECTOR
       if (!scenario.hasOwnProperty('selectors') || !scenario.selectors.length) {
-        scenario.selectors = [BODY_SELECTOR];
+        scenario.selectors = [DOCUMENT_SELECTOR];
       }
 
       if (scenario.selectorExpansion) {

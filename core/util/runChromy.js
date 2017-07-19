@@ -4,7 +4,7 @@ const fs = require('./fs');
 const path = require('path');
 const ensureDirectoryPath = require('./ensureDirectoryPath');
 
-const TEST_TIMEOUT = 8000;
+const TEST_TIMEOUT = 30000;
 const CHROMY_STARTING_PORT_NUMBER = 9222;
 const DEFAULT_FILENAME_TEMPLATE = '{configId}_{scenarioLabel}_{selectorIndex}_{selectorLabel}_{viewportIndex}_{viewportLabel}';
 const DEFAULT_BITMAPS_TEST_DIR = 'bitmaps_test';
@@ -221,22 +221,38 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
 
   // --- HANDLE NO-SELCTORS ---
   if (!scenario.hasOwnProperty('selectors') || !scenario.selectors.length) {
-    scenario.selectors = [BODY_SELECTOR];
+    scenario.selectors = [DOCUMENT_SELECTOR];
   }
 
-  if (scenario.selectorExpansion) {
-    console.log('scenario.selectors >>>', scenario.selectors);
-    chromy
-      .evaluate(`window._backstopSelectors = '${scenario.selectors}'`)
-      .evaluate(_ => window.expandSelectors(window._backstopSelectors))
-      .result(_result => {
-        scenario.selectorsExpanded = _result;
-        console.log('scenario.selectorsExpanded >>>', scenario.selectorsExpanded);
-      });
-  }
-
-  scenario.selectorsExpanded = scenario.selectors;
-  return delegateSelectors(chromy, scenario, viewport, variantOrScenarioLabelSafe, scenarioLabelSafe, config);
+  return new Promise((resolve, reject) => {
+    if (scenario.selectorExpansion) {
+      chromy
+        .evaluate(`window._backstopSelectors = '${scenario.selectors}'`)
+        .evaluate(() => window.expandSelectors(window._backstopSelectors))
+        .result(_result => {
+          scenario.selectorsExpanded = _result;
+          resolve(delegateSelectors(
+            chromy,
+            scenario,
+            viewport,
+            variantOrScenarioLabelSafe,
+            scenarioLabelSafe,
+            config
+          ));
+        })
+        .end();
+    } else {
+      scenario.selectorsExpanded = scenario.selectors;
+      delegateSelectors(
+        chromy,
+        scenario,
+        viewport,
+        variantOrScenarioLabelSafe,
+        scenarioLabelSafe,
+        config
+      );
+    }
+  });
 }
 
 // vvv HELPERS vvv
