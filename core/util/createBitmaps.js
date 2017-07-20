@@ -138,7 +138,7 @@ function writeCompareConfigFile (comparePairsFileName, compareConfig) {
 }
 
 module.exports = function (config, isReference) {
-  if (/chromy/.test(config.engine)) {
+  if (/chrom./i.test(config.engine)) {
     return delegateScenarios(decorateConfigForCapture(config, isReference)).then(output => {
       var testPairsFlatMap = output.reduce((acc, result) => {
         return acc.concat(result.testPairs);
