@@ -1,5 +1,13 @@
 var BODY_SELECTOR = 'body';
 var DOCUMENT_SELECTOR = 'document';
+var INJECT_CSS = 'html {-webkit-font-smoothing: antialiased;}';
+
+function injectStyle (str) {
+  var styleTag = document.createElement('style');
+  styleTag.innerHTML = str;
+  document.body.appendChild(styleTag);
+}
+injectStyle(INJECT_CSS);
 
 window.expandSelectors = function (selectors) {
   if (!Array.isArray(selectors)) {
