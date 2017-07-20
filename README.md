@@ -597,11 +597,11 @@ _Please note: these file paths are relative to your current working directory $(
 BackstopJS supports using Chrome-Headless, PhantomJS or SlimerJS for web app rendering. PhantomJS is currently the default value and will be installed by default.
 
 #### Chrome-Headless (The latest webkit library)
-This will also enable the very cool [Chromy](https://github.com/OnetapInc/chromy) library.  (When creating onBefore and onReady scripts please make sure you are referring to the [Chromy script documentation](https://github.com/OnetapInc/chromy).  Casper features will not work with this setting.)
+This will also enable the very cool _chromy.js_ (https://github.com/OnetapInc/chromy) library.  (When creating onBefore and onReady scripts please make sure you are referring to the [Chromy script documentation](https://github.com/OnetapInc/chromy).  Casper features will not work with this setting.)
 
 You must also have [Chrome installed](https://www.google.com/chrome/browser/), version 59 or greater is required.
 ```json
-  "engine": "chromy"
+  "engine": "chrome"
 ```
 
 
@@ -854,6 +854,7 @@ Ongoing Reviews by:
 - [Sven Wütherich](svwu)
 
 Features by:
+- [Shinji Yamada](https://github.com/dotneet) for Chromy.JS integration support in 3.0.0.
 - [Steve Fischer](https://github.com/stevecfischer), [uğur mirza zeyrek](mirzazeyrek), [Sven Wütherich](svwu), [Alex Bondarev](https://github.com/skip405) for concurrency support, JS config passing, JPEG support, CLI Auth support.
 - [Klaus Bayrhammer](https://github.com/klausbayrhammer) for making BackstopJS a "requireable" node module in 2.3.1
 - [Suresh Kumar. M](https://github.com/garris/BackstopJS/commits/master?author=nobso) for selector expansion in 1.3.2
