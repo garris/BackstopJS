@@ -40,6 +40,11 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   if (!config.paths) {
     config.paths = {};
   }
+
+  if (typeof viewport.label !== 'string') {
+    viewport.label = viewport.name || '';
+  }
+
   const engineScriptsPath = config.env.engine_scripts || config.env.casper_scripts || config.env.engine_scripts_default;
   const isReference = config.isReference;
   const hostFlags = Array.isArray(scenario.hostFlags) && scenario.hostFlags || [];
@@ -179,7 +184,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   if (onReadyScript) {
     var readyScriptPath = path.resolve(engineScriptsPath, onReadyScript);
     if (fs.existsSync(readyScriptPath)) {
-      chromy = require(readyScriptPath)(chromy, scenario, viewport, isReference) || chromy;
+      require(readyScriptPath)(chromy, scenario, viewport, isReference) || chromy;
     } else {
       console.warn(port, 'WARNING: script not found: ' + readyScriptPath);
     }
@@ -275,8 +280,8 @@ function delegateSelectors (chromy, scenario, viewport, variantOrScenarioLabelSa
   var compareConfig = {testPairs: []};
   var captureJobs = scenario.selectorsExpanded.map(function (selector, i) {
     var cleanedSelectorName = selector.replace(/[^a-z0-9_-]/gi, ''); // remove anything that's not a letter or a number
-    var fileName = getFilename(fileNameTemplate, outputFileFormatSuffix, configId, scenario.sIndex, variantOrScenarioLabelSafe, i, cleanedSelectorName, viewport.vIndex, viewport.name);
-    var referenceFilePath = bitmapsReferencePath + '/' + getFilename(fileNameTemplate, outputFileFormatSuffix, configId, scenario.sIndex, scenarioLabelSafe, i, cleanedSelectorName, viewport.vIndex, viewport.name);
+    var fileName = getFilename(fileNameTemplate, outputFileFormatSuffix, configId, scenario.sIndex, variantOrScenarioLabelSafe, i, cleanedSelectorName, viewport.vIndex, viewport.label);
+    var referenceFilePath = bitmapsReferencePath + '/' + getFilename(fileNameTemplate, outputFileFormatSuffix, configId, scenario.sIndex, scenarioLabelSafe, i, cleanedSelectorName, viewport.vIndex, viewport.label);
     var testFilePath = bitmapsTestPath + '/' + config.screenshotDateTime + '/' + fileName;
     var filePath = config.isReference ? referenceFilePath : testFilePath;
 
