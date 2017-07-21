@@ -28,11 +28,6 @@ function bitmapPaths (config, userConfig) {
   config.bitmaps_reference = path.join(config.projectPath, 'backstop_data', 'bitmaps_reference');
   config.bitmaps_test = path.join(config.projectPath, 'backstop_data', 'bitmaps_test');
   
-  // if (userConfig.paths) {
-  // config.bitmaps_reference = userConfig.paths.bitmaps_reference || config.bitmaps_reference;
-  // config.bitmaps_test = userConfig.paths.bitmaps_test || config.bitmaps_test;
-  // }
-
   if (userConfig.paths.bitmaps_reference) {
     config.bitmaps_reference = path.resolve(config.projectPath, userConfig.paths.bitmaps_reference);
 
