@@ -35,15 +35,18 @@ function bitmapPaths (config, userConfig) {
 
   if (userConfig.paths.bitmaps_reference) {
     config.bitmaps_reference = path.resolve(config.projectPath, userConfig.paths.bitmaps_reference);
+
+    if (config.debug) {
+      console.log("config.bitmaps_reference: " + config.bitmaps_reference);
+    }
   }
   if (userConfig.paths.bitmaps_test) {
     config.bitmaps_test = path.resolve(config.projectPath, userConfig.paths.bitmaps_test);
-  }
 
-  console.log("****************************");
-  console.log("config.bitmaps_reference " + config.bitmaps_reference);
-  console.log("config.bitmaps_test: " + config.bitmaps_test);
-  console.log("****************************");
+    if (config.debug) {
+      console.log("config.bitmaps_test: " + config.bitmaps_test);
+    }
+  }
 }
 
 function ci (config, userConfig) {
@@ -51,11 +54,11 @@ function ci (config, userConfig) {
 
   if (userConfig.paths.ci_report) {
     config.ci_report = path.resolve(config.projectPath, userConfig.paths.ci_report);
-  }
 
-  console.log("****************************");
-  console.log("config.ci_report: " + config.ci_report);
-  console.log("****************************");
+    if (config.debug) {
+      console.log("config.ci_report: " + config.ci_report);
+    }
+  }
 
   config.ciReport = {
     format: 'junit',
@@ -78,11 +81,11 @@ function htmlReport (config, userConfig) {
 
   if (userConfig.paths.html_report) {
     config.html_report = path.resolve(config.projectPath, userConfig.paths.html_report);
-  }
 
-  console.log("****************************");
-  console.log("config.html_report: " + config.html_report);
-  console.log("****************************");
+    if (config.debug) {
+      console.log("config.html_report: " + config.html_report);
+    }
+  }
 
   config.compareConfigFileName = path.join(config.html_report, 'config.js');
   config.compareReportURL = path.join(config.html_report, 'index.html');
@@ -121,12 +124,12 @@ function engine (config, userConfig) {
   config.casperFlags = userConfig.casperFlags || null;
 
   if (userConfig.paths.engine_scripts) {
-    config.engine_scripts = path.resolve(config.projectPath, userConfig.paths.engine_scripts);
-  }
+    config.engine_scripts = path.resolve(config.projectPath, userConfig.paths.engine_scripts);  
 
-  console.log("****************************");
-  console.log("config.engine_scripts: " + config.engine_scripts);
-  console.log("****************************");
+    if (config.debug) {
+      console.log("config.engine_scripts: " + config.engine_scripts);
+    }
+  }
 }
 
 module.exports = extendConfig;

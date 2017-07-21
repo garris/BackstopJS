@@ -270,18 +270,22 @@ function delegateSelectors (chromy, scenario, viewport, variantOrScenarioLabelSa
   const configId = config.id || genHash(config.backstopConfigFileName);
   var bitmapsTestPath = config.paths.bitmaps_test || DEFAULT_BITMAPS_TEST_DIR;
   var bitmapsReferencePath = config.paths.bitmaps_reference || DEFAULT_BITMAPS_REFERENCE_DIR;
-  
+
   if (config.paths.bitmaps_reference) {
     bitmapsReferencePath = path.resolve(config.env.projectPath, config.paths.bitmaps_reference);
+
+    if (config.debug) {
+      console.log("bitmapsReferencePath: " + bitmapsReferencePath);
+    }
   }
   if (config.paths.bitmaps_test) {
     bitmapsTestPath = path.resolve(config.env.projectPath, config.paths.bitmaps_test);
+
+    if (config.debug) {
+      console.log("bitmapsTestPath: " + bitmapsTestPath);
+    }
   }
-  console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-  console.log("bitmapsReferencePath: " + bitmapsReferencePath);
-  console.log("bitmapsTestPath: " + bitmapsTestPath);
-  console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-  
+
   const outputFileFormatSuffix = '.' + (config.outputFormat && config.outputFormat.match(/jpg|jpeg/) || 'png');
 
   var compareConfig = {testPairs: []};
