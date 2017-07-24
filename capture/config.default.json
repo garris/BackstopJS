@@ -1,5 +1,5 @@
 {
-  "id": "prod_test",
+  "id": "test",
   "viewports": [
     {
       "label": "phone",
@@ -24,18 +24,9 @@
       "hideSelectors": [],
       "removeSelectors": [],
       "selectorExpansion": true,
-      "selectors": [
-        ".jumbotron",
-        ".row.firstPanel",
-        ".firstPanel .col-sm-4:nth-of-type(2)",
-        ".firstPanel .col-sm-4:nth-of-type(3)",
-        ".firstPanel .col-sm-4:nth-of-type(4)",
-        ".secondPanel",
-        ".finalWords",
-        "footer"
-      ],
+      "selectors": [],
       "readyEvent": null,
-      "delay": 500,
+      "delay": 0,
       "misMatchThreshold" : 0.1,
       "requireSameDimensions" : true,
       "onBeforeScript": "onBefore.js",
@@ -49,8 +40,9 @@
     "html_report": "backstop_data/html_report",
     "ci_report": "backstop_data/ci_report"
   },
-  "casperFlags": [],
-  "engine": "phantomjs",
+  "engineFlags": [],
+  "engine": "chrome",
   "report": ["browser"],
-  "debug": false
+  "debug": false,
+  "debugWindow": false
 }
