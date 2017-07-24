@@ -301,7 +301,7 @@ function delegateSelectors (chromy, scenario, viewport, variantOrScenarioLabelSa
         fileName: fileName,
         label: scenario.label,
         requireSameDimensions: requireSameDimensions,
-        misMatchThreshold: getMisMatchThreshHold(scenario)
+        misMatchThreshold: getMisMatchThreshHold(scenario, config)
       });
     }
 
@@ -404,7 +404,7 @@ function captureScreenshot (chromy, filePath, selector, config) {
   });
 }
 
-function getMisMatchThreshHold (scenario) {
+function getMisMatchThreshHold (scenario, config) {
   if (typeof scenario.misMatchThreshold !== 'undefined') { return scenario.misMatchThreshold; }
   if (typeof config.misMatchThreshold !== 'undefined') { return config.misMatchThreshold; }
   return config.defaultMisMatchThreshold;
