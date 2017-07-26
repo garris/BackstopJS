@@ -73,11 +73,9 @@ $ npm install -g backstopjs
 
   - **Configure:** Specify URLs, screen sizes, DOM selectors, ready events, interactions etc. (see examples directory)
 
-  - **Reference:** Create a set of *reference* screenshots. BackstopJS will consider this your *source of truth*.
-
   - **Test:** BackstopJS creates a set of *test* screenshots and compares them with your *reference* screenshots. Any changes show up in a visual report. (Run this after making CSS changes as many times as needed.)
 
-  -  **Approve:** Often changes are exactly what you want. Approving changes will update your reference files with the results from your last test.
+  -  **Approve:** If the test you ran looks good, then go ahead and and approve it. Approving changes will update your reference files with the results from your last test.  Future tests are compared against your most recent approved test screenshots.
 
 
 ## Getting started
@@ -202,17 +200,6 @@ As a new user setting up tests for your project, you will be primarily concerned
 - **`scenarios[n].selectors`** – An array of CSS selector strings enabling you specify what part of your DOM you want to test.  The default value is `document`, which will attempt to capture your entire layout.
 
 
-### Creating or updating reference bitmaps
-
-From your project directory...
-```sh
-$ backstop reference
-```
-
-This will create a `bitmaps_reference` directory with screen captures of all DOM elements specified in your config. See [scenario filtering](https://github.com/garris/BackstopJS#incremental-scenario-referencetesting-filtering) for more options.
-
-
-
 ### Generating test bitmaps
 
 ```sh
@@ -237,6 +224,21 @@ $ backstop approve
 Sometimes, change is good!  When running this command, all images (with changes) from your most recent test batch will be promoted to your reference collection. Subsequent tests will be compared against your updated reference files.
 
 SEE: [filtering tests and references by scenario](#Filtering-tests-and-references-by-scenario) for a note on approving changes after running `backstop test` using the `--filter` argument.
+
+
+
+
+### Creating or updating reference bitmaps
+This Utility command will create screen captures of all DOM elements specified in your config BUT, it will not run any tests.  It's generally not used in most cases
+
+From your project directory...
+```sh
+$ backstop reference
+```
+
+See [scenario filtering](https://github.com/garris/BackstopJS#incremental-scenario-referencetesting-filtering) for more options.
+
+
 
 
 ## Using BackstopJS
