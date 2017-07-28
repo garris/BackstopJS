@@ -15,6 +15,7 @@ const HIDDEN_SELECTOR_PATH = '/capture/resources/hiddenSelector_noun_63405.png';
 const BODY_SELECTOR = 'body';
 const DOCUMENT_SELECTOR = 'document';
 const NOCLIP_SELECTOR = 'body:noclip';
+const VIEWPORT_SELECTOR = 'viewport';
 
 module.exports = function (args) {
   const scenario = args.scenario;
@@ -230,33 +231,32 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   }
 
   return new Promise((resolve, reject) => {
-    if (scenario.selectorExpansion) {
-      chromy
-        .evaluate(`window._backstopSelectors = '${scenario.selectors}'`)
-        .evaluate(() => window.expandSelectors(window._backstopSelectors))
-        .result(_result => {
-          scenario.selectorsExpanded = _result;
-          resolve(delegateSelectors(
-            chromy,
-            scenario,
-            viewport,
-            variantOrScenarioLabelSafe,
-            scenarioLabelSafe,
-            config
-          ));
-        })
-        .end();
-    } else {
-      scenario.selectorsExpanded = scenario.selectors;
-      resolve(delegateSelectors(
-        chromy,
-        scenario,
-        viewport,
-        variantOrScenarioLabelSafe,
-        scenarioLabelSafe,
-        config
-      ));
-    }
+    chromy
+      .evaluate(`window._selectorExpansion = '${scenario.selectorExpansion}'`)
+      .evaluate(`window._backstopSelectors = '${scenario.selectors}'`)
+      .evaluate(() => {
+        window._backstopSelectorsExpanded = window._selectorExpansion ? window.expandSelectors(window._backstopSelectors) : window._backstopSelectors;
+        window._backstopSelectorObjects = window._backstopSelectorsExpanded.map(selector => {
+          return {
+            selector,
+            exists: window.exists(selector),
+            isVisible: window.isVisible(selector)
+          };
+        });
+        return window._backstopSelectorsExpanded;
+      })
+      .result(_result => {
+        scenario.selectorsExpanded = _result;
+        resolve(delegateSelectors(
+          chromy,
+          scenario,
+          viewport,
+          variantOrScenarioLabelSafe,
+          scenarioLabelSafe,
+          config
+        ));
+      })
+      .end();
   });
 }
 
@@ -354,7 +354,7 @@ function captureScreenshot (chromy, filePath, selector, config) {
       isVisible: true
     };
 
-    if (selector === BODY_SELECTOR) {
+    if (selector === VIEWPORT_SELECTOR || selector === BODY_SELECTOR) {
       chromy
         .screenshot()
         .result(png => {
@@ -393,7 +393,7 @@ function captureScreenshot (chromy, filePath, selector, config) {
       if (result.exists) {
         if (result.isVisible) {
           ensureDirectoryPath(filePath);
-          return writeFileSync(filePath, imgData);
+          return fs.writeFile(filePath, imgData);
         } else {
           return fs.copy(config.env.backstop + HIDDEN_SELECTOR_PATH, filePath);
         }

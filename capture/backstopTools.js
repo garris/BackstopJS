@@ -1,21 +1,30 @@
 var BODY_SELECTOR = 'body';
 var DOCUMENT_SELECTOR = 'document';
+var VIEWPORT_SELECTOR = 'viewport';
 var INJECT_CSS = 'html {-webkit-font-smoothing: antialiased;}';
 
-function injectStyle (str) {
+function injectStyle (cssSting) {
   var styleTag = document.createElement('style');
-  styleTag.innerHTML = str;
+  styleTag.innerHTML = cssSting;
   document.body.appendChild(styleTag);
 }
 injectStyle(INJECT_CSS);
 
+/**
+ * Take an array of selector names and return and array of *all* matching selectors.
+ * For each selector name, If more than 1 selector is matched, proceeding matches are
+ * tagged with an additional `__n` class.
+ *
+ * @param  {[string]} collapsed list of selectors
+ * @return {[string]} [array of expanded selectors]
+ */
 window.expandSelectors = function (selectors) {
   if (!Array.isArray(selectors)) {
     selectors = selectors.split(',');
   }
   return selectors.reduce(function (acc, selector) {
-    if (selector === BODY_SELECTOR) {
-      return acc.concat([BODY_SELECTOR]);
+    if (selector === BODY_SELECTOR || selector === VIEWPORT_SELECTOR) {
+      return acc.concat([VIEWPORT_SELECTOR]);
     }
     if (selector === DOCUMENT_SELECTOR) {
       return acc.concat([DOCUMENT_SELECTOR]);
