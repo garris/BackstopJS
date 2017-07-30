@@ -388,8 +388,15 @@ function captureScreenshot (chromy, filePath, selector, config) {
       });
 
     // result helper
-    function saveFile () {
-      const imgData = arguments.length > 1 ? arguments[1] : arguments[0];
+    function saveFile (err, buffer, index, selector) {
+      // const imgData = arguments.length > 1 ? arguments[1] : arguments[0];
+      var imgData;
+      if (arguments.length > 1) {
+        console.log('SAVE ARGS>', err, 'buffer', index, selector)
+        imgData = arguments[1];
+      } else {
+        imgData = arguments[0];
+      }
       if (result.exists) {
         if (result.isVisible) {
           ensureDirectoryPath(filePath);
