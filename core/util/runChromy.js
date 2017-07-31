@@ -24,7 +24,6 @@ module.exports = function (args) {
   const runId = args.id;
   const scenarioLabelSafe = makeSafe(scenario.label);
   const variantOrScenarioLabelSafe = scenario._parent ? makeSafe(scenario._parent.label) : scenarioLabelSafe;
-
   return processScenarioView(scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, config, runId);
 };
 
@@ -48,7 +47,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
 
   const engineScriptsPath = config.env.engine_scripts || config.env.casper_scripts || config.env.engine_scripts_default;
   const isReference = config.isReference;
-  const hostFlags = Array.isArray(scenario.hostFlags) && scenario.hostFlags || [];
+  const hostFlags = Array.isArray(config.hostFlags) && config.hostFlags || [];
   /**
    *  =============
    *  START CHROMY SESSION
@@ -59,7 +58,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   const flags = ['--window-size={w},{h}'.replace(/{w}/, w).replace(/{h}/, h)].concat(hostFlags);
   const port = CHROMY_STARTING_PORT_NUMBER + runId;
 
-  console.log('Starting Chromy:', `port:${port}`, flags);
+  console.log('Starting Chromy:', `port:${port}`, flags.toString());
   let chromy = new Chromy({
     chromeFlags: flags,
     port: port,
@@ -288,8 +287,11 @@ function delegateSelectors (chromy, scenario, viewport, variantOrScenarioLabelSa
   const bitmapsReferencePath = config.paths.bitmaps_reference || DEFAULT_BITMAPS_REFERENCE_DIR;
   const outputFileFormatSuffix = '.' + (config.outputFormat && config.outputFormat.match(/jpg|jpeg/) || 'png');
 
-  var compareConfig = {testPairs: []};
-  var captureJobs = [];
+  let compareConfig = {testPairs: []};
+  let captureDocument = false;
+  let captureViewport = false;
+  let captureList = [];
+  let captureJobs = [];
 
   selectors.forEach(function (selector, i) {
     var cleanedSelectorName = selector.replace(/[^a-z0-9_-]/gi, ''); // remove anything that's not a letter or a number
@@ -319,8 +321,24 @@ function delegateSelectors (chromy, scenario, viewport, variantOrScenarioLabelSa
     }
 
     selectorMap[selector].filePath = filePath;
-    captureJobs.push(function () { return captureScreenshot(chromy, filePath, selector, selectorMap, config); });
+    if (selector === BODY_SELECTOR || selector === DOCUMENT_SELECTOR) {
+      captureDocument = selector;
+    } else if (selector === VIEWPORT_SELECTOR) {
+      captureViewport = selector;
+    } else {
+      captureList.push(selector);
+    }
   });
+
+  if (captureDocument) {
+    captureJobs.push(function () { return captureScreenshot(chromy, null, captureDocument, selectorMap, config, []); });
+  }
+  if (captureViewport) {
+    captureJobs.push(function () { return captureScreenshot(chromy, null, captureViewport, selectorMap, config, []); });
+  }
+  if (captureList.length) {
+    captureJobs.push(function () { return captureScreenshot(chromy, null, null, selectorMap, config, captureList); });
+  }
 
   return new Promise(function (resolve, reject) {
     var job = null;
@@ -359,7 +377,7 @@ function delegateSelectors (chromy, scenario, viewport, variantOrScenarioLabelSa
  * @param  {[type]} config   [description]
  * @return {[type]}          [description]
  */
-function captureScreenshot (chromy, filePath_, selector, selectorMap, config) {
+function captureScreenshot (chromy, filePath_, selector, selectorMap, config, selectors) {
   return new Promise (function (resolve, reject) {
     if (selector === VIEWPORT_SELECTOR || selector === BODY_SELECTOR) {
       chromy
@@ -371,7 +389,7 @@ function captureScreenshot (chromy, filePath_, selector, selectorMap, config) {
       chromy.screenshotMultipleSelectors(['body'], saveResult);
     } else {
       chromy
-        .screenshotMultipleSelectors([selector], saveResult);
+        .screenshotMultipleSelectors(selectors, saveResult);
     }
 
     chromy
@@ -385,20 +403,16 @@ function captureScreenshot (chromy, filePath_, selector, selectorMap, config) {
 
     // result helper
     function saveResult (err, buffer, index, selector) {
-      console.log('SAVE MAP>>>', JSON.stringify(selectorMap[selector[index]], null, 2));
       const selectorProps = selectorMap[selector[index]];
       const filePath = selectorProps.filePath;
       if (err) {
-        console.log('>>>ERROR', err);
+        console.log('>>> ERROR TODO: NEED TO REFACTOR NOT_FOUND AND HIDDEN FLOWS', err);
         // return new Error(err);
-        // return Promise.resolve(err);
       }
 
       if (!selectorProps.exists) {
-        console.log('>>>NOT FOUND');
         return fs.copy(config.env.backstop + SELECTOR_NOT_FOUND_PATH, filePath);
       } else if (!selectorProps.isVisible) {
-        console.log('>>>NOT VISIBLE')
         return fs.copy(config.env.backstop + HIDDEN_SELECTOR_PATH, filePath);
       } else {
         ensureDirectoryPath(filePath);
