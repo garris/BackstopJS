@@ -24,14 +24,20 @@ window.expandSelectors = function (selectors) {
   }
   return selectors.reduce(function (acc, selector) {
     if (selector === BODY_SELECTOR || selector === VIEWPORT_SELECTOR) {
-      return acc.concat([VIEWPORT_SELECTOR]);
+      return acc.concat([selector]);
     }
     if (selector === DOCUMENT_SELECTOR) {
       return acc.concat([DOCUMENT_SELECTOR]);
     }
-    var expandedSelector = [].slice.call(document.querySelectorAll(selector))
+    var qResult = document.querySelectorAll(selector);
+
+    // pass-through any selectors that don't match any DOM elements
+    if (!qResult.length) {
+      return acc.concat(selector);
+    }
+
+    var expandedSelector = [].slice.call(qResult)
       .map(function (element, expandedIndex) {
-        var indexPartial = '__n' + expandedIndex;
         if (element.classList.contains('__86d')) {
           return '';
         }
@@ -40,6 +46,8 @@ window.expandSelectors = function (selectors) {
           // therefore index 0 does not need extended qualification.
           return selector;
         }
+        // create index partial
+        var indexPartial = '__n' + expandedIndex;
         // update all matching selectors with additional indexPartial class
         element.classList.add(indexPartial);
         // return array of fully-qualified classnames
@@ -62,6 +70,9 @@ window.isVisible = function (selector) {
 };
 
 window.exists = function (selector) {
+  if (selector === BODY_SELECTOR || selector === DOCUMENT_SELECTOR || selector === VIEWPORT_SELECTOR) {
+    return 1;
+  }
   return document.querySelectorAll(selector).length;
 };
 

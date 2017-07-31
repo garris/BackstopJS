@@ -1,5 +1,5 @@
 const Chromy = require('chromy');
-const writeFileSync = require('fs').writeFileSync;
+// const writeFileSync = require('fs').writeFileSync;
 const fs = require('./fs');
 const path = require('path');
 const ensureDirectoryPath = require('./ensureDirectoryPath');
@@ -235,25 +235,36 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
       .evaluate(`window._selectorExpansion = '${scenario.selectorExpansion}'`)
       .evaluate(`window._backstopSelectors = '${scenario.selectors}'`)
       .evaluate(() => {
-        window._backstopSelectorsExpanded = window._selectorExpansion ? window.expandSelectors(window._backstopSelectors) : window._backstopSelectors;
-        window._backstopSelectorObjects = window._backstopSelectorsExpanded.map(selector => {
-          return {
-            selector,
+        if (window._selectorExpansion.toString() === 'true') {
+          window._backstopSelectorsExp = window.expandSelectors(window._backstopSelectors);
+        } else {
+          window._backstopSelectorsExp = window._backstopSelectors;
+        }
+        if (!Array.isArray(window._backstopSelectorsExp)) {
+          window._backstopSelectorsExp = window._backstopSelectorsExp.split(',');
+        }
+        window._backstopSelectorsExpMap = window._backstopSelectorsExp.reduce((acc, selector) => {
+          acc[selector] = {
             exists: window.exists(selector),
             isVisible: window.isVisible(selector)
           };
-        });
-        return window._backstopSelectorsExpanded;
+          return acc;
+        }, {});
+        return {
+          backstopSelectorsExp: window._backstopSelectorsExp,
+          backstopSelectorsExpMap: window._backstopSelectorsExpMap
+        };
       })
       .result(_result => {
-        scenario.selectorsExpanded = _result;
         resolve(delegateSelectors(
           chromy,
           scenario,
           viewport,
           variantOrScenarioLabelSafe,
           scenarioLabelSafe,
-          config
+          config,
+          _result.backstopSelectorsExp,
+          _result.backstopSelectorsExpMap
         ));
       })
       .end();
@@ -270,7 +281,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
  * @param  {[type]} config                     [description]
  * @return {[type]}                            [description]
  */
-function delegateSelectors (chromy, scenario, viewport, variantOrScenarioLabelSafe, scenarioLabelSafe, config) {
+function delegateSelectors (chromy, scenario, viewport, variantOrScenarioLabelSafe, scenarioLabelSafe, config, selectors, selectorMap) {
   const fileNameTemplate = config.fileNameTemplate || DEFAULT_FILENAME_TEMPLATE;
   const configId = config.id || genHash(config.backstopConfigFileName);
   const bitmapsTestPath = config.paths.bitmaps_test || DEFAULT_BITMAPS_TEST_DIR;
@@ -278,7 +289,9 @@ function delegateSelectors (chromy, scenario, viewport, variantOrScenarioLabelSa
   const outputFileFormatSuffix = '.' + (config.outputFormat && config.outputFormat.match(/jpg|jpeg/) || 'png');
 
   var compareConfig = {testPairs: []};
-  var captureJobs = scenario.selectorsExpanded.map(function (selector, i) {
+  var captureJobs = [];
+
+  selectors.forEach(function (selector, i) {
     var cleanedSelectorName = selector.replace(/[^a-z0-9_-]/gi, ''); // remove anything that's not a letter or a number
     var fileName = getFilename(fileNameTemplate, outputFileFormatSuffix, configId, scenario.sIndex, variantOrScenarioLabelSafe, i, cleanedSelectorName, viewport.vIndex, viewport.label);
     var referenceFilePath = bitmapsReferencePath + '/' + getFilename(fileNameTemplate, outputFileFormatSuffix, configId, scenario.sIndex, scenarioLabelSafe, i, cleanedSelectorName, viewport.vIndex, viewport.label);
@@ -305,9 +318,8 @@ function delegateSelectors (chromy, scenario, viewport, variantOrScenarioLabelSa
       });
     }
 
-    return function () {
-      return captureScreenshot(chromy, filePath, selector, config);
-    };
+    selectorMap[selector].filePath = filePath;
+    captureJobs.push(function () { return captureScreenshot(chromy, filePath, selector, selectorMap, config); });
   });
 
   return new Promise(function (resolve, reject) {
@@ -347,35 +359,19 @@ function delegateSelectors (chromy, scenario, viewport, variantOrScenarioLabelSa
  * @param  {[type]} config   [description]
  * @return {[type]}          [description]
  */
-function captureScreenshot (chromy, filePath, selector, config) {
+function captureScreenshot (chromy, filePath_, selector, selectorMap, config) {
   return new Promise (function (resolve, reject) {
-    let result = {
-      exists: true,
-      isVisible: true
-    };
-
     if (selector === VIEWPORT_SELECTOR || selector === BODY_SELECTOR) {
       chromy
         .screenshot()
         .result(png => {
-          return saveFile(png);
+          return saveResult(null, png, 0, [selector]);
         });
     } else if (selector === NOCLIP_SELECTOR || selector === DOCUMENT_SELECTOR) {
-      chromy.screenshotMultipleSelectors(['body'], saveFile);
+      chromy.screenshotMultipleSelectors(['body'], saveResult);
     } else {
       chromy
-        .evaluate(`window._backstopSelector = '${selector}'`)
-        .evaluate(
-          () => {
-            return {
-              exists: window.exists(window._backstopSelector),
-              isVisible: window.isVisible(window._backstopSelector)
-            };
-          })
-        .result(_result => {
-          result = _result;
-        })
-        .screenshotMultipleSelectors([selector], saveFile);
+        .screenshotMultipleSelectors([selector], saveResult);
     }
 
     chromy
@@ -388,24 +384,25 @@ function captureScreenshot (chromy, filePath, selector, config) {
       });
 
     // result helper
-    function saveFile (err, buffer, index, selector) {
-      // const imgData = arguments.length > 1 ? arguments[1] : arguments[0];
-      var imgData;
-      if (arguments.length > 1) {
-        console.log('SAVE ARGS>', err, 'buffer', index, selector)
-        imgData = arguments[1];
-      } else {
-        imgData = arguments[0];
+    function saveResult (err, buffer, index, selector) {
+      console.log('SAVE MAP>>>', JSON.stringify(selectorMap[selector[index]], null, 2));
+      const selectorProps = selectorMap[selector[index]];
+      const filePath = selectorProps.filePath;
+      if (err) {
+        console.log('>>>ERROR', err);
+        // return new Error(err);
+        // return Promise.resolve(err);
       }
-      if (result.exists) {
-        if (result.isVisible) {
-          ensureDirectoryPath(filePath);
-          return fs.writeFile(filePath, imgData);
-        } else {
-          return fs.copy(config.env.backstop + HIDDEN_SELECTOR_PATH, filePath);
-        }
-      } else {
+
+      if (!selectorProps.exists) {
+        console.log('>>>NOT FOUND');
         return fs.copy(config.env.backstop + SELECTOR_NOT_FOUND_PATH, filePath);
+      } else if (!selectorProps.isVisible) {
+        console.log('>>>NOT VISIBLE')
+        return fs.copy(config.env.backstop + HIDDEN_SELECTOR_PATH, filePath);
+      } else {
+        ensureDirectoryPath(filePath);
+        return fs.writeFile(filePath, buffer);
       }
     }
   });
