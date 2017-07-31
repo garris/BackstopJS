@@ -61,12 +61,12 @@ window.expandSelectors = function (selectors) {
 };
 
 window.isVisible = function (selector) {
-  if (!window.exists(selector)) {
-    return false;
+  if (window.exists(selector) && selector !== DOCUMENT_SELECTOR) {
+    const element = document.querySelector(selector);
+    const style = window.getComputedStyle(element);
+    return (style.display !== 'none' && style.visibility !== 'hidden' && style.opacity !== '0');
   }
-  const element = document.querySelector(selector);
-  const style = window.getComputedStyle(element);
-  return (style.display !== 'none' && style.visibility !== 'hidden' && style.opacity !== '0');
+  return false;
 };
 
 window.exists = function (selector) {

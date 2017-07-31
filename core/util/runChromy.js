@@ -406,7 +406,7 @@ function captureScreenshot (chromy, filePath_, selector, selectorMap, config, se
       const selectorProps = selectorMap[selector[index]];
       const filePath = selectorProps.filePath;
       if (err) {
-        console.log('>>> ERROR TODO: NEED TO REFACTOR NOT_FOUND AND HIDDEN FLOWS', err);
+        console.log('>>> HARMLESS ERROR >>> TODO: PLEASE REFACTOR NOT_FOUND AND HIDDEN FLOWS', err);
         // return new Error(err);
       }
 
