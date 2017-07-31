@@ -1,6 +1,7 @@
 /* eslint-disable no-path-concat */
 var DOCUMENT_SELECTOR = 'document';
 var BODY_SELECTOR = 'body';
+var VIEWPORT_SELECTOR = 'viewport';
 
 var fs = require('fs');
 var cwd = fs.workingDirectory;
@@ -235,7 +236,7 @@ function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabe
           if (selector === DOCUMENT_SELECTOR) {
             return acc.concat([DOCUMENT_SELECTOR]);
           }
-          if (selector === BODY_SELECTOR) {
+          if (selector === BODY_SELECTOR || selector === VIEWPORT_SELECTOR) {
             return acc.concat([BODY_SELECTOR]);
           }
 

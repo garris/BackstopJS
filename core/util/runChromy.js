@@ -1,5 +1,5 @@
 const Chromy = require('chromy');
-const writeFileSync = require('fs').writeFileSync;
+// const writeFileSync = require('fs').writeFileSync;
 const fs = require('./fs');
 const path = require('path');
 const ensureDirectoryPath = require('./ensureDirectoryPath');
@@ -15,6 +15,7 @@ const HIDDEN_SELECTOR_PATH = '/capture/resources/hiddenSelector_noun_63405.png';
 const BODY_SELECTOR = 'body';
 const DOCUMENT_SELECTOR = 'document';
 const NOCLIP_SELECTOR = 'body:noclip';
+const VIEWPORT_SELECTOR = 'viewport';
 
 module.exports = function (args) {
   const scenario = args.scenario;
@@ -23,7 +24,6 @@ module.exports = function (args) {
   const runId = args.id;
   const scenarioLabelSafe = makeSafe(scenario.label);
   const variantOrScenarioLabelSafe = scenario._parent ? makeSafe(scenario._parent.label) : scenarioLabelSafe;
-
   return processScenarioView(scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, config, runId);
 };
 
@@ -47,7 +47,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
 
   const engineScriptsPath = config.env.engine_scripts || config.env.casper_scripts || config.env.engine_scripts_default;
   const isReference = config.isReference;
-  const hostFlags = Array.isArray(scenario.hostFlags) && scenario.hostFlags || [];
+  const hostFlags = Array.isArray(config.hostFlags) && config.hostFlags || [];
   /**
    *  =============
    *  START CHROMY SESSION
@@ -58,7 +58,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   const flags = ['--window-size={w},{h}'.replace(/{w}/, w).replace(/{h}/, h)].concat(hostFlags);
   const port = CHROMY_STARTING_PORT_NUMBER + runId;
 
-  console.log('Starting Chromy:', `port:${port}`, flags);
+  console.log('Starting Chromy:', `port:${port}`, flags.toString());
   let chromy = new Chromy({
     chromeFlags: flags,
     port: port,
@@ -230,33 +230,43 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   }
 
   return new Promise((resolve, reject) => {
-    if (scenario.selectorExpansion) {
-      chromy
-        .evaluate(`window._backstopSelectors = '${scenario.selectors}'`)
-        .evaluate(() => window.expandSelectors(window._backstopSelectors))
-        .result(_result => {
-          scenario.selectorsExpanded = _result;
-          resolve(delegateSelectors(
-            chromy,
-            scenario,
-            viewport,
-            variantOrScenarioLabelSafe,
-            scenarioLabelSafe,
-            config
-          ));
-        })
-        .end();
-    } else {
-      scenario.selectorsExpanded = scenario.selectors;
-      resolve(delegateSelectors(
-        chromy,
-        scenario,
-        viewport,
-        variantOrScenarioLabelSafe,
-        scenarioLabelSafe,
-        config
-      ));
-    }
+    chromy
+      .evaluate(`window._selectorExpansion = '${scenario.selectorExpansion}'`)
+      .evaluate(`window._backstopSelectors = '${scenario.selectors}'`)
+      .evaluate(() => {
+        if (window._selectorExpansion.toString() === 'true') {
+          window._backstopSelectorsExp = window.expandSelectors(window._backstopSelectors);
+        } else {
+          window._backstopSelectorsExp = window._backstopSelectors;
+        }
+        if (!Array.isArray(window._backstopSelectorsExp)) {
+          window._backstopSelectorsExp = window._backstopSelectorsExp.split(',');
+        }
+        window._backstopSelectorsExpMap = window._backstopSelectorsExp.reduce((acc, selector) => {
+          acc[selector] = {
+            exists: window.exists(selector),
+            isVisible: window.isVisible(selector)
+          };
+          return acc;
+        }, {});
+        return {
+          backstopSelectorsExp: window._backstopSelectorsExp,
+          backstopSelectorsExpMap: window._backstopSelectorsExpMap
+        };
+      })
+      .result(_result => {
+        resolve(delegateSelectors(
+          chromy,
+          scenario,
+          viewport,
+          variantOrScenarioLabelSafe,
+          scenarioLabelSafe,
+          config,
+          _result.backstopSelectorsExp,
+          _result.backstopSelectorsExpMap
+        ));
+      })
+      .end();
   });
 }
 
@@ -270,7 +280,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
  * @param  {[type]} config                     [description]
  * @return {[type]}                            [description]
  */
-function delegateSelectors (chromy, scenario, viewport, variantOrScenarioLabelSafe, scenarioLabelSafe, config) {
+function delegateSelectors (chromy, scenario, viewport, variantOrScenarioLabelSafe, scenarioLabelSafe, config, selectors, selectorMap) {
   const fileNameTemplate = config.fileNameTemplate || DEFAULT_FILENAME_TEMPLATE;
   const configId = config.id || genHash(config.backstopConfigFileName);
   var bitmapsTestPath = config.paths.bitmaps_test || DEFAULT_BITMAPS_TEST_DIR;
@@ -293,8 +303,13 @@ function delegateSelectors (chromy, scenario, viewport, variantOrScenarioLabelSa
 
   const outputFileFormatSuffix = '.' + (config.outputFormat && config.outputFormat.match(/jpg|jpeg/) || 'png');
 
-  var compareConfig = {testPairs: []};
-  var captureJobs = scenario.selectorsExpanded.map(function (selector, i) {
+  let compareConfig = {testPairs: []};
+  let captureDocument = false;
+  let captureViewport = false;
+  let captureList = [];
+  let captureJobs = [];
+
+  selectors.forEach(function (selector, i) {
     var cleanedSelectorName = selector.replace(/[^a-z0-9_-]/gi, ''); // remove anything that's not a letter or a number
     var fileName = getFilename(fileNameTemplate, outputFileFormatSuffix, configId, scenario.sIndex, variantOrScenarioLabelSafe, i, cleanedSelectorName, viewport.vIndex, viewport.label);
     var referenceFilePath = bitmapsReferencePath + '/' + getFilename(fileNameTemplate, outputFileFormatSuffix, configId, scenario.sIndex, scenarioLabelSafe, i, cleanedSelectorName, viewport.vIndex, viewport.label);
@@ -321,10 +336,25 @@ function delegateSelectors (chromy, scenario, viewport, variantOrScenarioLabelSa
       });
     }
 
-    return function () {
-      return captureScreenshot(chromy, filePath, selector, config);
-    };
+    selectorMap[selector].filePath = filePath;
+    if (selector === BODY_SELECTOR || selector === DOCUMENT_SELECTOR) {
+      captureDocument = selector;
+    } else if (selector === VIEWPORT_SELECTOR) {
+      captureViewport = selector;
+    } else {
+      captureList.push(selector);
+    }
   });
+
+  if (captureDocument) {
+    captureJobs.push(function () { return captureScreenshot(chromy, null, captureDocument, selectorMap, config, []); });
+  }
+  if (captureViewport) {
+    captureJobs.push(function () { return captureScreenshot(chromy, null, captureViewport, selectorMap, config, []); });
+  }
+  if (captureList.length) {
+    captureJobs.push(function () { return captureScreenshot(chromy, null, null, selectorMap, config, captureList); });
+  }
 
   return new Promise(function (resolve, reject) {
     var job = null;
@@ -363,35 +393,19 @@ function delegateSelectors (chromy, scenario, viewport, variantOrScenarioLabelSa
  * @param  {[type]} config   [description]
  * @return {[type]}          [description]
  */
-function captureScreenshot (chromy, filePath, selector, config) {
+function captureScreenshot (chromy, filePath_, selector, selectorMap, config, selectors) {
   return new Promise (function (resolve, reject) {
-    let result = {
-      exists: true,
-      isVisible: true
-    };
-
-    if (selector === BODY_SELECTOR) {
+    if (selector === VIEWPORT_SELECTOR || selector === BODY_SELECTOR) {
       chromy
         .screenshot()
         .result(png => {
-          return saveFile(png);
+          return saveResult(null, png, 0, [selector]);
         });
     } else if (selector === NOCLIP_SELECTOR || selector === DOCUMENT_SELECTOR) {
-      chromy.screenshotMultipleSelectors(['body'], saveFile);
+      chromy.screenshotMultipleSelectors(['body'], saveResult);
     } else {
       chromy
-        .evaluate(`window._backstopSelector = '${selector}'`)
-        .evaluate(
-          () => {
-            return {
-              exists: window.exists(window._backstopSelector),
-              isVisible: window.isVisible(window._backstopSelector)
-            };
-          })
-        .result(_result => {
-          result = _result;
-        })
-        .screenshotMultipleSelectors([selector], saveFile);
+        .screenshotMultipleSelectors(selectors, saveResult);
     }
 
     chromy
@@ -404,17 +418,21 @@ function captureScreenshot (chromy, filePath, selector, config) {
       });
 
     // result helper
-    function saveFile () {
-      const imgData = arguments.length > 1 ? arguments[1] : arguments[0];
-      if (result.exists) {
-        if (result.isVisible) {
-          ensureDirectoryPath(filePath);
-          return writeFileSync(filePath, imgData);
-        } else {
-          return fs.copy(config.env.backstop + HIDDEN_SELECTOR_PATH, filePath);
-        }
-      } else {
+    function saveResult (err, buffer, index, selector) {
+      const selectorProps = selectorMap[selector[index]];
+      const filePath = selectorProps.filePath;
+      if (err) {
+        console.log('>>> HARMLESS ERROR >>> TODO: PLEASE REFACTOR NOT_FOUND AND HIDDEN FLOWS', err);
+        // return new Error(err);
+      }
+
+      if (!selectorProps.exists) {
         return fs.copy(config.env.backstop + SELECTOR_NOT_FOUND_PATH, filePath);
+      } else if (!selectorProps.isVisible) {
+        return fs.copy(config.env.backstop + HIDDEN_SELECTOR_PATH, filePath);
+      } else {
+        ensureDirectoryPath(filePath);
+        return fs.writeFile(filePath, buffer);
       }
     }
   });
