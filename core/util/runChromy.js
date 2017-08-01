@@ -381,9 +381,6 @@ function delegateSelectors (chromy, scenario, viewport, variantOrScenarioLabelSa
 
 // TODO: remove filepath_
 function captureScreenshot (chromy, filePath_, selector, selectorMap, config, selectors) {
-
-  console.log('selectorMap>>>>',JSON.stringify(selectorMap, null, 2))
-
   return new Promise (function (resolve, reject) {
     if (selector === VIEWPORT_SELECTOR || selector === BODY_SELECTOR) {
       chromy
@@ -407,7 +404,9 @@ function captureScreenshot (chromy, filePath_, selector, selectorMap, config, se
         reject(e);
       });
 
-    // result helper
+    // result helpers
+
+    // saveViewport: selectors will be `body` or `viewport` ONLY
     function saveViewport (buffer, selector) {
       const selectorProps = selectorMap[selector];
       const filePath = selectorProps.filePath;
@@ -416,6 +415,8 @@ function captureScreenshot (chromy, filePath_, selector, selectorMap, config, se
       return fs.writeFile(filePath, buffer);
     }
 
+    // saveSelector: selectorArr will contain any valid selector (not body or viewport).
+    // If body *is* found in selector arr then it was originally DOCUMENT_SELECTOR -- and it will be reset back to DOCUMENT_SELECTOR -- this is because chromy takes a Document shot when BODY is used.
     function saveSelector (err, buffer, index, selectorArr) {
       let selector = selectorArr[index];
       if (selector === BODY_SELECTOR) {
@@ -424,7 +425,7 @@ function captureScreenshot (chromy, filePath_, selector, selectorMap, config, se
       const selectorProps = selectorMap[selector];
       const filePath = selectorProps.filePath;
       if (err) {
-        console.log('>>> HARMLESS ERROR >>> TODO: please refactor NOT_FOUND and HIDDEN element saveSelector() flows.', err);
+        console.log('>>> EXPECTED ERROR >>> TODO: please refactor NOT_FOUND and HIDDEN element saveSelector() flows.', err);
         // return new Error(err);
       }
       if (!selectorProps.exists) {
