@@ -333,6 +333,7 @@ function delegateSelectors (chromy, scenario, viewport, variantOrScenarioLabelSa
   if (captureDocument) {
     captureJobs.push(function () { return captureScreenshot(chromy, null, captureDocument, selectorMap, config, []); });
   }
+  // TODO: push captureViewport into captureList (instead of calling captureScreenshot()) to improve perf.
   if (captureViewport) {
     captureJobs.push(function () { return captureScreenshot(chromy, null, captureViewport, selectorMap, config, []); });
   }
@@ -377,19 +378,24 @@ function delegateSelectors (chromy, scenario, viewport, variantOrScenarioLabelSa
  * @param  {[type]} config   [description]
  * @return {[type]}          [description]
  */
+
+// TODO: remove filepath_
 function captureScreenshot (chromy, filePath_, selector, selectorMap, config, selectors) {
+
+  console.log('selectorMap>>>>',JSON.stringify(selectorMap, null, 2))
+
   return new Promise (function (resolve, reject) {
     if (selector === VIEWPORT_SELECTOR || selector === BODY_SELECTOR) {
       chromy
         .screenshot()
-        .result(png => {
-          return saveResult(null, png, 0, [selector]);
+        .result(buffer => {
+          return saveViewport(buffer, selector);
         });
     } else if (selector === NOCLIP_SELECTOR || selector === DOCUMENT_SELECTOR) {
-      chromy.screenshotMultipleSelectors(['body'], saveResult);
+      chromy.screenshotMultipleSelectors(['body'], saveSelector);
     } else {
       chromy
-        .screenshotMultipleSelectors(selectors, saveResult);
+        .screenshotMultipleSelectors(selectors, saveSelector);
     }
 
     chromy
@@ -402,14 +408,25 @@ function captureScreenshot (chromy, filePath_, selector, selectorMap, config, se
       });
 
     // result helper
-    function saveResult (err, buffer, index, selector) {
-      const selectorProps = selectorMap[selector[index]];
+    function saveViewport (buffer, selector) {
+      const selectorProps = selectorMap[selector];
+      const filePath = selectorProps.filePath;
+
+      ensureDirectoryPath(filePath);
+      return fs.writeFile(filePath, buffer);
+    }
+
+    function saveSelector (err, buffer, index, selectorArr) {
+      let selector = selectorArr[index];
+      if (selector === BODY_SELECTOR) {
+        selector = DOCUMENT_SELECTOR;
+      }
+      const selectorProps = selectorMap[selector];
       const filePath = selectorProps.filePath;
       if (err) {
-        console.log('>>> HARMLESS ERROR >>> TODO: PLEASE REFACTOR NOT_FOUND AND HIDDEN FLOWS', err);
+        console.log('>>> HARMLESS ERROR >>> TODO: please refactor NOT_FOUND and HIDDEN element saveSelector() flows.', err);
         // return new Error(err);
       }
-
       if (!selectorProps.exists) {
         return fs.copy(config.env.backstop + SELECTOR_NOT_FOUND_PATH, filePath);
       } else if (!selectorProps.isVisible) {
