@@ -61,7 +61,9 @@ window.expandSelectors = function (selectors) {
 };
 
 window.isVisible = function (selector) {
-  if (window.exists(selector) && selector !== DOCUMENT_SELECTOR) {
+  if (selector === BODY_SELECTOR || selector === DOCUMENT_SELECTOR || selector === VIEWPORT_SELECTOR) {
+    return true;
+  } else if (window.exists(selector)) {
     const element = document.querySelector(selector);
     const style = window.getComputedStyle(element);
     return (style.display !== 'none' && style.visibility !== 'hidden' && style.opacity !== '0');
