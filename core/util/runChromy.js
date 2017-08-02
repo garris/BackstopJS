@@ -382,14 +382,17 @@ function delegateSelectors (chromy, scenario, viewport, variantOrScenarioLabelSa
 // TODO: remove filepath_
 function captureScreenshot (chromy, filePath_, selector, selectorMap, config, selectors) {
   return new Promise (function (resolve, reject) {
+    // VIEWPORT screenshot
     if (selector === VIEWPORT_SELECTOR || selector === BODY_SELECTOR) {
       chromy
         .screenshot()
         .result(buffer => {
           return saveViewport(buffer, selector);
         });
+    // DOCUMENT screenshot
     } else if (selector === NOCLIP_SELECTOR || selector === DOCUMENT_SELECTOR) {
       chromy.screenshotMultipleSelectors(['body'], saveSelector);
+    // OTHER-SELECTOR screenshot
     } else {
       chromy
         .screenshotMultipleSelectors(selectors, saveSelector);
@@ -408,8 +411,7 @@ function captureScreenshot (chromy, filePath_, selector, selectorMap, config, se
 
     // saveViewport: selectors will be `body` or `viewport` ONLY
     function saveViewport (buffer, selector) {
-      const selectorProps = selectorMap[selector];
-      const filePath = selectorProps.filePath;
+      const filePath = selectorMap[selector].filePath;
 
       ensureDirectoryPath(filePath);
       return fs.writeFile(filePath, buffer);
@@ -424,15 +426,15 @@ function captureScreenshot (chromy, filePath_, selector, selectorMap, config, se
       }
       const selectorProps = selectorMap[selector];
       const filePath = selectorProps.filePath;
-      if (err) {
-        console.log('>>> EXPECTED ERROR >>> TODO: please refactor NOT_FOUND and HIDDEN element saveSelector() flows.', err);
-        // return new Error(err);
-      }
       if (!selectorProps.exists) {
         return fs.copy(config.env.backstop + SELECTOR_NOT_FOUND_PATH, filePath);
       } else if (!selectorProps.isVisible) {
         return fs.copy(config.env.backstop + HIDDEN_SELECTOR_PATH, filePath);
       } else {
+        if (err) {
+          console.log('ChromyJS returned an unexpected error while attempting to capture a selector.', err);
+          return new Error(err);
+        }
         ensureDirectoryPath(filePath);
         return fs.writeFile(filePath, buffer);
       }
