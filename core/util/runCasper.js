@@ -30,7 +30,10 @@ module.exports = function (config, tests) {
 
   console.log('\nRunning CasperJS with: ', casperArgs);
 
-  process.env.PHANTOMJS_EXECUTABLE = findExecutable('phantomjs-prebuilt', 'phantomjs');
+  var phantomjsExecutable = findExecutable('phantomjs-prebuilt', 'phantomjs');
+  if (phantomjsExecutable && typeof process.env.PHANTOMJS_EXECUTABLE === "undefined") {
+    process.env.PHANTOMJS_EXECUTABLE = phantomjsExecutable;
+  }
 
   var casperProcess = findExecutable('casperjs', 'casperjs');
   var casperChild = spawn(casperProcess, casperArgs, {cwd: config.projectPath});
