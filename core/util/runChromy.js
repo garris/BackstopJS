@@ -9,13 +9,113 @@ const CHROMY_STARTING_PORT_NUMBER = 9222;
 const DEFAULT_FILENAME_TEMPLATE = '{configId}_{scenarioLabel}_{selectorIndex}_{selectorLabel}_{viewportIndex}_{viewportLabel}';
 const DEFAULT_BITMAPS_TEST_DIR = 'bitmaps_test';
 const DEFAULT_BITMAPS_REFERENCE_DIR = 'bitmaps_reference';
-const BACKSTOP_TOOLS_PATH = '/capture/backstopTools.js';
+// const BACKSTOP_TOOLS_PATH = '/capture/backstopTools.js';
 const SELECTOR_NOT_FOUND_PATH = '/capture/resources/selectorNotFound_noun_164558_cc.png';
 const HIDDEN_SELECTOR_PATH = '/capture/resources/hiddenSelector_noun_63405.png';
 const BODY_SELECTOR = 'body';
 const DOCUMENT_SELECTOR = 'document';
 const NOCLIP_SELECTOR = 'body:noclip';
 const VIEWPORT_SELECTOR = 'viewport';
+
+// ============================== BACKSTOP TOOLS SHIM VVVVV ===========================
+
+function hasLogged (str) {
+  return new RegExp(str).test(window._consoleLogger);
+}
+
+function startConsoleLogger () {
+  if (typeof window._consoleLogger !== 'string') {
+    window._consoleLogger = '';
+  }
+  var log = window.console.log.bind(console);
+  window.console.log = function () {
+    window._consoleLogger += Array.from(arguments).join('\n');
+    log.apply(this, arguments);
+  };
+}
+// startConsoleLogger();
+
+
+/**
+ * Take an array of selector names and return and array of *all* matching selectors.
+ * For each selector name, If more than 1 selector is matched, proceeding matches are
+ * tagged with an additional `__n` class.
+ *
+ * @param  {[string]} collapsed list of selectors
+ * @return {[string]} [array of expanded selectors]
+ */
+function expandSelectors (selectors) {
+  if (!Array.isArray(selectors)) {
+    selectors = selectors.split(',');
+  }
+  return selectors.reduce(function (acc, selector) {
+    if (selector === 'body' || selector === 'viewport') {
+      return acc.concat([selector]);
+    }
+    if (selector === 'document') {
+      return acc.concat(['document']);
+    }
+    var qResult = document.querySelectorAll(selector);
+
+    // pass-through any selectors that don't match any DOM elements
+    if (!qResult.length) {
+      return acc.concat(selector);
+    }
+
+    var expandedSelector = [].slice.call(qResult)
+      .map(function (element, expandedIndex) {
+        if (element.classList.contains('__86d')) {
+          return '';
+        }
+        if (!expandedIndex) {
+          // only first element is used for screenshots -- even if multiple instances exist.
+          // therefore index 0 does not need extended qualification.
+          return selector;
+        }
+        // create index partial
+        var indexPartial = '__n' + expandedIndex;
+        // update all matching selectors with additional indexPartial class
+        element.classList.add(indexPartial);
+        // return array of fully-qualified classnames
+        return selector + '.' + indexPartial;
+      });
+    // concat arrays of fully-qualified classnames
+    return acc.concat(expandedSelector);
+  }, []).filter(function (selector) {
+    return selector !== '';
+  });
+}
+
+/**
+ * is the selector element visible?
+ * @param  {[type]}  selector [a css selector str]
+ * @return {Boolean}          [is it visible? true or false]
+ */
+function isVisible (selector) {
+  if (selector === 'body' || selector === 'document' || selector === 'viewport') {
+    return true;
+  } else if (exists(selector)) {
+    const element = document.querySelector(selector);
+    const style = window.getComputedStyle(element);
+    return (style.display !== 'none' && style.visibility !== 'hidden' && style.opacity !== '0');
+  }
+  return false;
+}
+
+/**
+ * does the selector element exist?
+ * @param  {[type]} selector [a css selector str]
+ * @return {[type]}          [returns count of found matches -- 0 for no matches]
+ */
+function exists (selector) {
+  if (selector === 'body' || selector === 'document' || selector === 'viewport') {
+    return 1;
+  }
+  return document.querySelectorAll(selector).length;
+}
+
+// ============================== BACKSTOP TOOLS SHIM ^^^^ ===========================
+
 
 module.exports = function (args) {
   const scenario = args.scenario;
@@ -145,8 +245,23 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   }
   chromy.goto(url);
 
+
+// =================BACKSTOP TOOLS SHIM 2 vvvv ==================
   // --- load in backstopTools into client app ---
-  chromy.inject('js', config.env.backstop + BACKSTOP_TOOLS_PATH);
+  // chromy.inject('js', config.env.backstop + BACKSTOP_TOOLS_PATH);
+  chromy.defineFunction(exists);
+  chromy.defineFunction(isVisible);
+  chromy.defineFunction(expandSelectors);
+  chromy.defineFunction(startConsoleLogger);
+  chromy.defineFunction(hasLogged);
+  chromy.evaluate(_ => startConsoleLogger());
+  // console.log('Loading >>>' + config.env.backstop + BACKSTOP_TOOLS_PATH);
+  // chromy.inject('js', config.env.backstop + BACKSTOP_TOOLS_PATH);
+
+  // chromy.evaluate(() => console.log(exists))
+  // chromy.evaluate(() => console.log("window.exists ^^^^"))
+
+// =================BACKSTOP TOOLS SHIM 2 ^^^^^^^^^ ==================
 
   //  --- WAIT FOR READY EVENT ---
   var readyEvent = scenario.readyEvent || config.readyEvent;
@@ -154,7 +269,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
     chromy
       .evaluate(`window._readyEvent = '${readyEvent}'`)
       .wait(_ => {
-        return window._hasLogged(window._readyEvent);
+        return window.hasLogged(window._readyEvent);
       })
       .evaluate(_ => console.info('readyEvent ok'));
   }
