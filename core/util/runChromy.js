@@ -17,7 +17,7 @@ const DOCUMENT_SELECTOR = 'document';
 const NOCLIP_SELECTOR = 'body:noclip';
 const VIEWPORT_SELECTOR = 'viewport';
 
-// ============================== BACKSTOP TOOLS SHIM VVVVV ===========================
+// ============================== TEST VVVVV ===========================
 
 function hasLogged (str) {
   return new RegExp(str).test(window._consoleLogger);
@@ -114,7 +114,7 @@ function exists (selector) {
   return document.querySelectorAll(selector).length;
 }
 
-// ============================== BACKSTOP TOOLS SHIM ^^^^ ===========================
+// ============================== TEST ^^^^ ===========================
 
 
 module.exports = function (args) {
@@ -246,7 +246,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   chromy.goto(url);
 
 
-// =================BACKSTOP TOOLS SHIM 2 vvvv ==================
+// =================UPDATE vvvv ==================
   // --- load in backstopTools into client app ---
   // chromy.inject('js', config.env.backstop + BACKSTOP_TOOLS_PATH);
   chromy.defineFunction(exists);
@@ -261,7 +261,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   // chromy.evaluate(() => console.log(exists))
   // chromy.evaluate(() => console.log("window.exists ^^^^"))
 
-// =================BACKSTOP TOOLS SHIM 2 ^^^^^^^^^ ==================
+// =================UPDATE ^^^^^^^^^ ==================
 
   //  --- WAIT FOR READY EVENT ---
   var readyEvent = scenario.readyEvent || config.readyEvent;
@@ -283,8 +283,10 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   //  --- OPTION DEBUG TO CONSOLE ---
   if (config.debug) {
     chromy
+      .evaluate(_ => document.head.outerHTML)
+      .result(headStr => console.log(port + 'HEAD > ', headStr))
       .evaluate(_ => document.body.outerHTML)
-      .result(htmlStr => console.log(port + 'SRC >', htmlStr));
+      .result(htmlStr => console.log(port + 'BODY > ', htmlStr));
   }
 
   //  --- ON READY SCRIPT ---
