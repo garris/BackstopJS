@@ -289,26 +289,6 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
       .result(htmlStr => console.log(port + 'BODY > ', htmlStr));
   }
 
-  //  --- ON READY SCRIPT ---
-  /* ============
-    onReadyScript files should export a module like so:
-
-    module.exports = function(renderer, scenario, vp, isReference) {
-      // run custom renderer (casper or chromy) code
-    };
-  ============ */
-  var onReadyScript = scenario.onReadyScript || config.onReadyScript;
-  if (onReadyScript) {
-    var readyScriptPath = path.resolve(engineScriptsPath, onReadyScript);
-    if (fs.existsSync(readyScriptPath)) {
-      require(readyScriptPath)(chromy, scenario, viewport, isReference) || chromy;
-    } else {
-      console.warn(port, 'WARNING: script not found: ' + readyScriptPath);
-    }
-  }
-
-  // this.echo('Capturing screenshots for ' + makeSafe(vp.name) + ' (' + (vp.width || vp.viewport.width) + 'x' + (vp.height || vp.viewport.height) + ')', 'info');
-
   // --- HIDE SELECTORS ---
   if (scenario.hasOwnProperty('hideSelectors')) {
     scenario.hideSelectors.forEach(function (selector) {
@@ -339,7 +319,27 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
       );
     });
   }
+
+  //  --- ON READY SCRIPT ---
+  /* ============
+    onReadyScript files should export a module like so:
+
+    module.exports = function(renderer, scenario, vp, isReference) {
+      // run custom renderer (casper or chromy) code
+    };
+  ============ */
+  var onReadyScript = scenario.onReadyScript || config.onReadyScript;
+  if (onReadyScript) {
+    var readyScriptPath = path.resolve(engineScriptsPath, onReadyScript);
+    if (fs.existsSync(readyScriptPath)) {
+      require(readyScriptPath)(chromy, scenario, viewport, isReference) || chromy;
+    } else {
+      console.warn(port, 'WARNING: script not found: ' + readyScriptPath);
+    }
+  }
+
   // CREATE SCREEN SHOTS AND TEST COMPARE CONFIGURATION (CONFIG FILE WILL BE SAVED WHEN THIS PROCESS RETURNS)
+  // this.echo('Capturing screenshots for ' + makeSafe(vp.name) + ' (' + (vp.width || vp.viewport.width) + 'x' + (vp.height || vp.viewport.height) + ')', 'info');
 
   // --- HANDLE NO-SELCTORS ---
   if (!scenario.hasOwnProperty('selectors') || !scenario.selectors.length) {
