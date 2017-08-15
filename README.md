@@ -13,7 +13,7 @@ BackstopJS automates visual regression testing of your responsive web UI by comp
 - Detailed in-browser reports
 - CLI reports
 - JUnit reports
-- Nice CI Integration options 
+- Nice CI Integration options
 - Test all the latest evergreen features
 - Run globally or locally as a standalone app or `require('backstopjs')` right into your node app and do whatever you want
 - Plays nice with source control -- track visual changes across commits and team members.
@@ -122,26 +122,24 @@ The location of the `backstop.json` file as well as all resource directories can
   "scenarios": [
     {
       "label": "homepage",
+      "onBeforeScript": "setCookies.js",
       "url": "https://garris.github.io/BackstopJS/",
-      "selectors": [
-        ".jumbotron",
-        ".row.firstPanel",
-        ".firstPanel .col-sm-4:nth-of-type(2)",
-        ".firstPanel .col-sm-4:nth-of-type(3)",
-        ".firstPanel .col-sm-4:nth-of-type(4)",
-        ".secondPanel",
-        ".finalWords",
-        "footer"
-      ],
-      "selectorExpansion": true,
+      "readyEvent": null,
+      "readySelector": "",
+      "delay": 0,
       "hideSelectors": [],
       "removeSelectors": [],
-      "readyEvent": null,
-      "delay": 500,
+      "onReadyScript": "clickAndHoverHelper.js",
+      "selectors": [
+        ".jumbotron",
+        ".firstPanel",
+        ".firstPanel .col-sm-4"
+        ".secondPanel",
+        ".finalWords"
+      ],
+      "selectorExpansion": true,
       "misMatchThreshold" : 0.1,
-      "requireSameDimensions" : true,
-      "onBeforeScript": "onBefore.js",
-      "onReadyScript": "onReady.js"
+      "requireSameDimensions" : true
     }
   ],
   "paths": {
@@ -170,8 +168,6 @@ As a new user setting up tests for your project, you will be primarily concerned
 
 - **`scenarios[n].label`** – Required. Used for screenshot naming.
 - **`scenarios[n].url`** – Required. Tells BackstopJS what endpoint/document you want to test.  This can be an absolute URL or local to your current working directory.
-- **`scenarios[n].selectors`** – An array of CSS selector strings enabling you specify what part of your DOM you want to test.  The default value is `document`, which will attempt to capture your entire layout.
-
 
 ### Generating test bitmaps
 
@@ -216,6 +212,24 @@ See [scenario filtering](https://github.com/garris/BackstopJS#incremental-scenar
 
 ## Using BackstopJS
 
+### Advanced Scenarios
+Scenrio properties are described throughout this document and processed sequentially in the following order...
+```
+      label
+      onBeforeScript
+      url
+      readyEvent
+      readySelector
+      delay
+      hideSelectors
+      removeSelectors
+      onReadyScript
+      selectors
+      selectorExpansion
+      misMatchThreshold
+      requireSameDimensions
+```
+
 ### Targeting elements
 
 BackstopJS makes it super easy to capture screenshots of your entire layout or just parts of your layout.  This is defined in the your scenario.selectors array. Each element of your array accepts standard CSS notation. By default BackstopJS takes a screenshot of the first occurance of any selector found in your DOM.  e.g. If you have three `li` tags in your layout only the first will used.
@@ -226,10 +240,10 @@ If you want BackstopJS to find and take screenshots of _all_ matching selector i
 ```
 scenarios: [
   {
-    "selectorExpansion": true,
     "selectors": [
       ".aListOfStuff li"
-    ]
+    ],
+    "selectorExpansion": true
   }
 ]
 // captures all li children of the .aListOfStuff node
@@ -239,12 +253,12 @@ scenarios: [
 ```
 scenarios: [
   {
-    "selectorExpansion": false,
     "selectors": [
       ".aListOfStuff li:nth-of-type(1)"
       ".aListOfStuff li:nth-of-type(2)"
       ".aListOfStuff li:nth-of-type(3)"
-    ]
+    ],
+    "selectorExpansion": false
   }
 ]
 // Attempts to capture these three elements explicitly.
