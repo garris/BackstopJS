@@ -6,48 +6,21 @@
 
 BackstopJS automates visual regression testing of your responsive web UI by comparing DOM screenshots over time.
 
-**Features:**
+**Version 3 Features**
 
-- Simulate user interactions with CasperJS scripts.
-- Fast inline-CLI reports.
-- Detailed in-browser reports.
-- CI Integration with JUnit reports.
-- Test html5 elements like webfonts and flexbox.
-- Use as a standalone global app, a standalone local npm script or import right into your node app.
-- Also plays nice with source control -- share your gold master with your team.
-
-## Upgrade to 2.0 for enhanced speed and new features!
+- Render with Chrome Headless, Phantom and Slimer
+- Simulate user interactions with CasperJS and ChromyJS scripts
+- Detailed in-browser reports
+- CLI reports
+- JUnit reports
+- Nice CI Integration options 
+- Test all the latest evergreen features
+- Run globally or locally as a standalone app or `require('backstopjs')` right into your node app and do whatever you want
+- Plays nice with source control -- track visual changes across commits and team members.
 
 ```sh
-# install latest
 $ npm install -g backstopjs
 ```
-
-### If you've been using 1.x you will love the new performance and features in 2.x -- here's whats new...
-
-
-<ul>
-  <li>Install globally and invoke from anywhere with <code>`backstop &lt;command&gt;`</code></li>
-  <li>Install locally and import BackstopJS directly into your node app.</li>
-  <li>Selector expansion</li>
-  <li>All-new, all-optimized CLI core</li>
-  <li>Huge performance gains from 1.x versions</li>
-  <li>Incremental reference generation</li>
-  <li>Scenario filtering</li>
-  <li>Custom screenshot file naming</li>
-  <li>More bug fixes than you can shake a stick at</li>
-  <li>Removed Gulp dependency entirely</li>
-</ul>
-
-
-
-**For 1.x users migrating to 2.x**
-- BackstopJS CLI can be installed globally (and it's recommended)
-- All config paths are now relative to your current working directory `$(pwd)`.
-- There are new config properties
-    - `fileNameTemplate` Important if you are migrating [1.x configs](#migrating-to-20)
-    - `id` Use this if you are [sharing config files](#working-with-your-config-file)
-
 
 ----
 
@@ -867,7 +840,7 @@ Features by:
 - [Robert O'Rourke](https://github.com/sanchothefat) for help on the 0.8.0 release
 - [Klaus Bayrhammer](https://github.com/klausbayrhammer) for help on the 0.7.0 release
 - [Benedikt Rötsch](https://github.com/axe312ger) for help on the 0.6.0 release
-- [Yulia Tsareva](https://github.com/YuliaTsareva) for help on the 0.5.0 release
+- [Yulia Tsareva](https://github.com/YuliaTsareva) for help on the 0.5.0 release -- windows support
 - [Lewis Nyman](https://github.com/lewisnyman) and [Stoutie](https://github.com/jehoshua02) for help with 0.4.0 release -- you guys are responsible for really getting the ball rolling!
 
 BackstopJS uses icons from [the Noun Project](http://thenounproject.com/)
