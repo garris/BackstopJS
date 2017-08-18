@@ -1,13 +1,5 @@
-env:
-  - global:
-    - CHROME_PATH: '/home/travis/build/garris/BackstopJS/chrome-linux/chrome'
-before_install:
-  - export CHROME_BIN=/usr/bin/chromium
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
-  - sleep 3 # give xvfb some time to start
 addons: # get google-chrome-stable
-  chrome: stable
+  chrome: beta
 language: node_js
 node_js:
   - "8.1"
