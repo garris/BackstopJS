@@ -1,15 +1,14 @@
-addons: # get google-chrome-stable
+addons: # get google-chrome [stable|beta]
   chrome: beta
 language: node_js
 node_js:
   - "8.1"
 install:
-  - npm install
+  - npm install -g
 script:
-  - npm run unit-test && npm run integration-test
+  - npm run unit-test
 
-# the following is required for sharp install
-# can remove after sharp dependency is removed
+# vvv can remove the following lines after sharp package dependency is removed vvv
 env:
   - CXX=g++-4.8
 addons:
