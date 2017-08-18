@@ -9,6 +9,7 @@ language: node_js
 node_js:
   - "8.1"
 install:
+  - npm install sharp
   - npm install
 script:
   - npm run unit-test && npm run integration-test
