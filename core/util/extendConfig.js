@@ -27,17 +27,34 @@ function extendConfig (config, userConfig) {
 function bitmapPaths (config, userConfig) {
   config.bitmaps_reference = path.join(config.projectPath, 'backstop_data', 'bitmaps_reference');
   config.bitmaps_test = path.join(config.projectPath, 'backstop_data', 'bitmaps_test');
-  if (userConfig.paths) {
-    config.bitmaps_reference = userConfig.paths.bitmaps_reference || config.bitmaps_reference;
-    config.bitmaps_test = userConfig.paths.bitmaps_test || config.bitmaps_test;
+  
+  if (userConfig.paths.bitmaps_reference) {
+    config.bitmaps_reference = path.resolve(config.projectPath, userConfig.paths.bitmaps_reference);
+
+    if (config.debug) {
+      console.log("config.bitmaps_reference: " + config.bitmaps_reference);
+    }
+  }
+  if (userConfig.paths.bitmaps_test) {
+    config.bitmaps_test = path.resolve(config.projectPath, userConfig.paths.bitmaps_test);
+
+    if (config.debug) {
+      console.log("config.bitmaps_test: " + config.bitmaps_test);
+    }
   }
 }
 
 function ci (config, userConfig) {
   config.ci_report = path.join(config.projectPath, 'backstop_data', 'ci_report');
-  if (userConfig.paths) {
-    config.ci_report = userConfig.paths.ci_report || config.ci_report;
+
+  if (userConfig.paths.ci_report) {
+    config.ci_report = path.resolve(config.projectPath, userConfig.paths.ci_report);
+
+    if (config.debug) {
+      console.log("config.ci_report: " + config.ci_report);
+    }
   }
+
   config.ciReport = {
     format: 'junit',
     testReportFileName: 'xunit',
@@ -57,8 +74,12 @@ function htmlReport (config, userConfig) {
   config.html_report = path.join(config.projectPath, 'backstop_data', 'html_report');
   config.openReport = userConfig.openReport === undefined ? true : userConfig.openReport;
 
-  if (userConfig.paths) {
-    config.html_report = userConfig.paths.html_report || config.html_report;
+  if (userConfig.paths.html_report) {
+    config.html_report = path.resolve(config.projectPath, userConfig.paths.html_report);
+
+    if (config.debug) {
+      console.log("config.html_report: " + config.html_report);
+    }
   }
 
   config.compareConfigFileName = path.join(config.html_report, 'config.js');
@@ -97,8 +118,12 @@ function engine (config, userConfig) {
 
   config.casperFlags = userConfig.casperFlags || null;
 
-  if (userConfig.paths) {
-    config.engine_scripts = userConfig.paths.engine_scripts || config.engine_scripts;
+  if (userConfig.paths.engine_scripts) {
+    config.engine_scripts = path.resolve(config.projectPath, userConfig.paths.engine_scripts);  
+
+    if (config.debug) {
+      console.log("config.engine_scripts: " + config.engine_scripts);
+    }
   }
 }
 
