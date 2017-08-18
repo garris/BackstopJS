@@ -3,15 +3,17 @@ before_install:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
   - sleep 3 # give xvfb some time to start
+  - sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+  - sudo apt-get update
+  - sudo apt-get install gcc-5.1 g++-5.1
+  - sudo rm /bin/usr/g++
+  - sudo ln -s /usr/bin/g++-5 /usr/bin/g++
 addons: # get google-chrome-stable
   chrome: stable
 language: node_js
 node_js:
   - "8.1"
 install:
-  - npm install vips-dev
-  - npm install fftw-dev
-  - npm install sharp
   - npm install
 script:
   - npm run unit-test && npm run integration-test
