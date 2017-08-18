@@ -1,3 +1,6 @@
+env:
+  - global:
+    - CHROME_PATH: '/home/travis/build/garris/BackstopJS/chrome-linux/chrome'
 before_install:
   - export CHROME_BIN=/usr/bin/chromium
   - export DISPLAY=:99.0
