@@ -1,14 +1,8 @@
-sudo: enabled,
 before_install:
   - export CHROME_BIN=chromium-browser
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
   - sleep 3 # give xvfb some time to start
-  - sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-  - sudo apt-get update
-  - sudo apt-get install gcc-5.1 g++-5.1
-  - sudo rm /bin/usr/g++
-  - sudo ln -s /usr/bin/g++-5 /usr/bin/g++
 addons: # get google-chrome-stable
   chrome: stable
 language: node_js
@@ -18,3 +12,14 @@ install:
   - npm install
 script:
   - npm run unit-test && npm run integration-test
+
+# the following is required for sharp install
+# can remove after sharp dependency is removed
+env:
+  - CXX=g++-4.8
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-4.8
