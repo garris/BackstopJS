@@ -21,7 +21,7 @@ module.exports = {
         console.log('The following files will be promoted to reference...');
         return map(files, (file) => {
           if (FAILED_DIFF_RE.test(file)) {
-            file = file.replace(FAILED_DIFF_RE, "");
+            file = file.replace(FAILED_DIFF_RE, '');
             console.log('> ', file);
             return fs.copy(path.join(src, file), path.join(config.bitmaps_reference, file));
           }

@@ -10,11 +10,11 @@ var storeFailedDiffStub = require('./store-failed-diff-stub.js');
 
 var ASYNC_COMPARE_LIMIT = 20;
 
-function comparePair(pair, report, config) {
+function comparePair (pair, report, config) {
   var Test = report.addTest(pair);
 
-  var referencePath = path.join(config.projectPath, pair.reference);
-  var testPath = path.join(config.projectPath, pair.test);
+  var referencePath = path.resolve(config.projectPath, pair.reference);
+  var testPath = path.resolve(config.projectPath, pair.test);
 
   if (!fs.existsSync(referencePath)) {
     // save a failed image stub

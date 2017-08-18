@@ -1,18 +1,18 @@
 {
-  "id": "prod_test",
+  "id": "test",
   "viewports": [
     {
-      "name": "phone",
+      "label": "phone",
       "width": 320,
       "height": 480
     },
     {
-      "name": "tablet_v",
+      "label": "tablet_v",
       "width": 568,
       "height": 1024
     },
     {
-      "name": "tablet_h",
+      "label": "tablet_h",
       "width": 1024,
       "height": 768
     }
@@ -24,18 +24,9 @@
       "hideSelectors": [],
       "removeSelectors": [],
       "selectorExpansion": true,
-      "selectors": [
-        ".jumbotron",
-        ".row.firstPanel",
-        ".firstPanel .col-sm-4:nth-of-type(2)",
-        ".firstPanel .col-sm-4:nth-of-type(3)",
-        ".firstPanel .col-sm-4:nth-of-type(4)",
-        ".secondPanel",
-        ".finalWords",
-        "footer"
-      ],
+      "selectors": [],
       "readyEvent": null,
-      "delay": 500,
+      "delay": 0,
       "misMatchThreshold" : 0.1,
       "requireSameDimensions" : true,
       "onBeforeScript": "onBefore.js",
@@ -45,12 +36,13 @@
   "paths": {
     "bitmaps_reference": "backstop_data/bitmaps_reference",
     "bitmaps_test": "backstop_data/bitmaps_test",
-    "casper_scripts": "backstop_data/casper_scripts",
+    "engine_scripts": "backstop_data/engine_scripts",
     "html_report": "backstop_data/html_report",
     "ci_report": "backstop_data/ci_report"
   },
-  "casperFlags": [],
-  "engine": "phantomjs",
+  "engineFlags": [],
+  "engine": "chrome",
   "report": ["browser"],
-  "debug": false
+  "debug": false,
+  "debugWindow": false
 }
