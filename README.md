@@ -178,7 +178,7 @@ scenarios: [
     "selectorExpansion": false
   }
 ]
-// Attempts to capture these three elements explicitly.
+// Just captures the first <li> tag inside .aListOfStuff
 ```
 
 
