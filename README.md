@@ -189,16 +189,16 @@ The problem testing these scenarios is knowing _when_ to take the screenshot.  B
 
 #### Trigger screen capture via selector
 
-The `readySelctor` property tells BackstopJS to wait until a selector exists before takeing a screenshot. For example, the following line will delay screen capture until a selctor with the id '#catOfTheDayResult' is present somewhere in the DOM.
+The `readySelector` property tells BackstopJS to wait until a selector exists before takeing a screenshot. For example, the following line will delay screen capture until a selctor with the id '#catOfTheDayResult' is present somewhere in the DOM.
 
 ```json
-"readySelctor": "#catOfTheDayResult"
+"readySelector": "#catOfTheDayResult"
 ```
 
 Another approach might look like this...
 
 ```json
-"readySelctor": "body.ember-has-rendered"
+"readySelector": "body.ember-has-rendered"
 ```
 
 #### Trigger screen capture via console.log()
