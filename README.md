@@ -13,7 +13,7 @@ BackstopJS automates visual regression testing of your responsive web UI by comp
 - Browser reports with visual diffs
 - CLI reports
 - JUnit reports
-- plays nice with CI and source control
+- Plays nice with CI and source control
 - Run globally or locally as a standalone package app or `require('backstopjs')` right into your node app
 - Incredibly easy to use: just 3 commands go a long long way!
 
