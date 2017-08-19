@@ -66,7 +66,7 @@ Installing locally allows you to do this...
 const backstop = require('backstopjs');
 ```
 
-See [Integration Options](#integration options) to learn about cool BackstopJS integration options!
+See [Integration Options](#integration-options) to learn about cool BackstopJS integration options!
 
 
 ### Initializing your project
