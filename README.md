@@ -133,7 +133,7 @@ Change can be good!  When running this command, all images (with changes) from y
 ## Using BackstopJS
 
 ### Advanced Scenarios
-Scenario properties are described throughout this document and processed sequentially in the following order...
+Scenario properties are described throughout this document and **processed sequentially in the following order...**
 ```js
 label                    // Tag saved with your reference images
 onBeforeScript           // Used to set up browser state e.g. cookies.
