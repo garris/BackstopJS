@@ -165,7 +165,7 @@ scenarios: [
     "selectorExpansion": true
   }
 ]
-// captures all li children of the .aListOfStuff node
+// captures all <li> tags inside .aListOfStuff
 ```
 (Default behavior) If you want very explicit control of what you capture then you can disable `selectorExpansion` and explicitly select what you want...
 
