@@ -332,6 +332,7 @@ at the root of your config or in your scenario...
 Inside `filename.js`, structure it like this:
 
 ```js
+// onBefore example
 module.exports = function(casper, scenario, vp) {
   // scenario is the current scenario object being run from your backstop config
   // vp is the current viewport object being run from your backstop config
@@ -339,12 +340,12 @@ module.exports = function(casper, scenario, vp) {
   // Example: setting cookies
   casper.echo("Setting cookies");
   casper.then(function(){
-    casper.page.addCookie({some: 'cookie'});
+    casper.page.addCookie({name: 'cookieName', value: 'cookieValue'});
   });
-  // `casper.thenOpen()` demonstrates a redirect to the original page with your new cookie value.
-  // this step is not required if used with _onBeforeScript_
-  casper.thenOpen(scenario.url);
-
+}
+  
+// onReady example
+module.exports = function(casper, scenario, vp) {
   // Example: Adding script delays to allow for things like CSS transitions to complete.
   casper.echo( 'Clicking button' );
   casper.click( '.toggle' );
