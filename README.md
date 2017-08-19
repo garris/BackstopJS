@@ -6,7 +6,7 @@
 
 BackstopJS automates visual regression testing of your responsive web UI by comparing DOM screenshots over time.
 
-##Version 3 Features
+## Version 3 Features
 
 - Render with **Chrome Headless**, **Phantom** and **Slimer**
 - Simulate user interactions with **ChromyJS** and **CasperJS** scripts
@@ -18,7 +18,7 @@ BackstopJS automates visual regression testing of your responsive web UI by comp
 - incredibly easy to use: just 3 commands go a long long way!
 
 
-##Install BackstopJS now
+## Install BackstopJS now
 ```sh
 $ npm install -g backstopjs
 ```
@@ -133,21 +133,21 @@ Change can be good!  When running this command, all images (with changes) from y
 ## Using BackstopJS
 
 ### Advanced Scenarios
-Scenrio properties are described throughout this document and processed sequentially in the following order...
-```
-      label                    // Tag saved with your reference images
-      onBeforeScript           // Used to set up browser state e.g. cookies.
-      url                      // The url of your app state
-      readySelector            // Wait until this selector exists before continuing.
-      readyEvent               // Wait until this string has been logged to the console. 
-      delay                    // Wait for x millisections
-      hideSelectors            // Array of selectors set to visibility: hidden 
-      removeSelectors          // Array of selectors set to display: none
-      onReadyScript            // After the above conditions are met -- use this script to modify UI state prior to screen shots e.g. hovers, clicks etc.
-      selectors                // Array of selectors to capture. Defaults to document if omitted. Use "viewport" to capture the viewport size. See Targeting elements in the next section for more info...
-      selectorExpansion        // See Targeting elements in the next section for more info...
-      misMatchThreshold        // Around of change before a test is marked failed
-      requireSameDimensions    // If set to true -- any change in selector size will trigger a test failure. 
+Scenario properties are described throughout this document and processed sequentially in the following order...
+```js
+label                    // Tag saved with your reference images
+onBeforeScript           // Used to set up browser state e.g. cookies.
+url                      // The url of your app state
+readySelector            // Wait until this selector exists before continuing.
+readyEvent               // Wait until this string has been logged to the console. 
+delay                    // Wait for x millisections
+hideSelectors            // Array of selectors set to visibility: hidden 
+removeSelectors          // Array of selectors set to display: none
+onReadyScript            // After the above conditions are met -- use this script to modify UI state prior to screen shots e.g. hovers, clicks etc.
+selectors                // Array of selectors to capture. Defaults to document if omitted. Use "viewport" to capture the viewport size. See Targeting elements in the next section for more info...
+selectorExpansion        // See Targeting elements in the next section for more info...
+misMatchThreshold        // Around of change before a test is marked failed
+requireSameDimensions    // If set to true -- any change in selector size will trigger a test failure.  
 ```
 
 ### Targeting elements
@@ -156,7 +156,7 @@ BackstopJS makes it super easy to capture screenshots of your entire layout or j
 
 #### selectorExpansion
 If you want BackstopJS to find and take screenshots of _all_ matching selector instances then there is a handy switch for that. Set `selectorExpansion` to `true` like so...
-```
+```json
 scenarios: [
   {
     "selectors": [
@@ -169,11 +169,12 @@ scenarios: [
 ```
 (Default behavior) If you want very explicit control of what you capture then you can disable `selectorExpansion` and explicitly select what you want...
 
-```
+```json
 scenarios: [
   {
     "selectors": [
       ".aListOfStuff li"
+    ],
     "selectorExpansion": false
   }
 ]
@@ -189,16 +190,16 @@ The problem testing these scenarios is knowing _when_ to take the screenshot.  B
 
 #### Trigger screen capture via selector
 
-The `readySelctor` property tells BackstopJS to wait until a selector exists before takeing a screenshot. For example, the following line will delay screen capture until a selctor with the id '#catOfTheDayResult' is present somewhere in the DOM.
+The `readySelector` property tells BackstopJS to wait until a selector exists before takeing a screenshot. For example, the following line will delay screen capture until a selctor with the id '#catOfTheDayResult' is present somewhere in the DOM.
 
 ```json
-"readySelctor": "#catOfTheDayResult"
+"readySelector": "#catOfTheDayResult"
 ```
 
 Another approach might look like this...
 
 ```json
-"readySelctor": "body.ember-has-rendered"
+"readySelector": "body.ember-has-rendered"
 ```
 
 #### Trigger screen capture via console.log()
@@ -226,9 +227,10 @@ In the following case, BackstopJS would wait for one second after the string `ba
 
 ```js
 {
-  ...
+  // ...
   "readyEvent": "backstopjs_ready",
   "delay": 1000 //delay in ms
+  // ...
 }
 ```
 
@@ -242,8 +244,8 @@ For obvious reasons, this screenshot approach is not optimal for testing live dy
 That said, for a use case where you are testing a DOM with say an ad banner or a block of dynamic content which retains static dimensions, we have the `hideSelectors` property in `capture/config.json` which will set the corresponding DOM to `visibility:hidden`, thus hiding the content from our Resemble.js analysis but retaining the original layout flow.
 
 ```json
-  "hideSelectors": [
-	"#someFixedSizeDomSelector"
+"hideSelectors": [
+  "#someFixedSizeDomSelector"
 ]
 ```
 
@@ -252,7 +254,7 @@ There may also be elements which need to be completely removed during testing. F
 
 ```json
 "removeSelectors": [
-    "#someUnpredictableSizedDomSelector"
+  "#someUnpredictableSizedDomSelector"
 ]
 ```
 
@@ -270,19 +272,18 @@ This setting can be used in conjunction with `"misMatchThreshold"`, for example,
 BackstopJS recognizes two magic selectors: `document` and `viewport` -- these capture the entire document and just the current specified viewport respectively.  e.g.
 
 ```js
-  "scenarios": [
-    {
-      "selectors": [
-        "document",
-        "viewport",
-        "#myFeature",
-        ...
-      ],
-       ...
-    }
+"scenarios": [
+  {
+    "selectors": [
+      "document",
+      "viewport",
+      "#myFeature",
+      // ...
+    ],
+     // ...
+  }
+]
 ```
-
-
 
 
 ### Testing across different environments
@@ -291,13 +292,14 @@ Comparing against different environments is easy. (e.g. compare a production env
 To do this, add a `referenceUrl` to your scenario configuration. When running `$ backstop test` BackstopJS will use the `url` for screen grabs.  When running `$ backstop reference` BackstopJS will check for `referenceUrl` and use that if it's there. Otherwise it will use `url` for both.
 
 ```js
-  "scenarios": [
-    {
-      "label": "cat meme feed sanity check",
-      "url": "http://www.moreCatMemes.com",
-      "referenceUrl": "http://staging.moreCatMemes.com:81",
-       ...
-    }
+"scenarios": [
+  {  
+    "label": "cat meme feed sanity check",
+    "url": "http://www.moreCatMemes.com",
+    "referenceUrl": "http://staging.moreCatMemes.com:81",
+    // ...
+  }
+]
 ```
 
 
@@ -317,12 +319,13 @@ at the root of your config or in your scenario...
 "onReadyScript": "filename.js"   // Runs after onReady event on all scenarios -- use for simulating interactions (.js suffix is optional)
 "onBeforeScript": "filename.js"  // Runs before each scenario -- use for setting cookies or other env state (.js suffix is optional)
 "scenarios": [
-    {
-      "label": "cat meme feed sanity check",
-      "onReadyScript": "filename.js"   //  If found will run instead of onReadyScript set at the root (.js suffix is optional)
-      "onBeforeScript": "filename.js" // If found will run instead of onBeforeScript at the root (.js suffix is optional)
-       ...
-    }
+  {
+    "label": "cat meme feed sanity check",
+    "onReadyScript": "filename.js"   //  If found will run instead of onReadyScript set at the root (.js suffix is optional)
+    "onBeforeScript": "filename.js" // If found will run instead of onBeforeScript at the root (.js suffix is optional)
+     // ...
+  }
+]
 ```
 
 
@@ -363,9 +366,9 @@ By default the base path is a folder called `engine_scripts` inside your Backsto
 _**NOTE:** SlimerJS currently requires an absolute path -- so be sure to include the full path when using the `"engine": "slimer"` configuration option._
 
 ```json
-  "paths": {
-    "engine_scripts": "backstop_data/engine_scripts"
-  }
+"paths": {
+  "engine_scripts": "backstop_data/engine_scripts"
+}
 ```
 
 
@@ -401,22 +404,18 @@ You may customize the testsuite name and/or a report file (xunit.xml) path to yo
 
 ```js
 "paths": {
-       "ci_report" :  "backstop_data/ci_report"
+  "ci_report" :  "backstop_data/ci_report"
 },
 "ci": {
-      "format" :  "junit" ,
-      "testReportFileName": "myproject-xunit", // in case if you want to override the default filename (xunit.xml)
-      "testSuiteName" :  "backstopJS"
+  "format" :  "junit" ,
+  "testReportFileName": "myproject-xunit", // in case if you want to override the default filename (xunit.xml)
+  "testSuiteName" :  "backstopJS"
 },
 ```
 
 #### CLI error handling
 
 When a layout error is found in CLI mode, BackstopJS will let you know in a general report displayed in the console. In addition, BackstopJS will return a 1 (error) to the calling CLI process.
-
-
-
-
 
 ### Setting the bitmap and script directory paths
 By default, BackstopJS saves generated resources into the `backstop_data` directory in parallel with your `backstop.json` config file. The location of the various resource types are configurable so they can easily be moved inside or outside your source control or file sharing environment. See below for options...
@@ -432,6 +431,7 @@ By default, BackstopJS saves generated resources into the `backstop_data` direct
     "html_report": "backstop_data/html_report",
     "ci_report": "backstop_data/ci_report"
   }
+  ...
 ```
 
 ### Changing the rendering engine
@@ -442,9 +442,8 @@ This will also enable the very cool _chromy.js_ (https://github.com/OnetapInc/ch
 
 You must also have [Chrome installed](https://www.google.com/chrome/browser/), version 59 or greater is required.
 ```json
-  "engine": "chrome"
+"engine": "chrome"
 ```
-
 
 #### Slimer (Gecko/Mozilla rendering)
 To run in Slimer, be sure to have SlimerJS installed. From your root directory run...
@@ -456,7 +455,7 @@ $ npm install -g slimerjs
 Then, in your `backstop.json` config file, update the engine property to...
 
 ```json
-  "engine": "slimerjs"
+"engine": "slimerjs"
 ```
 Thats it.
 
@@ -506,33 +505,32 @@ backstop('test', {config:'custom/backstop/config.json'});
 ```
 
 #### Pass a config to the command
-
 ```js
 // you can also pass 
 backstop('test', {
-    config: {
-        id: "foo",
-        scenarios: [
-            //some scenarios here
-        ]
-    }
+  config: {
+    id: "foo",
+    scenarios: [
+      //some scenarios here
+    ]
+  }
 });
 ```
 
 #### Parse a config file explicitly 
-```
+```js
 backstop('test', {
-    config: require("./backstop.config.js")({
-        "foo": "bar"
-    })
+  config: require("./backstop.config.js")({
+    "foo": "bar"
+  })
 });
 
 
 // Inside of `backstop.config.js` we export a function that returns the configuration object
 module.exports = options => {
-    return {
-        //you can access options.foo here
-    }
+  return {
+    //you can access options.foo here
+  }
 }
 ```
 
@@ -549,12 +547,11 @@ gulp.task('backstop_test', () => backstopjs('test'));
 
 When BackstopJS is installed locally, NPM will recognize the `backstop <command>` pattern originating from your own NPM `package.json` scripts. The following would enable you to run the respective `npm <command>` commands locally in your project.
 
-```
-//package.json
-scripts: {
-  approve: backstop approve
-  test: backstop test
-  init: backstop init
+```json
+"scripts": {
+  "approve": "backstop approve",
+  "test": "backstop test",
+  "init": "backstop init"
 }
 ```
 
@@ -577,12 +574,10 @@ By default, this value is limited to 50. This value can be adjusted as needed to
 As a (very approximate) rule of thumb, BackstopJS will use 100MB RAM plus approximately 5 MB for each concurrent image comparison.
 
 To adjust this value add the following to the root of your config...
-```
+```json
 "asyncCompareLimit": 100
 // Would require 600MB to run tests. Your milage most likely will vary ;)
 ```
-
-
 
 ### Starting over with brand new references
 This Utility will delete all existing screen references and create new ones based on your current config. It will not run any tests. Use it when you just want to start from your app's current state.
@@ -594,21 +589,19 @@ $ backstop reference
 
 If you don't want BackstopJS do first delete all files in your reference directory you can enable the incremental flag `$ backstop reference --i`.
 
-
-
 ### Modifying output settings of image-diffs
 
 By specifying `resembleOutputOptions` in your backstop.json file you can modify the image-diffs transparency, errorcolor, etc. (See [Resemble.js outputSettings](https://github.com/Huddle/Resemble.js) for the full list.
 ```json
-  "resembleOutputOptions": {
-    "errorColor": {
-      "red": 255,
-      "green": 0,
-      "blue": 255
-    },
-    "errorType": "movement",
-    "transparency": 0.3
-  }
+"resembleOutputOptions": {
+  "errorColor": {
+    "red": 255,
+    "green": 0,
+    "blue": 255
+  },
+  "errorType": "movement",
+  "transparency": 0.3
+}
 ```
 
 ## Troubleshooting
@@ -621,11 +614,12 @@ _Filename issue: Projects don't work when I share with other users or run in dif
 
 Filename formats have changed.  To use the 1.x (compatible) file format, use the `fileNameTemplate` property like so...
 
-```
+```js
 {
-...
-fileNameTemplate: '{scenarioIndex}_{scenarioLabel}_{selectorIndex}_{selectorLabel}_{viewportIndex}_{viewportLabel}',
-...
+  // ...
+  fileNameTemplate: '{scenarioIndex}_{scenarioLabel}_{selectorIndex}_{selectorLabel}_{viewportIndex}_{viewportLabel}',
+  // ...
+}
 ```
 
 #### If you are not migrating scripts but have recently upgraded BackstopJS
@@ -645,15 +639,15 @@ Did you install BackstopJS with the global option?  If installing globally remem
 
 ### Debugging
 If you are using Chrome-Headless engine then you have the option of displaying the Chrome window as tests are running.  This can be helpful for visually monitoring your app state at the time of your test.  To enable use...
-```son
-    "debugWindow": true
+```json
+"debugWindow": true
 ```
 
 
 For all engines there is also the `debug` setting.  This enables verbose console output.This will also output your source payload to the terminal so you can make sure to check that the server is sending what you expect. 😉
 
 ```json
-  "debug": true
+"debug": true
 ```
 
 
