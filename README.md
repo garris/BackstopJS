@@ -671,7 +671,7 @@ For all engines there is also the `debug` setting.  This enables verbose console
 
 
 ## Backstory
-<a href"#credits">
+<a href="#credits">
 BackstopJS was created and is maintained by [Garris Shipon](https://www.linkedin.com/in/garrisshipon/)
 
 <strong><a href="https://twitter.com/garris" class="twitter-follow-button" data-show-count="false">Follow @garris</a></strong>
@@ -698,4 +698,3 @@ BackstopJS uses icons from [the Noun Project](http://thenounproject.com/)
 * [Tag](https://thenounproject.com/term/tag/164558/) by  [Straw Dog Design](https://thenounproject.com/StrawDogDesign)
 * [Hidden](https://thenounproject.com/term/hidden/63405/) by [Roberto Chiaveri](https://thenounproject.com/robertochiaveri/)
 
----
