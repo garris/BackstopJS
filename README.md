@@ -671,6 +671,7 @@ For all engines there is also the `debug` setting.  This enables verbose console
 
 
 ## Backstory
+<a href"#credits">
 BackstopJS was created and is maintained by [Garris Shipon](https://www.linkedin.com/in/garrisshipon/)
 
 <strong><a href="https://twitter.com/garris" class="twitter-follow-button" data-show-count="false">Follow @garris</a></strong>
