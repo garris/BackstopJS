@@ -7,6 +7,17 @@ body {
   color: #444;
   background-color: transparent;
 }
+a:hover {
+  background-color: rgba(150, 200, 255, .5);
+  text-decoration: none;
+}
+.github-link {
+  display: inline-block;
+  border-radius: 25px;
+}
+.lemur-link:hover {
+  background-color: transparent;
+}
 .page-root {
   max-width: 1000px;
 }
