@@ -39,7 +39,7 @@ $ npm install -g backstopjs
 
 [Tutorials, Extensions and more](#tutorials-extensions-and-more)
 
-[Credits](#backstory)
+[Credits](#credits)
 
 ----
 
@@ -670,8 +670,7 @@ For all engines there is also the `debug` setting.  This enables verbose console
 - BackstopJS brochure at [http://BackstopJS.org/](http://garris.github.io/BackstopJS/).
 
 
-## Backstory
-<a href="#credits"></a>
+## Credits
 BackstopJS was created and is maintained by [Garris Shipon](https://www.linkedin.com/in/garrisshipon/)
 
 <strong><a href="https://twitter.com/garris" class="twitter-follow-button" data-show-count="false">Follow @garris</a></strong>
