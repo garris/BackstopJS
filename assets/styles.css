@@ -1,0 +1,69 @@
+html {
+  background: url('./duskBg1.png') no-repeat center center fixed;
+  background-size: cover;
+}
+body {
+  font-family: 'Encode Sans', sans-serif;
+  color: #444;
+  background-color: transparent;
+}
+.page-root {
+  max-width: 1000px;
+}
+.moneyshot {
+  padding: 3rem 0;
+  text-align: center;
+}
+.mascotBlock {
+  margin-bottom: -0.4rem;
+}
+.logoBlock {
+  margin-bottom: .5rem;
+}
+.lemurInYourFace {
+  width: 50%;
+}
+.github-icon {
+  width: 50px;
+}
+.cta {
+  display: block;
+}
+.BackstopJS3 {
+  width: 75%;
+}
+.getItBlock, .supportsBlock {
+  padding: 3rem 0;
+  text-align: center;
+  font-weight: 200;
+}
+.casper {
+  color: #BD10E0;
+}
+.chromy {
+  color: #9013FE;
+}
+
+h1, p { font-size: 1em; color: #666; font-weight: 300}
+
+/*Small devices (landscape phones, 576px and up)*/
+@media screen and (min-width: 576px) {
+  h1, p { font-size: 1.3rem; }
+}
+
+/*Medium devices (tablets, 768px and up)*/
+@media screen and (min-width: 768px) {
+  h1, p { font-size: 1.5rem; }
+}
+
+/*Large devices (desktops, 992px and up)*/
+@media (min-width: 992px) {
+  h1, p { font-size: 1.8rem; }
+}
+
+/*Extra large devices (large desktops, 1200px and up)*/
+@media (min-width: 1200px) {
+  h1, p { font-size: 2.1rem; }
+}
+
+
