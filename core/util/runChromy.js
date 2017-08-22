@@ -17,6 +17,8 @@ const DOCUMENT_SELECTOR = 'document';
 const NOCLIP_SELECTOR = 'body:noclip';
 const VIEWPORT_SELECTOR = 'viewport';
 
+const BackstopException = require('../util/BackstopException.js');
+
 // ============================== TEST VVVVV ===========================
 
 function hasLogged (str) {
@@ -383,7 +385,8 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
           _result.backstopSelectorsExpMap
         ));
       })
-      .end();
+      .end()
+      .catch(e => reject(new BackstopException('Chromy error', scenario, viewport, e)))
   });
 }
 
