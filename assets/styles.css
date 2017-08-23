@@ -10,6 +10,7 @@ body {
 a:hover {
   background-color: rgba(150, 200, 255, .5);
   text-decoration: none;
+  color: #faebd7;
 }
 .github-link {
   display: inline-block;
