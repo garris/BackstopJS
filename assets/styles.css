@@ -1,5 +1,5 @@
 html {
-  background: url('./duskBg1.png') no-repeat center center fixed;
+  background:#faebd7 url('./duskBg1.png') no-repeat center center fixed;
   background-size: cover;
 }
 body {
@@ -27,12 +27,17 @@ a:hover {
   text-align: center;
 }
 .mascotBlock {
+  perspective: 1000px;
   margin-bottom: -0.4rem;
 }
 .logoBlock {
   margin-bottom: .5rem;
 }
+.lemurInYourFace:hover {
+  transform: translateZ(150px);
+}
 .lemurInYourFace {
+  transition: 250ms ease;
   width: 50%;
 }
 .github-icon {
