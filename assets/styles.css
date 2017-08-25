@@ -39,10 +39,11 @@ a:hover {
 }
 .hideLemur .lemurInYourFace {
   opacity: 0;
+  visibility: hidden;
   transform: translateZ(200px);
 }
 .lemurInYourFace {
-  transition: 750ms ease;
+  transition: transform 750ms ease, opacity 750ms ease, visibility 800ms ease;
   width: 50%;
   z-index: 1;
   position: relative;
@@ -68,7 +69,7 @@ a:hover {
   transform: translateZ(50px);
 }
 .BackstopJS3 {
-  transition: 750ms ease;
+  transition: transform 750ms ease;
   width: 75%;
 }
 .getItBlock, .supportsBlock {

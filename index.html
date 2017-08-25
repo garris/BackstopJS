@@ -19,8 +19,8 @@
           <p class="mascotBlock">
             <a href="https://github.com/garris/BackstopJS" class="lemur-link">
               <img id="theLemur" src="assets/lemurFace.png" class='lemurInYourFace' alt="">
-              <img id="lemurButt" src="assets/lemurButt.png" class='lemurButtInYourFace' alt="">
             </a>
+            <img id="lemurButt" src="assets/lemurButt.png" class='lemurButtInYourFace' alt="">
           </p>
           <p class="logoBlock">
             <img src="assets/BackstopJS3.svg" class='BackstopJS3' alt="BackstopJS 3">
@@ -57,21 +57,56 @@
 </html>
 
 <script type="text/javascript">
-  const CLICK_HANDLE = /click/;
-  if (CLICK_HANDLE.test(window.location.search)) {
-    console.log('CLICK_HANDLE_ready');
-    initClickListener();
+  const READY_LAG_MS = 10000;
+  const READY_TAG = '_the_lemur_is_ready_to_see_you';
+  const LEMUR_CLASS_ACTION = 'hideLemur';
+  const COOKIE_TEST = /cookie/i;
+  const CLICK_TEST = /click/i;
+  const DELAY_TEST = /delay/i;
+
+  if (COOKIE_TEST.test(window.location.search)) {
+    showCookies();
+  }
+  if (CLICK_TEST.test(window.location.search)) {
+    modifyLemurBehavior();
+  }
+  if (DELAY_TEST.test(window.location.search)) {
+    delayLemurification();
   }
 
-  function initClickListener () {
+  function modifyLemurBehavior () {
     document.body.addEventListener('click', evt => {
-      console.log('click', evt);
       if (evt.target.id === 'theLemur') {
-        document.body.classList.add('hideLemur');
+        containTheLemur();
         evt.preventDefault();
       } else {
-        document.body.classList.remove('hideLemur');
+        releaseTheLemur();
       }
     });
+    console.log('lemur behavior is modified');
   }
+
+  function showCookies () {
+    document.getElementsByClassName('logoBlock')[0].innerText = 'cookies > ' + document.cookie;
+  }
+
+  function setReadyFlags () {
+    console.log(READY_TAG);
+    document.body.classList.add(READY_TAG);
+  }
+
+  function releaseTheLemur () {
+    document.body.classList.remove(LEMUR_CLASS_ACTION);
+  }
+
+  function containTheLemur () {
+    document.body.classList.add(LEMUR_CLASS_ACTION);
+  }
+
+  function delayLemurification () {
+    containTheLemur();
+    setTimeout(releaseTheLemur, READY_LAG_MS);
+    setTimeout(setReadyFlags, READY_LAG_MS + 1000);
+  }
+
 </script>
