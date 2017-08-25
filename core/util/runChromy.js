@@ -157,7 +157,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
    */
   const w = viewport.width || viewport.viewport.width;
   const h = viewport.height || viewport.viewport.height;
-  const flags = ['--force-device-scale-factor=1', '--window-size={w},{h}'.replace(/{w}/, w).replace(/{h}/, h)].concat(hostFlags);
+  const flags = ['--disable-gpu', '--force-device-scale-factor=1', '--window-size={w},{h}'.replace(/{w}/, w).replace(/{h}/, h)].concat(hostFlags);
   const port = CHROMY_STARTING_PORT_NUMBER + runId;
 
   console.log('Starting Chromy:', `port:${port}`, flags.toString());
