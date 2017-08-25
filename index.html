@@ -18,7 +18,8 @@
         <div class="col-10">
           <p class="mascotBlock">
             <a href="https://github.com/garris/BackstopJS" class="lemur-link">
-              <img src="assets/lemurFace.png" class='lemurInYourFace' alt="">
+              <img id="theLemur" src="assets/lemurFace.png" class='lemurInYourFace' alt="">
+              <img id="lemurButt" src="assets/lemurButt.png" class='lemurButtInYourFace' alt="">
             </a>
           </p>
           <p class="logoBlock">
@@ -56,8 +57,21 @@
 </html>
 
 <script type="text/javascript">
-  const CLICK_HANDLE = /clickHandle/;
+  const CLICK_HANDLE = /click/;
   if (CLICK_HANDLE.test(window.location.search)) {
     console.log('CLICK_HANDLE_ready');
+    initClickListener();
+  }
+
+  function initClickListener () {
+    document.body.addEventListener('click', evt => {
+      console.log('click', evt);
+      if (evt.target.id === 'theLemur') {
+        document.body.classList.add('hideLemur');
+        evt.preventDefault();
+      } else {
+        document.body.classList.remove('hideLemur');
+      }
+    });
   }
 </script>

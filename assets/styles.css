@@ -31,14 +31,32 @@ a:hover {
   margin-bottom: -0.4rem;
 }
 .logoBlock {
+  perspective: 1000px;
   margin-bottom: .5rem;
 }
 .lemurInYourFace:hover {
-  transform: translateZ(150px);
+  transform: translateZ(100px);
+}
+.hideLemur .lemurInYourFace {
+  opacity: 0;
+  transform: translateZ(200px);
 }
 .lemurInYourFace {
-  transition: 250ms ease;
+  transition: 750ms ease;
   width: 50%;
+  z-index: 1;
+  position: relative;
+}
+.hideLemur #lemurButt {
+  opacity: 1;
+}
+#lemurButt {
+  position: absolute;
+  left: calc(50% - 40px);
+  bottom: 10px;
+  opacity: 0;
+  width: 20%;
+  max-width: 100px;
 }
 .github-icon {
   width: 50px;
@@ -46,7 +64,11 @@ a:hover {
 .cta {
   display: block;
 }
+.BackstopJS3:hover {
+  transform: translateZ(50px);
+}
 .BackstopJS3 {
+  transition: 750ms ease;
   width: 75%;
 }
 .getItBlock, .supportsBlock {
