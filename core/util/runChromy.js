@@ -19,7 +19,7 @@ const VIEWPORT_SELECTOR = 'viewport';
 
 const BackstopException = require('../util/BackstopException.js');
 
-// ============================== TEST VVVVV ===========================
+// ============================== MOVE TO NEW FILE VVVVV ===========================
 
 function hasLogged (str) {
   return new RegExp(str).test(window._consoleLogger);
@@ -35,8 +35,6 @@ function startConsoleLogger () {
     log.apply(this, arguments);
   };
 }
-// startConsoleLogger();
-
 
 /**
  * Take an array of selector names and return and array of *all* matching selectors.

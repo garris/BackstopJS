@@ -43,7 +43,7 @@ $ npm install -g backstopjs
 
 ----
 
-## The BackstopJS workflow 
+## The BackstopJS workflow
 
   - **`backstop init`:** Set up a new BackstopJS instance -- specify URLs, cookies, screen sizes, DOM selectors, interactions etc. (see examples directory)
 
@@ -126,7 +126,7 @@ $ backstop approve
 
 Change can be good!  When running this command, all images (with changes) from your most recent test batch will be promoted to your reference collection. Subsequent tests will be compared against your updated reference files.
 
-**Tip**: Remember to pass a `--config=<configFilePathStr>` argument if you passed that when you ran your last test.  
+**Tip**: Remember to pass a `--config=<configFilePathStr>` argument if you passed that when you ran your last test.
 
 
 
@@ -135,19 +135,20 @@ Change can be good!  When running this command, all images (with changes) from y
 ### Advanced Scenarios
 Scenario properties are described throughout this document and **processed sequentially in the following order...**
 ```js
-label                    // Tag saved with your reference images
+label                    // [required for sharing] Tag saved with your reference images
 onBeforeScript           // Used to set up browser state e.g. cookies.
-url                      // The url of your app state
+url                      // [required] The url of your app state
+referenceUrl             // Specify a different state or enviornment when creating reference.
 readySelector            // Wait until this selector exists before continuing.
-readyEvent               // Wait until this string has been logged to the console. 
+readyEvent               // Wait until this string has been logged to the console.
 delay                    // Wait for x millisections
-hideSelectors            // Array of selectors set to visibility: hidden 
+hideSelectors            // Array of selectors set to visibility: hidden
 removeSelectors          // Array of selectors set to display: none
 onReadyScript            // After the above conditions are met -- use this script to modify UI state prior to screen shots e.g. hovers, clicks etc.
 selectors                // Array of selectors to capture. Defaults to document if omitted. Use "viewport" to capture the viewport size. See Targeting elements in the next section for more info...
 selectorExpansion        // See Targeting elements in the next section for more info...
 misMatchThreshold        // Around of change before a test is marked failed
-requireSameDimensions    // If set to true -- any change in selector size will trigger a test failure.  
+requireSameDimensions    // If set to true -- any change in selector size will trigger a test failure.
 ```
 
 ### Targeting elements
@@ -289,11 +290,11 @@ BackstopJS recognizes two magic selectors: `document` and `viewport` -- these ca
 ### Testing across different environments
 Comparing against different environments is easy. (e.g. compare a production environment against a staging environment).
 
-To do this, add a `referenceUrl` to your scenario configuration. When running `$ backstop test` BackstopJS will use the `url` for screen grabs.  When running `$ backstop reference` BackstopJS will check for `referenceUrl` and use that if it's there. Otherwise it will use `url` for both.
+You can create reference files (without previewing) by using the command `backstop reference`.  By default this command calls the `url` property specified in your config.  Optionally, you can add a `referenceUrl` property to your scenario configuration. If found, BackstopJS will use `referenceUrl` for screen grabs when running `$ backstop reference`.
 
 ```js
 "scenarios": [
-  {  
+  {
     "label": "cat meme feed sanity check",
     "url": "http://www.moreCatMemes.com",
     "referenceUrl": "http://staging.moreCatMemes.com:81",
@@ -343,7 +344,7 @@ module.exports = function(casper, scenario, vp) {
     casper.page.addCookie({name: 'cookieName', value: 'cookieValue'});
   });
 }
-  
+
 // onReady example
 module.exports = function(casper, scenario, vp) {
   // Example: Adding script delays to allow for things like CSS transitions to complete.
@@ -375,9 +376,9 @@ _**NOTE:** SlimerJS currently requires an absolute path -- so be sure to include
 
 ### Reporting workflow tips
 
-One testing approach to consider is incorporating BackstopJS into your build process and just let the CLI report run on each build or before each deploy.  
+One testing approach to consider is incorporating BackstopJS into your build process and just let the CLI report run on each build or before each deploy.
 
-It's natural for your layout to break while you're in feature development -- in that case you might just run a `backstop test` when you feel things should be shaping up. 
+It's natural for your layout to break while you're in feature development -- in that case you might just run a `backstop test` when you feel things should be shaping up.
 
 Using the `report` property in your config to enable or disable browser including/excluding the respective properties. E.G. The following settings will open a browser and write a junit report.
 
@@ -507,7 +508,7 @@ backstop('test', {config:'custom/backstop/config.json'});
 
 #### Pass a config to the command
 ```js
-// you can also pass 
+// you can also pass
 backstop('test', {
   config: {
     id: "foo",
@@ -518,7 +519,7 @@ backstop('test', {
 });
 ```
 
-#### Parse a config file explicitly 
+#### Parse a config file explicitly
 ```js
 backstop('test', {
   config: require("./backstop.config.js")({
@@ -580,15 +581,24 @@ To adjust this value add the following to the root of your config...
 // Would require 600MB to run tests. Your milage most likely will vary ;)
 ```
 
-### Starting over with brand new references
-This Utility will delete all existing screen references and create new ones based on your current config. It will not run any tests. Use it when you just want to start from your app's current state.
+### Creating reference files
+This Utility command will by default delete all existing screen references and create new ones based on the `referenceUrl` or `url` config config. It will not run any file comparisons.
+
+Use this when you...
+- create references from another enviornment (e.g. staging vs prod)
+- or clean out your reference files and start fresh with all new reference
+- or just create references without previewing
 
 From your project directory...
 ```sh
 $ backstop reference
 ```
 
-If you don't want BackstopJS do first delete all files in your reference directory you can enable the incremental flag `$ backstop reference --i`.
+optional parameters
+`--config=<configFilePath>`   point to a specific config file
+`--filter=<scenario.name>`    filter on scenario.name via regex string
+`--i`                         incremental flag -- use if you don't want BackstopJS do first delete all files in your reference directory
+
 
 ### Modifying output settings of image-diffs
 

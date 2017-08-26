@@ -1,5 +1,5 @@
 {
-  "id": "test",
+  "id": "default",
   "viewports": [
     {
       "label": "phone",
@@ -7,30 +7,28 @@
       "height": 480
     },
     {
-      "label": "tablet_v",
-      "width": 568,
-      "height": 1024
-    },
-    {
-      "label": "tablet_h",
+      "label": "tablet",
       "width": 1024,
       "height": 768
     }
   ],
+  "onBeforeScript": "chromy/onBefore.js",
+  "onReadyScript": "chromy/onReady.js",
   "scenarios": [
     {
       "label": "BackstopJS Homepage",
+      "cookiePath": "../cookies.json",
       "url": "https://garris.github.io/BackstopJS/",
+      "referenceUrl": "",
+      "readySelector": "",
+      "readyEvent": "",
+      "delay": 0,
       "hideSelectors": [],
       "removeSelectors": [],
-      "selectorExpansion": true,
       "selectors": [],
-      "readyEvent": null,
-      "delay": 0,
+      "selectorExpansion": true,
       "misMatchThreshold" : 0.1,
-      "requireSameDimensions" : true,
-      "onBeforeScript": "onBefore.js",
-      "onReadyScript": "onReady.js"
+      "requireSameDimensions": true
     }
   ],
   "paths": {

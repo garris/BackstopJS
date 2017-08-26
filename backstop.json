@@ -1,43 +1,33 @@
 {
-  "id": "rev_test",
+  "id": "default",
   "viewports": [
     {
-      "name": "phone",
+      "label": "phone",
       "width": 320,
       "height": 480
     },
     {
-      "name": "tablet_v",
-      "width": 568,
-      "height": 1024
-    },
-    {
-      "name": "tablet_h",
+      "label": "tablet",
       "width": 1024,
       "height": 768
     }
   ],
+  "onBeforeScript": "onBefore.js",
+  "onReadyScript": "onReady.js",
   "scenarios": [
     {
       "label": "BackstopJS Homepage",
-      "url": "index.html",
+      "url": "http://backstopjs.org/",
+      "referenceUrl": "",
+      "readySelector": "",
+      "readyEvent": "",
+      "delay": 0,
       "hideSelectors": [],
       "removeSelectors": [],
-      "selectors": [
-        ".jumbotron",
-        ".row.firstPanel",
-        ".firstPanel .col-sm-4:nth-of-type(2)",
-        ".firstPanel .col-sm-4:nth-of-type(3)",
-        ".firstPanel .col-sm-4:nth-of-type(4)",
-        ".secondPanel",
-        ".finalWords",
-        "footer"
-      ],
-      "readyEvent": null,
-      "delay": 500,
+      "selectors": [],
+      "selectorExpansion": true,
       "misMatchThreshold" : 0.1,
-      "onBeforeScript": "onBefore.js",
-      "onReadyScript": "onReady.js"
+      "requireSameDimensions": true
     }
   ],
   "paths": {
@@ -47,8 +37,9 @@
     "html_report": "backstop_data/html_report",
     "ci_report": "backstop_data/ci_report"
   },
-  "casperFlags": [],
-  "engine": "phantomjs",
+  "engineConfig": [],
+  "engine": "chrome",
   "report": ["browser"],
-  "debug": false
+  "debug": false,
+  "debugWindow": true
 }

@@ -1,23 +1,22 @@
-module.exports = function(chromy, scenario) {
-  var hoverSelector = scenario.hoverHelperSelector,
-      clickSelector = scenario.clickHelperSelector,
-      postInteractionWait = scenario.postInteractionSelector,
-      postInteractionText = scenario.postInteractionText;
+module.exports = function (chromy, scenario) {
+  var hoverSelector = scenario.hoverHelperSelector;
+  var clickSelector = scenario.clickHelperSelector;
+  var postInteractionWait = scenario.postInteractionWait; // selector [str] | ms [int]
+  var postInteractionText = scenario.postInteractionText;
 
   if (hoverSelector) {
     chromy
       .wait(hoverSelector)
-      .wait(1000)
       .rect(hoverSelector)
       .result(function (rect) {
-        chromy.mouseMoved(rect.left, rect.top)
-      })
+        chromy.mouseMoved(rect.left, rect.top);
+      });
   }
 
   if (clickSelector) {
     chromy
       .wait(clickSelector)
-      .click(clickSelector)
+      .click(clickSelector);
   }
 
   // // TODO: DONT KNOW IF THIS WORKS YET!
