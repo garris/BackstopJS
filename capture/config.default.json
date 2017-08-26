@@ -27,6 +27,7 @@
       "removeSelectors": [],
       "hoverSelector": "",
       "clickSelector": "",
+      "postInteractionWait": "",
       "selectors": [],
       "selectorExpansion": true,
       "misMatchThreshold" : 0.1,
@@ -40,9 +41,9 @@
     "html_report": "backstop_data/html_report",
     "ci_report": "backstop_data/ci_report"
   },
-  "engineFlags": [],
-  "engine": "chrome",
   "report": ["browser"],
+  "engine": "chrome",
+  "engineFlags": [],
   "debug": false,
   "debugWindow": false
 }
