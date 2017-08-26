@@ -116,7 +116,7 @@ function getFilename (scenarioIndex, scenarioLabel, selectorIndex, selectorLabel
 }
 
 function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabel, viewports, bitmapsReferencePath, bitmapsTestPath, screenshotDateTime) {
-  var scriptTimeout = 20000;
+  var scriptTimeout = scenario.readyEventTimeout || 20000;
 
   if (casper.cli.options.user && casper.cli.options.password) {
     console.log('Auth User via CLI: ' + casper.cli.options.user);
