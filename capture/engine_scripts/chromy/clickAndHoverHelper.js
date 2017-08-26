@@ -1,8 +1,7 @@
 module.exports = function (chromy, scenario) {
-  var hoverSelector = scenario.hoverHelperSelector;
-  var clickSelector = scenario.clickHelperSelector;
+  var hoverSelector = scenario.hoverSelector;
+  var clickSelector = scenario.clickSelector;
   var postInteractionWait = scenario.postInteractionWait; // selector [str] | ms [int]
-  var postInteractionText = scenario.postInteractionText;
 
   if (hoverSelector) {
     chromy
@@ -18,15 +17,6 @@ module.exports = function (chromy, scenario) {
       .wait(clickSelector)
       .click(clickSelector);
   }
-
-  // // TODO: DONT KNOW IF THIS WORKS YET!
-  // if (postInteractionText) {
-  //   chromy
-  //   .evaluate(`window._pageHasText = '${postInteractionText}'`)
-  //   .wait(() => {
-  //     return window.hasText(window._pageHasText);
-  //   })
-  // }
 
   if (postInteractionWait) {
     chromy.wait(postInteractionWait);

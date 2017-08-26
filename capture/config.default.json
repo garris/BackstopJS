@@ -17,14 +17,16 @@
   "scenarios": [
     {
       "label": "BackstopJS Homepage",
-      "cookiePath": "../cookies.json",
+      "cookiePath": "backstop_data/engine_scripts/cookies.json",
       "url": "https://garris.github.io/BackstopJS/",
       "referenceUrl": "",
-      "readySelector": "",
       "readyEvent": "",
+      "readySelector": "",
       "delay": 0,
       "hideSelectors": [],
       "removeSelectors": [],
+      "hoverSelector": "",
+      "clickSelector": "",
       "selectors": [],
       "selectorExpansion": true,
       "misMatchThreshold" : 0.1,

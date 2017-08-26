@@ -139,8 +139,8 @@ label                    // [required for sharing] Tag saved with your reference
 onBeforeScript           // Used to set up browser state e.g. cookies.
 url                      // [required] The url of your app state
 referenceUrl             // Specify a different state or enviornment when creating reference.
-readySelector            // Wait until this selector exists before continuing.
 readyEvent               // Wait until this string has been logged to the console.
+readySelector            // Wait until this selector exists before continuing.
 delay                    // Wait for x millisections
 hideSelectors            // Array of selectors set to visibility: hidden
 removeSelectors          // Array of selectors set to display: none
