@@ -1,9 +1,9 @@
+addons: # get google-chrome [stable|beta]
+  chrome: beta
 language: node_js
 node_js:
-  - "4"
-  - "5"
-  - "6"
+  - "8.1"
 install:
   - npm install
 script:
-  - npm run unit-test && npm run integration-test
+  - npm run unit-test

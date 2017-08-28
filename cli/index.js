@@ -5,6 +5,8 @@ var usage = require('./usage');
 var version = require('../package.json').version;
 var runner = require('../core/runner');
 
+console.log('BackstopJS v' + version);
+
 var argsOptions = parseArgs(process.argv.slice(2), {
   boolean: ['h', 'help', 'v', 'version', 'i'],
   string: ['config'],
@@ -29,6 +31,10 @@ if (argsOptions.v || argsOptions.version) {
 }
 
 var commandName = argsOptions['_'][0];
+
+if (/^init$/i.test(commandName)) {
+  commandName = 'genConfig';
+}
 
 if (!commandName) {
   console.log(usage);

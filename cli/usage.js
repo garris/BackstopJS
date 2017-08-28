@@ -2,9 +2,10 @@ var version = require('../package.json').version;
 var makeSpaces = require('../core/util/makeSpaces');
 
 var commandsDescription = {
-  reference: 'Create reference screenshots of your web content at multiple sceen sizes.',
-  test: 'Create test screenshots of your web content and compare against the set you created using `backstop reference`.',
-  genConfig: 'Generate a configuration file boilerplate in your current directory. PLEASE NOTE: this will force overwrite any existing config.',
+  test: 'Create test screenshots and compare against the set you previously approved/referenced using `backstop approve` or `backstop reference`.',
+  approve: 'Promotes all test bitmaps from last test run to reference bitmaps.',
+  reference: 'Creates new reference screenshots. Deletes all existing reference bitmaps.',
+  init: '(alias: genConfig) Generate a configuration file boilerplate in your current directory. PLEASE NOTE: this will overwrite all existing backstop data! Use only if you want a fresh start.',
   openReport: 'View your last test screenshots in your browser.'
 };
 
