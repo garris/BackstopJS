@@ -447,6 +447,11 @@ You must also have [Chrome installed](https://www.google.com/chrome/browser/), v
 "engine": "chrome"
 ```
 
+If you want to specify chrome location use following in Backstop config file(do not specify if you wanted Chromy to find chrome executable):
+```json
+"chromePath": "path/to/chrome/executable"
+```
+
 #### Slimer (Gecko/Mozilla rendering)
 To run in Slimer, be sure to have SlimerJS installed. From your root directory run...
 
