@@ -1,12 +1,10 @@
-
-$('button').click(function(){
-	location.href="https://github.com/garris/BackstopJS";
-})
-
+$('button').click(function () {
+  window.location.href = "https://github.com/garris/BackstopJS";
+});
 
 
 
-
+// TODO:  modify this for v2.0 content vvvvv
 
 const READY_LAG_MS = 10000;
 const READY_TAG = '_the_lemur_is_ready_to_see_you';
