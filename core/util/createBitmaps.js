@@ -118,7 +118,7 @@ function delegateScenarios (config) {
     });
   });
 
-  var asyncCaptureLimit = config.asyncCaptureLimit === 0 ? 1 : config.asyncCaptureLimit || CONCURRENCY_DEFAULT;
+  var asyncCaptureLimit = (config.asyncCaptureLimit) ? config.asyncCaptureLimit : CONCURRENCY_DEFAULT;
 
   return pMap(scenarioViews, runChromy, {concurrency: asyncCaptureLimit});
 }
