@@ -7,7 +7,7 @@ module.exports = class BackstopException {
   }
 
   toString () {
-    return 'BackstopExcpetion: ' +
+    return 'BackstopException: ' +
       this.scenario.label + ' on ' +
       this.viewport.name + ': ' +
       this.originalError.toString();
