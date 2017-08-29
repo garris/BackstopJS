@@ -89,13 +89,13 @@ By default, BackstopJS places `backstop.json` in the root of your project. And a
 
 As a new user setting up tests for your project, you will be primarily concerned with these properties...
 
-**`id`** – The tag you want associated with your project files.  It's useful to set this property for multiple projects with multiple configs but **it's required if you plan on sharing your reference files with teammates**.  If you're not sharing with others then you can omit this property -- BackstopJS will auto-generate one for you based on your file system.
+**`id`** – Used for screenshot naming. Set this property when sharing reference files with teammates -- otherwise omit and BackstopJS will auto-generate one for you to avoid naming collisions with BackstopJS resources.
 
 **`viewports`** – An array of screen size objects your DOM will be tested against.  Add as many as you like -- but add at least one.
 
 **`scenarios`** – This is where you set up your actual tests. The important sub properties are...
 
-- **`scenarios[n].label`** – Required. Used for screenshot naming.
+- **`scenarios[n].label`** – Required. Also used for screenshot naming.
 - **`scenarios[n].url`** – Required. Tells BackstopJS what endpoint/document you want to test.  This can be an absolute URL or local to your current working directory.
 
 ### Generating test bitmaps
