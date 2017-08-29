@@ -61,7 +61,7 @@ $ npm install -g backstopjs
 ```
 #### Local installation
 
-Installing locally allows you to do this...
+BackstopJS will run as a totally stand alone app -- but installing locally allows you to do this...
 ```js
 const backstop = require('backstopjs');
 ```
