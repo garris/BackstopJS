@@ -81,9 +81,6 @@ $ backstop init
 ```
 
 
-The location all backstop resource directories can be specified -- see [Setting the config file path](#setting-the-config-file-path-version-090) below.
-
-
 ### Working with your config file
 
 By default, BackstopJS places `backstop.json` in the root of your project. And also by default, BackstopJS looks for this file when invoked.
