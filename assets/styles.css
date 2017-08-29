@@ -45,6 +45,7 @@ a:hover {
 .lemurInYourFace {
   transition: transform 750ms ease, opacity 750ms ease, visibility 800ms ease;
   width: 50%;
+  min-width: 270px;
   z-index: 1;
   position: relative;
 }
@@ -71,6 +72,7 @@ a:hover {
 .BackstopJS3 {
   transition: transform 750ms ease;
   width: 75%;
+  min-width: 270px;
 }
 .getItBlock, .supportsBlock {
   padding: 3rem 0;
