@@ -132,7 +132,7 @@ Change can be good!  When running this command, all images (with changes) from y
 ### Advanced Scenarios
 Scenario properties are described throughout this document and **processed sequentially in the following order...**
 ```js
-label                    // [required for sharing] Tag saved with your reference images
+label                    // [required] Tag saved with your reference images
 onBeforeScript           // Used to set up browser state e.g. cookies.
 url                      // [required] The url of your app state
 referenceUrl             // Specify a different state or enviornment when creating reference.
