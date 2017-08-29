@@ -62,7 +62,7 @@ function decorateConfigForCapture (config, isReference) {
     configJSON.scenarios = scenarii;
   }
 
-  logger.log('Selcted ' + configJSON.scenarios.length + ' of ' + totalScenarioCount + ' scenarios.');
+  logger.log('Selected ' + configJSON.scenarios.length + ' of ' + totalScenarioCount + ' scenarios.');
   return configJSON;
 }
 
