@@ -1,5 +1,5 @@
 {
-  "id": "default",
+  "id": "phantom_smoke",
   "viewports": [
     {
       "label": "phone",
@@ -25,7 +25,7 @@
       "delay": 0,
       "hideSelectors": [],
       "removeSelectors": [],
-      "hoverSelector": ".chromy",
+      "hoverSelector": "",
       "clickSelector": "",
       "selectors": [],
       "selectorExpansion": true,
@@ -40,9 +40,9 @@
     "html_report": "backstop_data/html_report",
     "ci_report": "backstop_data/ci_report"
   },
-  "engineFlags": [],
-  "engine": "phantom",
   "report": ["browser"],
+  "engine": "phantom",
+  "engineFlags": [],
   "debug": false,
   "debugWindow": false
 }

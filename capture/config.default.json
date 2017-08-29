@@ -1,5 +1,5 @@
 {
-  "id": "default",
+  "id": "backstop_default",
   "viewports": [
     {
       "label": "phone",
@@ -25,7 +25,7 @@
       "delay": 0,
       "hideSelectors": [],
       "removeSelectors": [],
-      "hoverSelector": "",
+      "hoverSelector": ".chromy",
       "clickSelector": "",
       "postInteractionWait": "",
       "selectors": [],
