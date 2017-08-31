@@ -20,7 +20,7 @@
       "cookiePath": "backstop_data/engine_scripts/cookies.json",
       "url": "https://garris.github.io/BackstopJS/?delay",
       "referenceUrl": "",
-      "readyEvent": "_ready",
+      "readyEvent": "",
       "readySelector": "",
       "delay": 0,
       "hideSelectors": [],
