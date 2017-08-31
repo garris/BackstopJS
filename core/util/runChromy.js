@@ -145,9 +145,15 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
     viewport.label = viewport.name || '';
   }
 
+  if (!config.engineConfig) {
+    config.engineConfig = {};
+  }
+
   const engineScriptsPath = config.env.engine_scripts || config.env.casper_scripts || config.env.engine_scripts_default;
   const isReference = config.isReference;
-  const hostFlags = Array.isArray(config.hostFlags) && config.hostFlags || [];
+  const hostFlags = Array.isArray(config.engineConfig.flags) && config.engineConfig.flags || Array.isArray(config.hostFlags) && config.hostFlags || [];
+  const browserLocation = config.chromePath || config.engineConfig.path || null;
+
   /**
    *  =============
    *  START CHROMY SESSION
@@ -164,7 +170,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
     port: port,
     waitTimeout: TEST_TIMEOUT,
     visible: config.debugWindow || false,
-    chromePath: config.chromePath
+    chromePath: browserLocation
   }).chain();
 
   /**
