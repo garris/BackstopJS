@@ -147,7 +147,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
 
   const engineScriptsPath = config.env.engine_scripts || config.env.casper_scripts || config.env.engine_scripts_default;
   const isReference = config.isReference;
-  const hostFlags = Array.isArray(config.hostFlags) && config.hostFlags || [];
+  const hostFlags = (Array.isArray(config.hostFlags) && config.hostFlags) || (Array.isArray(config.engineFlags) && config.engineFlags) || [];
   /**
    *  =============
    *  START CHROMY SESSION
