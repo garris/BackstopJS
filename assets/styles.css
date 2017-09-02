@@ -72,7 +72,7 @@ a:hover {
 .BackstopJS3 {
   transition: transform 750ms ease;
   width: 75%;
-  min-width: 270px;
+  /*min-width: 270px;*/
 }
 .getItBlock, .supportsBlock {
   padding: 3rem 0;
