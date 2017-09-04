@@ -1,3 +1,4 @@
+var cloneDeep = require('lodash/cloneDeep');
 var path = require('path');
 var fs = require('./fs');
 var each = require('./each');
@@ -43,7 +44,7 @@ function decorateConfigForCapture (config, isReference) {
   var screenshotDateTime = screenshotNow.getFullYear() + pad(screenshotNow.getMonth() + 1) + pad(screenshotNow.getDate()) + '-' + pad(screenshotNow.getHours()) + pad(screenshotNow.getMinutes()) + pad(screenshotNow.getSeconds());
 
   configJSON.screenshotDateTime = screenshotDateTime;
-  configJSON.env = config;
+  configJSON.env = cloneDeep(config);
   configJSON.isReference = isReference;
   configJSON.paths.tempCompareConfigFileName = config.tempCompareConfigFileName;
   configJSON.defaultMisMatchThreshold = config.defaultMisMatchThreshold;
