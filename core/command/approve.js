@@ -3,6 +3,7 @@ var path = require('path');
 var map = require('p-map');
 
 var FAILED_DIFF_RE = /^failed_diff_/;
+var FILTER_DEFAULT = /\w+/;
 
 // This task will copy ALL test bitmap files (from the most recent test directory) to the reference directory overwritting any exisiting files.
 module.exports = {
@@ -22,8 +23,15 @@ module.exports = {
         return map(files, (file) => {
           if (FAILED_DIFF_RE.test(file)) {
             file = file.replace(FAILED_DIFF_RE, '');
-            console.log('> ', file);
-            return fs.copy(path.join(src, file), path.join(config.bitmaps_reference, file));
+
+            let imageFilter = FILTER_DEFAULT;
+            if (config.args && config.args.filter) {
+              imageFilter = new RegExp(config.args.filter);
+            }
+            if (imageFilter.test(file)) {
+              console.log('> ', file);
+              return fs.copy(path.join(src, file), path.join(config.bitmaps_reference, file));
+            }
           }
           return true;
         });
