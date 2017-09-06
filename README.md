@@ -134,6 +134,7 @@ Scenario properties are described throughout this document and **processed seque
 ```js
 label                    // [required] Tag saved with your reference images
 onBeforeScript           // Used to set up browser state e.g. cookies.
+cookiePath               // import cookies in JSON format (available with default onBeforeScript see setting cookies below)
 url                      // [required] The url of your app state
 referenceUrl             // Specify a different state or enviornment when creating reference.
 readyEvent               // Wait until this string has been logged to the console.
@@ -150,6 +151,30 @@ selectorExpansion        // See Targeting elements in the next section for more 
 misMatchThreshold        // Around of change before a test is marked failed
 requireSameDimensions    // If set to true -- any change in selector size will trigger a test failure.
 ```
+
+
+###Testing click and hover interactions 
+BackstopJS ships with an onReady script that enables the following interaction selectors...
+```
+clickSelector: ".my-hamburger-menu",
+hoverSelector: ".my-hamburger-menu .some-menu-item",
+```
+The above would tell BackstopJS to wait for your app to generate an element with a `.my-hamburger-menu` class, then click that selector.   Then it would wait again for a `.my-hamburger-menu .some-menu-item` class, then move the cursor over that element (causing a hover state).  Then BackstopJS would take a screenshot.
+
+You can use these properties independent of each other to easily test various click and or hover states in your app.  These are obviously simple scenarios -- if you have more complex needs then this example should serve as a pretty good starting point create your own onReady scripts.
+
+
+### Setting cookies
+BackstopJS ships with an onBefore script that makes it easy to import cookie files…
+```
+cookiePath: "backstop_data/engine_scripts/cookies.json",
+```
+_note: path is relative to your current working directory_
+
+Pro tip:  If your app uses a lot of cookies then do yourself a favor and download this extension for chrome. It adds a tab to your dev-tools so you can download all your cookies as a JSON file that you can directly use with BackstopJS  https://chrome.google.com/webstore/detail/cookie-inspector/jgbbilmfbammlbbhmmgaagdkbkepnijn?hl=en
+
+
+
 
 ### Targeting elements
 
