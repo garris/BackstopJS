@@ -153,7 +153,7 @@ requireSameDimensions    // If set to true -- any change in selector size will t
 ```
 
 
-###Testing click and hover interactions 
+### Testing click and hover interactions 
 BackstopJS ships with an onReady script that enables the following interaction selectors...
 ```
 clickSelector: ".my-hamburger-menu",
