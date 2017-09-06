@@ -97,7 +97,8 @@ As a new user setting up tests for your project, you will be primarily concerned
 
 - **`scenarios[n].label`** – Required. Also used for screenshot naming.
 - **`scenarios[n].url`** – Required. Tells BackstopJS what endpoint/document you want to test.  This can be an absolute URL or local to your current working directory.
-_TIP: no other scenario properties are required. Other properties can just be added as necessary_
+
+_TIP: no other SCENARIO properties are required. Other properties can just be added as necessary_
 
 ### Generating test bitmaps
 
