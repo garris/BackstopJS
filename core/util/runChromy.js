@@ -172,7 +172,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
     chromeyParams.chromePath = config.chromePath;
   }
 
-  let chromy = new Chromy().chain();
+  let chromy = new Chromy(chromeyParams).chain();
 
   /**
    * =================
