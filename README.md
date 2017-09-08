@@ -123,7 +123,9 @@ Pass a `--filter=<scenarioLabelRegex>` argument to just run scenarios matching y
 $ backstop approve
 ```
 
-Change can be good!  When running this command, all images (with changes) from your most recent test batch will be promoted to your reference collection. Subsequent tests will be compared against your updated reference files.
+When running this command, all images (with changes) from your most recent test batch will be promoted to your reference collection. Subsequent tests will be compared against your updated reference files.
+
+Pass a `--filter=<scenarioLabelRegex>` argument to promote only the test captures matching your scenario label.
 
 **Tip**: Remember to pass a `--config=<configFilePathStr>` argument if you passed that when you ran your last test.
 
