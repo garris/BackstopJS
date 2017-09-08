@@ -290,21 +290,6 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
       .result(htmlStr => console.log(port + 'BODY > ', htmlStr));
   }
 
-  // --- HIDE SELECTORS ---
-  if (scenario.hasOwnProperty('hideSelectors')) {
-    scenario.hideSelectors.forEach(function (selector) {
-      chromy
-      .evaluate(`window._backstopSelector = '${selector}'`)
-      .evaluate(
-        () => {
-          Array.prototype.forEach.call(document.querySelectorAll(window._backstopSelector), function (s, j) {
-            s.style.visibility = 'hidden';
-          });
-        }
-      );
-    });
-  }
-
   // --- REMOVE SELECTORS ---
   if (scenario.hasOwnProperty('removeSelectors')) {
     scenario.removeSelectors.forEach(function (selector) {
@@ -333,12 +318,26 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   if (onReadyScript) {
     var readyScriptPath = path.resolve(engineScriptsPath, onReadyScript);
     if (fs.existsSync(readyScriptPath)) {
-      require(readyScriptPath)(chromy, scenario, viewport, isReference) || chromy;
+      require(readyScriptPath)(chromy, scenario, viewport, isReference);
     } else {
       console.warn(port, 'WARNING: script not found: ' + readyScriptPath);
     }
   }
 
+  // --- HIDE SELECTORS ---
+  if (scenario.hasOwnProperty('hideSelectors')) {
+    scenario.hideSelectors.forEach(function (selector) {
+      chromy
+      .evaluate(`window._backstopSelector = '${selector}'`)
+      .evaluate(
+        () => {
+          Array.prototype.forEach.call(document.querySelectorAll(window._backstopSelector), function (s, j) {
+            s.style.visibility = 'hidden';
+          });
+        }
+      );
+    });
+  }
   // CREATE SCREEN SHOTS AND TEST COMPARE CONFIGURATION (CONFIG FILE WILL BE SAVED WHEN THIS PROCESS RETURNS)
   // this.echo('Capturing screenshots for ' + makeSafe(vp.name) + ' (' + (vp.width || vp.viewport.width) + 'x' + (vp.height || vp.viewport.height) + ')', 'info');
 
