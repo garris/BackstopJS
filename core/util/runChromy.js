@@ -161,12 +161,18 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   const port = CHROMY_STARTING_PORT_NUMBER + runId;
 
   console.log('Starting Chromy:', `port:${port}`, flags.toString());
-  let chromy = new Chromy({
+
+  const chromeyParams = {
     chromeFlags: flags,
     port: port,
     waitTimeout: TEST_TIMEOUT,
     visible: config.debugWindow || false
-  }).chain();
+  };
+  if (config.chromePath){
+    chromeyParams.chromePath = config.chromePath;
+  }
+
+  let chromy = new Chromy().chain();
 
   /**
    * =================
