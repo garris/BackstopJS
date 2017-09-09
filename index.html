@@ -80,6 +80,7 @@
       if (evt.target.id === 'theLemur') {
         containTheLemur();
         evt.preventDefault();
+        setTimeout(setReadyFlags, READY_LAG_MS + 1000);
       } else {
         releaseTheLemur();
       }
@@ -109,5 +110,4 @@
     setTimeout(releaseTheLemur, READY_LAG_MS);
     setTimeout(setReadyFlags, READY_LAG_MS + 1000);
   }
-
 </script>

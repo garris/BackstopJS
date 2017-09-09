@@ -1,0 +1,92 @@
+body{font-family: Helvetica Neue,Helvetica,Arial,sans-serif; }
+label span{display: block;}
+td,th{vertical-align: top;padding: 8px;width: 25%;}
+td img{width: 100%;}
+table{width: 100%;border-collapse: collapse;margin-bottom: 50px;}
+input{width: 55ex; display: none;}
+th{text-align: left;background: #ddd;padding: 10px;white-space: nowrap;}
+
+
+.flex-container {display: flex; margin-bottom: 10px;}
+.flex-container > div {
+    flex: 1;
+    padding-left: 5px;
+    padding-right: 5px;
+    min-width: 1px; /* for Firefox */
+}
+.flex-container > div img {max-width: 100%;}
+
+.flex-container .selector,
+.flex-container .filename {background-color: #ddd;color:#444; padding: 5px 5px; font-weight: 300;}
+.flex-container .filename {text-align: right;}
+
+.flex-container.small {font-size:0.85em;}
+.asset-heading {font-weight: 300;}
+
+.reportTxt{white-space: pre-wrap;font-family: monospace; font-size: 11px;}
+
+.summaryList {padding: 0;list-style: none;width: auto;}
+.summaryList td {width: auto; padding: 5px;}
+.summaryList tr:nth-child(2n-1) {background-color: #f0f0f0;}
+.summaryList .statusInds {width: 15ex;}
+
+.summaryBlock .fileName{font-style: italic;font-weight: 100;color: #999;}
+
+.statContainer {margin: 1em 0;}
+.stat {white-space: nowrap;margin-right: 2em;display: inline-block;}
+
+.filterGroup {padding: 7px; background-color: #f0f0f0;}
+.filterGroup select {display: inline-block;width: auto;}
+
+.results {
+  margin-bottom: 90px;
+  break-inside: avoid;
+  border-top: #999 solid 1px;
+}
+
+.indicator{display: inline-block;font-style: italic;font-weight: 100;color: #999;}
+
+.dot{
+    width: 0.5em;
+    height: 0.5em;
+    border-radius: .5em;
+    display: inline-block;
+    margin-right: 0.8ex;
+}
+.yellow{background-color: #ffcc00; }
+.red{background: #c60000; }
+.green{background: #56e900; }
+.hide{display: none}
+.summaryListButton {margin-bottom:10px;}
+
+.modal .modal-dialog{
+  width: 80%; height: 400px;
+  position: absolute;
+  top:0; bottom: 0; left: 0; right: 0;
+  margin: auto
+}
+
+.btn-group {
+  margin-bottom: 10px;
+}
+
+.showPairStats {
+  display: initial;
+  width: auto;
+}
+
+.control-label {
+  margin-right: 3ex;
+}
+
+.show-diff {
+  display: none;
+}
+
+@media print {
+  .no-print, .no-print *
+  {
+    display: none !important;
+  }
+}
+

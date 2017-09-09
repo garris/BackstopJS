@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <title>BackstopJS Report</title>
+
+  <link rel="stylesheet" type="text/css" href="bower_components/bootstrap-css-only/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="css/styles.css">
+  <link rel="stylesheet" type="text/css" href="css/revealer.css">
+
+  <script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
+  <script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+  <script type="text/javascript" src="bower_components/angular-clipboard/angular-clipboard.js"></script>
+  <script type="text/javascript" src="js/compare.js"></script>
+  <script type="text/javascript" src="js/revealer.js"></script>
+  <script type="text/javascript" src="config.js"></script>
+  <script type="text/javascript">
+    // 1x1 transparent gif
+    var BASE64_PNG_STUB = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
+  </script>
+</head>
+
+<body ng-app="compareApp">
+<div id="root" ng-controller="MainCtrl" class="container-fluid">
+  <div uib-alert ng-repeat="alert in alerts" ng-class="'alert-' + alert.type"
+       dismiss-on-timeout="2000" close="closeAlert($index)">{{alert.msg}}</div>
+
+  <h1>{{name}} Report</h1>
+
+  <h3 class="statContainer">
+    <span class="stat">Passed <span class='label label-success'>{{passedCount}}</span>&nbsp;&nbsp; Failed <span class='label label-danger'>{{testPairs.length-passedCount}}</span></span>
+  </h3>
+
+  <div class="no-print summaryControls">
+    <button class="btn btn-default summaryListButton" type="button" class="btn btn-default" ng-click="isSummaryListCollapsed = !isSummaryListCollapsed">
+      <span ng-if="!isSummaryListCollapsed">Collapse Summary</span>
+      <span ng-if="isSummaryListCollapsed">Expand Summary</span>
+    </button>
+    <!-- <button class="btn btn-default summaryListButton" type="button" class="btn btn-default" ng-click="copyFailedTestsIds()">Copy failed tests to clipboard</button> -->
+  </div>
+  <div class="summaryBlock">
+    <table class="summaryList" ng-class="{'hide' : isSummaryListCollapsed}">
+      <tr ng-repeat="thisTestPair in testPairs">
+        <td class="statusInds">
+          <div class="indicator failed" ng-if="!thisTestPair.passed"><span class="dot red"></span>failed</div>
+          <div class="indicator passed" ng-if="thisTestPair.passed"><span class="dot green"></span>passed</div>
+        </td>
+        <td>{{ thisTestPair.meta.pair.label }}</td>
+        <td>{{ thisTestPair.meta.pair.selector }}</td>
+        <td><span class="fileName">{{ thisTestPair.meta.pair.fileName }}</span></td>
+      </tr>
+    </table>
+  </div> <!-- end summaryBlock -->
+
+  <div class='no-print filterGroup form-group'>
+    <label for="statusFilter" class="control-label statusFilter">status filter
+      <select id="statusFilter" class="form-control" ng-model="statusFilter" ng-options="status for status in detailFilterOptions"></select>
+    </label>
+    <label for="showPairStats" class="control-label showPairStats">show stats
+      <input id="showPairStats" type="checkbox" ng-model="showPairStats" class="showPairStats" />
+    </label>
+  </div> <!-- end filterGroup -->
+
+  <div class="results" ng-repeat="thisTestPair in testPairs | filter : displayOnStatusFilter">
+    <div class="flex-container">
+      <div class="selector">{{ thisTestPair.meta.pair.label }} - {{ thisTestPair.meta.pair.selector }}
+        <button type="button" class="btn btn-default btn-sm show-diff no-print"
+                ng-click="openModal('lg', thisTestPair.a.src, thisTestPair.b.src)">Show diff</button>
+      </div>
+      <div class="filename">{{ thisTestPair.meta.pair.fileName }}</div>
+    </div>
+    <div class="flex-container small">
+      <div class="asset-heading">REFERENCE</div>
+      <div class="asset-heading">TEST</div>
+      <div ng-if="!thisTestPair.passed" class="asset-heading">DIFF</div>
+      <div ng-if="showPairStats" class="asset-heading">REPORT</div>
+    </div>
+    <div class="flex-container">
+      <div>
+        <img ng-src="{{ thisTestPair.a.src }}" alt="Reference" ng-click="openModal('lg', thisTestPair.a.src, thisTestPair.b.src)" onerror="this.src=BASE64_PNG_STUB"/>
+      </div>
+      <div>
+        <img ng-src="{{ thisTestPair.b.src }}" alt="Test" ng-click="openModal('lg', thisTestPair.a.src, thisTestPair.b.src)" onerror="this.src=BASE64_PNG_STUB"/>
+      </div>
+      <div ng-if="!thisTestPair.passed">
+        <img ng-src="{{ thisTestPair.c.src || 'missingImg.png' }}" image-name="c" alt="Difference" onerror="this.src=BASE64_PNG_STUB"/>
+      </div>
+      <div ng-if="showPairStats">
+        <div class="statusInds">
+          <div class="indicator failed" ng-if="!thisTestPair.passed"><span class="dot red"></span>failed</div>
+          <div class="indicator passed" ng-if="thisTestPair.passed"><span class="dot green"></span>passed</div>
+        </div>
+        <div class="reportTxt">Report: {{ thisTestPair.report }}</div>
+        <div class="reportTxt">Threshold: {{ thisTestPair.meta.misMatchThreshold}}</div>
+      </div>
+    </div>
+  </div> <!-- end results -->
+
+  <div>
+    <script type="text/ng-template" id="myModalContent.html">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modal-title">Comparison result</h3>
+      </div>
+      <div class="modal-body" id="modal-body">
+
+        <div class="btn-group " role="group">
+          <button type="button" class="btn btn-success" ng-click="setImgPositionValue(100)">Reference</button>
+          <button type="button" class="btn btn-warning" ng-click="setImgPositionValue(0)">Test</button>
+        </div>
+
+        <revealer top-image="{{ selected.referenceImg }}"
+                  bottom-image="{{ selected.testImg }}"
+                  start-position = "imgPositionValue">
+        </revealer>
+
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+      </div>
+    </script>
+  </div>
+
+</div> <!-- end #root -->
+
+</body>
+</html>

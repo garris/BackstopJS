@@ -1,0 +1,96 @@
+img {
+    max-width: 100%
+}
+
+.revealer__container {
+    position: relative;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none
+}
+
+.revealer__image {
+    display: block
+}
+
+.revealer__top-image {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    transform: translateZ(0)
+}
+
+.revealer__top-image .revealer__image {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: block;
+    height: 100%;
+    width: auto;
+    max-width: none
+}
+
+.revealer__handle {
+    width: 3px;
+    height: 102%;
+    background: #e74c3c;
+    /*border-radius: 50%;*/
+    left: 50%;
+    top: -1%;
+    position: absolute;
+    display: block;
+    /*margin-left: -25px;*/
+    /*margin-top: -25px;*/
+    cursor: move;
+    /*background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+Cjxzdmcgd2lkdGg9IjI1cHgiIGhlaWdodD0iOHB4IiB2aWV3Qm94PSIwIDAgMjUgOCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4bWxuczpza2V0Y2g9Imh0dHA6Ly93d3cuYm9oZW1pYW5jb2RpbmcuY29tL3NrZXRjaC9ucyI+CiAgICA8dGl0bGU+VW50aXRsZWQgNTwvdGl0bGU+CiAgICA8ZGVzY3JpcHRpb24+Q3JlYXRlZCB3aXRoIFNrZXRjaCAoaHR0cDovL3d3dy5ib2hlbWlhbmNvZGluZy5jb20vc2tldGNoKTwvZGVzY3JpcHRpb24+CiAgICA8ZGVmcz48L2RlZnM+CiAgICA8ZyBpZD0iUGFnZS0xIiBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIiBza2V0Y2g6dHlwZT0iTVNQYWdlIj4KICAgICAgICA8ZyBpZD0ibWF4aW1pc2UiIHNrZXRjaDp0eXBlPSJNU0xheWVyR3JvdXAiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAuMDAwMDAwLCAtMi4wMDAwMDApIiBmaWxsPSIjMzMzMzMzIj4KICAgICAgICAgICAgPHBhdGggZD0iTTI0Ljg4NDU3MTksNC45MDk5MDg2MSBDMjUuMzczMzQyLDUuMzk4Njc4NzIgMjUuMzQ2MDYwNCw2LjIxNjEyMzg5IDI0LjgyNTY0ODQsNi43MzY1MzU4OSBMMjEuOTk3MzIyMyw5LjU2NDg2MjAxIEMyMS42MTY0NDExLDkuOTQ1NzQzMjYgMjEuMDU2NjY4MiwxMC4wNzQxOTY0IDIwLjU4MDg2MTMsOS44OTA2NDk4MiBDMjAuNDIzMTgyMSw5LjgyOTEzMzczIDIwLjI4NDcxMTksOS43Mzc4MDIzNiAyMC4xNzA2OTUsOS42MjM3ODU0NyBDMTkuOTQwODkzNiw5LjM5Mzk4Mzk3IDE5LjgxMDc5MDUsOS4wNzE1NTQ3OSAxOS44MjIwNDQ5LDguNzIyNjY4OTggTDE5Ljg2ODc3MTIsNy4yNzQxNTM1NSBMMTQuNzY3MDAxMiw3LjQzODcyNjc3IEMxNC4wNTI3OSw3LjQ2MTc2NTg1IDEzLjQ5NDE5NTYsNi45MDMxNzE0NCAxMy41MTcyMzQ2LDYuMTg4OTYwMTcgQzEzLjU0MDI3MzcsNS40NzQ3NDg5MSAxNC4xMzYxMDc3LDQuODc4OTE0ODcgMTQuODUwMzE5LDQuODU1ODc1OCBMMTkuOTUyMDg5LDQuNjkxMzAyNTcgTDE5Ljk5ODgxNTMsMy4yNDI3ODcxNCBDMjAuMDE1NjY3NCwyLjcyMDM3MTc0IDIwLjM0NTkzMzQsMi4yMzk4NTA5MSAyMC44MzQ2NDQ2LDIuMDIzMzY2MTIgQzIxLjMyMjQxMywxLjgwNzgyNDEgMjEuODc1OTQsMS45MDEyNzY3MSAyMi4yMzMwMTYyLDIuMjU4MzUyODggTDI0Ljg4NDU3MTksNC45MDk5MDg2MSBMMjQuODg0NTcxOSw0LjkwOTkwODYxIFogTTEwLjIzMjk5ODgsNC41NjEyNzMyMyBDMTAuOTQ3MjEsNC41MzgyMzQxNSAxMS41MDU4MDQ0LDUuMDk2ODI4NTYgMTEuNDgyNzY1NCw1LjgxMTAzOTgzIEMxMS40NTk3MjYzLDYuNTI1MjUxMDkgMTAuODYzODkyMyw3LjEyMTA4NTEzIDEwLjE0OTY4MSw3LjE0NDEyNDIgTDUuMDQ3OTEwOTksNy4zMDg2OTc0MyBMNS4wMDExODQ2OSw4Ljc1NzIxMjg2IEM0Ljk4NDMzMjU4LDkuMjc5NjI4MjYgNC42NTQ5NTA0Myw5Ljc2MTAzMjk0IDQuMTY1MzU1NCw5Ljk3NjYzMzg4IEMzLjY3NjcwMzE0LDEwLjE5MTI5MiAzLjEyNDA2LDEwLjA5ODcyMzMgMi43NjY5ODM4Myw5Ljc0MTY0NzEyIEwwLjExNTQyODA5Nyw3LjA5MDA5MTM5IEMtMC4zNzI0NTgxNTcsNi42MDIyMDUxMyAtMC4zNDcwMDMyMjIsNS43ODQ4MTg4OSAwLjE3NDM1MTU1OCw1LjI2MzQ2NDExIEwzLjAwMjY3NzY3LDIuNDM1MTM3OTkgQzMuMzgzNTU4OTIsMi4wNTQyNTY3NCAzLjk0NDI3NDU3LDEuOTI0ODYwODIgNC40MTkxMzg3NCwyLjEwOTM1MDE4IEM0LjU3NjgxNzkyLDIuMTcwODY2MjcgNC43MTUyODgwNiwyLjI2MjE5NzY0IDQuODI5MzA0OTUsMi4zNzYyMTQ1MyBDNS4wNTkxMDY0NSwyLjYwNjAxNjAzIDUuMTg5MjA5NDUsMi45Mjg0NDUyMSA1LjE3Nzk1NTA3LDMuMjc3MzMxMDIgTDUuMTMxMjI4NzYsNC43MjU4NDY0NSBMMTAuMjMyOTk4OCw0LjU2MTI3MzIzIEwxMC4yMzI5OTg4LDQuNTYxMjczMjMgWiIgaWQ9IlNoYXBlIiBza2V0Y2g6dHlwZT0iTVNTaGFwZUdyb3VwIj48L3BhdGg+CiAgICAgICAgPC9nPgogICAgPC9nPgo8L3N2Zz4=);*/
+    background-repeat: no-repeat;
+    background-position: center
+}
+
+.revealer__handle:before {
+    content: "";
+    position: absolute;
+    top: -16px;
+    left: -7px;
+
+    background: #e74c3c;
+    width:16px;
+    height: 16px;
+    border-radius:2px;
+}
+
+.revealer__handle:after {
+    content: "";
+    position: absolute;
+    top: -13px;
+    left: -2px;
+    width: 6px;
+    height: 10px;
+    border-left: 1px solid #fff;
+    border-right: 1px solid #fff;
+}
+
+.revealer__handle--drag,
+.revealer__handle--drag:before{
+    background-color: #c0392b
+}
+
+.revealer__label {
+    position: absolute;
+    bottom: 0;
+    padding: 1em
+}
+
+.revealer__label--right {
+    right: 0
+}
+
+.revealer__label--left {
+    left: 0
+}

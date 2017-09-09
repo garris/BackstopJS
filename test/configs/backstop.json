@@ -1,5 +1,5 @@
 {
-  "id": "chrome_smoke",
+  "id": "backstop_default",
   "viewports": [
     {
       "label": "phone",
@@ -18,7 +18,7 @@
     {
       "label": "BackstopJS Homepage",
       "cookiePath": "backstop_data/engine_scripts/cookies.json",
-      "url": "https://garris.github.io/BackstopJS/?delay",
+      "url": "https://garris.github.io/BackstopJS/",
       "referenceUrl": "",
       "readyEvent": "",
       "readySelector": "",
