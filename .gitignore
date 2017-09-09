@@ -25,7 +25,7 @@ yarn.lock
 compare/bower_components/**/.*
 examples/**/html_report/
 
-/backstop_data/bitmaps_test/
-/backstop_data/html_report/
+html_report
+bitmaps_test
 compare/config.js
 capture/config.json
