@@ -509,13 +509,30 @@ This is for you if for some reason you find yourself needing advanced configurat
 ```
 
 ### Integration options (local install)
-If you are going to call backstop from another app you will probably want to do a local install in the project directory of your choice...
+
+Installing BackstopJS locally to your project makes a few integration options available.
+
+The most basic example probably looks like this....
+
+```
+# Install from your project root
+npm install backstopjs
+
+# Set up a new project
+./node_modules/backstopjs/cli/index.js init
+
+# Run a test etc...
+./node_modules/backstopjs/cli/index.js test --config=<myConfigPath>
+```
+
+If you are going to call backstop from another app you will probably want to do something like this...
 
 ```sh
 $ npm install backstopjs
 ```
 
-Once installed you can simply require a local backstop installation in your project.
+Once installed you can require your local backstop installation into your project.
+
 ```js
 const backstop = require('backstopjs');
 ```
@@ -535,7 +552,7 @@ backstop('test')
 backstop('test', {config:'custom/backstop/config.json'});
 ```
 
-#### Pass a config to the command
+#### Pass a config object to the command
 ```js
 // you can also pass
 backstop('test', {
