@@ -203,6 +203,12 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   //   }
   // });
 
+  // block urls if defined in config
+  if (config.chromeBlockUrls && typeof config.chromeBlockUrls === 'object') {
+    chromy.blockUrls(config.chromeBlockUrls);
+  }
+
+
   /**
    *  =============
    *  TEST UTILS
