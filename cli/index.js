@@ -5,8 +5,6 @@ var usage = require('./usage');
 var version = require('../package.json').version;
 var runner = require('../core/runner');
 
-console.log('BackstopJS v' + version);
-
 var argsOptions = parseArgs(process.argv.slice(2), {
   boolean: ['h', 'help', 'v', 'version', 'i'],
   string: ['config'],
@@ -21,12 +19,12 @@ process.on('unhandledRejection', function (error) {
 });
 
 if (argsOptions.h || argsOptions.help) {
+  console.log('BackstopJS v' + version);
   console.log(usage);
   process.exit();
 }
 
 if (argsOptions.v || argsOptions.version) {
-  console.log('BackstopJS ' + version);
   process.exit();
 }
 
@@ -41,6 +39,7 @@ if (!commandName) {
   process.exit();
 } else {
   var exitCode = 0;
+  console.log('BackstopJS v' + version);
   runner(commandName, argsOptions).catch(function () {
     exitCode = 1;
   });

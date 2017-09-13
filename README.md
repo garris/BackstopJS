@@ -66,7 +66,7 @@ BackstopJS will run as a totally stand alone app -- but installing locally allow
 const backstop = require('backstopjs');
 ```
 
-See [Integration Options](#integration-options) to learn about cool BackstopJS integration options!
+See [Integration Options](#integration-options-local-install) to learn about cool BackstopJS integration options!
 
 
 ### Initializing your project
