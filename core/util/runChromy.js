@@ -145,15 +145,9 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
     viewport.label = viewport.name || '';
   }
 
-  if (!config.engineConfig) {
-    config.engineConfig = {};
-  }
-
   const engineScriptsPath = config.env.engine_scripts || config.env.casper_scripts || config.env.engine_scripts_default;
   const isReference = config.isReference;
-  const hostFlags = Array.isArray(config.engineConfig.flags) && config.engineConfig.flags || Array.isArray(config.hostFlags) && config.hostFlags || [];
-  const browserLocation = config.chromePath || config.engineConfig.path || null;
-
+  const engineFlags = (Array.isArray(config.hostFlags) && config.hostFlags) || (Array.isArray(config.engineFlags) && config.engineFlags) || [];
   /**
    *  =============
    *  START CHROMY SESSION
@@ -161,7 +155,9 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
    */
   const w = viewport.width || viewport.viewport.width;
   const h = viewport.height || viewport.viewport.height;
-  const flags = ['--disable-gpu', '--force-device-scale-factor=1', '--window-size={w},{h}'.replace(/{w}/, w).replace(/{h}/, h)].concat(hostFlags);
+  const windowFlag = /--window-size=/i.test(engineFlags.toString()) ? null : '--window-size={w},{h}'.replace(/{w}/, w).replace(/{h}/, h);
+  let flags = (engineFlags.length && engineFlags) || ['--disable-gpu', '--force-device-scale-factor=1', '--disable-infobars=true'];
+  flags = windowFlag ? flags.concat(windowFlag) : flags;
   const port = CHROMY_STARTING_PORT_NUMBER + runId;
 
   console.log('Starting Chromy:', `port:${port}`, flags.toString());
@@ -169,8 +165,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
     chromeFlags: flags,
     port: port,
     waitTimeout: TEST_TIMEOUT,
-    visible: config.debugWindow || false,
-    chromePath: browserLocation
+    visible: config.debugWindow || false
   }).chain();
 
   /**
@@ -295,21 +290,6 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
       .result(htmlStr => console.log(port + 'BODY > ', htmlStr));
   }
 
-  // --- HIDE SELECTORS ---
-  if (scenario.hasOwnProperty('hideSelectors')) {
-    scenario.hideSelectors.forEach(function (selector) {
-      chromy
-      .evaluate(`window._backstopSelector = '${selector}'`)
-      .evaluate(
-        () => {
-          Array.prototype.forEach.call(document.querySelectorAll(window._backstopSelector), function (s, j) {
-            s.style.visibility = 'hidden';
-          });
-        }
-      );
-    });
-  }
-
   // --- REMOVE SELECTORS ---
   if (scenario.hasOwnProperty('removeSelectors')) {
     scenario.removeSelectors.forEach(function (selector) {
@@ -338,12 +318,26 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   if (onReadyScript) {
     var readyScriptPath = path.resolve(engineScriptsPath, onReadyScript);
     if (fs.existsSync(readyScriptPath)) {
-      require(readyScriptPath)(chromy, scenario, viewport, isReference) || chromy;
+      require(readyScriptPath)(chromy, scenario, viewport, isReference);
     } else {
       console.warn(port, 'WARNING: script not found: ' + readyScriptPath);
     }
   }
 
+  // --- HIDE SELECTORS ---
+  if (scenario.hasOwnProperty('hideSelectors')) {
+    scenario.hideSelectors.forEach(function (selector) {
+      chromy
+      .evaluate(`window._backstopSelector = '${selector}'`)
+      .evaluate(
+        () => {
+          Array.prototype.forEach.call(document.querySelectorAll(window._backstopSelector), function (s, j) {
+            s.style.visibility = 'hidden';
+          });
+        }
+      );
+    });
+  }
   // CREATE SCREEN SHOTS AND TEST COMPARE CONFIGURATION (CONFIG FILE WILL BE SAVED WHEN THIS PROCESS RETURNS)
   // this.echo('Capturing screenshots for ' + makeSafe(vp.name) + ' (' + (vp.width || vp.viewport.width) + 'x' + (vp.height || vp.viewport.height) + ')', 'info');
 

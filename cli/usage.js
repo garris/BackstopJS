@@ -2,17 +2,17 @@ var version = require('../package.json').version;
 var makeSpaces = require('../core/util/makeSpaces');
 
 var commandsDescription = {
-  test: 'Create test screenshots and compare against the set you previously approved/referenced using `backstop approve` or `backstop reference`.',
+  test: 'Create test screenshots and compare against the set you previously approved/referenced.',
   approve: 'Promotes all test bitmaps from last test run to reference bitmaps.',
-  reference: 'Creates new reference screenshots. Deletes all existing reference bitmaps.',
-  init: '(alias: genConfig) Generate a configuration file boilerplate in your current directory. PLEASE NOTE: this will overwrite all existing backstop data! Use only if you want a fresh start.',
-  openReport: 'View your last test screenshots in your browser.'
+  reference: 'Creates new reference screenshots. Deletes all existing reference files.',
+  init: 'Generate BackstopJS boilerplate files in your CWD. NOTE: Overwrites existing config files!',
+  openReport: 'View the last test report in your browser.'
 };
 
 var optionsDescription = {
   '-h, --help': 'Display usage',
   '-v, --version': 'Display version',
-  '-i': 'Incremental reference generation'
+  '-i': 'incremental reference generation'
 };
 
 function makeDescription (descriptions) {

@@ -1,5 +1,5 @@
 {
-  "id": "default",
+  "id": "backstop_default",
   "viewports": [
     {
       "label": "phone",
@@ -18,9 +18,9 @@
     {
       "label": "BackstopJS Homepage",
       "cookiePath": "backstop_data/engine_scripts/cookies.json",
-      "url": "https://garris.github.io/BackstopJS/?delay",
+      "url": "https://garris.github.io/BackstopJS/",
       "referenceUrl": "",
-      "readyEvent": "_ready",
+      "readyEvent": "",
       "readySelector": "",
       "delay": 0,
       "hideSelectors": [],
@@ -44,6 +44,8 @@
   "report": ["browser"],
   "engine": "chrome",
   "engineFlags": [],
+  "asyncCaptureLimit": 5,
+  "asyncCompareLimit": 50,
   "debug": false,
   "debugWindow": false
 }
