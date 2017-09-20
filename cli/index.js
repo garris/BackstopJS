@@ -19,12 +19,12 @@ process.on('unhandledRejection', function (error) {
 });
 
 if (argsOptions.h || argsOptions.help) {
-  console.log('BackstopJS v' + version);
   console.log(usage);
   process.exit();
 }
 
 if (argsOptions.v || argsOptions.version) {
+  console.log('BackstopJS v' + version);
   process.exit();
 }
 
