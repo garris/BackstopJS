@@ -235,12 +235,9 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
     injectBackstopTools(chromy);
 
     chromy
-      // .inject('js', config.env.backstop + BACKSTOP_TOOLS_PATH)
       .evaluate(`window._selectorExpansion = '${scenario.selectorExpansion}'`)
       .evaluate(`window._backstopSelectors = '${scenario.selectors}'`)
       .evaluate(() => {
-
-
         if (window._selectorExpansion.toString() === 'true') {
           window._backstopSelectorsExp = window.expandSelectors(window._backstopSelectors);
         } else {
