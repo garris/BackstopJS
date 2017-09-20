@@ -97,6 +97,7 @@ module.exports = (chromy) => {
             };
         };
 
+        startConsoleLogger();
         console.info('backstopTools are running');
     });
 };
