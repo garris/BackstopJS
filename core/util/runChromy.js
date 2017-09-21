@@ -149,13 +149,15 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   }
   chromy.goto(url);
 
+  injectBackstopTools(chromy);
+
   //  --- WAIT FOR READY EVENT ---
   var readyEvent = scenario.readyEvent || config.readyEvent;
   if (readyEvent) {
     chromy
       .evaluate(`window._readyEvent = '${readyEvent}'`)
       .wait(_ => {
-        return window.hasLogged(window._readyEvent);
+        return window._backstopTools.hasLogged(window._readyEvent);
       })
       .evaluate(_ => console.info('readyEvent ok'));
   }
@@ -209,6 +211,8 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
     }
   }
 
+  injectBackstopTools(chromy);
+
   // --- HIDE SELECTORS ---
   if (scenario.hasOwnProperty('hideSelectors')) {
     scenario.hideSelectors.forEach(function (selector) {
@@ -232,14 +236,12 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   }
 
   return new Promise((resolve, reject) => {
-    injectBackstopTools(chromy);
-
     chromy
       .evaluate(`window._selectorExpansion = '${scenario.selectorExpansion}'`)
       .evaluate(`window._backstopSelectors = '${scenario.selectors}'`)
       .evaluate(() => {
         if (window._selectorExpansion.toString() === 'true') {
-          window._backstopSelectorsExp = window.expandSelectors(window._backstopSelectors);
+          window._backstopSelectorsExp = window._backstopTools.expandSelectors(window._backstopSelectors);
         } else {
           window._backstopSelectorsExp = window._backstopSelectors;
         }
@@ -248,8 +250,8 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
         }
         window._backstopSelectorsExpMap = window._backstopSelectorsExp.reduce((acc, selector) => {
           acc[selector] = {
-            exists: window.exists(selector),
-            isVisible: window.isVisible(selector)
+            exists: window._backstopTools.exists(selector),
+            isVisible: window._backstopTools.isVisible(selector)
           };
           return acc;
         }, {});
