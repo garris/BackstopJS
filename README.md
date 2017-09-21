@@ -157,7 +157,7 @@ requireSameDimensions    // If set to true -- any change in selector size will t
 ```
 
 
-### Testing click and hover interactions 
+### Testing click and hover interactions
 BackstopJS ships with an onReady script that enables the following interaction selectors...
 ```
 clickSelector: ".my-hamburger-menu",
@@ -660,6 +660,27 @@ By specifying `resembleOutputOptions` in your backstop.json file you can modify 
   "transparency": 0.3
 }
 ```
+
+## Developing, bug fixing, contributing...
+
+First off, You are awesome! Thanks for your interest, time and hard work!  Here are some tips...
+
+### We use `eslint-config-semistandard`.
+Please turn your linter on. Thank you. 🙇🏽
+
+### There is a BackstopJS sanity check
+
+Please make sure this is working before submitting your PR `BackstopJS/test/configs/backstop_features.js`.
+
+### Testing BackstopJS locally
+
+CD to `BackstopJS/test/configs/` and use the command below.  Everything should work.  If it doesn't, something is broke.
+
+```
+    ../../cli/index.js test --config=backstop_features
+```
+
+
 
 ## Troubleshooting
 

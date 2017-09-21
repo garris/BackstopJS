@@ -91,6 +91,12 @@ module.exports = {
       "selectors": [".moneyshot"]
     },
     {
+      "label": "redirect",
+      "url": "../../index.html",
+      "onReadyScript": "chromy/redirect.js",
+      "selectors": [".moneyshot"]
+    },
+    {
       "label": "hover",
       "url": "../../index.html?click",
       "hoverSelector": "#theLemur",

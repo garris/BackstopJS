@@ -211,6 +211,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
     }
   }
 
+  // reinstall tools in case onReadyScript has loaded a new URL.
   injectBackstopTools(chromy);
 
   // --- HIDE SELECTORS ---

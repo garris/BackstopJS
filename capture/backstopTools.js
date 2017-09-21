@@ -1,6 +1,9 @@
 'use strict';
 module.exports = (chromy) => {
   return chromy.evaluate(() => {
+    if (!!window._backstopTools) {
+      return false;
+    }
 
     window._backstopTools = {
       hasLogged: function (str) {
@@ -94,6 +97,7 @@ module.exports = (chromy) => {
     };
 
     window._backstopTools.startConsoleLogger();
-    console.info('backstopTools are running');
+    console.info('BackstopTools have been installed.');
+    return true;
   });
 };
