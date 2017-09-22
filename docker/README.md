@@ -7,10 +7,10 @@ A self-contained Docker image to run [BackstopJS](https://github.com/garris/Back
 Features:
 
 - [BackstopJS 3.x](https://github.com/garris/BackstopJS)
+- [Chrome-headless](https://www.google.com/chrome/browser/canary.html)
+- [CasperJS](http://casperjs.org/)
 - [PhantomJS](http://phantomjs.org/)
 - [SlimerJS](https://slimerjs.org/) (with Firefox ESR)
-- [CasperJS](http://casperjs.org/)
-- Chromium
 
 
 ## Versions
@@ -25,7 +25,7 @@ Working directory is expected to be mounted at `/src` in the container.
 
 ```
 $ docker run --rm -v $(pwd):/src backstopjs/backstopjs --version
-BackstopJS v3.0.25
+BackstopJS v3.x.x
 ```
 
 You can also add a shell alias (in `.bashrc`, `.zshrc`, etc.) for convenience.
@@ -38,7 +38,7 @@ Restart your shell or open a new one, then
 
 ```
 $ backstopjs --version
-BackstopJS v3.0.25
+BackstopJS v3.x.x
 ```
 
 
