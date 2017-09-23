@@ -1,9 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './components/App.jsx';
+import { Provider } from 'react-redux';
+import store from './store.js';
 
-const tests = {
-  name: window.tests.testSuite
-};
+import App from './components/App';
 
-ReactDOM.render(<App tests={tests}/>, document.getElementById('root'));
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('root'));

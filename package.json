@@ -57,7 +57,10 @@
     "phantomjs-prebuilt": "^2.1.7",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
+    "react-redux": "^5.0.6",
+    "redux": "^3.7.2",
     "sinon": "^1.17.7",
+    "styled-components": "^2.1.2",
     "temp": "^0.8.3",
     "webpack": "^3.5.6",
     "webpack-dev-server": "^2.7.1"
