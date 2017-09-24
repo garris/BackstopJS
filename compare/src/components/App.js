@@ -11,7 +11,7 @@ export default class App extends React.Component {
   render () {
     return (
      <Wrapper>
-        <Header store={this.props} />
+        <Header />
       </Wrapper>);
   }
 }
