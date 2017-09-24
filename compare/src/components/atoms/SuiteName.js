@@ -2,9 +2,14 @@ import React from 'react';
 import { connect } from 'react-redux'
 import styled from 'styled-components';
 
+import { colors, fonts } from '../../styles';
 
 const SuiteNameTitle = styled.h1`
-  font-size: 30px;
+  font-size: 26px;
+  font-family: ${fonts.latoRegular};
+  flex: 0 0 auto;
+  margin: 0;
+  color: ${colors.primaryText}
 `;
 
 class SuiteName extends React.Component {

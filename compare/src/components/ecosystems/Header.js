@@ -7,6 +7,7 @@ import Toolbar from '../organisms/Toolbar';
 const HeaderWrapper = styled.section`
   width: 100%;
   margin: 0 auto;
+  margin-top: 15px;
 `;
 
 export default class Header extends React.Component {

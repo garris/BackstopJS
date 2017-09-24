@@ -3,7 +3,8 @@ import rootReducer  from './reducers';
 
 const defaultState = {
   suiteInfo: {
-    testSuiteName: window.tests.testSuite
+    testSuiteName: window.tests.testSuite,
+    idConfig: 'backstop_default'
   },
   tests: window.tests.tests,
   layoutSettings: {
