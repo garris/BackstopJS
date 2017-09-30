@@ -4,6 +4,7 @@ export const colors = {
   borderGray: '#D1D9DD',
   green: '#8BC34A',
   red: '#F44336',
+  white: '#FFFFFF',
   lightGray: '#EEEEEE'
 };
 

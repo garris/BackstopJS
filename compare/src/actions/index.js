@@ -1,8 +1,8 @@
 
 
-export const filterTests = tests => {
+export const filterTests = status => {
   return {
     type: 'FILTER_TESTS',
-    tests
+    status
   }
 }

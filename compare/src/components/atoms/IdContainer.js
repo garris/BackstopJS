@@ -27,7 +27,6 @@ const IdTitle = styled.h3`
     left: 0;
     top: -10px;
   }
-
 `;
 
 class IdConfig extends React.Component {

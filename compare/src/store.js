@@ -6,7 +6,28 @@ const defaultState = {
     testSuiteName: window.tests.testSuite,
     idConfig: 'backstop_default'
   },
-  tests: window.tests.tests,
+  tests: {
+    all: window.tests.tests,
+    filtered: window.tests.tests.filter(e => e.status === "fail"),
+    filterStatus: 'fail'
+  },
+  availableStatus: [
+    {
+      id: 'all',
+      label: 'all',
+      count: window.tests.tests.length
+    },
+    {
+      id: 'pass',
+      label: 'passed',
+      count: window.tests.tests.filter(e => e.status === "pass").length,
+    },
+    {
+      id: 'fail',
+      label: 'failed',
+      count: window.tests.tests.filter(e => e.status === "fail").length,
+    }
+  ],
   layoutSettings: {
     refImage: true,
     testImage: true,

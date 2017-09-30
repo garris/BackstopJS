@@ -3,11 +3,11 @@ report({
   "tests": [
     {
       "pair": {
-        "reference": "../bitmaps_reference/backstop_default_BackstopJS_Homepage_0_document_0_phone.png",
-        "test": "../bitmaps_test/20170903-155340/backstop_default_BackstopJS_Homepage_0_document_0_phone.png",
-        "selector": "document",
-        "fileName": "backstop_default_BackstopJS_Homepage_0_document_0_phone.png",
-        "label": "BackstopJS Homepage",
+        "reference": "../bitmaps_reference/backstop_default_BackstopJS_Services_0_services_0_tablet.png",
+        "test": "../bitmaps_test/20170924-181906/backstop_default_BackstopJS_Services_0_services_0_tablet.png",
+        "selector": "#services",
+        "fileName": "backstop_default_BackstopJS_Services_0_services_0_tablet.png",
+        "label": "BackstopJS Services",
         "requireSameDimensions": true,
         "misMatchThreshold": 0.1,
         "diff": {
@@ -16,8 +16,8 @@ report({
             "width": 0,
             "height": 0
           },
-          "misMatchPercentage": "0.03",
-          "analysisTime": 152,
+          "misMatchPercentage": "0.08",
+          "analysisTime": 92,
           "getDiffImage": null
         }
       },
@@ -25,25 +25,26 @@ report({
     },
     {
       "pair": {
-        "reference": "../bitmaps_reference/backstop_default_BackstopJS_Homepage_0_document_1_tablet.png",
-        "test": "../bitmaps_test/20170903-155340/backstop_default_BackstopJS_Homepage_0_document_1_tablet.png",
-        "selector": "document",
-        "fileName": "backstop_default_BackstopJS_Homepage_0_document_1_tablet.png",
-        "label": "BackstopJS Homepage",
+        "reference": "../bitmaps_reference/backstop_default_BackstopJS_Banner_0_header_0_tablet.png",
+        "test": "../bitmaps_test/20170924-181906/backstop_default_BackstopJS_Banner_0_header_0_tablet.png",
+        "selector": "header",
+        "fileName": "backstop_default_BackstopJS_Banner_0_header_0_tablet.png",
+        "label": "BackstopJS Banner",
         "requireSameDimensions": true,
         "misMatchThreshold": 0.1,
         "diff": {
-          "isSameDimensions": true,
+          "isSameDimensions": false,
           "dimensionDifference": {
             "width": 0,
-            "height": 0
+            "height": -190
           },
-          "misMatchPercentage": "0.02",
-          "analysisTime": 508,
+          "misMatchPercentage": "41.16",
+          "analysisTime": 195,
           "getDiffImage": null
-        }
+        },
+        "diffImage": "../bitmaps_test/20170924-181906/failed_diff_backstop_default_BackstopJS_Banner_0_header_0_tablet.png"
       },
-      "status": "pass"
+      "status": "fail"
     }
   ]
 });
