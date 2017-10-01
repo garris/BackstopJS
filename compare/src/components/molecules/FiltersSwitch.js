@@ -9,6 +9,7 @@ import { colors, fonts } from '../../styles';
 
 const ButtonsWrapper = styled.div`
   display: flex;
+  flex: 0 0 auto;
 `;
 
 function ButtonsFilter(props) {

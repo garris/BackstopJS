@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import LogoImg from '../../../output/assets/logo.png';
+import LogoImg from '../../assets/images/logo.png';
 
 const LogoImage = styled.img`
   display: block;

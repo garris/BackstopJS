@@ -16,7 +16,7 @@ const Button = styled.button`
   color: ${colors.primaryText};
   margin-right: 15px;
   padding: 10px 20px;
-  opacity: ${props => props.selected ? '0.8' : '1'};
+  opacity: ${props => props.selected ? '0.6' : '1'};
   outline: none;
 
   &:hover {
