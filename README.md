@@ -684,11 +684,37 @@ CD to `BackstopJS/test/configs/` and use the command below.  Everything should w
 
 ## Troubleshooting
 
-### Migrating to 2.0
+### Debugging
+If you are using Chrome-Headless engine then you have the option of displaying the Chrome window as tests are running.  This can be helpful for visually monitoring your app state at the time of your test.  To enable use...
+```json
+"debugWindow": true
+```
 
-_Filename issue: Projects don't work when I share with other users or run in different environments._
+For all engines there is also the `debug` setting.  This enables verbose console output.This will also output your source payload to the terminal so you can make sure to check that the server is sending what you expect. 😉
 
-#### If you just upgraded to 2.x from 1.x
+```json
+"debug": true
+```
+
+
+### The dreaded: `Error: Failed to launch a browser.`
+Sometimes (usually after an app error) a chrome process is left open. If that's the case try...
+```
+pkill -f "(chrome)?(--headless)"
+```
+
+### The dreaded: _command-not-found_ error...
+
+Did you install BackstopJS with the global option?  If installing globally remember to add that `-g` when installing with npm *i.e.* `npm install backstop -g`.     If you installed *locally*, remember that the `backstop <command>` pattern will only be available to your npm scripts -- see the local installation section above for more info.
+
+
+
+
+### Projects don't work when I share with other users or run in different environments.
+
+Be sure to use a config `id` in your config file. See https://github.com/garris/BackstopJS/issues/291
+
+#### If you just upgraded to 2.x or 3.x
 
 Filename formats have changed.  To use the 1.x (compatible) file format, use the `fileNameTemplate` property like so...
 
@@ -700,33 +726,10 @@ Filename formats have changed.  To use the 1.x (compatible) file format, use the
 }
 ```
 
-#### If you are not migrating scripts but have recently upgraded BackstopJS
-
-Be sure to use a config `id` in your config file. See https://github.com/garris/BackstopJS/issues/291
-
 ### Windows users...
 
 PhantomJS needs Python -- please make sure you have Python installed...
 _see https://github.com/garris/BackstopJS/issues/185_
-
-
-### The dreaded _command-not-found_ error...
-
-Did you install BackstopJS with the global option?  If installing globally remember to add that `-g` when installing with npm *i.e.* `npm install backstop -g`.     If you installed *locally*, remember that the `backstop <command>` pattern will only be available to your npm scripts -- see the local installation section above for more info.
-
-
-### Debugging
-If you are using Chrome-Headless engine then you have the option of displaying the Chrome window as tests are running.  This can be helpful for visually monitoring your app state at the time of your test.  To enable use...
-```json
-"debugWindow": true
-```
-
-
-For all engines there is also the `debug` setting.  This enables verbose console output.This will also output your source payload to the terminal so you can make sure to check that the server is sending what you expect. 😉
-
-```json
-"debug": true
-```
 
 
 ---
