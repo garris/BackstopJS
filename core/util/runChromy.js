@@ -387,7 +387,9 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
         ));
       })
       .end()
-      .catch(e => reject(new BackstopException('Chromy error', scenario, viewport, e)))
+      .catch(e => process.exit(1)
+	      // reject(new BackstopException('Chromy error', scenario, viewport, e))
+      )
   });
 }
 
