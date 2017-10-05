@@ -6,3 +6,11 @@ export const filterTests = status => {
     status
   }
 }
+
+
+export const findTests = value => {
+  return {
+    type: 'SEARCH_TESTS',
+    value
+  }
+}

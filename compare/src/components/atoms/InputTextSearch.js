@@ -13,7 +13,7 @@ const Input = styled.input`
   font-size: 16px;
   background-color: ${colors.lightGray};
   padding: 0 10px 0 55px;
-
+  font-family: ${fonts.latoRegular};
   width: 100%;
   box-sizing: border-box;
   border-radius: 3px;
@@ -37,9 +37,13 @@ const Input = styled.input`
 
 export default class ButtonFilter extends React.Component {
 
+  handleChange(event) {
+    this.props.onChange(event.target.value);
+  }
+
   render () {
     return (
-      <Input placeholder="Filter tests with search" />
+      <Input placeholder="Filter tests with search..." onChange={this.handleChange.bind(this)} />
     );
   }
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import styled from 'styled-components';
-// import { filterTests } from '../../actions'
+import { findTests } from '../../actions'
 
 import InputTextSearch from '../atoms/InputTextSearch';
 
@@ -15,13 +15,12 @@ class TextSearch extends React.Component {
 
   constructor(props) {
     super(props);
-
   }
 
   render () {
     return (
       <InputWrapper>
-        <InputTextSearch />
+        <InputTextSearch onChange={this.props.onChange} />
       </InputWrapper>
     );
   }
@@ -29,14 +28,14 @@ class TextSearch extends React.Component {
 
 const mapStateToProps = state => {
   return {
-
+    tests: state.tests
   }
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    onButtonClick: status => {
-      dispatch(filterTests(status))
+    onChange: value => {
+      dispatch(findTests(value))
     }
   }
 }
