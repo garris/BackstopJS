@@ -33,7 +33,7 @@ function decorateConfigForCapture (config, isReference) {
   if (typeof config.args.config === 'object') {
     configJSON = config.args.config;
   } else {
-    configJSON = require(config.backstopConfigFileName);
+    configJSON = Object.assign({}, require(config.backstopConfigFileName));
   }
   configJSON.scenarios = configJSON.scenarios || [];
   ensureViewportLabel(configJSON);
