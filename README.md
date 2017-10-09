@@ -74,7 +74,7 @@ See [Integration Options](#integration-options-local-install) to learn about coo
 **If you don't already have BackstopJS set up...**
 BackstopJS can create a default configuration file and project scaffolding in your current working directory. Please note: this will overwrite any existing files!
 
-`cd` to your projects's directory and run...
+`cd` to your project's directory and run...
 
 ```sh
 $ backstop init
@@ -140,7 +140,7 @@ label                    // [required] Tag saved with your reference images
 onBeforeScript           // Used to set up browser state e.g. cookies.
 cookiePath               // import cookies in JSON format (available with default onBeforeScript see setting cookies below)
 url                      // [required] The url of your app state
-referenceUrl             // Specify a different state or enviornment when creating reference.
+referenceUrl             // Specify a different state or environment when creating reference.
 readyEvent               // Wait until this string has been logged to the console.
 readySelector            // Wait until this selector exists before continuing.
 delay                    // Wait for x millisections
@@ -220,7 +220,7 @@ The problem testing these scenarios is knowing _when_ to take the screenshot.  B
 
 #### Trigger screen capture via selector
 
-The `readySelector` property tells BackstopJS to wait until a selector exists before takeing a screenshot. For example, the following line will delay screen capture until a selctor with the id '#catOfTheDayResult' is present somewhere in the DOM.
+The `readySelector` property tells BackstopJS to wait until a selector exists before taking a screenshot. For example, the following line will delay screen capture until a selector with the id '#catOfTheDayResult' is present somewhere in the DOM.
 
 ```json
 "readySelector": "#catOfTheDayResult"
@@ -291,7 +291,7 @@ There may also be elements which need to be completely removed during testing. F
 ### Changing test sensitivity
 `"misMatchThreshold"` (percentage 0.00%-100.00%) will change the amount of difference BackstopJS will tolerate before marking a test screenshot as "failed".  The default setting is `0.1`, this may need to be adjusted based on the kinds of testing you're doing.
 
-More info on how misMatchThreshold is derrived can be found here... https://github.com/Huddle/Resemble.js/blob/af57cb2f4edfbe718d24b350b2be1d956b764298/resemble.js#L495
+More info on how misMatchThreshold is derived can be found here... https://github.com/Huddle/Resemble.js/blob/af57cb2f4edfbe718d24b350b2be1d956b764298/resemble.js#L495
 
 `"requireSameDimensions"` (true || false) will change whether BackstopJS will accept any change in dimensions. The default setting is `true`. If set to true then the test must be the same dimensions as the reference. If set to false the test does not have to be the same dimensions as the reference.
 
@@ -488,7 +488,7 @@ Then, in your `backstop.json` config file, update the engine property to...
 ```json
 "engine": "slimerjs"
 ```
-Thats it.
+That's it.
 
 <!--
 ### Changing the reporting server port
@@ -593,7 +593,7 @@ gulp.task('backstop_test', () => backstopjs('test'));
 
 #### Using npm run scripts
 
-When BackstopJS is installed locally, NPM will recognize the `backstop <command>` pattern originating from your own NPM `package.json` scripts. The following would enable you to run the respective `npm <command>` commands locally in your project.
+When BackstopJS is installed locally, NPM will recognize the `backstop <command>` pattern originating from your own npm `package.json` scripts. The following would enable you to run the respective `npm <command>` commands locally in your project.
 
 ```json
 "scripts": {
@@ -735,7 +735,7 @@ _see https://github.com/garris/BackstopJS/issues/185_
 ---
 ## Tutorials, Extensions and more
 
-- (RECOMMEDED Updated for version 2) Regression testing with BackstopJS, in-depth tutorial by [Angela Riggs](https://twitter.com/AngelaRiggs_) http://www.metaltoad.com/blog/regression-testing-backstopjs
+- (RECOMMENDED Updated for version 2) Regression testing with BackstopJS, in-depth tutorial by [Angela Riggs](https://twitter.com/AngelaRiggs_) http://www.metaltoad.com/blog/regression-testing-backstopjs
 
 - BackstopJS tutorial on [css-tricks.com](http://css-tricks.com/automating-css-regression-testing/)
 
