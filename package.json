@@ -1,6 +1,6 @@
 {
   "name": "backstopjs",
-  "version": "3.0.25",
+  "version": "3.0.26",
   "description": "BackstopJS: Catch CSS curveballs.",
   "bin": {
     "backstop": "./cli/index.js"
@@ -10,6 +10,7 @@
     "lint-web": "eslint --env browser compare/*.js compare/**/*.js --fix",
     "lint-node": "eslint --env node core/*.js core/**/*.js cli/*.js cli/**/*.js capture/*.js capture/**/*.js --fix",
     "genConfig": "node ./cli/index.js genConfig",
+    "init": "node ./cli/index.js init",
     "reference": "node ./cli/index.js reference",
     "test": "node ./cli/index.js test",
     "openReport": "node ./cli/index.js openReport",
