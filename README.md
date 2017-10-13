@@ -55,6 +55,8 @@ $ npm install -g backstopjs
 ## Getting started
 ### Installation
 
+**[Chrome 62 or greater is required!](https://www.google.com/chrome/browser/beta.html)**
+
 #### Global installation (recommended)
 ```sh
 $ npm install -g backstopjs
@@ -471,7 +473,7 @@ BackstopJS supports using Chrome-Headless, PhantomJS or SlimerJS for web app ren
 #### Chrome-Headless (The latest webkit library)
 This will also enable the very cool _chromy.js_ (https://github.com/OnetapInc/chromy) library.  (When creating onBefore and onReady scripts please make sure you are referring to the [Chromy script documentation](https://github.com/OnetapInc/chromy).  Casper features will not work with this setting.)
 
-You must also have [Chrome installed](https://www.google.com/chrome/browser/), version 59 or greater is required.
+**You must also have [Chrome 62 or greater installed!](https://www.google.com/chrome/browser/beta.html).**
 ```json
 "engine": "chrome"
 ```
@@ -668,18 +670,16 @@ First off, You are awesome! Thanks for your interest, time and hard work!  Here 
 ### We use `eslint-config-semistandard`.
 Please turn your linter on. Thank you. 🙇🏽
 
+
 ### There is a BackstopJS sanity check
 
-Please make sure this is working before submitting your PR `BackstopJS/test/configs/backstop_features.js`.
-
-### Testing BackstopJS locally
-
-CD to `BackstopJS/test/configs/` and use the command below.  Everything should work.  If it doesn't, something is broke.
+Use the command below for testing BackstopJS locally.  Everything should work.  If it doesn't, something is broke.
 
 ```
+    cd <some test directory>/node_modules/backstopjs/test/configs/
     ../../cli/index.js test --config=backstop_features
 ```
-
+Please make sure this is working before submitting any PR's.  Thanks!
 
 
 ## Troubleshooting
