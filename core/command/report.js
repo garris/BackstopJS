@@ -109,7 +109,7 @@ module.exports = {
 
         if (failed) {
           logger.error('*** Mismatch errors found ***');
-          logger.log('For a detailed report run `backstop openReport`\n');
+          // logger.log('For a detailed report run `backstop openReport`\n');
           throw new Error('Mismatch errors found.');
         }
       });

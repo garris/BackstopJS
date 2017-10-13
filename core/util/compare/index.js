@@ -13,23 +13,33 @@ var ASYNC_COMPARE_LIMIT = 20;
 function comparePair (pair, report, config) {
   var Test = report.addTest(pair);
 
-  var referencePath = path.resolve(config.projectPath, pair.reference);
-  var testPath = path.resolve(config.projectPath, pair.test);
+  var referencePath = pair.reference ? path.resolve(config.projectPath, pair.reference) : '';
+  var testPath = pair.test ? path.resolve(config.projectPath, pair.test) : '';
 
+  // TEST RUN ERROR/EXCEPTION
+  if (!referencePath || !testPath) {
+    var MSG = `${pair.msg}: ${pair.error}. See scenario – ${pair.scenario.label} (${pair.viewport.label})`;
+    Test.status = 'fail';
+    logger.error(MSG);
+    pair.error = MSG;
+    return Promise.resolve(pair);
+  }
+
+  // REFERENCE NOT FOUND ERROR
   if (!fs.existsSync(referencePath)) {
     // save a failed image stub
     storeFailedDiffStub(testPath);
 
     Test.status = 'fail';
-    logger.error('ERROR reference image not found' + referencePath + ': ' + pair.label + ' ' + pair.fileName);
-    pair.error = 'Reference file not found' + referencePath;
+    logger.error('Reference image not found ' + pair.fileName);
+    pair.error = 'Reference file not found ' + referencePath;
     return Promise.resolve(pair);
   }
 
   if (!fs.existsSync(testPath)) {
     Test.status = 'fail';
-    logger.error('ERROR test image not found' + testPath + ': ' + pair.label + ' ' + pair.fileName);
-    pair.error = 'Reference file not found' + testPath;
+    logger.error('Test image not found ' + pair.fileName);
+    pair.error = 'Test file not found ' + testPath;
     return Promise.resolve(pair);
   }
 
@@ -37,7 +47,7 @@ function comparePair (pair, report, config) {
   return compareImages(referencePath, testPath, pair, resembleOutputSettings, Test);
 }
 
-function compareImages(referencePath, testPath, pair, resembleOutputSettings, Test) {
+function compareImages (referencePath, testPath, pair, resembleOutputSettings, Test) {
   return compare(referencePath, testPath, pair.misMatchThreshold, resembleOutputSettings, pair.requireSameDimensions)
     .then(function (data) {
       pair.diff = data;

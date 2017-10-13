@@ -62,10 +62,13 @@ var commands = commandNames
         promise.catch(function (error) {
           var perf = (new Date() - config.perf[command.name].started) / 1000;
           logger.error('Command `' + command.name + '` ended with an error after [' + perf + 's]');
-          logger.error(error);
+          // logger.error(error);
         });
 
         return promise.then(function (result) {
+          if (/openReport/.test(command.name)) {
+            return;
+          }
           var perf = (new Date() - config.perf[command.name].started) / 1000;
           logger.success('Command `' + command.name + '` sucessfully executed in [' + perf + 's]');
           return result;

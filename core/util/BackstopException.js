@@ -9,7 +9,7 @@ module.exports = class BackstopException {
   toString () {
     return 'BackstopException: ' +
       this.scenario.label + ' on ' +
-      this.viewport.name + ': ' +
+      this.viewport.label + ': ' +
       this.originalError.toString();
   }
 };

@@ -274,7 +274,8 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
         ));
       })
       .end()
-      .catch(e => reject(new BackstopException('Chromy error', scenario, viewport, e)))
+      // If an error occured then resolve with an error.
+      .catch(e => resolve(new BackstopException('Chromy error', scenario, viewport, e)));
   });
 }
 
@@ -402,8 +403,7 @@ function captureScreenshot (chromy, filePath_, selector, selectorMap, config, se
       chromy.screenshotMultipleSelectors(['body'], saveSelector);
     // OTHER-SELECTOR screenshot
     } else {
-      chromy
-        .screenshotMultipleSelectors(selectors, saveSelector);
+      chromy.screenshotMultipleSelectors(selectors, saveSelector);
     }
 
     chromy
