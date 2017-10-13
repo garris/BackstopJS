@@ -4,6 +4,7 @@ const fs = require('./fs');
 const path = require('path');
 const ensureDirectoryPath = require('./ensureDirectoryPath');
 
+const MIN_CHROME_VERSION = 62;
 const TEST_TIMEOUT = 30000;
 const CHROMY_STARTING_PORT_NUMBER = 9222;
 const DEFAULT_FILENAME_TEMPLATE = '{configId}_{scenarioLabel}_{selectorIndex}_{selectorLabel}_{viewportIndex}_{viewportLabel}';
@@ -111,6 +112,18 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
       console[consoleObj.level](port + ' ' + (consoleObj.level).toUpperCase() + ' > ', text);
     }
   });
+
+  chromy
+    .evaluate(_ => {
+      let v = navigator.userAgent.match(/Chrom(e|ium)\/([0-9]+)\./);
+      return v ? parseInt(v[2], 10) : 0;
+    })
+    .result(chromeVersion => {
+      console.info(`${port} Chrome v${chromeVersion} detected.`);
+      if (chromeVersion < MIN_CHROME_VERSION) {
+        console.warn(`${port} ***WARNING! CHROME VERSION ${MIN_CHROME_VERSION} OR GREATER IS REQUIRED. PLEASE UPDATE YOUR CHROME APP!***`);
+      }
+    });
 
   /**
    *  =============
@@ -503,3 +516,12 @@ function getFilename (fileNameTemplate, outputFileFormatSuffix, configId, scenar
   }
   return fileName;
 }
+
+// TODO: ESCAPE ALL SELECTOR VALUES
+// function escapeSingleQuote (string) {
+//   if (typeof string !== 'string') {
+//     return string
+//   }
+//   return string.replace(/'/g, '\\\'')
+// }
+
