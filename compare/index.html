@@ -84,7 +84,7 @@
         <img ng-src="{{ thisTestPair.b.src }}" alt="Test" ng-click="openModal('lg', thisTestPair.a.src, thisTestPair.b.src)" onerror="this.src=BASE64_PNG_STUB"/>
       </div>
       <div ng-if="!thisTestPair.passed">
-        <img ng-src="{{ thisTestPair.c.src || 'missingImg.png' }}" image-name="c" alt="Difference" onerror="this.src=BASE64_PNG_STUB"/>
+        <a target="_diff" href="{{ thisTestPair.c.src || 'missingImg.png' }}"><img ng-src="{{ thisTestPair.c.src || 'missingImg.png' }}" image-name="c" alt="Difference" onerror="this.src=BASE64_PNG_STUB"/></a>
       </div>
       <div ng-if="showPairStats">
         <div class="statusInds">
