@@ -13,3 +13,7 @@ export const fonts = {
   latoBold: 'latobold',
   arial: 'Arial'
 };
+
+export const shadows = {
+  shadow01: '0 3px 6px 0 rgba(0,0,0,0.16)'
+};

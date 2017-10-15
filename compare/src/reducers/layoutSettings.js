@@ -1,7 +1,9 @@
-const visibilityFilter = (state = 'SHOW_ALL', action) => {
+const visibilityFilter = (state = {}, action) => {
   switch (action.type) {
-    case 'SET_VISIBILITY_FILTER':
-      return action.filter
+    case 'UPDATE_SETTINGS':
+      return Object.assign({}, state, {
+        [action.id]: !state[action.id]
+      });
     default:
       return state
   }

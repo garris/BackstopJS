@@ -8,7 +8,7 @@ import searchIcon from '../../assets/icons/search.png';
 
 const Input = styled.input`
   display: block;
-  height: 42px;
+  height: 100%;
   border: none;
   font-size: 16px;
   background-color: ${colors.lightGray};

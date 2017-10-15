@@ -14,3 +14,10 @@ export const findTests = value => {
     value
   }
 }
+
+export const updateSettings = id => {
+  return {
+    type: 'UPDATE_SETTINGS',
+    id
+  }
+}

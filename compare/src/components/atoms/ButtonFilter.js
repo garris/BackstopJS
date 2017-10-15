@@ -15,9 +15,10 @@ const Button = styled.button`
   box-shadow: ${props => props.selected ? 'none' : '0 3px 6px 0 rgba(0,0,0,0.16)'};
   color: ${colors.primaryText};
   margin-right: 15px;
-  padding: 10px 20px;
+  padding: 0px 30px;
   opacity: ${props => props.selected ? '0.6' : '1'};
   outline: none;
+  height: 100%;
 
   &:hover {
     cursor: pointer;
