@@ -38,9 +38,7 @@ const Button = styled.button`
 export default class ButtonFilter extends React.Component {
 
   render () {
-    let count = this.props.count;
-    let label = this.props.label;
-    let status = this.props.status;
+    let { count, label, status } = this.props;
 
     return (
       <Button onClick={this.props.onClick} selected={this.props.selected} className={status}>{status !== 'all' ? count: ''} {label}</Button>

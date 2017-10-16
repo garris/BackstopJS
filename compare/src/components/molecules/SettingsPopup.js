@@ -18,6 +18,7 @@ const PopupWrapper = styled.div`
   margin-top: 20px;
   border-radius: 3px;
   padding: 10px 25px;
+  z-index: 10;
 
   /* @TODO: shadow on arrow */
   &:before {
