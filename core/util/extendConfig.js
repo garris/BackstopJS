@@ -66,7 +66,7 @@ function htmlReport (config, userConfig) {
 }
 
 function comparePaths (config) {
-  config.comparePath = path.join(config.backstop, 'compare');
+  config.comparePath = path.join(config.backstop, 'compare/output');
   config.tempCompareConfigFileName = temp.path({suffix: '.json'});
 }
 
