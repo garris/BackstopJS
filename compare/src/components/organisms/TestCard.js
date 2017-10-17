@@ -6,6 +6,9 @@ import { colors, shadows } from '../../styles';
 // atoms
 import TextDetails from '../atoms/TextDetails';
 
+// molecules
+import TestImages from '../molecules/TestImages';
+
 const CardWrapper = styled.div`
   position: relative;
   margin: 10px auto;
@@ -33,6 +36,7 @@ export default class TestCard extends React.Component {
     return (
       <CardWrapper status={status} >
         <TextDetails info={info} />
+        <TestImages info={info} status={status} />
       </CardWrapper>
     );
   }
