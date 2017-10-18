@@ -513,7 +513,7 @@ See casperjs documentation for more info on instance options.  An example config
 ### Setting Chromy option flags
 Chromy enables a lot of behavior via constructor options.  See Chromy documentation for more info.  
 
-**Please note:**
+**Please note:** Backstop sets defaults for many Chromy properties. Setting a parameter value here will override any default value set by backstop.
 - Setting `port` is way not advised. 
 - Setting `--window-size` in chromeFlags will override values used in your viewport settings. Not advised.
 
