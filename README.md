@@ -499,7 +499,7 @@ The default port used by BackstopJS is 3001.   You can change it by setting the 
 -->
 
 ### Setting Casper command-line flags
-This is for you if for some reason you find yourself needing advanced configuration access to CasperJS.  You can set CasperJS flags via `casperFlags` like so...
+See casperjs documentation for more info on instance options.  An example config below...
 
 ```json
 "casperFlags": [
@@ -508,6 +508,24 @@ This is for you if for some reason you find yourself needing advanced configurat
   "--proxy=proxyIp:port",
   "--proxy-auth=user:pass"
 ]
+```
+
+### Setting Chromy option flags
+Chromy enables a lot of behavior via constructor options.  See Chromy documentation for more info.  
+
+**Please note:**
+- Setting `port` is way not advised. 
+- Setting `--window-size` will override values used in your viewport settings.
+
+
+An example config below...
+
+```json
+"engineOptions": {
+  waitTimeout: 120000,
+  chromePath: /path/to/chrome,
+  chromeFlags: ['--disable-gpu', '--force-device-scale-factor=1']
+}
 ```
 
 ### Integration options (local install)

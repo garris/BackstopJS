@@ -50,26 +50,52 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
 
   const engineScriptsPath = config.env.engine_scripts || config.env.casper_scripts || config.env.engine_scripts_default;
   const isReference = config.isReference;
-  const engineFlags = (Array.isArray(config.hostFlags) && config.hostFlags) || (Array.isArray(config.engineFlags) && config.engineFlags) || [];
   /**
    *  =============
    *  START CHROMY SESSION
    *  =============
    */
-  const w = viewport.width || viewport.viewport.width;
-  const h = viewport.height || viewport.viewport.height;
-  const windowFlag = /--window-size=/i.test(engineFlags.toString()) ? null : '--window-size={w},{h}'.replace(/{w}/, w).replace(/{h}/, h);
-  let flags = (engineFlags.length && engineFlags) || ['--disable-gpu', '--force-device-scale-factor=1', '--disable-infobars=true'];
-  flags = windowFlag ? flags.concat(windowFlag) : flags;
-  const port = CHROMY_STARTING_PORT_NUMBER + runId;
+  const VP_W = viewport.width || viewport.viewport.width;
+  const VP_H = viewport.height || viewport.viewport.height;
 
-  console.log('Starting Chromy:', `port:${port}`, flags.toString());
-  let chromy = new Chromy({
-    chromeFlags: flags,
-    port: port,
+  const DEFAULT_CHROME_FLAGS = ['--disable-gpu', '--force-device-scale-factor=1', '--disable-infobars=true'];
+  const PORT = CHROMY_STARTING_PORT_NUMBER + runId;
+  let defaultOptions = {
+    port: PORT,
     waitTimeout: TEST_TIMEOUT,
     visible: config.debugWindow || false
-  }).chain();
+  };
+
+  // This option is depricated.
+  const chromeFlags = (Array.isArray(config.hostFlags) && config.hostFlags) || (Array.isArray(config.engineFlags) && config.engineFlags) || [];
+
+  // set up engineOptions obj
+  let engineOptions = {};
+  if (typeof config.engineOptions === 'object') {
+    engineOptions = config.engineOptions;
+  } else {
+    // Check for (legacy) chromeFlags setting if there is no engineOptions config. chromeFlags option is depricated.
+    if (chromeFlags.length) {
+      console.warn('***The chromeFlags property is depricated -- please see documentation for recommended way of setting chromeFlags.***');
+      engineOptions.chromeFlags = chromeFlags;
+    }
+  }
+
+  // create base chromyOptions with default & config engineOptions
+  let chromyOptions = Object.assign({}, defaultOptions, engineOptions);
+
+  // if chromeFlags has not been explicitly set, then set it. (this is the expected case)
+  if (!chromyOptions.chromeFlags)
+    chromyOptions.chromeFlags = DEFAULT_CHROME_FLAGS;
+  }
+
+  // if --window-size= has not been explicity set, then set it. (this is the expected case)
+  if (!/--window-size=/i.test(chromyOptions.chromeFlags.toString())) {
+    chromyOptions.chromeFlags.concat(`--window-size=${VP_W},${VP_H}`);
+  }
+
+  console.log('Starting Chromy:', `port:${PORT}`, flags.toString());
+  let chromy = new Chromy(chromyOptions).chain();
 
   /**
    * =================
