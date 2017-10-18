@@ -1,3 +1,4 @@
+const Chromy = require('chromy');
 var cloneDeep = require('lodash/cloneDeep');
 var path = require('path');
 var fs = require('./fs');
@@ -138,14 +139,39 @@ function writeCompareConfigFile (comparePairsFileName, compareConfig) {
   return fs.writeFile(comparePairsFileName, compareConfigJSON);
 }
 
+function flatMapTestPairs (rawTestPairs) {
+  return rawTestPairs.reduce((acc, result) => {
+    var testPairs = result.testPairs;
+    if (!testPairs) {
+      testPairs = {
+        reference: '',
+        test: '',
+        selector: '',
+        fileName: '',
+        label: '',
+        scenario: result.scenario,
+        viewport: result.viewport,
+        msg: result.msg,
+        error: result.originalError && result.originalError.name
+      };
+    }
+    return acc.concat(testPairs);
+  }, []);
+}
+
 module.exports = function (config, isReference) {
   if (/chrom./i.test(config.engine)) {
-    return delegateScenarios(decorateConfigForCapture(config, isReference)).then(output => {
-      var testPairsFlatMap = output.reduce((acc, result) => {
-        return acc.concat(result.testPairs);
-      }, []);
-      return writeCompareConfigFile(config.tempCompareConfigFileName, { compareConfig: { testPairs: testPairsFlatMap } });
-    });
+    return delegateScenarios(decorateConfigForCapture(config, isReference))
+      .then(rawTestPairs => {
+        const result = {
+          compareConfig: {
+            testPairs: flatMapTestPairs(rawTestPairs)
+          }
+        };
+        return writeCompareConfigFile(config.tempCompareConfigFileName, result);
+      })
+      // Make sure that all Chromy instances are cleaned up.
+      .then(() => Chromy.cleanup());
   }
 
   return writeReferenceCreateConfig(config, isReference).then(function () {
