@@ -515,12 +515,12 @@ Chromy enables a lot of behavior via constructor options.  See Chromy documentat
 
 **Please note:**
 - Setting `port` is way not advised. 
-- Setting `--window-size` will override values used in your viewport settings.
+- Setting `--window-size` in chromeFlags will override values used in your viewport settings. Not advised.
 
 
 An example config below...
 
-```json
+```js
 "engineOptions": {
   waitTimeout: 120000,
   chromePath: /path/to/chrome,
