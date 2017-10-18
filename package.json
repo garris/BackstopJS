@@ -59,6 +59,8 @@
     "phantomjs-prebuilt": "^2.1.7",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
+    "react-image-compare": "0.0.3",
+    "react-modal": "^3.0.3",
     "react-redux": "^5.0.6",
     "react-toggle-button": "^2.1.0",
     "redux": "^3.7.2",

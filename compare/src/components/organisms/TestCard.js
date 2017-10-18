@@ -8,12 +8,13 @@ import TextDetails from '../atoms/TextDetails';
 
 // molecules
 import TestImages from '../molecules/TestImages';
+import ScrubberModal from '../molecules/ScrubberModal';
 
 const CardWrapper = styled.div`
   position: relative;
   margin: 10px auto;
   min-height: 200px;
-  padding: 30px;
+  padding: 10px 30px;
   background-color: ${colors.white};
   box-shadow: ${shadows.shadow01};
 
@@ -36,6 +37,7 @@ export default class TestCard extends React.Component {
     return (
       <CardWrapper status={status} >
         <TextDetails info={info} />
+        <ScrubberModal info={info} />
         <TestImages info={info} status={status} />
       </CardWrapper>
     );
