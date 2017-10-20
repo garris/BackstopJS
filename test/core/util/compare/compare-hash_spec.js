@@ -20,7 +20,7 @@ describe('compare-hashes', function () {
   it('should reject if two images have the same content', function (cb) {
     compareHash(REF_IMG1, REF_IMG1_OPTIMIZED).catch(() => cb());
   });
-  it('should reject if two images exceed the missmatchThreshold', function (cb) {
+  it('should reject if two images exceed the mismatchThreshold', function (cb) {
     compareHash(REF_IMG1, REF_IMG2).catch(() => cb());
   });
 });
