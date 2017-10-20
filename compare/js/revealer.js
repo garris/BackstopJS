@@ -133,11 +133,11 @@
 
             // when the handle is dragged, can either
             // be a 'mousemove' or 'touchmove' event,
-            // caluclate the position of the overlay
+            // calculate the position of the overlay
             $document.on(eventConfig.move, handleDrag);
 
             // when the release action is triggered unbind
-            // event listerners on drag an elements
+            // event listeners on drag an elements
             $document.on(eventConfig.release, removeListeners);
           });
         });
@@ -149,7 +149,7 @@
 
       /**
        * handle the drag of the handle, if the handle is
-       * draged outside the container do nothing. Otherwise
+       * dragged outside the container do nothing. Otherwise
        * calculate the percentage and set the position of
        * the handle and the width of the topImage container
        * @param  {Event Object} e : Event Object
@@ -182,7 +182,7 @@
         e.preventDefault();
 
         // calculate if elem in viewport
-        // if it is, calulate the scroll percentage
+        // if it is, calculate the scroll percentage
         // in relation to the elem, set percentage for revealer
         if (inView(elem, $window, scope.scrollOffset)) {
           var elemTop = getDimensions(elem[0].parentNode).top;
@@ -242,7 +242,7 @@
   }
 
   /**
-   * get the mouse coordsinatea based on a target element
+   * get the mouse coordinates based on a target element
    * @param  {Event object}  e
    * @param  {Object} target position of target element on page
    * @return {Object}        x and y coordinates of mouse
@@ -275,7 +275,7 @@
   /**
    * utility function to throttle the execution
    * of the callback, this is useful when every
-   * opertations need to be done on events that
+   * operations need to be done on events that
    * get executed in rapid succession. The callback
    * will get executed after the delay
    * @param  {Function} cb

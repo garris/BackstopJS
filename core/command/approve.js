@@ -5,7 +5,7 @@ var map = require('p-map');
 var FAILED_DIFF_RE = /^failed_diff_/;
 var FILTER_DEFAULT = /\w+/;
 
-// This task will copy ALL test bitmap files (from the most recent test directory) to the reference directory overwritting any exisiting files.
+// This task will copy ALL test bitmap files (from the most recent test directory) to the reference directory overwriting any existing files.
 module.exports = {
   execute: function (config) {
     // TODO:  IF Exists config.bitmaps_test  &&  list.length > 0n  (otherwise throw)
