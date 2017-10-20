@@ -53,15 +53,15 @@ function decorateConfigForCapture (config, isReference) {
   configJSON.defaultRequireSameDimensions = config.defaultRequireSameDimensions;
 
   if (config.args.filter) {
-    var scenarii = [];
+    var scenarios = [];
     config.args.filter.split(',').forEach(function (filteredTest) {
       each(configJSON.scenarios, function (scenario) {
         if (regexTest(scenario.label, filteredTest)) {
-          scenarii.push(scenario);
+          scenarios.push(scenario);
         }
       });
     });
-    configJSON.scenarios = scenarii;
+    configJSON.scenarios = scenarios;
   }
 
   logger.log('Selected ' + configJSON.scenarios.length + ' of ' + totalScenarioCount + ' scenarios.');
