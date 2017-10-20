@@ -270,7 +270,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   // CREATE SCREEN SHOTS AND TEST COMPARE CONFIGURATION (CONFIG FILE WILL BE SAVED WHEN THIS PROCESS RETURNS)
   // this.echo('Capturing screenshots for ' + makeSafe(vp.name) + ' (' + (vp.width || vp.viewport.width) + 'x' + (vp.height || vp.viewport.height) + ')', 'info');
 
-  // --- HANDLE NO-SELCTORS ---
+  // --- HANDLE NO-SELECTORS ---
   if (!scenario.hasOwnProperty('selectors') || !scenario.selectors.length) {
     scenario.selectors = [DOCUMENT_SELECTOR];
   }
@@ -313,7 +313,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
         ));
       })
       .end()
-      // If an error occured then resolve with an error.
+      // If an error occurred then resolve with an error.
       .catch(e => resolve(new BackstopException('Chromy error', scenario, viewport, e)));
   });
 }

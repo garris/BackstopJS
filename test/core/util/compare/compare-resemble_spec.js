@@ -12,7 +12,7 @@ describe('compare-resemble', function () {
     it('should resolve if two images have the same content', function () {
         return compareResemble(REF_IMG1, REF_IMG1_OPTIMIZED, 0, {});
     });
-    it('should reject if two images exceed the missmatchThreshold', function (cb) {
+    it('should reject if two images exceed the mismatchThreshold', function (cb) {
         compareResemble(REF_IMG1, REF_IMG2, 0, {}).catch(() => cb());
     });
 });

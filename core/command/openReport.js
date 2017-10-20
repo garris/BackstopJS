@@ -15,7 +15,7 @@ module.exports = {
       logger.log('Opening report.');
       open(toAbsolute(config.compareReportURL), function (err) {
         if (err) {
-          logger.error('An error occured while opening report in the default browser.');
+          logger.error('An error occurred while opening report in the default browser.');
         }
         resolve();
       });
