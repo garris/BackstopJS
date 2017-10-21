@@ -10,6 +10,7 @@ import { colors, fonts } from '../../styles';
 const ButtonsWrapper = styled.div`
   display: flex;
   flex: 0 0 auto;
+  height: 100%;
 `;
 
 function ButtonsFilter(props) {
@@ -21,7 +22,7 @@ function ButtonsFilter(props) {
 
   return (
     // change this with React16
-    <div>{ListButton}</div>
+    <div style={{height: '100%'}}>{ListButton}</div>
   );
 }
 

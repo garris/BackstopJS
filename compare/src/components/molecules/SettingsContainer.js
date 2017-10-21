@@ -13,6 +13,7 @@ import { colors, fonts } from '../../styles';
 
 const SettingsWrapper = styled.div`
   flex: 0 0 auto;
+  height: 100%;
 `;
 
 class SettingsPanel extends React.Component {

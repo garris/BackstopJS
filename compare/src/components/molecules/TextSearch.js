@@ -9,6 +9,7 @@ import { colors, fonts } from '../../styles';
 
 const InputWrapper = styled.div`
   flex: 1 1 auto;
+  height: 100%;
 `;
 
 class TextSearch extends React.Component {
