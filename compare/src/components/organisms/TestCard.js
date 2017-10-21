@@ -12,8 +12,7 @@ import ScrubberModal from '../molecules/ScrubberModal';
 
 const CardWrapper = styled.div`
   position: relative;
-  margin: 10px auto;
-  min-height: 200px;
+  margin: 5px auto;
   padding: 10px 30px;
   background-color: ${colors.white};
   box-shadow: ${shadows.shadow01};

@@ -10,7 +10,6 @@ import ImagePreview from '../atoms/ImagePreview';
 const ImagesWrapper = styled.div`
   position: relative;
   display: flex;
-  padding-top: 20px;
 `;
 
 class TestImages extends React.Component {
