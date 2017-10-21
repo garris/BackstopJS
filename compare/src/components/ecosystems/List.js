@@ -8,7 +8,8 @@ import TestCard from '../organisms/TestCard';
 const ListWrapper = styled.section`
   width: 100%;
   margin: 0 auto;
-  margin-top: 50px;
+  margin-top: 20px;
+  z-index: 1;
 `;
 
 class List extends React.Component {
