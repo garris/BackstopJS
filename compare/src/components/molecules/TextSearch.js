@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import styled from 'styled-components';
-import { findTests } from '../../actions'
+import { findTests, filterTests } from '../../actions'
 
 import InputTextSearch from '../atoms/InputTextSearch';
 
@@ -18,10 +18,20 @@ class TextSearch extends React.Component {
     super(props);
   }
 
+  onChange (event) {
+    let value = event.target.value;
+
+    if(value.length > 0) {
+      this.props.findTest(value);
+    } else {
+      this.props.filterTests(this.props.tests.filterStatus);
+    }
+  }
+
   render () {
     return (
       <InputWrapper>
-        <InputTextSearch onChange={this.props.onChange} />
+        <InputTextSearch onChange={this.onChange.bind(this)} />
       </InputWrapper>
     );
   }
@@ -35,8 +45,11 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onChange: value => {
+    findTest: value => {
       dispatch(findTests(value))
+    },
+    filterTests: status => {
+      dispatch(filterTests(status))
     }
   }
 }

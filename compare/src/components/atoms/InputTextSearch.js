@@ -37,13 +37,9 @@ const Input = styled.input`
 
 export default class ButtonFilter extends React.Component {
 
-  handleChange(event) {
-    this.props.onChange(event.target.value);
-  }
-
   render () {
     return (
-      <Input placeholder="Filter tests with search..." onChange={this.handleChange.bind(this)} />
+      <Input placeholder="Filter tests with search..." onChange={this.props.onChange.bind(this)} />
     );
   }
 }
