@@ -36,12 +36,12 @@ export default class NavButtons extends React.Component {
     return (
       <Wrapper>
         {currentId !== 0 &&
-          <Scrollchor to={`#test${this.props.currentId-1}`} animate={{offset: -188, duration: 1000}} className="nav-link">
+          <Scrollchor to={`#test${this.props.currentId-1}`} animate={{offset: -188, duration: 600}} className="nav-link">
             <ButtonNav prev/>
           </Scrollchor>
         }
         {lastId !== currentId &&
-          <Scrollchor to={`#test${this.props.currentId+1}`} animate={{offset: -188, duration: 1000}} className="nav-link">
+          <Scrollchor to={`#test${this.props.currentId+1}`} animate={{offset: -188, duration: 600}} className="nav-link">
             <ButtonNav />
           </Scrollchor>
         }
