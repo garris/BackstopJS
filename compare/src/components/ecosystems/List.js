@@ -14,21 +14,12 @@ const ListWrapper = styled.section`
 
 class List extends React.Component {
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      tests: (props.tests.filtered && props.tests.filtered.length > 0) ? props.tests.filtered : props.tests.all
-    };
-  }
-
   render () {
     let { tests } = this.props;
-    this.state.tests = (tests.filtered && tests.filtered.length > 0) ? tests.filtered : tests.all;
 
     return (
       <ListWrapper>
-        {this.state.tests.map((test, i) =>
+        {tests.map((test, i) =>
           <TestCard test={test} key={i}/>
         )}
       </ListWrapper>
@@ -38,7 +29,7 @@ class List extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    tests: state.tests
+    tests: state.tests.filtered
   }
 };
 

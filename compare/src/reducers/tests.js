@@ -8,7 +8,7 @@ const tests = (state = {}, action) => {
         });
       } else {
         return Object.assign({}, state, {
-          filtered: [],
+          filtered: state.all,
           filterStatus: action.status
         });
       }
