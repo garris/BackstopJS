@@ -15,12 +15,13 @@ const ListWrapper = styled.section`
 class List extends React.Component {
 
   render () {
-    let { tests } = this.props;
+    let { tests, settings } = this.props;
+    let onlyText = !settings.refImage && !settings.testImage && !settings.diffImage;
 
     return (
       <ListWrapper>
-        {tests.map((test, i) =>
-          <TestCard test={test} key={i}/>
+        {tests.map((test, i, arr) =>
+          <TestCard id={`test${i}`} numId={i} test={test} key={i} lastId={arr.length-1} onlyText={onlyText} />
         )}
       </ListWrapper>
     );
@@ -29,7 +30,8 @@ class List extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    tests: state.tests.filtered
+    tests: state.tests.filtered,
+    settings: state.layoutSettings
   }
 };
 

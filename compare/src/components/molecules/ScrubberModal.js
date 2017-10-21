@@ -19,7 +19,7 @@ const Wrapper = styled.div`
 const ButtonSD = styled.button`
   position: absolute;
   top: 15px;
-  right: 150px;
+  right: ${props => props.onlyText ? '10px' : '115px' };
   padding: 10px 20px;
   background-color: ${colors.lightGray};
   color: ${colors.secondaryText};
@@ -100,7 +100,7 @@ class ScrubberModal extends React.Component {
 
     return (
       <Wrapper>
-        <ButtonSD onClick={this.openModal}>SHOW DIFFS</ButtonSD>
+        <ButtonSD onClick={this.openModal} onlyText={this.props.onlyText} >SHOW DIFFS</ButtonSD>
         <Modal
           isOpen={this.state.modalIsOpen}
           onAfterOpen={this.afterOpenModal}
@@ -110,7 +110,6 @@ class ScrubberModal extends React.Component {
         >
           <ButtonClose onClick={this.closeModal} />
           <Logo />
-          {/* <h2 ref={subtitle => this.subtitle = subtitle}>Hello</h2> */}
           <div style={{paddingTop: '20px', paddingLeft: '5px'}}>
             <TextDetails {...this.props} />
           </div>
