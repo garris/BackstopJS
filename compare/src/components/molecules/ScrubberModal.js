@@ -10,7 +10,7 @@ import iconClose from '../../assets/icons/close.png';
 // atoms
 import Logo from '../atoms/Logo';
 import TextDetails from '../atoms/TextDetails';
-// import ImageScrubber from '../atoms/ImageScrubber';
+import ImageScrubber from '../atoms/ImageScrubber';
 
 const Wrapper = styled.div`
   display: block;
@@ -96,7 +96,7 @@ class ScrubberModal extends React.Component {
   }
 
   render () {
-    let { reference: refImage, test: testImage } = this.props;
+    let { reference: refImage, test: testImage } = this.props.info;
 
     return (
       <Wrapper>
@@ -115,7 +115,7 @@ class ScrubberModal extends React.Component {
             <TextDetails {...this.props} />
           </div>
 
-          {/* <ImageScrubber testImage={testImage} refImage={refImage} /> */}
+          {<ImageScrubber testImage={testImage} refImage={refImage} />}
 
         </Modal>
       </Wrapper>
