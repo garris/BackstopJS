@@ -3,7 +3,7 @@ const visibilityFilter = (state = {}, action) => {
     case 'UPDATE_SETTINGS':
       return Object.assign({}, state, {
         [action.id]: !state[action.id]
-      });
+      })
     default:
       return state
   }

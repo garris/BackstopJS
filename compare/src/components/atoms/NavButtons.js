@@ -1,9 +1,9 @@
-import React from 'react';
-import styled from 'styled-components';
-import Scrollchor from 'react-scrollchor';
+import React from 'react'
+import styled from 'styled-components'
+import Scrollchor from 'react-scrollchor'
 
-import {colors} from '../../styles';
-import iconDown from '../../assets/icons/iconDown.png';
+import { colors } from '../../styles'
+import iconDown from '../../assets/icons/iconDown.png'
 
 const Wrapper = styled.div`
   display: block;
@@ -14,7 +14,7 @@ const Wrapper = styled.div`
   a {
     display: inline-block;
   }
-`;
+`
 
 const ButtonNav = styled.div`
   background-color: ${colors.lightGray};
@@ -26,27 +26,34 @@ const ButtonNav = styled.div`
   height: 32px;
   width: 32px;
   margin: 0 5px;
-  transform: ${props => props.prev ? `rotate(0)`: `rotate(180deg)`};
-`;
+  transform: ${props => (props.prev ? `rotate(0)` : `rotate(180deg)`)};
+`
 
 export default class NavButtons extends React.Component {
-  render () {
-    let { currentId, lastId } = this.props;
+  render() {
+    let { currentId, lastId } = this.props
 
     return (
       <Wrapper>
-        {currentId !== 0 &&
-          <Scrollchor to={`#test${this.props.currentId-1}`} animate={{offset: -188, duration: 600}} className="nav-link">
-            <ButtonNav prev/>
+        {currentId !== 0 && (
+          <Scrollchor
+            to={`#test${this.props.currentId - 1}`}
+            animate={{ offset: -188, duration: 600 }}
+            className="nav-link"
+          >
+            <ButtonNav prev />
           </Scrollchor>
-        }
-        {lastId !== currentId &&
-          <Scrollchor to={`#test${this.props.currentId+1}`} animate={{offset: -188, duration: 600}} className="nav-link">
+        )}
+        {lastId !== currentId && (
+          <Scrollchor
+            to={`#test${this.props.currentId + 1}`}
+            animate={{ offset: -188, duration: 600 }}
+            className="nav-link"
+          >
             <ButtonNav />
           </Scrollchor>
-        }
+        )}
       </Wrapper>
-    );
+    )
   }
 }
-

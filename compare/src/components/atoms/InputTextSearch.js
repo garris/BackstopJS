@@ -1,10 +1,10 @@
-import React from 'react';
+import React from 'react'
 import { connect } from 'react-redux'
-import styled from 'styled-components';
+import styled from 'styled-components'
 
-import { colors, fonts } from '../../styles';
+import { colors, fonts } from '../../styles'
 
-import searchIcon from '../../assets/icons/search.png';
+import searchIcon from '../../assets/icons/search.png'
 
 const Input = styled.input`
   display: block;
@@ -33,13 +33,15 @@ const Input = styled.input`
     font-style: italic;
     color: ${colors.secondaryText};
   }
-`;
+`
 
 export default class ButtonFilter extends React.Component {
-
-  render () {
+  render() {
     return (
-      <Input placeholder="Filter tests with search..." onChange={this.props.onChange.bind(this)} />
-    );
+      <Input
+        placeholder="Filter tests with search..."
+        onChange={this.props.onChange.bind(this)}
+      />
+    )
   }
 }

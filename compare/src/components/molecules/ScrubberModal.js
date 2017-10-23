@@ -1,25 +1,25 @@
-import React from 'react';
+import React from 'react'
 // import { connect } from 'react-redux'
-import styled from 'styled-components';
-import Modal from 'react-modal';
+import styled from 'styled-components'
+import Modal from 'react-modal'
 
 // styles & icons
-import { colors, fonts, shadows } from '../../styles';
-import iconClose from '../../assets/icons/close.png';
+import { colors, fonts, shadows } from '../../styles'
+import iconClose from '../../assets/icons/close.png'
 
 // atoms
-import Logo from '../atoms/Logo';
-import TextDetails from '../atoms/TextDetails';
-import ImageScrubber from '../atoms/ImageScrubber';
+import Logo from '../atoms/Logo'
+import TextDetails from '../atoms/TextDetails'
+import ImageScrubber from '../atoms/ImageScrubber'
 
 const Wrapper = styled.div`
   display: block;
-`;
+`
 
 const ButtonSD = styled.button`
   position: absolute;
   top: 15px;
-  right: ${props => props.onlyText ? '10px' : '115px' };
+  right: ${props => (props.onlyText ? '10px' : '115px')};
   padding: 10px 20px;
   background-color: ${colors.lightGray};
   color: ${colors.secondaryText};
@@ -37,7 +37,7 @@ const ButtonSD = styled.button`
   &:hover {
     cursor: pointer;
   }
-`;
+`
 
 const ButtonClose = styled.button`
   position: absolute;
@@ -58,10 +58,10 @@ const ButtonClose = styled.button`
   &:hover {
     cursor: pointer;
   }
-`;
+`
 
 const customStyles = {
-  content : {
+  content: {
     width: '100%',
     height: '100%',
     top: '0',
@@ -71,36 +71,36 @@ const customStyles = {
     padding: '25px 60px',
     boxSizing: 'border-box'
   }
-};
-
+}
 
 class ScrubberModal extends React.Component {
-
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
       modalIsOpen: false
-    };
+    }
 
-    this.openModal = this.openModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
+    this.openModal = this.openModal.bind(this)
+    this.closeModal = this.closeModal.bind(this)
   }
 
   openModal() {
-    this.setState({modalIsOpen: true});
+    this.setState({ modalIsOpen: true })
   }
 
   closeModal() {
-    this.setState({modalIsOpen: false});
+    this.setState({ modalIsOpen: false })
   }
 
-  render () {
-    let { reference: refImage, test: testImage } = this.props.info;
+  render() {
+    let { reference: refImage, test: testImage } = this.props.info
 
     return (
       <Wrapper>
-        <ButtonSD onClick={this.openModal} onlyText={this.props.onlyText} >SHOW DIFFS</ButtonSD>
+        <ButtonSD onClick={this.openModal} onlyText={this.props.onlyText}>
+          SHOW DIFFS
+        </ButtonSD>
         <Modal
           isOpen={this.state.modalIsOpen}
           onAfterOpen={this.afterOpenModal}
@@ -110,28 +110,23 @@ class ScrubberModal extends React.Component {
         >
           <ButtonClose onClick={this.closeModal} />
           <Logo />
-          <div style={{paddingTop: '20px', paddingLeft: '5px'}}>
+          <div style={{ paddingTop: '20px', paddingLeft: '5px' }}>
             <TextDetails {...this.props} />
           </div>
 
           {<ImageScrubber testImage={testImage} refImage={refImage} />}
-
         </Modal>
       </Wrapper>
-    );
+    )
   }
 }
 
 const mapStateToProps = state => {
-  return {
-
-  }
-};
+  return {}
+}
 
 const mapDispatchToProps = dispatch => {
-  return {
-
-  }
+  return {}
 }
 
 // const ScrubberModal = connect(mapStateToProps, mapDispatchToProps)(ScrubberModal);

@@ -1,56 +1,54 @@
-import React from 'react';
+import React from 'react'
 import { connect } from 'react-redux'
-import styled from 'styled-components';
+import styled from 'styled-components'
 // import { findTests } from '../../actions'
 
 // atoms
-import ButtonSettings from '../atoms/ButtonSettings';
+import ButtonSettings from '../atoms/ButtonSettings'
 
 // molecules
-import SettingsPopup from './SettingsPopup';
+import SettingsPopup from './SettingsPopup'
 
-import { colors, fonts } from '../../styles';
+import { colors, fonts } from '../../styles'
 
 const SettingsWrapper = styled.div`
   flex: 0 0 auto;
   height: 100%;
-`;
+`
 
 class SettingsPanel extends React.Component {
-
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
       popup: false
-    };
+    }
   }
 
   onButtonClick() {
     this.setState({
       popup: !this.state.popup
-    });
+    })
   }
 
-  render () {
-    const popupVisible = this.state.popup;
+  render() {
+    const popupVisible = this.state.popup
 
     return (
       <SettingsWrapper>
-        <ButtonSettings onClick={this.onButtonClick.bind(this)} active={this.state.popup} />
-        {popupVisible &&
-          <SettingsPopup />
-        }
+        <ButtonSettings
+          onClick={this.onButtonClick.bind(this)}
+          active={this.state.popup}
+        />
+        {popupVisible && <SettingsPopup />}
       </SettingsWrapper>
-    );
+    )
   }
 }
 
 const mapStateToProps = state => {
-  return {
-
-  }
-};
+  return {}
+}
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -60,6 +58,8 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-const SettingsContainer = connect(mapStateToProps, mapDispatchToProps)(SettingsPanel);
+const SettingsContainer = connect(mapStateToProps, mapDispatchToProps)(
+  SettingsPanel
+)
 
 export default SettingsContainer

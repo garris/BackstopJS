@@ -1,5 +1,5 @@
-import { createStore } from 'redux';
-import rootReducer  from './reducers';
+import { createStore } from 'redux'
+import rootReducer from './reducers'
 
 const defaultState = {
   suiteInfo: {
@@ -8,7 +8,7 @@ const defaultState = {
   },
   tests: {
     all: window.tests.tests,
-    filtered: window.tests.tests.filter(e => e.status === "fail"),
+    filtered: window.tests.tests.filter(e => e.status === 'fail'),
     filterStatus: 'fail'
   },
   availableStatus: [
@@ -20,12 +20,12 @@ const defaultState = {
     {
       id: 'pass',
       label: 'passed',
-      count: window.tests.tests.filter(e => e.status === "pass").length,
+      count: window.tests.tests.filter(e => e.status === 'pass').length
     },
     {
       id: 'fail',
       label: 'failed',
-      count: window.tests.tests.filter(e => e.status === "fail").length,
+      count: window.tests.tests.filter(e => e.status === 'fail').length
     }
   ],
   layoutSettings: {
@@ -33,11 +33,12 @@ const defaultState = {
     testImage: true,
     diffImage: true
   }
-};
+}
 
 const store = createStore(
   rootReducer,
   defaultState,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+)
 
-export default store;
+export default store

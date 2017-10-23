@@ -7,14 +7,14 @@ export const colors = {
   red: '#F44336',
   white: '#FFFFFF',
   lightGray: '#EEEEEE'
-};
+}
 
 export const fonts = {
   latoRegular: 'latoregular',
   latoBold: 'latobold',
   arial: 'Arial'
-};
+}
 
 export const shadows = {
   shadow01: '0 3px 6px 0 rgba(0,0,0,0.16)'
-};
+}

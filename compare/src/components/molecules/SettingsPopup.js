@@ -1,11 +1,11 @@
-import React from 'react';
+import React from 'react'
 import { connect } from 'react-redux'
-import styled from 'styled-components';
+import styled from 'styled-components'
 import { updateSettings } from '../../actions'
 
-import { colors, fonts, shadows } from '../../styles';
+import { colors, fonts, shadows } from '../../styles'
 
-import SettingOption from '../atoms/SettingOption';
+import SettingOption from '../atoms/SettingOption'
 
 const PopupWrapper = styled.div`
   display: block;
@@ -22,37 +22,51 @@ const PopupWrapper = styled.div`
 
   /* @TODO: shadow on arrow */
   &:before {
-    content:'';
-    display:block;
-    width:0;
-    height:0;
-    position:absolute;
+    content: '';
+    display: block;
+    width: 0;
+    height: 0;
+    position: absolute;
 
     border-top: 8px solid transparent;
     border-bottom: 8px solid ${colors.lightGray};
-    border-right:8px solid transparent;
-    border-left:8px solid transparent;
+    border-right: 8px solid transparent;
+    border-left: 8px solid transparent;
     right: 30px;
     top: -16px;
   }
-`;
+`
 
 class SettingsPopup extends React.Component {
-
   constructor(props) {
-    super(props);
+    super(props)
   }
 
-  render () {
-    let { onToggle, settings } = this.props;
+  render() {
+    let { onToggle, settings } = this.props
 
     return (
       <PopupWrapper>
-        <SettingOption id="refImage" label="Reference image" value={settings.refImage} onToggle={onToggle.bind(null, 'refImage')} />
-        <SettingOption id="testImage" label="Test image" value={settings.testImage} onToggle={onToggle.bind(null, 'testImage')} />
-        <SettingOption id="diffImage" label="Diff image" value={settings.diffImage} onToggle={onToggle.bind(null, 'diffImage')} />
+        <SettingOption
+          id="refImage"
+          label="Reference image"
+          value={settings.refImage}
+          onToggle={onToggle.bind(null, 'refImage')}
+        />
+        <SettingOption
+          id="testImage"
+          label="Test image"
+          value={settings.testImage}
+          onToggle={onToggle.bind(null, 'testImage')}
+        />
+        <SettingOption
+          id="diffImage"
+          label="Diff image"
+          value={settings.diffImage}
+          onToggle={onToggle.bind(null, 'diffImage')}
+        />
       </PopupWrapper>
-    );
+    )
   }
 }
 
@@ -60,7 +74,7 @@ const mapStateToProps = state => {
   return {
     settings: state.layoutSettings
   }
-};
+}
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -70,6 +84,8 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-const PopupContainer = connect(mapStateToProps, mapDispatchToProps)(SettingsPopup);
+const PopupContainer = connect(mapStateToProps, mapDispatchToProps)(
+  SettingsPopup
+)
 
 export default PopupContainer

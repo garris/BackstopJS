@@ -1,34 +1,32 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from 'react'
+import styled from 'styled-components'
 
-import { colors, fonts } from '../../styles';
+import { colors, fonts } from '../../styles'
 
 // styled
-const WrapperDetails = styled.div`
-`;
+const WrapperDetails = styled.div``
 
 const Row = styled.div`
   padding: 5px 0;
-`;
+`
 
 const Label = styled.span`
   font-family: ${fonts.latoRegular};
   color: ${colors.secondaryText};
   font-size: 14px;
   padding-right: 8px;
-`;
+`
 
 const Value = styled.span`
   font-family ${fonts.latoBold};
   color: ${colors.primaryText};
   font-size: 14px;
   padding-right: 20px;
-`;
+`
 
 export default class TextDetails extends React.Component {
-
-  render () {
-    let { label, fileName, selector, diff } = this.props.info;
+  render() {
+    let { label, fileName, selector, diff } = this.props.info
 
     return (
       <WrapperDetails>
@@ -51,6 +49,6 @@ export default class TextDetails extends React.Component {
           <Value>{diff.dimensionDifference.height}</Value>
         </Row>
       </WrapperDetails>
-    );
+    )
   }
 }

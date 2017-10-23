@@ -1,39 +1,38 @@
-import React from 'react';
+import React from 'react'
 import { connect } from 'react-redux'
-import styled from 'styled-components';
+import styled from 'styled-components'
 import { findTests, filterTests } from '../../actions'
 
-import InputTextSearch from '../atoms/InputTextSearch';
+import InputTextSearch from '../atoms/InputTextSearch'
 
-import { colors, fonts } from '../../styles';
+import { colors, fonts } from '../../styles'
 
 const InputWrapper = styled.div`
   flex: 1 1 auto;
   height: 100%;
-`;
+`
 
 class TextSearch extends React.Component {
-
   constructor(props) {
-    super(props);
+    super(props)
   }
 
-  onChange (event) {
-    let value = event.target.value;
+  onChange(event) {
+    let value = event.target.value
 
-    if(value.length > 0) {
-      this.props.findTest(value);
+    if (value.length > 0) {
+      this.props.findTest(value)
     } else {
-      this.props.filterTests(this.props.tests.filterStatus);
+      this.props.filterTests(this.props.tests.filterStatus)
     }
   }
 
-  render () {
+  render() {
     return (
       <InputWrapper>
         <InputTextSearch onChange={this.onChange.bind(this)} />
       </InputWrapper>
-    );
+    )
   }
 }
 
@@ -41,7 +40,7 @@ const mapStateToProps = state => {
   return {
     tests: state.tests
   }
-};
+}
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -54,6 +53,8 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-const TextSearchContainer = connect(mapStateToProps, mapDispatchToProps)(TextSearch);
+const TextSearchContainer = connect(mapStateToProps, mapDispatchToProps)(
+  TextSearch
+)
 
 export default TextSearchContainer

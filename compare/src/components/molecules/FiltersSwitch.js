@@ -1,48 +1,56 @@
-import React from 'react';
+import React from 'react'
 import { connect } from 'react-redux'
-import styled from 'styled-components';
+import styled from 'styled-components'
 import { filterTests } from '../../actions'
 
-import ButtonFilter from '../atoms/ButtonFilter';
+import ButtonFilter from '../atoms/ButtonFilter'
 
-import { colors, fonts } from '../../styles';
+import { colors, fonts } from '../../styles'
 
 const ButtonsWrapper = styled.div`
   display: flex;
   flex: 0 0 auto;
   height: 100%;
-`;
+`
 
 function ButtonsFilter(props) {
-  const availableStatus = props.availableStatus;
+  const availableStatus = props.availableStatus
 
-  const ListButton = availableStatus.map(status =>
-    <ButtonFilter status={status.id} key={status.id} label={status.label} selected={props.filterStatus === status.id ? true : false} count={status.count} onClick={() => props.onClick(status.id)}/>
-  );
+  const ListButton = availableStatus.map(status => (
+    <ButtonFilter
+      status={status.id}
+      key={status.id}
+      label={status.label}
+      selected={props.filterStatus === status.id ? true : false}
+      count={status.count}
+      onClick={() => props.onClick(status.id)}
+    />
+  ))
 
   return (
     // change this with React16
-    <div style={{height: '100%'}}>{ListButton}</div>
-  );
+    <div style={{ height: '100%' }}>{ListButton}</div>
+  )
 }
 
 class FiltersSwitch extends React.Component {
-
   constructor(props) {
-    super(props);
-
+    super(props)
   }
 
-  render () {
-    let tests = this.props.tests;
-    let availableStatus = this.props.availableStatus;
-
+  render() {
+    let tests = this.props.tests
+    let availableStatus = this.props.availableStatus
 
     return (
       <ButtonsWrapper>
-        <ButtonsFilter availableStatus={availableStatus} onClick={this.props.onButtonClick} filterStatus={tests.filterStatus}/>
+        <ButtonsFilter
+          availableStatus={availableStatus}
+          onClick={this.props.onButtonClick}
+          filterStatus={tests.filterStatus}
+        />
       </ButtonsWrapper>
-    );
+    )
   }
 }
 
@@ -51,7 +59,7 @@ const mapStateToProps = state => {
     tests: state.tests,
     availableStatus: state.availableStatus
   }
-};
+}
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -61,6 +69,8 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-const FiltersSwitchContainer = connect(mapStateToProps, mapDispatchToProps)(FiltersSwitch);
+const FiltersSwitchContainer = connect(mapStateToProps, mapDispatchToProps)(
+  FiltersSwitch
+)
 
 export default FiltersSwitchContainer
