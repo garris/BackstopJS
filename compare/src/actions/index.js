@@ -18,3 +18,10 @@ export const updateSettings = id => {
     id
   }
 }
+
+export const toggleAllImages = value => {
+  return {
+    type: 'TOGGLE_ALL_IMAGES',
+    value
+  }
+}

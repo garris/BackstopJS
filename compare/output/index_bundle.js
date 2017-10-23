@@ -8954,6 +8954,13 @@ var updateSettings = exports.updateSettings = function updateSettings(id) {
   };
 };
 
+var toggleAllImages = exports.toggleAllImages = function toggleAllImages(value) {
+  return {
+    type: 'TOGGLE_ALL_IMAGES',
+    value: value
+  };
+};
+
 /***/ }),
 /* 61 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -27501,6 +27508,15 @@ Object.defineProperty(exports, "__esModule", {
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+function toggleAll(obj, val) {
+
+  var res = Object.assign({}, obj);
+
+  for (var key in res) {
+    res[key] = val;
+  }return res;
+}
+
 var visibilityFilter = function visibilityFilter() {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
   var action = arguments[1];
@@ -27508,6 +27524,10 @@ var visibilityFilter = function visibilityFilter() {
   switch (action.type) {
     case 'UPDATE_SETTINGS':
       return Object.assign({}, state, _defineProperty({}, action.id, !state[action.id]));
+
+    case 'TOGGLE_ALL_IMAGES':
+      return Object.assign({}, state, toggleAll(state, action.value));
+
     default:
       return state;
   }
@@ -30691,10 +30711,35 @@ var SettingsPopup = function (_React$Component) {
   function SettingsPopup(props) {
     _classCallCheck(this, SettingsPopup);
 
-    return _possibleConstructorReturn(this, (SettingsPopup.__proto__ || Object.getPrototypeOf(SettingsPopup)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (SettingsPopup.__proto__ || Object.getPrototypeOf(SettingsPopup)).call(this, props));
+
+    _this.state = {
+      hideAll: false
+    };
+    return _this;
   }
 
   _createClass(SettingsPopup, [{
+    key: 'toggleAll',
+    value: function toggleAll(val) {
+      this.setState({
+        hideAll: !val
+      });
+
+      this.props.toggleAll(val);
+    }
+  }, {
+    key: 'onToggle',
+    value: function onToggle(id, val) {
+      if (!val) {
+        this.setState({
+          hideAll: false
+        });
+      }
+
+      this.props.onToggle(id);
+    }
+  }, {
     key: 'render',
     value: function render() {
       var _props = this.props,
@@ -30706,22 +30751,28 @@ var SettingsPopup = function (_React$Component) {
         PopupWrapper,
         null,
         _react2.default.createElement(_SettingOption2.default, {
+          id: 'hideAll',
+          label: 'Hide all images',
+          value: this.state.hideAll,
+          onToggle: this.toggleAll.bind(this)
+        }),
+        _react2.default.createElement(_SettingOption2.default, {
           id: 'refImage',
           label: 'Reference image',
           value: settings.refImage,
-          onToggle: onToggle.bind(null, 'refImage')
+          onToggle: this.onToggle.bind(this, 'refImage')
         }),
         _react2.default.createElement(_SettingOption2.default, {
           id: 'testImage',
           label: 'Test image',
           value: settings.testImage,
-          onToggle: onToggle.bind(null, 'testImage')
+          onToggle: this.onToggle.bind(this, 'testImage')
         }),
         _react2.default.createElement(_SettingOption2.default, {
           id: 'diffImage',
           label: 'Diff image',
           value: settings.diffImage,
-          onToggle: onToggle.bind(null, 'diffImage')
+          onToggle: this.onToggle.bind(this, 'diffImage')
         })
       );
     }
@@ -30740,6 +30791,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
     onToggle: function onToggle(id) {
       dispatch((0, _actions.updateSettings)(id));
+    },
+    toggleAll: function toggleAll(value) {
+      dispatch((0, _actions.toggleAllImages)(value));
     }
   };
 };
@@ -30761,7 +30815,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _templateObject = _taggedTemplateLiteral(['\n  display: flex;\n  align-items: center;\n  padding: 10px 0;\n\n  span {\n    padding-left: 10px;\n    font-family: ', ';\n    color: ', ';\n    font-size: 14px;\n  }\n'], ['\n  display: flex;\n  align-items: center;\n  padding: 10px 0;\n\n  span {\n    padding-left: 10px;\n    font-family: ', ';\n    color: ', ';\n    font-size: 14px;\n  }\n']);
+var _templateObject = _taggedTemplateLiteral(['\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  padding: 10px 0;\n\n  span {\n    padding-right: 10px;\n    text-align: left;\n    font-family: ', ';\n    color: ', ';\n    font-size: 14px;\n  }\n'], ['\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  padding: 10px 0;\n\n  span {\n    padding-right: 10px;\n    text-align: left;\n    font-family: ', ';\n    color: ', ';\n    font-size: 14px;\n  }\n']);
 
 var _react = __webpack_require__(3);
 
@@ -30794,15 +30848,10 @@ var WrapperOption = _styledComponents2.default.div(_templateObject, _styles.font
 var SettingOption = function (_React$Component) {
   _inherits(SettingOption, _React$Component);
 
-  function SettingOption(props) {
+  function SettingOption() {
     _classCallCheck(this, SettingOption);
 
-    var _this = _possibleConstructorReturn(this, (SettingOption.__proto__ || Object.getPrototypeOf(SettingOption)).call(this, props));
-
-    _this.state = {
-      value: props.value
-    };
-    return _this;
+    return _possibleConstructorReturn(this, (SettingOption.__proto__ || Object.getPrototypeOf(SettingOption)).apply(this, arguments));
   }
 
   _createClass(SettingOption, [{
@@ -30817,12 +30866,12 @@ var SettingOption = function (_React$Component) {
       return _react2.default.createElement(
         WrapperOption,
         null,
-        _react2.default.createElement(_reactToggleButton2.default, { value: value || false, onToggle: onToggle }),
         _react2.default.createElement(
           'span',
           null,
           label
-        )
+        ),
+        _react2.default.createElement(_reactToggleButton2.default, { value: value || false, onToggle: onToggle })
       );
     }
   }]);
