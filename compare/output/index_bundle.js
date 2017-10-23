@@ -13497,7 +13497,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _templateObject = _taggedTemplateLiteral(['\n'], ['\n']),
+var _templateObject = _taggedTemplateLiteral([''], ['']),
     _templateObject2 = _taggedTemplateLiteral(['\n  padding: 5px 0;\n'], ['\n  padding: 5px 0;\n']),
     _templateObject3 = _taggedTemplateLiteral(['\n  font-family: ', ';\n  color: ', ';\n  font-size: 14px;\n  padding-right: 8px;\n'], ['\n  font-family: ', ';\n  color: ', ';\n  font-size: 14px;\n  padding-right: 8px;\n']),
     _templateObject4 = _taggedTemplateLiteral(['\n  font-family ', ';\n  color: ', ';\n  font-size: 14px;\n  padding-right: 20px;\n'], ['\n  font-family ', ';\n  color: ', ';\n  font-size: 14px;\n  padding-right: 20px;\n']);
@@ -27341,7 +27341,7 @@ var defaultState = {
   tests: {
     all: window.tests.tests,
     filtered: window.tests.tests.filter(function (e) {
-      return e.status === "fail";
+      return e.status === 'fail';
     }),
     filterStatus: 'fail'
   },
@@ -27353,13 +27353,13 @@ var defaultState = {
     id: 'pass',
     label: 'passed',
     count: window.tests.tests.filter(function (e) {
-      return e.status === "pass";
+      return e.status === 'pass';
     }).length
   }, {
     id: 'fail',
     label: 'failed',
     count: window.tests.tests.filter(function (e) {
-      return e.status === "fail";
+      return e.status === 'fail';
     }).length
   }],
   layoutSettings: {
@@ -27530,7 +27530,6 @@ var suiteInfo = function suiteInfo() {
   var action = arguments[1];
 
   switch (action.type) {
-
     default:
       return state;
   }
@@ -27609,7 +27608,6 @@ var App = function (_React$Component) {
                 distanceFromBottom = _ref.distanceFromBottom,
                 calculatedHeight = _ref.calculatedHeight;
 
-            console.log({ isSticky: isSticky, wasSticky: wasSticky, style: style, distanceFromTop: distanceFromTop, distanceFromBottom: distanceFromBottom, calculatedHeight: calculatedHeight });
             return _react2.default.createElement(_Header2.default, { style: style });
           }
         ),
@@ -29789,7 +29787,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _templateObject = _taggedTemplateLiteral(['\n  width: 100%;\n  margin: 0 auto;\n  display: flex;\n  padding: 10px 0;\n  align-items: center;\n  border-bottom: solid 3px ', '\n'], ['\n  width: 100%;\n  margin: 0 auto;\n  display: flex;\n  padding: 10px 0;\n  align-items: center;\n  border-bottom: solid 3px ', '\n']);
+var _templateObject = _taggedTemplateLiteral(['\n  width: 100%;\n  margin: 0 auto;\n  display: flex;\n  padding: 10px 0;\n  align-items: center;\n  border-bottom: solid 3px ', ';\n'], ['\n  width: 100%;\n  margin: 0 auto;\n  display: flex;\n  padding: 10px 0;\n  align-items: center;\n  border-bottom: solid 3px ', ';\n']);
 
 var _react = __webpack_require__(3);
 
@@ -29865,7 +29863,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _templateObject = _taggedTemplateLiteral(['\n  font-size: 26px;\n  font-family: ', ';\n  flex: 0 0 auto;\n  margin: 0;\n  color: ', '\n'], ['\n  font-size: 26px;\n  font-family: ', ';\n  flex: 0 0 auto;\n  margin: 0;\n  color: ', '\n']);
+var _templateObject = _taggedTemplateLiteral(['\n  font-size: 26px;\n  font-family: ', ';\n  flex: 0 0 auto;\n  margin: 0;\n  color: ', ';\n'], ['\n  font-size: 26px;\n  font-family: ', ';\n  flex: 0 0 auto;\n  margin: 0;\n  color: ', ';\n']);
 
 var _react = __webpack_require__(3);
 
@@ -30126,9 +30124,16 @@ function ButtonsFilter(props) {
   var availableStatus = props.availableStatus;
 
   var ListButton = availableStatus.map(function (status) {
-    return _react2.default.createElement(_ButtonFilter2.default, { status: status.id, key: status.id, label: status.label, selected: props.filterStatus === status.id ? true : false, count: status.count, onClick: function onClick() {
+    return _react2.default.createElement(_ButtonFilter2.default, {
+      status: status.id,
+      key: status.id,
+      label: status.label,
+      selected: props.filterStatus === status.id ? true : false,
+      count: status.count,
+      onClick: function onClick() {
         return props.onClick(status.id);
-      } });
+      }
+    });
   });
 
   return (
@@ -30159,7 +30164,11 @@ var FiltersSwitch = function (_React$Component) {
       return _react2.default.createElement(
         ButtonsWrapper,
         null,
-        _react2.default.createElement(ButtonsFilter, { availableStatus: availableStatus, onClick: this.props.onButtonClick, filterStatus: tests.filterStatus })
+        _react2.default.createElement(ButtonsFilter, {
+          availableStatus: availableStatus,
+          onClick: this.props.onButtonClick,
+          filterStatus: tests.filterStatus
+        })
       );
     }
   }]);
@@ -30249,7 +30258,11 @@ var ButtonFilter = function (_React$Component) {
 
       return _react2.default.createElement(
         Button,
-        { onClick: this.props.onClick, selected: this.props.selected, className: status },
+        {
+          onClick: this.props.onClick,
+          selected: this.props.selected,
+          className: status
+        },
         status !== 'all' ? count : '',
         ' ',
         label
@@ -30417,7 +30430,10 @@ var ButtonFilter = function (_React$Component) {
   _createClass(ButtonFilter, [{
     key: 'render',
     value: function render() {
-      return _react2.default.createElement(Input, { placeholder: 'Filter tests with search...', onChange: this.props.onChange.bind(this) });
+      return _react2.default.createElement(Input, {
+        placeholder: 'Filter tests with search...',
+        onChange: this.props.onChange.bind(this)
+      });
     }
   }]);
 
@@ -30515,7 +30531,10 @@ var SettingsPanel = function (_React$Component) {
       return _react2.default.createElement(
         SettingsWrapper,
         null,
-        _react2.default.createElement(_ButtonSettings2.default, { onClick: this.onButtonClick.bind(this), active: this.state.popup }),
+        _react2.default.createElement(_ButtonSettings2.default, {
+          onClick: this.onButtonClick.bind(this),
+          active: this.state.popup
+        }),
         popupVisible && _react2.default.createElement(_SettingsPopup2.default, null)
       );
     }
@@ -30634,7 +30653,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _templateObject = _taggedTemplateLiteral(['\n  display: block;\n  position: absolute;\n  width: auto;\n  min-height: 100px;\n  background-color: ', ';\n  box-shadow: ', ';\n  right: 38px;\n  margin-top: 20px;\n  border-radius: 3px;\n  padding: 10px 25px;\n  z-index: 10;\n\n  /* @TODO: shadow on arrow */\n  &:before {\n    content:\'\';\n    display:block;\n    width:0;\n    height:0;\n    position:absolute;\n\n    border-top: 8px solid transparent;\n    border-bottom: 8px solid ', ';\n    border-right:8px solid transparent;\n    border-left:8px solid transparent;\n    right: 30px;\n    top: -16px;\n  }\n'], ['\n  display: block;\n  position: absolute;\n  width: auto;\n  min-height: 100px;\n  background-color: ', ';\n  box-shadow: ', ';\n  right: 38px;\n  margin-top: 20px;\n  border-radius: 3px;\n  padding: 10px 25px;\n  z-index: 10;\n\n  /* @TODO: shadow on arrow */\n  &:before {\n    content:\'\';\n    display:block;\n    width:0;\n    height:0;\n    position:absolute;\n\n    border-top: 8px solid transparent;\n    border-bottom: 8px solid ', ';\n    border-right:8px solid transparent;\n    border-left:8px solid transparent;\n    right: 30px;\n    top: -16px;\n  }\n']);
+var _templateObject = _taggedTemplateLiteral(['\n  display: block;\n  position: absolute;\n  width: auto;\n  min-height: 100px;\n  background-color: ', ';\n  box-shadow: ', ';\n  right: 38px;\n  margin-top: 20px;\n  border-radius: 3px;\n  padding: 10px 25px;\n  z-index: 10;\n\n  /* @TODO: shadow on arrow */\n  &:before {\n    content: \'\';\n    display: block;\n    width: 0;\n    height: 0;\n    position: absolute;\n\n    border-top: 8px solid transparent;\n    border-bottom: 8px solid ', ';\n    border-right: 8px solid transparent;\n    border-left: 8px solid transparent;\n    right: 30px;\n    top: -16px;\n  }\n'], ['\n  display: block;\n  position: absolute;\n  width: auto;\n  min-height: 100px;\n  background-color: ', ';\n  box-shadow: ', ';\n  right: 38px;\n  margin-top: 20px;\n  border-radius: 3px;\n  padding: 10px 25px;\n  z-index: 10;\n\n  /* @TODO: shadow on arrow */\n  &:before {\n    content: \'\';\n    display: block;\n    width: 0;\n    height: 0;\n    position: absolute;\n\n    border-top: 8px solid transparent;\n    border-bottom: 8px solid ', ';\n    border-right: 8px solid transparent;\n    border-left: 8px solid transparent;\n    right: 30px;\n    top: -16px;\n  }\n']);
 
 var _react = __webpack_require__(3);
 
@@ -30686,9 +30705,24 @@ var SettingsPopup = function (_React$Component) {
       return _react2.default.createElement(
         PopupWrapper,
         null,
-        _react2.default.createElement(_SettingOption2.default, { id: 'refImage', label: 'Reference image', value: settings.refImage, onToggle: onToggle.bind(null, 'refImage') }),
-        _react2.default.createElement(_SettingOption2.default, { id: 'testImage', label: 'Test image', value: settings.testImage, onToggle: onToggle.bind(null, 'testImage') }),
-        _react2.default.createElement(_SettingOption2.default, { id: 'diffImage', label: 'Diff image', value: settings.diffImage, onToggle: onToggle.bind(null, 'diffImage') })
+        _react2.default.createElement(_SettingOption2.default, {
+          id: 'refImage',
+          label: 'Reference image',
+          value: settings.refImage,
+          onToggle: onToggle.bind(null, 'refImage')
+        }),
+        _react2.default.createElement(_SettingOption2.default, {
+          id: 'testImage',
+          label: 'Test image',
+          value: settings.testImage,
+          onToggle: onToggle.bind(null, 'testImage')
+        }),
+        _react2.default.createElement(_SettingOption2.default, {
+          id: 'diffImage',
+          label: 'Diff image',
+          value: settings.diffImage,
+          onToggle: onToggle.bind(null, 'diffImage')
+        })
       );
     }
   }]);
@@ -30783,9 +30817,7 @@ var SettingOption = function (_React$Component) {
       return _react2.default.createElement(
         WrapperOption,
         null,
-        _react2.default.createElement(_reactToggleButton2.default, {
-          value: value || false,
-          onToggle: onToggle }),
+        _react2.default.createElement(_reactToggleButton2.default, { value: value || false, onToggle: onToggle }),
         _react2.default.createElement(
           'span',
           null,
@@ -30872,7 +30904,14 @@ var List = function (_React$Component) {
         ListWrapper,
         null,
         tests.map(function (test, i, arr) {
-          return _react2.default.createElement(_TestCard2.default, { id: 'test' + i, numId: i, test: test, key: i, lastId: arr.length - 1, onlyText: onlyText });
+          return _react2.default.createElement(_TestCard2.default, {
+            id: 'test' + i,
+            numId: i,
+            test: test,
+            key: i,
+            lastId: arr.length - 1,
+            onlyText: onlyText
+          });
         })
       );
     }
@@ -31059,12 +31098,20 @@ var NavButtons = function (_React$Component) {
         null,
         currentId !== 0 && _react2.default.createElement(
           _reactScrollchor2.default,
-          { to: '#test' + (this.props.currentId - 1), animate: { offset: -188, duration: 600 }, className: 'nav-link' },
+          {
+            to: '#test' + (this.props.currentId - 1),
+            animate: { offset: -188, duration: 600 },
+            className: 'nav-link'
+          },
           _react2.default.createElement(ButtonNav, { prev: true })
         ),
         lastId !== currentId && _react2.default.createElement(
           _reactScrollchor2.default,
-          { to: '#test' + (this.props.currentId + 1), animate: { offset: -188, duration: 600 }, className: 'nav-link' },
+          {
+            to: '#test' + (this.props.currentId + 1),
+            animate: { offset: -188, duration: 600 },
+            className: 'nav-link'
+          },
           _react2.default.createElement(ButtonNav, null)
         )
       );
@@ -31335,21 +31382,21 @@ var TestImages = function (_React$Component) {
 
 
       this.state.images = [{
-        id: "refImage",
-        label: "Reference",
+        id: 'refImage',
+        label: 'Reference',
         src: reference,
         visible: settings.refImage
       }, {
-        id: "testImage",
-        label: "Test",
+        id: 'testImage',
+        label: 'Test',
         src: test,
         visible: settings.testImage
       }];
 
       if (status !== 'pass') {
         this.state.images.push({
-          id: "diffImage",
-          label: "Diff",
+          id: 'diffImage',
+          label: 'Diff',
           src: this.props.info.diffImage,
           visible: settings.diffImage
         });
@@ -31359,7 +31406,13 @@ var TestImages = function (_React$Component) {
         ImagesWrapper,
         null,
         this.state.images.map(function (img, i) {
-          return _react2.default.createElement(_ImagePreview2.default, { src: img.src, id: img.id, label: img.label, key: i, hidden: !img.visible });
+          return _react2.default.createElement(_ImagePreview2.default, {
+            src: img.src,
+            id: img.id,
+            label: img.label,
+            key: i,
+            hidden: !img.visible
+          });
         })
       );
     }
@@ -31391,7 +31444,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _templateObject = _taggedTemplateLiteral(['\n  width: auto;\n  max-height: 150px;\n'], ['\n  width: auto;\n  max-height: 150px;\n']),
+var _templateObject = _taggedTemplateLiteral(['\n  width: auto;\n  max-width: 100%;\n  max-height: 150px;\n'], ['\n  width: auto;\n  max-width: 100%;\n  max-height: 150px;\n']),
     _templateObject2 = _taggedTemplateLiteral(['\n  flex: 1 1 auto;\n  padding: 0 25px;\n  padding-top: 20px;\n  text-align: center;\n'], ['\n  flex: 1 1 auto;\n  padding: 0 25px;\n  padding-top: 20px;\n  text-align: center;\n']),
     _templateObject3 = _taggedTemplateLiteral(['\n  text-align: center;\n  font-family: ', ';\n  color: ', ';\n  display: block;\n  margin: 0 auto;\n  text-transform: uppercase;\n  padding: 5px 0;\n  padding-bottom: 15px;\n  font-size: 12px;\n'], ['\n  text-align: center;\n  font-family: ', ';\n  color: ', ';\n  display: block;\n  margin: 0 auto;\n  text-transform: uppercase;\n  padding: 5px 0;\n  padding-bottom: 15px;\n  font-size: 12px;\n']);
 
@@ -32571,7 +32624,8 @@ var ImageScrubber = function (_React$Component) {
           {
             verticalAlign: 'top',
             minDistanceToBeginInteraction: 0,
-            maxAngleToBeginInteraction: Infinity },
+            maxAngleToBeginInteraction: Infinity
+          },
           _react2.default.createElement('img', { className: 'refImage', src: this.props.refImage }),
           _react2.default.createElement('img', { className: 'testImage', src: this.props.testImage }),
           _react2.default.createElement('div', { className: 'slider' })

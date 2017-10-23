@@ -5,6 +5,7 @@ import { colors, fonts } from '../../styles'
 
 const Image = styled.img`
   width: auto;
+  max-width: 100%;
   max-height: 150px;
 `
 
