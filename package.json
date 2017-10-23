@@ -21,7 +21,7 @@
     "integration-test": "rm -rf newdir && mkdir newdir && cd newdir && node ../cli/index.js genConfig && node ../cli/index.js reference && node ../cli/index.js test && node -e \"require('../')('test')\""
   },
   "lint-staged": {
-    "compare/**/*.js": [
+    "compare/src/**/*.js": [
       "node_modules/.bin/prettier --single-quote --no-semi --write",
       "git add"
     ]
