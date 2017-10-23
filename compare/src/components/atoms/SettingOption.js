@@ -8,10 +8,12 @@ import { colors, fonts, shadows } from '../../styles'
 const WrapperOption = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: 10px 0;
 
   span {
-    padding-left: 10px;
+    padding-right: 10px;
+    text-align: left;
     font-family: ${fonts.latoRegular};
     color: ${colors.primaryText};
     font-size: 14px;
@@ -19,22 +21,14 @@ const WrapperOption = styled.div`
 `
 
 export default class SettingOption extends React.Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      value: props.value
-    }
-  }
-
   render() {
     let { label, value, onToggle } = this.props
 
     return (
       <WrapperOption>
-        <ToggleButton value={value || false} onToggle={onToggle} />
-
         <span>{label}</span>
+
+        <ToggleButton value={value || false} onToggle={onToggle} />
       </WrapperOption>
     )
   }

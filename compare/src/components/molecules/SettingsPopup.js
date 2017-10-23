@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
-import { updateSettings } from '../../actions'
+import { updateSettings, toggleAllImages } from '../../actions'
 
 import { colors, fonts, shadows } from '../../styles'
 
@@ -40,6 +40,28 @@ const PopupWrapper = styled.div`
 class SettingsPopup extends React.Component {
   constructor(props) {
     super(props)
+
+    this.state = {
+      hideAll: false
+    }
+  }
+
+  toggleAll(val) {
+    this.setState({
+      hideAll: !val
+    })
+
+    this.props.toggleAll(val)
+  }
+
+  onToggle(id, val) {
+    if (!val) {
+      this.setState({
+        hideAll: false
+      })
+    }
+
+    this.props.onToggle(id)
   }
 
   render() {
@@ -48,22 +70,28 @@ class SettingsPopup extends React.Component {
     return (
       <PopupWrapper>
         <SettingOption
+          id="hideAll"
+          label="Hide all images"
+          value={this.state.hideAll}
+          onToggle={this.toggleAll.bind(this)}
+        />
+        <SettingOption
           id="refImage"
           label="Reference image"
           value={settings.refImage}
-          onToggle={onToggle.bind(null, 'refImage')}
+          onToggle={this.onToggle.bind(this, 'refImage')}
         />
         <SettingOption
           id="testImage"
           label="Test image"
           value={settings.testImage}
-          onToggle={onToggle.bind(null, 'testImage')}
+          onToggle={this.onToggle.bind(this, 'testImage')}
         />
         <SettingOption
           id="diffImage"
           label="Diff image"
           value={settings.diffImage}
-          onToggle={onToggle.bind(null, 'diffImage')}
+          onToggle={this.onToggle.bind(this, 'diffImage')}
         />
       </PopupWrapper>
     )
@@ -80,6 +108,9 @@ const mapDispatchToProps = dispatch => {
   return {
     onToggle: id => {
       dispatch(updateSettings(id))
+    },
+    toggleAll: value => {
+      dispatch(toggleAllImages(value))
     }
   }
 }
