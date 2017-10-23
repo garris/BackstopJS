@@ -15,9 +15,16 @@
     "openReport": "node ./cli/index.js openReport",
     "echo": "node ./cli/index.js echo",
     "unit-test": "mocha --reporter spec --recursive test/",
+    "precommit": "lint-staged",
     "build-compare": "webpack --config ./compare/webpack.config.js",
     "dev-compare": "webpack-dev-server --content-base ./compare/output --config ./compare/webpack.config.js",
     "integration-test": "rm -rf newdir && mkdir newdir && cd newdir && node ../cli/index.js genConfig && node ../cli/index.js reference && node ../cli/index.js test && node -e \"require('../')('test')\""
+  },
+  "lint-staged": {
+    "compare/**/*.js": [
+      "node_modules/.bin/prettier --single-quote --no-semi --write",
+      "git add"
+    ]
   },
   "repository": {
     "type": "git",
@@ -39,8 +46,11 @@
     "eslint-plugin-standard": "^2.0.0",
     "file-loader": "^0.11.2",
     "gulp": "^3.9.1",
+    "husky": "^0.14.3",
+    "lint-staged": "^4.3.0",
     "mocha": "^1.21.5",
     "mockery": "^1.4.0",
+    "prettier": "^1.7.4",
     "url-loader": "^0.5.9"
   },
   "dependencies": {
