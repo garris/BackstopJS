@@ -145,7 +145,7 @@ url                      // [required] The url of your app state
 referenceUrl             // Specify a different state or environment when creating reference.
 readyEvent               // Wait until this string has been logged to the console.
 readySelector            // Wait until this selector exists before continuing.
-delay                    // Wait for x millisections
+delay                    // Wait for x milliseconds
 hideSelectors            // Array of selectors set to visibility: hidden
 removeSelectors          // Array of selectors set to display: none
 onReadyScript            // After the above conditions are met -- use this script to modify UI state prior to screen shots e.g. hovers, clicks etc.
@@ -631,14 +631,14 @@ As a (very approximate) rule of thumb, BackstopJS will use 100MB RAM plus approx
 To adjust this value add the following to the root of your config...
 ```json
 "asyncCompareLimit": 100
-// Would require 600MB to run tests. Your milage most likely will vary ;)
+// Would require 600MB to run tests. Your mileage most likely will vary ;)
 ```
 
 ### Creating reference files
 This Utility command will by default delete all existing screen references and create new ones based on the `referenceUrl` or `url` config config. It will not run any file comparisons.
 
 Use this when you...
-- create references from another enviornment (e.g. staging vs prod)
+- create references from another environment (e.g. staging vs prod)
 - or clean out your reference files and start fresh with all new reference
 - or just create references without previewing
 
