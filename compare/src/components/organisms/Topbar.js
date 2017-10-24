@@ -11,9 +11,18 @@ const TopbarWrapper = styled.section`
   width: 100%;
   margin: 0 auto;
   display: flex;
-  padding: 10px 0;
+  padding: 0 30px;
   align-items: center;
-  border-bottom: solid 3px ${colors.borderGray};
+  box-sizing: border-box;
+  flex-wrap: wrap;
+`
+
+const Separator = styled.div`
+  width: 100%;
+  height: 3px;
+  background: ${colors.borderGray};
+  flex-basis: 100%;
+  margin: 10px 0;
 `
 
 export default class Topbar extends React.Component {
@@ -23,6 +32,7 @@ export default class Topbar extends React.Component {
         <SuiteNameContainer />
         <IdContainer />
         <Logo />
+        <Separator />
       </TopbarWrapper>
     )
   }

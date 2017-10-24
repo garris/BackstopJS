@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { StickyContainer, Sticky } from 'react-sticky'
+import { StickyContainer } from 'react-sticky'
 
 import Header from './ecosystems/Header'
 import List from './ecosystems/List'
@@ -13,7 +13,8 @@ export default class App extends React.Component {
   render() {
     return (
       <StickyContainer>
-        <Sticky topOffset={200}>
+        <Header />
+        {/* <Sticky topOffset={200}>
           {({
             isSticky,
             wasSticky,
@@ -24,7 +25,7 @@ export default class App extends React.Component {
           }) => {
             return <Header style={style} />
           }}
-        </Sticky>
+        </Sticky> */}
         <Wrapper>
           <List />
         </Wrapper>

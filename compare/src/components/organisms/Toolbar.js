@@ -5,17 +5,21 @@ import FiltersSwitchContainer from '../molecules/FiltersSwitch'
 import TextSearchContainer from '../molecules/TextSearch'
 import SettingsContainer from '../molecules/SettingsContainer'
 
+import { colors } from '../../styles'
+
 const ToolbarWrapper = styled.section`
   width: 100%;
-  margin: 10px auto;
-  height: 60px;
+  padding: 10px 30px;
+  background: ${colors.bodyColor};
+  height: 80px;
   display: flex;
+  box-sizing: border-box;
 `
 
 export default class Toolbar extends React.Component {
   render() {
     return (
-      <ToolbarWrapper>
+      <ToolbarWrapper style={this.props.style}>
         <FiltersSwitchContainer />
         <TextSearchContainer />
         <SettingsContainer />
