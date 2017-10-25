@@ -531,6 +531,14 @@ An example config below...
 
 ### Integration options (local install)
 
+TLDR; run the example here...
+```
+cd backstopjs/test/configs/
+node multi_step node_example
+```
+
+Details...
+
 Installing BackstopJS locally to your project makes a few integration options available.
 
 The most basic example probably looks like this....
@@ -546,13 +554,7 @@ npm install backstopjs
 ./node_modules/backstopjs/cli/index.js test --config=<myConfigPath>
 ```
 
-If you are going to call backstop from another app you will probably want to do something like this...
-
-```sh
-$ npm install backstopjs
-```
-
-Once installed you can require your local backstop installation into your project.
+If you are going to call backstop from another app you can import it into your project...
 
 ```js
 const backstop = require('backstopjs');
@@ -575,8 +577,22 @@ backstop('test', {config:'custom/backstop/config.json'});
 
 #### Pass a config object to the command
 ```js
-// you can also pass
+// you can also pass a literal object
 backstop('test', {
+  config: {
+    id: "foo",
+    scenarios: [
+      //some scenarios here
+    ]
+  }
+});
+```
+
+#### The `--filter` argument still works too -- just pass a `filter` prop instead.
+```js
+// you can also pass a literal object
+backstop('test', {
+  filter: 'someScenarioLabelAsRegExString',
   config: {
     id: "foo",
     scenarios: [

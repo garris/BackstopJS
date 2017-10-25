@@ -15,7 +15,7 @@
     "test": "node ./cli/index.js test",
     "openReport": "node ./cli/index.js openReport",
     "echo": "node ./cli/index.js echo",
-    "unit-test": "mocha --reporter spec --recursive test/",
+    "unit-test": "mocha --reporter spec --recursive test/cli",
     "integration-test": "rm -rf newdir && mkdir newdir && cd newdir && node ../cli/index.js genConfig && node ../cli/index.js reference && node ../cli/index.js test && node -e \"require('../')('test')\""
   },
   "repository": {
