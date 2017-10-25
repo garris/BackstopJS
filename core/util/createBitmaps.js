@@ -42,7 +42,7 @@ function decorateConfigForCapture (config, isReference) {
   var totalScenarioCount = configJSON.scenarios.length;
 
   var screenshotNow = new Date();
-  var screenshotDateTime = screenshotNow.getFullYear() + pad(screenshotNow.getMonth() + 1) + pad(screenshotNow.getDate()) + '-' + pad(screenshotNow.getHours()) + pad(screenshotNow.getMinutes()) + pad(screenshotNow.getSeconds());
+  var screenshotDateTime = screenshotNow.getFullYear() + pad(screenshotNow.getMonth() + 1) + pad(screenshotNow.getDate());
 
   configJSON.screenshotDateTime = screenshotDateTime;
   configJSON.env = cloneDeep(config);
