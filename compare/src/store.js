@@ -28,6 +28,10 @@ const defaultState = {
       count: window.tests.tests.filter(e => e.status === 'fail').length
     }
   ],
+  scrubber: {
+    visible: false,
+    test: {}
+  },
   layoutSettings: {
     refImage: true,
     testImage: true,

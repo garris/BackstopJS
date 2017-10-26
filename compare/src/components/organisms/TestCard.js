@@ -9,7 +9,7 @@ import NavButtons from '../atoms/NavButtons'
 
 // molecules
 import TestImages from '../molecules/TestImages'
-import ScrubberModal from '../molecules/ScrubberModal'
+import ScrubberButton from '../molecules/ScrubberButton'
 
 const CardWrapper = styled.div`
   position: relative;
@@ -42,7 +42,7 @@ export default class TestCard extends React.Component {
           <NavButtons currentId={this.props.numId} lastId={this.props.lastId} />
         )}
         <TextDetails info={info} />
-        <ScrubberModal info={info} onlyText={onlyText} />
+        <ScrubberButton info={info} onlyText={onlyText} />
         <TestImages info={info} status={status} />
       </CardWrapper>
     )
