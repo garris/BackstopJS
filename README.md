@@ -468,7 +468,7 @@ By default, BackstopJS saves generated resources into the `backstop_data` direct
 ```
 
 ### Changing the rendering engine
-BackstopJS supports using Chrome-Headless, PhantomJS or SlimerJS for web app rendering. PhantomJS is currently the default value and will be installed by default.
+BackstopJS supports using Chrome-Headless, PhantomJS or SlimerJS for web app rendering. Chrome-headless (chromy) is currently the default value and will be installed by default.
 
 #### Chrome-Headless (The latest webkit library)
 This will also enable the very cool _chromy.js_ (https://github.com/OnetapInc/chromy) library.  (When creating onBefore and onReady scripts please make sure you are referring to the [Chromy script documentation](https://github.com/OnetapInc/chromy).  Casper features will not work with this setting.)
