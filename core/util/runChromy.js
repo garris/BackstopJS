@@ -68,7 +68,10 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
     chromeFlags: flags,
     port: port,
     waitTimeout: TEST_TIMEOUT,
-    visible: config.debugWindow || false
+    visible: config.debugWindow || false,
+    chromePath: config.chromePath,
+    gotoTimeout: config.gotoTimeout,
+    waitTimeout: config.waitTimeout
   }).chain();
 
   /**
