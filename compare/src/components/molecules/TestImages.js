@@ -23,8 +23,6 @@ class TestImages extends React.Component {
   }
 
   onImageClick() {
-    console.log('click on image')
-
     let { openModal } = this.props
 
     openModal(this.props.info)

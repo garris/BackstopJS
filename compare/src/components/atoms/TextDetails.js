@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import styled from 'styled-components'
 
 import { colors, fonts } from '../../styles'
@@ -24,12 +25,13 @@ const Value = styled.span`
   padding-right: 20px;
 `
 
-export default class TextDetails extends React.Component {
+class TextDetails extends React.Component {
   render() {
-    let { label, fileName, selector, diff } = this.props.info
+    const { label, fileName, selector, diff } = this.props.info
+    const { settings } = this.props
 
     return (
-      <WrapperDetails>
+      <WrapperDetails hidden={!settings.textInfo}>
         <Row>
           <Label>label: </Label>
           <Value>{label}</Value>
@@ -52,3 +54,13 @@ export default class TextDetails extends React.Component {
     )
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    settings: state.layoutSettings
+  }
+}
+
+const TextDetailsContainer = connect(mapStateToProps)(TextDetails)
+
+export default TextDetailsContainer

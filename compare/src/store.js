@@ -33,6 +33,7 @@ const defaultState = {
     test: {}
   },
   layoutSettings: {
+    textInfo: true,
     refImage: true,
     testImage: true,
     diffImage: true
