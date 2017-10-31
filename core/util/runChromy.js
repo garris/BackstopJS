@@ -85,7 +85,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   let chromyOptions = Object.assign({}, defaultOptions, engineOptions);
 
   // if chromeFlags has not been explicitly set, then set it. (this is the expected case)
-  if (!chromyOptions.chromeFlags)
+  if (!chromyOptions.chromeFlags) {
     chromyOptions.chromeFlags = DEFAULT_CHROME_FLAGS;
   }
 
@@ -94,7 +94,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
     chromyOptions.chromeFlags.concat(`--window-size=${VP_W},${VP_H}`);
   }
 
-  console.log('Starting Chromy:', `port:${PORT}`, flags.toString());
+  console.log('Starting Chromy:', JSON.stringify(chromyOptions));
   let chromy = new Chromy(chromyOptions).chain();
 
   /**

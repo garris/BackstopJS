@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// --inspect-brk
 
 var parseArgs = require('minimist');
 var usage = require('./usage');
