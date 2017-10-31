@@ -136,7 +136,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   // --- set up console output ---
   chromy.console(function (text, consoleObj) {
     if (console[consoleObj.level]) {
-      console[consoleObj.level](port + ' ' + (consoleObj.level).toUpperCase() + ' > ', text);
+      console[consoleObj.level](PORT + ' ' + (consoleObj.level).toUpperCase() + ' > ', text);
     }
   });
 
@@ -146,9 +146,9 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
       return v ? parseInt(v[2], 10) : 0;
     })
     .result(chromeVersion => {
-      console.info(`${port} Chrome v${chromeVersion} detected.`);
+      console.info(`${PORT} Chrome v${chromeVersion} detected.`);
       if (chromeVersion < MIN_CHROME_VERSION) {
-        console.warn(`${port} ***WARNING! CHROME VERSION ${MIN_CHROME_VERSION} OR GREATER IS REQUIRED. PLEASE UPDATE YOUR CHROME APP!***`);
+        console.warn(`${PORT} ***WARNING! CHROME VERSION ${MIN_CHROME_VERSION} OR GREATER IS REQUIRED. PLEASE UPDATE YOUR CHROME APP!***`);
       }
     });
 
@@ -172,7 +172,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
     if (fs.existsSync(beforeScriptPath)) {
       require(beforeScriptPath)(chromy, scenario, viewport, isReference);
     } else {
-      console.warn(port, ' WARNING: script not found: ' + beforeScriptPath);
+      console.warn(PORT, ' WARNING: script not found: ' + beforeScriptPath);
     }
   }
 
@@ -212,9 +212,9 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   if (config.debug) {
     chromy
       .evaluate(_ => document.head.outerHTML)
-      .result(headStr => console.log(port + 'HEAD > ', headStr))
+      .result(headStr => console.log(PORT + 'HEAD > ', headStr))
       .evaluate(_ => document.body.outerHTML)
-      .result(htmlStr => console.log(port + 'BODY > ', htmlStr));
+      .result(htmlStr => console.log(PORT + 'BODY > ', htmlStr));
   }
 
   // --- REMOVE SELECTORS ---
@@ -247,7 +247,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
     if (fs.existsSync(readyScriptPath)) {
       require(readyScriptPath)(chromy, scenario, viewport, isReference);
     } else {
-      console.warn(port, 'WARNING: script not found: ' + readyScriptPath);
+      console.warn(PORT, 'WARNING: script not found: ' + readyScriptPath);
     }
   }
 
