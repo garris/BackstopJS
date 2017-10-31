@@ -61,6 +61,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   const DEFAULT_CHROME_FLAGS = ['--disable-gpu', '--force-device-scale-factor=1', '--disable-infobars=true'];
   const PORT = CHROMY_STARTING_PORT_NUMBER + runId;
   let defaultOptions = {
+    chromeFlags: undefined,
     port: PORT,
     waitTimeout: TEST_TIMEOUT,
     visible: config.debugWindow || false
@@ -91,7 +92,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
 
   // if --window-size= has not been explicity set, then set it. (this is the expected case)
   if (!/--window-size=/i.test(chromyOptions.chromeFlags.toString())) {
-    chromyOptions.chromeFlags.concat(`--window-size=${VP_W},${VP_H}`);
+    chromyOptions.chromeFlags = chromyOptions.chromeFlags.concat(`--window-size=${VP_W},${VP_H}`);
   }
 
   console.log('Starting Chromy:', JSON.stringify(chromyOptions));
