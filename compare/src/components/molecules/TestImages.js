@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
+import { openModal } from '../../actions'
 
 import { colors, shadows } from '../../styles'
 
@@ -19,6 +20,12 @@ class TestImages extends React.Component {
     this.state = {
       images: []
     }
+  }
+
+  onImageClick() {
+    let { openModal } = this.props
+
+    openModal(this.props.info)
   }
 
   render() {
@@ -56,6 +63,7 @@ class TestImages extends React.Component {
             src={img.src}
             id={img.id}
             label={img.label}
+            onClick={this.onImageClick.bind(this)}
             key={i}
             hidden={!img.visible}
           />
@@ -71,6 +79,16 @@ const mapStateToProps = state => {
   }
 }
 
-const TestImagesContainer = connect(mapStateToProps)(TestImages)
+const mapDispatchToProps = dispatch => {
+  return {
+    openModal: value => {
+      dispatch(openModal(value))
+    }
+  }
+}
+
+const TestImagesContainer = connect(mapStateToProps, mapDispatchToProps)(
+  TestImages
+)
 
 export default TestImagesContainer

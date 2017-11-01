@@ -27509,7 +27509,6 @@ Object.defineProperty(exports, "__esModule", {
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function toggleAll(obj, val) {
-
   var res = Object.assign({}, obj);
 
   for (var key in res) {
@@ -27617,20 +27616,7 @@ var App = function (_React$Component) {
       return _react2.default.createElement(
         _reactSticky.StickyContainer,
         null,
-        _react2.default.createElement(
-          _reactSticky.Sticky,
-          { topOffset: 200 },
-          function (_ref) {
-            var isSticky = _ref.isSticky,
-                wasSticky = _ref.wasSticky,
-                style = _ref.style,
-                distanceFromTop = _ref.distanceFromTop,
-                distanceFromBottom = _ref.distanceFromBottom,
-                calculatedHeight = _ref.calculatedHeight;
-
-            return _react2.default.createElement(_Header2.default, { style: style });
-          }
-        ),
+        _react2.default.createElement(_Header2.default, null),
         _react2.default.createElement(
           Wrapper,
           null,
@@ -29734,7 +29720,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _templateObject = _taggedTemplateLiteral(['\n  width: 100%;\n  margin: 0 auto;\n  padding: 15px 30px;\n  background: ', ';\n  z-index: 999;\n  box-sizing: border-box;\n  position: relative;\n'], ['\n  width: 100%;\n  margin: 0 auto;\n  padding: 15px 30px;\n  background: ', ';\n  z-index: 999;\n  box-sizing: border-box;\n  position: relative;\n']);
+var _templateObject = _taggedTemplateLiteral(['\n  width: 100%;\n  margin: 0 auto;\n  padding: 15px 0;\n  z-index: 999;\n  box-sizing: border-box;\n  position: relative;\n'], ['\n  width: 100%;\n  margin: 0 auto;\n  padding: 15px 0;\n  z-index: 999;\n  box-sizing: border-box;\n  position: relative;\n']);
 
 var _react = __webpack_require__(3);
 
@@ -29766,7 +29752,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
-var HeaderWrapper = _styledComponents2.default.section(_templateObject, _styles.colors.bodyColor);
+var HeaderWrapper = _styledComponents2.default.section(_templateObject);
 
 var Header = function (_React$Component) {
   _inherits(Header, _React$Component);
@@ -29782,9 +29768,22 @@ var Header = function (_React$Component) {
     value: function render() {
       return _react2.default.createElement(
         HeaderWrapper,
-        { style: this.props.style, className: 'header' },
+        { className: 'header' },
         _react2.default.createElement(_topbar2.default, null),
-        _react2.default.createElement(_Toolbar2.default, null)
+        _react2.default.createElement(
+          _reactSticky.Sticky,
+          { topOffset: 200 },
+          function (_ref) {
+            var isSticky = _ref.isSticky,
+                wasSticky = _ref.wasSticky,
+                style = _ref.style,
+                distanceFromTop = _ref.distanceFromTop,
+                distanceFromBottom = _ref.distanceFromBottom,
+                calculatedHeight = _ref.calculatedHeight;
+
+            return _react2.default.createElement(_Toolbar2.default, { style: style });
+          }
+        )
       );
     }
   }]);
@@ -29807,7 +29806,8 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _templateObject = _taggedTemplateLiteral(['\n  width: 100%;\n  margin: 0 auto;\n  display: flex;\n  padding: 10px 0;\n  align-items: center;\n  border-bottom: solid 3px ', ';\n'], ['\n  width: 100%;\n  margin: 0 auto;\n  display: flex;\n  padding: 10px 0;\n  align-items: center;\n  border-bottom: solid 3px ', ';\n']);
+var _templateObject = _taggedTemplateLiteral(['\n  width: 100%;\n  margin: 0 auto;\n  display: flex;\n  padding: 0 30px;\n  align-items: center;\n  box-sizing: border-box;\n  flex-wrap: wrap;\n'], ['\n  width: 100%;\n  margin: 0 auto;\n  display: flex;\n  padding: 0 30px;\n  align-items: center;\n  box-sizing: border-box;\n  flex-wrap: wrap;\n']),
+    _templateObject2 = _taggedTemplateLiteral(['\n  width: 100%;\n  height: 3px;\n  background: ', ';\n  flex-basis: 100%;\n  margin: 10px 0;\n'], ['\n  width: 100%;\n  height: 3px;\n  background: ', ';\n  flex-basis: 100%;\n  margin: 10px 0;\n']);
 
 var _react = __webpack_require__(3);
 
@@ -29841,7 +29841,9 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
-var TopbarWrapper = _styledComponents2.default.section(_templateObject, _styles.colors.borderGray);
+var TopbarWrapper = _styledComponents2.default.section(_templateObject);
+
+var Separator = _styledComponents2.default.div(_templateObject2, _styles.colors.borderGray);
 
 var Topbar = function (_React$Component) {
   _inherits(Topbar, _React$Component);
@@ -29860,7 +29862,8 @@ var Topbar = function (_React$Component) {
         null,
         _react2.default.createElement(_SuiteName2.default, null),
         _react2.default.createElement(_IdContainer2.default, null),
-        _react2.default.createElement(_Logo2.default, null)
+        _react2.default.createElement(_Logo2.default, null),
+        _react2.default.createElement(Separator, null)
       );
     }
   }]);
@@ -30034,7 +30037,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _templateObject = _taggedTemplateLiteral(['\n  width: 100%;\n  margin: 10px auto;\n  height: 60px;\n  display: flex;\n'], ['\n  width: 100%;\n  margin: 10px auto;\n  height: 60px;\n  display: flex;\n']);
+var _templateObject = _taggedTemplateLiteral(['\n  width: 100%;\n  padding: 10px 30px;\n  background: ', ';\n  height: 80px;\n  display: flex;\n  box-sizing: border-box;\n'], ['\n  width: 100%;\n  padding: 10px 30px;\n  background: ', ';\n  height: 80px;\n  display: flex;\n  box-sizing: border-box;\n']);
 
 var _react = __webpack_require__(3);
 
@@ -30056,6 +30059,8 @@ var _SettingsContainer = __webpack_require__(262);
 
 var _SettingsContainer2 = _interopRequireDefault(_SettingsContainer);
 
+var _styles = __webpack_require__(8);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -30066,7 +30071,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
-var ToolbarWrapper = _styledComponents2.default.section(_templateObject);
+var ToolbarWrapper = _styledComponents2.default.section(_templateObject, _styles.colors.bodyColor);
 
 var Toolbar = function (_React$Component) {
   _inherits(Toolbar, _React$Component);
@@ -30082,7 +30087,7 @@ var Toolbar = function (_React$Component) {
     value: function render() {
       return _react2.default.createElement(
         ToolbarWrapper,
-        null,
+        { style: this.props.style },
         _react2.default.createElement(_FiltersSwitch2.default, null),
         _react2.default.createElement(_TextSearch2.default, null),
         _react2.default.createElement(_SettingsContainer2.default, null)

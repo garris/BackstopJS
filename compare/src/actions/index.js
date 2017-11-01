@@ -25,3 +25,17 @@ export const toggleAllImages = value => {
     value
   }
 }
+
+export const openModal = value => {
+  return {
+    type: 'OPEN_SCRUBBER_MODAL',
+    value
+  }
+}
+
+export const closeModal = value => {
+  return {
+    type: 'CLOSE_SCRUBBER_MODAL',
+    value
+  }
+}

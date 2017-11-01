@@ -29,3 +29,11 @@ html_report
 bitmaps_test
 compare/config.js
 capture/config.json
+
+compare/output/bitmaps_reference/
+
+compare/output/bitmaps_test/
+
+compare/output/config\.js
+
+\.vscode/

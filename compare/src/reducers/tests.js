@@ -18,19 +18,20 @@ const tests = (state = {}, action) => {
       if (action.value.length > 0) {
         return Object.assign({}, state, {
           filtered: state.all.filter(e => {
+            let fileName = e.pair.fileName.toLowerCase()
+            let label = e.pair.label.toLowerCase()
+
             if (state.filterStatus !== 'all') {
               if (
                 e.status === state.filterStatus &&
-                e.pair.label
-                  .toLowerCase()
-                  .indexOf(action.value.toLowerCase()) !== -1
+                (label.indexOf(action.value.toLowerCase()) !== -1 ||
+                  fileName.indexOf(action.value.toLowerCase()) !== -1)
               )
                 return true
             } else {
               if (
-                e.pair.label
-                  .toLowerCase()
-                  .indexOf(action.value.toLowerCase()) !== -1
+                label.indexOf(action.value.toLowerCase()) !== -1 ||
+                fileName.indexOf(action.value.toLowerCase()) !== -1
               )
                 return true
             }
