@@ -511,11 +511,11 @@ See casperjs documentation for more info on instance options.  An example config
 ```
 
 ### Setting Chromy option flags
-Chromy enables a lot of behavior via constructor options.  See Chromy documentation for more info.  
+Chromy enables a lot of behavior via constructor options.  See Chromy documentation for more info.
 
 **NOTE:** Backstop sets defaults for many Chromy properties. Setting a parameter value with engineOptions will override any default value set by backstop. _But please watch out for the following..._
 - (TLDR) Setting `port` is _very_ _very_ not advised.
-- Setting `chromeFlags` will override all chromeFlags properties set by backstop -- **EXCEPT FOR `--window-size`***...  (i.e. `--window-size` flag will be added by backstop if not found in chromeFlags) 
+- Setting `chromeFlags` will override all chromeFlags properties set by backstop -- **EXCEPT FOR `--window-size`***...  (i.e. `--window-size` flag will be added by backstop if not found in chromeFlags)
 - Setting `--window-size` explicitly in `chromeFlags` will override values used in your viewport settings.
 
 
@@ -732,8 +732,14 @@ For all engines there is also the `debug` setting.  This enables verbose console
 ```
 
 
-### The dreaded: `Error: Failed to launch a browser.`
+### `Error: Failed to launch a browser.`
 Sometimes (usually after an app error) a chrome process is left open. If that's the case try...
+```
+pkill -f "(chrome)?(--headless)"
+```
+
+### `Chromy error: Error. See scenario ...`
+Same as the above issue. If a zombie Chrome instance is blocking a port, you can run...
 ```
 pkill -f "(chrome)?(--headless)"
 ```
