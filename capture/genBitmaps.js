@@ -407,5 +407,5 @@ function genHash (str) {
 }
 
 function makeSafe (str) {
-  return str.replace(/[ /]/g, '_');
+  return str && str.replace(/[ /]/g, '_') || '';
 }
