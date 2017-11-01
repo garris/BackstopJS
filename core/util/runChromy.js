@@ -92,7 +92,8 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
 
   // if --window-size= has not been explicity set, then set it. (this is the expected case)
   if (!/--window-size=/i.test(chromyOptions.chromeFlags.toString())) {
-    chromyOptions.chromeFlags = chromyOptions.chromeFlags.concat(`--window-size=${VP_W},${VP_H}`);
+    chromyOptions.chromeFlags = chromyOptions.chromeFlags.concat('--window-size=' + VP_W + ',' + VP_H + '');
+    // chromyOptions.chromeFlags = chromyOptions.chromeFlags.concat(`--window-size=${VP_W},${VP_H}`);
   }
 
   console.log('Starting Chromy:', JSON.stringify(chromyOptions));
