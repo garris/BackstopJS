@@ -468,7 +468,7 @@ By default, BackstopJS saves generated resources into the `backstop_data` direct
 ```
 
 ### Changing the rendering engine
-BackstopJS supports using Chrome-Headless, PhantomJS or SlimerJS for web app rendering. PhantomJS is currently the default value and will be installed by default.
+BackstopJS supports using Chrome-Headless, PhantomJS or SlimerJS for web app rendering. Chrome-headless (chromy) is currently the default value and will be installed by default.
 
 #### Chrome-Headless (The latest webkit library)
 This will also enable the very cool _chromy.js_ (https://github.com/OnetapInc/chromy) library.  (When creating onBefore and onReady scripts please make sure you are referring to the [Chromy script documentation](https://github.com/OnetapInc/chromy).  Casper features will not work with this setting.)
@@ -504,7 +504,7 @@ The default port used by BackstopJS is 3001.   You can change it by setting the 
 -->
 
 ### Setting Casper command-line flags
-This is for you if for some reason you find yourself needing advanced configuration access to CasperJS.  You can set CasperJS flags via `casperFlags` like so...
+See casperjs documentation for more info on instance options.  An example config below...
 
 ```json
 "casperFlags": [
@@ -515,7 +515,34 @@ This is for you if for some reason you find yourself needing advanced configurat
 ]
 ```
 
+### Setting Chromy option flags
+Chromy enables a lot of behavior via constructor options.  See Chromy documentation for more info.
+
+**NOTE:** Backstop sets defaults for many Chromy properties. Setting a parameter value with engineOptions will override any default value set by backstop. _But please watch out for the following..._
+- (TLDR) Setting `port` is _very_ _very_ not advised.
+- Setting `chromeFlags` will override all chromeFlags properties set by backstop -- **EXCEPT FOR `--window-size`***...  (i.e. `--window-size` flag will be added by backstop if not found in chromeFlags)
+- Setting `--window-size` explicitly in `chromeFlags` will override values used in your viewport settings.
+
+
+An example config below...
+
+```js
+"engineOptions": {
+  waitTimeout: 120000,
+  chromePath: /path/to/chrome,
+  chromeFlags: ['--disable-gpu', '--force-device-scale-factor=1']
+}
+```
+
 ### Integration options (local install)
+
+TLDR; run the example here...
+```
+cd backstopjs/test/configs/
+node multi_step node_example
+```
+
+Details...
 
 Installing BackstopJS locally to your project makes a few integration options available.
 
@@ -532,13 +559,7 @@ npm install backstopjs
 ./node_modules/backstopjs/cli/index.js test --config=<myConfigPath>
 ```
 
-If you are going to call backstop from another app you will probably want to do something like this...
-
-```sh
-$ npm install backstopjs
-```
-
-Once installed you can require your local backstop installation into your project.
+If you are going to call backstop from another app you can import it into your project...
 
 ```js
 const backstop = require('backstopjs');
@@ -561,8 +582,22 @@ backstop('test', {config:'custom/backstop/config.json'});
 
 #### Pass a config object to the command
 ```js
-// you can also pass
+// you can also pass a literal object
 backstop('test', {
+  config: {
+    id: "foo",
+    scenarios: [
+      //some scenarios here
+    ]
+  }
+});
+```
+
+#### The `--filter` argument still works too -- just pass a `filter` prop instead.
+```js
+// you can also pass a literal object
+backstop('test', {
+  filter: 'someScenarioLabelAsRegExString',
   config: {
     id: "foo",
     scenarios: [
@@ -702,8 +737,14 @@ For all engines there is also the `debug` setting.  This enables verbose console
 ```
 
 
-### The dreaded: `Error: Failed to launch a browser.`
+### `Error: Failed to launch a browser.`
 Sometimes (usually after an app error) a chrome process is left open. If that's the case try...
+```
+pkill -f "(chrome)?(--headless)"
+```
+
+### `Chromy error: Error. See scenario ...`
+Same as the above issue. If a zombie Chrome instance is blocking a port, you can run...
 ```
 pkill -f "(chrome)?(--headless)"
 ```
