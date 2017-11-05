@@ -86,9 +86,9 @@ function capturePageSelectors (scenarios, viewports, bitmapsReferencePath, bitma
     scenario.sIndex = i;
 
     // Change to scenario's viewports if exists
-    if (scenario.viewports) {
+    if(scenario.viewports) {
       viewports = scenario.viewports;
-      this.echo('Scenario viewports has been set ' + JSON.stringify(scenario.viewports), 'debug');
+      console.log(`Following viewports will be used for scenario: '${scenario.label}': ` + JSON.stringify(scenario.viewports));
     }
 
     processScenario(casper, scenario, scenarioLabelSafe, scenarioLabelSafe, viewports, bitmapsReferencePath, bitmapsTestPath, screenshotDateTime);
