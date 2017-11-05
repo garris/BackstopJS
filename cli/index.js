@@ -24,17 +24,22 @@ if (argsOptions.h || argsOptions.help) {
 }
 
 if (argsOptions.v || argsOptions.version) {
-  console.log('BackstopJS ' + version);
+  console.log('BackstopJS v' + version);
   process.exit();
 }
 
 var commandName = argsOptions['_'][0];
+
+if (/^init$/i.test(commandName)) {
+  commandName = 'genConfig';
+}
 
 if (!commandName) {
   console.log(usage);
   process.exit();
 } else {
   var exitCode = 0;
+  console.log('BackstopJS v' + version);
   runner(commandName, argsOptions).catch(function () {
     exitCode = 1;
   });

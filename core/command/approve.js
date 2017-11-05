@@ -3,8 +3,9 @@ var path = require('path');
 var map = require('p-map');
 
 var FAILED_DIFF_RE = /^failed_diff_/;
+var FILTER_DEFAULT = /\w+/;
 
-// This task will copy ALL test bitmap files (from the most recent test directory) to the reference directory overwritting any exisiting files.
+// This task will copy ALL test bitmap files (from the most recent test directory) to the reference directory overwriting any existing files.
 module.exports = {
   execute: function (config) {
     // TODO:  IF Exists config.bitmaps_test  &&  list.length > 0n  (otherwise throw)
@@ -21,9 +22,16 @@ module.exports = {
         console.log('The following files will be promoted to reference...');
         return map(files, (file) => {
           if (FAILED_DIFF_RE.test(file)) {
-            file = file.replace(FAILED_DIFF_RE, "");
-            console.log('> ', file);
-            return fs.copy(path.join(src, file), path.join(config.bitmaps_reference, file));
+            file = file.replace(FAILED_DIFF_RE, '');
+
+            let imageFilter = FILTER_DEFAULT;
+            if (config.args && config.args.filter) {
+              imageFilter = new RegExp(config.args.filter);
+            }
+            if (imageFilter.test(file)) {
+              console.log('> ', file);
+              return fs.copy(path.join(src, file), path.join(config.bitmaps_reference, file));
+            }
           }
           return true;
         });

@@ -1,0 +1,111 @@
+html {
+  background:#faebd7 url('./duskBg1.png') no-repeat center center fixed;
+  background-size: cover;
+}
+body {
+  font-family: 'Encode Sans', sans-serif;
+  color: #444;
+  background-color: transparent;
+}
+a:hover {
+  background-color: rgba(150, 200, 255, .5);
+  text-decoration: none;
+  color: #faebd7;
+}
+.github-link {
+  display: inline-block;
+  border-radius: 25px;
+}
+.lemur-link:hover {
+  background-color: transparent;
+}
+.page-root {
+  max-width: 1000px;
+}
+.moneyshot {
+  padding: 3rem 0;
+  text-align: center;
+}
+.mascotBlock {
+  perspective: 1000px;
+  margin-bottom: -0.4rem;
+}
+.logoBlock {
+  perspective: 1000px;
+  margin-bottom: .5rem;
+}
+.lemurInYourFace:hover {
+  transform: translateZ(100px);
+}
+.hideLemur .lemurInYourFace {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateZ(200px);
+}
+.lemurInYourFace {
+  transition: transform 750ms ease, opacity 750ms ease, visibility 800ms ease;
+  width: 50%;
+  /*min-width: 270px;*/
+  z-index: 1;
+  position: relative;
+}
+.hideLemur #lemurButt {
+  opacity: 1;
+}
+#lemurButt {
+  position: absolute;
+  left: calc(50% - 40px);
+  bottom: 10px;
+  opacity: 0;
+  width: 20%;
+  max-width: 100px;
+}
+.github-icon {
+  width: 50px;
+}
+.cta {
+  display: block;
+}
+.BackstopJS3:hover {
+  transform: translateZ(50px);
+}
+.BackstopJS3 {
+  transition: transform 750ms ease;
+  width: 75%;
+  /*min-width: 270px;*/
+}
+.getItBlock, .supportsBlock {
+  padding: 3rem 0;
+  text-align: center;
+  font-weight: 200;
+}
+.casper {
+  color: #BD10E0;
+}
+.chromy {
+  color: #9013FE;
+}
+
+h1, p { font-size: 1em; color: #666; font-weight: 300}
+
+/*Small devices (landscape phones, 576px and up)*/
+@media screen and (min-width: 576px) {
+  h1, p { font-size: 1.3rem; }
+}
+
+/*Medium devices (tablets, 768px and up)*/
+@media screen and (min-width: 768px) {
+  h1, p { font-size: 1.5rem; }
+}
+
+/*Large devices (desktops, 992px and up)*/
+@media (min-width: 992px) {
+  h1, p { font-size: 1.8rem; }
+}
+
+/*Extra large devices (large desktops, 1200px and up)*/
+@media (min-width: 1200px) {
+  h1, p { font-size: 2.1rem; }
+}
+
+

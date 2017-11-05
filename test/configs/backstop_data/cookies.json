@@ -1,0 +1,14 @@
+[
+  {
+    "domain": ".garris.github.io",
+    "path": "/",
+    "name": "theLemurHasLanded",
+    "value": "true",
+    "expirationDate": 1798790400,
+    "hostOnly": false,
+    "httpOnly": false,
+    "secure": false,
+    "session": false,
+    "sameSite": "no_restriction"
+  }
+]

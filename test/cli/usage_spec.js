@@ -4,7 +4,7 @@ var assert = require('assert');
 var expectedUsage = "Welcome to BackstopJS 2.1.4 CLI\n\
 \n\
 Commands:\n\
-    reference      Create reference screenshots of your web content at multiple sceen sizes.\n\
+    reference      Create reference screenshots of your web content at multiple screen sizes.\n\
     test           Create test screenshots of your web content and compare against the set you created using `backstop reference`.\n\
     genConfig      Generate a configuration file boilerplate in your current directory. PLEASE NOTE: this will force overwrite any existing config.\n\
     openReport     View your last test screenshots in your browser.\n\

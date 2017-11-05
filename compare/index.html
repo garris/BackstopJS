@@ -84,7 +84,7 @@
         <img ng-src="{{ thisTestPair.b.src }}" alt="Test" ng-click="openModal('lg', thisTestPair.a.src, thisTestPair.b.src)" onerror="this.src=BASE64_PNG_STUB"/>
       </div>
       <div ng-if="!thisTestPair.passed">
-        <img ng-src="{{ thisTestPair.c.src || 'missingImg.png' }}" image-name="c" alt="Difference" onerror="this.src=BASE64_PNG_STUB"/>
+        <a target="_diff" href="{{ thisTestPair.c.src || 'missingImg.png' }}"><img ng-src="{{ thisTestPair.c.src || 'missingImg.png' }}" image-name="c" alt="Difference" onerror="this.src=BASE64_PNG_STUB"/></a>
       </div>
       <div ng-if="showPairStats">
         <div class="statusInds">
@@ -105,12 +105,12 @@
       <div class="modal-body" id="modal-body">
 
         <div class="btn-group " role="group">
-          <button type="button" class="btn btn-success" ng-click="setImgPositionValue(0)">Reference</button>
-          <button type="button" class="btn btn-warning" ng-click="setImgPositionValue(100)">Test</button>
+          <button type="button" class="btn btn-success" ng-click="setImgPositionValue(100)">Reference</button>
+          <button type="button" class="btn btn-warning" ng-click="setImgPositionValue(0)">Test</button>
         </div>
 
-        <revealer top-image="{{ selected.testImg }}"
-                  bottom-image="{{ selected.referenceImg }}"
+        <revealer top-image="{{ selected.referenceImg }}"
+                  bottom-image="{{ selected.testImg }}"
                   start-position = "imgPositionValue">
         </revealer>
 

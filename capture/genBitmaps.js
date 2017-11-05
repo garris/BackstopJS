@@ -1,5 +1,7 @@
 /* eslint-disable no-path-concat */
 var DOCUMENT_SELECTOR = 'document';
+var BODY_SELECTOR = 'body';
+var VIEWPORT_SELECTOR = 'viewport';
 
 var fs = require('fs');
 var cwd = fs.workingDirectory;
@@ -35,7 +37,7 @@ if (!config.paths) {
 var outputFormat = '.' + (config.outputFormat && config.outputFormat.match(/jpg|jpeg/) || 'png');
 var bitmapsReferencePath = config.paths.bitmaps_reference || 'bitmaps_reference';
 var bitmapsTestPath = config.paths.bitmaps_test || 'bitmaps_test';
-var casperScriptsPath = config.paths.casper_scripts || null;
+var casperScriptsPath = config.paths.engine_scripts || config.paths.casper_scripts || null;
 var comparePairsFileName = config.paths.tempCompareConfigFileName;
 var viewports = config.viewports;
 var scenarios = config.scenarios || config.grabConfigs;
@@ -160,8 +162,23 @@ function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabe
         }, // on timeout
         scriptTimeout
       );
-      casper.wait(scenario.delay || 1);
     });
+
+    casper.then(function () {
+      if (scenario.readySelector) {
+        casper.waitForSelector(
+          scenario.readySelector,
+          function () {
+            casper.echo('readySelector found.');
+          },
+          function () {
+            casper.echo('readySelector NOT found.');
+          }
+        );
+      }
+    });
+
+    casper.wait(scenario.delay || 1);
 
     casper.then(function () {
       this.echo('Current location is ' + url, 'info');
@@ -189,7 +206,7 @@ function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabe
     });
 
     this.then(function () {
-      this.echo('Capturing screenshots for ' + makeSafe(vp.name) + ' (' + (vp.width || vp.viewport.width) + 'x' + (vp.height || vp.viewport.height) + ')', 'info');
+      this.echo('Capturing screenshots for ' + makeSafe(vp.label) + ' (' + (vp.width || vp.viewport.width) + 'x' + (vp.height || vp.viewport.height) + ')', 'info');
 
       // HIDE SELECTORS WE WANT TO AVOID
       if (scenario.hasOwnProperty('hideSelectors')) {
@@ -224,6 +241,9 @@ function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabe
         scenario.selectorsExpanded = scenario.selectors.reduce(function (acc, selector) {
           if (selector === DOCUMENT_SELECTOR) {
             return acc.concat([DOCUMENT_SELECTOR]);
+          }
+          if (selector === BODY_SELECTOR || selector === VIEWPORT_SELECTOR) {
+            return acc.concat([BODY_SELECTOR]);
           }
 
           var expandedSelector = casper.evaluate(function (selector) {
@@ -260,14 +280,14 @@ function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabe
       scenario.selectorsExpanded.forEach(function (o, i, a) {
         var cleanedSelectorName = o.replace(/[^a-z0-9_-]/gi, ''); // remove anything that's not a letter or a number
 
-        var fileName = getFilename(scenario.sIndex, scenarioOrVariantLabel, i, cleanedSelectorName, viewportIndex, vp.name);
+        var fileName = getFilename(scenario.sIndex, scenarioOrVariantLabel, i, cleanedSelectorName, viewportIndex, vp.label);
 
-        var referenceFilePath = bitmapsReferencePath + '/' + getFilename(scenario.sIndex, scenarioLabel, i, cleanedSelectorName, viewportIndex, vp.name);
+        var referenceFilePath = bitmapsReferencePath + '/' + getFilename(scenario.sIndex, scenarioLabel, i, cleanedSelectorName, viewportIndex, vp.label);
         var testFilePath = bitmapsTestPath + '/' + screenshotDateTime + '/' + fileName;
 
         var filePath = (isReference) ? referenceFilePath : testFilePath;
 
-        captureScreenshot(casper, filePath, o);
+        captureScreenshot(casper, filePath, o, vp);
 
         if (!isReference) {
             var requireSameDimensions;
@@ -302,9 +322,16 @@ function getMisMatchThreshHold (scenario) {
   return config.defaultMisMatchThreshold;
 }
 
-function captureScreenshot (casper, filePath, selector) {
+function captureScreenshot (casper, filePath, selector, vp) {
   if (selector === 'body:noclip' || selector === 'document') {
     casper.capture(filePath);
+  } else if (selector === 'body') {
+    casper.capture(filePath, {
+      top: 0,
+      left: 0,
+      width: vp.width || vp.viewport.width,
+      height: vp.height || vp.viewport.height
+    });
   } else if (casper.exists(selector)) {
     if (casper.visible(selector)) {
       casper.captureSelector(filePath, selector);
@@ -386,5 +413,5 @@ function genHash (str) {
 }
 
 function makeSafe (str) {
-  return str.replace(/[ /]/g, '_');
+  return str && str.replace(/[ /]/g, '_') || '';
 }
