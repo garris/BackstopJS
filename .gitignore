@@ -37,3 +37,4 @@ compare/output/bitmaps_test/
 compare/output/config\.js
 
 \.vscode/
+/compare/output/index_bundle.js
