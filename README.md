@@ -748,7 +748,9 @@ pkill -f "(chrome)?(--headless)"
 
 Did you install BackstopJS with the global option?  If installing globally remember to add that `-g` when installing with npm *i.e.* `npm install backstop -g`.     If you installed *locally*, remember that the `backstop <command>` pattern will only be available to your npm scripts -- see the local installation section above for more info.
 
+### Issues when installing
 
+Somethimes bad permissions happen to good people.  It's ok, this is a safe space.  Hopefully this will help... https://github.com/garris/BackstopJS/issues/545
 
 
 ### Projects don't work when I share with other users or run in different environments.
