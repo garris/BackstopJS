@@ -77,6 +77,7 @@ module.exports = function (config) {
   var compareConfig = require(config.tempCompareConfigFileName).compareConfig;
   var report = new Reporter(config.ciReport.testSuiteName);
   var asyncCompareLimit = config.asyncCompareLimit || ASYNC_COMPARE_LIMIT;
+  report.id = config.id;
 
   return map(compareConfig.testPairs, pair => comparePair(pair, report, config), {concurrency: asyncCompareLimit})
     .then(

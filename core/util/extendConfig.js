@@ -14,6 +14,7 @@ function extendConfig (config, userConfig) {
   casper(config, userConfig);
   engine(config, userConfig);
 
+  config.id = userConfig.id;
   config.engine = userConfig.engine || null;
   config.report = userConfig.report || ['browser'];
   config.defaultMisMatchThreshold = 0.1;
