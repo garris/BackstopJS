@@ -8,7 +8,7 @@ const IdTitle = styled.h3`
   font-size: 14px;
   font-family: ${fonts.arial};
   font-weight: normal;
-  font-style: italic;
+  font-style: normal;
   margin: 0;
   color: ${colors.secondaryText};
   flex: 1 0 auto;

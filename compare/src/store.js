@@ -4,12 +4,12 @@ import rootReducer from './reducers'
 const defaultState = {
   suiteInfo: {
     testSuiteName: window.tests.testSuite,
-    idConfig: 'backstop_default'
+    idConfig: window.tests.id
   },
   tests: {
     all: window.tests.tests,
-    filtered: window.tests.tests.filter(e => e.status === 'fail'),
-    filterStatus: 'fail'
+    filtered: window.tests.tests,
+    filterStatus: 'all'
   },
   availableStatus: [
     {
