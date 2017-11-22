@@ -731,10 +731,12 @@ For all engines there is also the `debug` setting.  This enables verbose console
 "debug": true
 ```
 
-### Issues with Docker and Travis
-Please keep in mind, Chrome is most likely going to need a lot of memory. Take a look at these if you are seeing weird errors with Docker or Travis testing...
+### Issues with Chrome-Headless in Docker
+Please keep in mind, Chrome-Headless will need a lot of memory. Take a look at these if you are seeing weird timeout errors with Docker...
 https://github.com/garris/BackstopJS/issues/603#issuecomment-346478523
+
 https://github.com/garris/BackstopJS/issues/537#issuecomment-339710797
+
 
 ### `Error: Failed to launch a browser.`
 Sometimes (usually after an app error) a chrome process is left open. If that's the case try...
