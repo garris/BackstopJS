@@ -36,7 +36,7 @@ function loadProjectConfig (command, options, config) {
   var CMD_REQUIRES_CONFIG = command !== 'genConfig';
   if (CMD_REQUIRES_CONFIG) {
     if (options && typeof options.config === 'object') {
-      console.log('Config detected:');
+      console.log('Config detected:', options.config);
       userConfig = options.config;
     } else if (config.backstopConfigFileName) {
       try {
