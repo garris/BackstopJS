@@ -4,7 +4,7 @@ ENV \
 	PHANTOMJS_VERSION=2.1.1 \
 	CASPERJS_VERSION=1.1.4 \
 	SLIMERJS_VERSION=0.10.3 \
-	BACKSTOPJS_VERSION=3.0.34 \
+	BACKSTOPJS_VERSION=3.0.36 \
 	# Workaround to fix phantomjs-prebuilt installation errors
 	# See https://github.com/Medium/phantomjs/issues/707
 	NPM_CONFIG_UNSAFE_PERM=true
