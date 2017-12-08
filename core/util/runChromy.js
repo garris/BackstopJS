@@ -59,7 +59,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   const VP_H = viewport.height || viewport.viewport.height;
 
   const DEFAULT_CHROME_FLAGS = ['--disable-gpu', '--force-device-scale-factor=1', '--disable-infobars=true'];
-  const PORT = CHROMY_STARTING_PORT_NUMBER + runId;
+  const PORT = (config.startingPort || CHROMY_STARTING_PORT_NUMBER) + runId;
   let defaultOptions = {
     chromeFlags: undefined,
     port: PORT,
