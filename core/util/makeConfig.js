@@ -3,10 +3,10 @@ var extendConfig = require('./extendConfig');
 
 function projectPath (config) {
   // Legacy mode, if the cwd is the backstop module
-  if (config.backstop === process.cwd()) {
-    console.log('BackstopJS is running in legacy mode.');
-    return path.join(__dirname, '../../../..');
-  }
+  // if (config.backstop === process.cwd()) {
+  //   console.log('BackstopJS is running in legacy mode.');
+  //   return path.join(__dirname, '../../../..');
+  // }
   return process.cwd();
 }
 
@@ -18,7 +18,7 @@ function loadProjectConfig (command, options, config) {
   }
 
   var customConfigPath = options && (options.backstopConfigFilePath || options.configPath);
-  if(options && typeof options.config === "string"  && !customConfigPath){
+  if (options && typeof options.config === 'string' && !customConfigPath) {
     customConfigPath = options.config;
   }
 

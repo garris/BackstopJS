@@ -55,6 +55,8 @@ $ npm install -g backstopjs
 ## Getting started
 ### Installation
 
+**[Chrome 62 or greater is required!](https://www.google.com/chrome/browser/beta.html)**
+
 #### Global installation (recommended)
 ```sh
 $ npm install -g backstopjs
@@ -66,7 +68,7 @@ BackstopJS will run as a totally stand alone app -- but installing locally allow
 const backstop = require('backstopjs');
 ```
 
-See [Integration Options](#integration-options) to learn about cool BackstopJS integration options!
+See [Integration Options](#integration-options-local-install) to learn about cool BackstopJS integration options!
 
 
 ### Initializing your project
@@ -74,7 +76,7 @@ See [Integration Options](#integration-options) to learn about cool BackstopJS i
 **If you don't already have BackstopJS set up...**
 BackstopJS can create a default configuration file and project scaffolding in your current working directory. Please note: this will overwrite any existing files!
 
-`cd` to your projects's directory and run...
+`cd` to your project's directory and run...
 
 ```sh
 $ backstop init
@@ -97,6 +99,8 @@ As a new user setting up tests for your project, you will be primarily concerned
 
 - **`scenarios[n].label`** – Required. Also used for screenshot naming.
 - **`scenarios[n].url`** – Required. Tells BackstopJS what endpoint/document you want to test.  This can be an absolute URL or local to your current working directory.
+
+_TIP: no other SCENARIO properties are required. Other properties can just be added as necessary_
 
 ### Generating test bitmaps
 
@@ -121,7 +125,9 @@ Pass a `--filter=<scenarioLabelRegex>` argument to just run scenarios matching y
 $ backstop approve
 ```
 
-Change can be good!  When running this command, all images (with changes) from your most recent test batch will be promoted to your reference collection. Subsequent tests will be compared against your updated reference files.
+When running this command, all images (with changes) from your most recent test batch will be promoted to your reference collection. Subsequent tests will be compared against your updated reference files.
+
+Pass a `--filter=<scenarioLabelRegex>` argument to promote only the test captures matching your scenario label.
 
 **Tip**: Remember to pass a `--config=<configFilePathStr>` argument if you passed that when you ran your last test.
 
@@ -134,11 +140,12 @@ Scenario properties are described throughout this document and **processed seque
 ```js
 label                    // [required] Tag saved with your reference images
 onBeforeScript           // Used to set up browser state e.g. cookies.
+cookiePath               // import cookies in JSON format (available with default onBeforeScript see setting cookies below)
 url                      // [required] The url of your app state
-referenceUrl             // Specify a different state or enviornment when creating reference.
+referenceUrl             // Specify a different state or environment when creating reference.
 readyEvent               // Wait until this string has been logged to the console.
 readySelector            // Wait until this selector exists before continuing.
-delay                    // Wait for x millisections
+delay                    // Wait for x milliseconds
 hideSelectors            // Array of selectors set to visibility: hidden
 removeSelectors          // Array of selectors set to display: none
 onReadyScript            // After the above conditions are met -- use this script to modify UI state prior to screen shots e.g. hovers, clicks etc.
@@ -150,6 +157,30 @@ selectorExpansion        // See Targeting elements in the next section for more 
 misMatchThreshold        // Around of change before a test is marked failed
 requireSameDimensions    // If set to true -- any change in selector size will trigger a test failure.
 ```
+
+
+### Testing click and hover interactions
+BackstopJS ships with an onReady script that enables the following interaction selectors...
+```
+clickSelector: ".my-hamburger-menu",
+hoverSelector: ".my-hamburger-menu .some-menu-item",
+```
+The above would tell BackstopJS to wait for your app to generate an element with a `.my-hamburger-menu` class, then click that selector.   Then it would wait again for a `.my-hamburger-menu .some-menu-item` class, then move the cursor over that element (causing a hover state).  Then BackstopJS would take a screenshot.
+
+You can use these properties independent of each other to easily test various click and or hover states in your app.  These are obviously simple scenarios -- if you have more complex needs then this example should serve as a pretty good starting point create your own onReady scripts.
+
+
+### Setting cookies
+BackstopJS ships with an onBefore script that makes it easy to import cookie files…
+```
+cookiePath: "backstop_data/engine_scripts/cookies.json",
+```
+_note: path is relative to your current working directory_
+
+Pro tip:  If your app uses a lot of cookies then do yourself a favor and download this extension for chrome. It adds a tab to your dev-tools so you can download all your cookies as a JSON file that you can directly use with BackstopJS  https://chrome.google.com/webstore/detail/cookie-inspector/jgbbilmfbammlbbhmmgaagdkbkepnijn?hl=en
+
+
+
 
 ### Targeting elements
 
@@ -191,7 +222,7 @@ The problem testing these scenarios is knowing _when_ to take the screenshot.  B
 
 #### Trigger screen capture via selector
 
-The `readySelector` property tells BackstopJS to wait until a selector exists before takeing a screenshot. For example, the following line will delay screen capture until a selctor with the id '#catOfTheDayResult' is present somewhere in the DOM.
+The `readySelector` property tells BackstopJS to wait until a selector exists before taking a screenshot. For example, the following line will delay screen capture until a selector with the id '#catOfTheDayResult' is present somewhere in the DOM.
 
 ```json
 "readySelector": "#catOfTheDayResult"
@@ -262,7 +293,7 @@ There may also be elements which need to be completely removed during testing. F
 ### Changing test sensitivity
 `"misMatchThreshold"` (percentage 0.00%-100.00%) will change the amount of difference BackstopJS will tolerate before marking a test screenshot as "failed".  The default setting is `0.1`, this may need to be adjusted based on the kinds of testing you're doing.
 
-More info on how misMatchThreshold is derrived can be found here... https://github.com/Huddle/Resemble.js/blob/af57cb2f4edfbe718d24b350b2be1d956b764298/resemble.js#L495
+More info on how misMatchThreshold is derived can be found here... https://github.com/Huddle/Resemble.js/blob/af57cb2f4edfbe718d24b350b2be1d956b764298/resemble.js#L495
 
 `"requireSameDimensions"` (true || false) will change whether BackstopJS will accept any change in dimensions. The default setting is `true`. If set to true then the test must be the same dimensions as the reference. If set to false the test does not have to be the same dimensions as the reference.
 
@@ -442,7 +473,7 @@ BackstopJS supports using Chrome-Headless, PhantomJS or SlimerJS for web app ren
 #### Chrome-Headless (The latest webkit library)
 This will also enable the very cool _chromy.js_ (https://github.com/OnetapInc/chromy) library.  (When creating onBefore and onReady scripts please make sure you are referring to the [Chromy script documentation](https://github.com/OnetapInc/chromy).  Casper features will not work with this setting.)
 
-You must also have [Chrome installed](https://www.google.com/chrome/browser/), version 59 or greater is required.
+**You must also have [Chrome 62 or greater installed!](https://www.google.com/chrome/browser/beta.html).**
 ```json
 "engine": "chrome"
 ```
@@ -459,7 +490,7 @@ Then, in your `backstop.json` config file, update the engine property to...
 ```json
 "engine": "slimerjs"
 ```
-Thats it.
+That's it.
 
 <!--
 ### Changing the reporting server port
@@ -480,13 +511,30 @@ This is for you if for some reason you find yourself needing advanced configurat
 ```
 
 ### Integration options (local install)
-If you are going to call backstop from another app you will probably want to do a local install in the project directory of your choice...
+
+Installing BackstopJS locally to your project makes a few integration options available.
+
+The most basic example probably looks like this....
+
+```
+# Install from your project root
+npm install backstopjs
+
+# Set up a new project
+./node_modules/backstopjs/cli/index.js init
+
+# Run a test etc...
+./node_modules/backstopjs/cli/index.js test --config=<myConfigPath>
+```
+
+If you are going to call backstop from another app you will probably want to do something like this...
 
 ```sh
 $ npm install backstopjs
 ```
 
-Once installed you can simply require a local backstop installation in your project.
+Once installed you can require your local backstop installation into your project.
+
 ```js
 const backstop = require('backstopjs');
 ```
@@ -506,7 +554,7 @@ backstop('test')
 backstop('test', {config:'custom/backstop/config.json'});
 ```
 
-#### Pass a config to the command
+#### Pass a config object to the command
 ```js
 // you can also pass
 backstop('test', {
@@ -547,7 +595,7 @@ gulp.task('backstop_test', () => backstopjs('test'));
 
 #### Using npm run scripts
 
-When BackstopJS is installed locally, NPM will recognize the `backstop <command>` pattern originating from your own NPM `package.json` scripts. The following would enable you to run the respective `npm <command>` commands locally in your project.
+When BackstopJS is installed locally, NPM will recognize the `backstop <command>` pattern originating from your own npm `package.json` scripts. The following would enable you to run the respective `npm <command>` commands locally in your project.
 
 ```json
 "scripts": {
@@ -578,14 +626,14 @@ As a (very approximate) rule of thumb, BackstopJS will use 100MB RAM plus approx
 To adjust this value add the following to the root of your config...
 ```json
 "asyncCompareLimit": 100
-// Would require 600MB to run tests. Your milage most likely will vary ;)
+// Would require 600MB to run tests. Your mileage most likely will vary ;)
 ```
 
 ### Creating reference files
 This Utility command will by default delete all existing screen references and create new ones based on the `referenceUrl` or `url` config config. It will not run any file comparisons.
 
 Use this when you...
-- create references from another enviornment (e.g. staging vs prod)
+- create references from another environment (e.g. staging vs prod)
 - or clean out your reference files and start fresh with all new reference
 - or just create references without previewing
 
@@ -615,13 +663,58 @@ By specifying `resembleOutputOptions` in your backstop.json file you can modify 
 }
 ```
 
+## Developing, bug fixing, contributing...
+
+First off, You are awesome! Thanks for your interest, time and hard work!  Here are some tips...
+
+### We use `eslint-config-semistandard`.
+Please turn your linter on. Thank you. 🙇🏽
+
+
+### There is a BackstopJS sanity check
+
+Use the command below for testing BackstopJS locally.  Everything should work.  If it doesn't, something is broke.
+
+```
+    cd <some test directory>/node_modules/backstopjs/test/configs/
+    ../../cli/index.js test --config=backstop_features
+```
+Please make sure this is working before submitting any PR's.  Thanks!
+
+
 ## Troubleshooting
 
-### Migrating to 2.0
+### Debugging
+If you are using Chrome-Headless engine then you have the option of displaying the Chrome window as tests are running.  This can be helpful for visually monitoring your app state at the time of your test.  To enable use...
+```json
+"debugWindow": true
+```
 
-_Filename issue: Projects don't work when I share with other users or run in different environments._
+For all engines there is also the `debug` setting.  This enables verbose console output.This will also output your source payload to the terminal so you can make sure to check that the server is sending what you expect. 😉
 
-#### If you just upgraded to 2.x from 1.x
+```json
+"debug": true
+```
+
+
+### The dreaded: `Error: Failed to launch a browser.`
+Sometimes (usually after an app error) a chrome process is left open. If that's the case try...
+```
+pkill -f "(chrome)?(--headless)"
+```
+
+### The dreaded: _command-not-found_ error...
+
+Did you install BackstopJS with the global option?  If installing globally remember to add that `-g` when installing with npm *i.e.* `npm install backstop -g`.     If you installed *locally*, remember that the `backstop <command>` pattern will only be available to your npm scripts -- see the local installation section above for more info.
+
+
+
+
+### Projects don't work when I share with other users or run in different environments.
+
+Be sure to use a config `id` in your config file. See https://github.com/garris/BackstopJS/issues/291
+
+#### If you just upgraded to 2.x or 3.x
 
 Filename formats have changed.  To use the 1.x (compatible) file format, use the `fileNameTemplate` property like so...
 
@@ -633,39 +726,16 @@ Filename formats have changed.  To use the 1.x (compatible) file format, use the
 }
 ```
 
-#### If you are not migrating scripts but have recently upgraded BackstopJS
-
-Be sure to use a config `id` in your config file. See https://github.com/garris/BackstopJS/issues/291
-
 ### Windows users...
 
 PhantomJS needs Python -- please make sure you have Python installed...
 _see https://github.com/garris/BackstopJS/issues/185_
 
 
-### The dreaded _command-not-found_ error...
-
-Did you install BackstopJS with the global option?  If installing globally remember to add that `-g` when installing with npm *i.e.* `npm install backstop -g`.     If you installed *locally*, remember that the `backstop <command>` pattern will only be available to your npm scripts -- see the local installation section above for more info.
-
-
-### Debugging
-If you are using Chrome-Headless engine then you have the option of displaying the Chrome window as tests are running.  This can be helpful for visually monitoring your app state at the time of your test.  To enable use...
-```json
-"debugWindow": true
-```
-
-
-For all engines there is also the `debug` setting.  This enables verbose console output.This will also output your source payload to the terminal so you can make sure to check that the server is sending what you expect. 😉
-
-```json
-"debug": true
-```
-
-
 ---
 ## Tutorials, Extensions and more
 
-- (RECOMMEDED Updated for version 2) Regression testing with BackstopJS, in-depth tutorial by [Angela Riggs](https://twitter.com/AngelaRiggs_) http://www.metaltoad.com/blog/regression-testing-backstopjs
+- (RECOMMENDED Updated for version 2) Regression testing with BackstopJS, in-depth tutorial by [Angela Riggs](https://twitter.com/AngelaRiggs_) http://www.metaltoad.com/blog/regression-testing-backstopjs
 
 - BackstopJS tutorial on [css-tricks.com](http://css-tricks.com/automating-css-regression-testing/)
 

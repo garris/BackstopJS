@@ -1,3 +1,5 @@
+const Chromy = require('chromy');
+var cloneDeep = require('lodash/cloneDeep');
 var path = require('path');
 var fs = require('./fs');
 var each = require('./each');
@@ -32,7 +34,7 @@ function decorateConfigForCapture (config, isReference) {
   if (typeof config.args.config === 'object') {
     configJSON = config.args.config;
   } else {
-    configJSON = require(config.backstopConfigFileName);
+    configJSON = Object.assign({}, require(config.backstopConfigFileName));
   }
   configJSON.scenarios = configJSON.scenarios || [];
   ensureViewportLabel(configJSON);
@@ -43,7 +45,7 @@ function decorateConfigForCapture (config, isReference) {
   var screenshotDateTime = screenshotNow.getFullYear() + pad(screenshotNow.getMonth() + 1) + pad(screenshotNow.getDate()) + '-' + pad(screenshotNow.getHours()) + pad(screenshotNow.getMinutes()) + pad(screenshotNow.getSeconds());
 
   configJSON.screenshotDateTime = screenshotDateTime;
-  configJSON.env = config;
+  configJSON.env = cloneDeep(config);
   configJSON.isReference = isReference;
   configJSON.paths.tempCompareConfigFileName = config.tempCompareConfigFileName;
   configJSON.defaultMisMatchThreshold = config.defaultMisMatchThreshold;
@@ -51,15 +53,15 @@ function decorateConfigForCapture (config, isReference) {
   configJSON.defaultRequireSameDimensions = config.defaultRequireSameDimensions;
 
   if (config.args.filter) {
-    var scenarii = [];
+    var scenarios = [];
     config.args.filter.split(',').forEach(function (filteredTest) {
       each(configJSON.scenarios, function (scenario) {
         if (regexTest(scenario.label, filteredTest)) {
-          scenarii.push(scenario);
+          scenarios.push(scenario);
         }
       });
     });
-    configJSON.scenarios = scenarii;
+    configJSON.scenarios = scenarios;
   }
 
   logger.log('Selected ' + configJSON.scenarios.length + ' of ' + totalScenarioCount + ' scenarios.');
@@ -68,7 +70,7 @@ function decorateConfigForCapture (config, isReference) {
 
 /**
  * Utility for generating a temporary config file required by GENERATE_BITMAPS_SCRIPT.
- * @config  {Object}        Base user config object (derrived by user config file + CL param overrides).
+ * @config  {Object}        Base user config object (derived by user config file + CL param overrides).
  * @isReference  {Boolean}  True if running reference flow.
  * @return {Promise}        Resolves when fs.writeFile has completed.
  */
@@ -80,7 +82,7 @@ function delegateScenarios (config) {
   var screenshotNow = new Date();
   var screenshotDateTime = screenshotNow.getFullYear() + pad(screenshotNow.getMonth() + 1) + pad(screenshotNow.getDate()) + '-' + pad(screenshotNow.getHours()) + pad(screenshotNow.getMinutes()) + pad(screenshotNow.getSeconds());
 
-  // TODO: start chromy here?  Or later?  maybe later because maybe changing resoloutions doesn't work after starting?
+  // TODO: start chromy here?  Or later?  maybe later because maybe changing resolutions doesn't work after starting?
   // casper.start();
 
   var scenarios = [];
@@ -137,14 +139,47 @@ function writeCompareConfigFile (comparePairsFileName, compareConfig) {
   return fs.writeFile(comparePairsFileName, compareConfigJSON);
 }
 
+function flatMapTestPairs (rawTestPairs) {
+  return rawTestPairs.reduce((acc, result) => {
+    var testPairs = result.testPairs;
+    if (!testPairs) {
+      testPairs = {
+        diff: {
+          isSameDimensions: '',
+          dimensionDifference: {
+            width: '',
+            height: ''
+          },
+          misMatchPercentage: ''
+        },
+        reference: '',
+        test: '',
+        selector: '',
+        fileName: '',
+        label: '',
+        scenario: result.scenario,
+        viewport: result.viewport,
+        msg: result.msg,
+        error: result.originalError && result.originalError.name
+      };
+    }
+    return acc.concat(testPairs);
+  }, []);
+}
+
 module.exports = function (config, isReference) {
   if (/chrom./i.test(config.engine)) {
-    return delegateScenarios(decorateConfigForCapture(config, isReference)).then(output => {
-      var testPairsFlatMap = output.reduce((acc, result) => {
-        return acc.concat(result.testPairs);
-      }, []);
-      return writeCompareConfigFile(config.tempCompareConfigFileName, { compareConfig: { testPairs: testPairsFlatMap } });
-    });
+    return delegateScenarios(decorateConfigForCapture(config, isReference))
+      .then(rawTestPairs => {
+        const result = {
+          compareConfig: {
+            testPairs: flatMapTestPairs(rawTestPairs)
+          }
+        };
+        return writeCompareConfigFile(config.tempCompareConfigFileName, result);
+      })
+      // Make sure that all Chromy instances are cleaned up.
+      .then(() => Chromy.cleanup());
   }
 
   return writeReferenceCreateConfig(config, isReference).then(function () {
@@ -157,8 +192,8 @@ module.exports = function (config, isReference) {
         console.log('\n' + result);
         // exit if there was some kind of failure in the casperChild process
         if (code !== 0) {
-          console.log('\nAn unexpected error occured. You may want to try setting the debug option to `true` in your config file.');
-          reject(new Error('An unexpected error occured. You may want to try setting the debug option to `true` in your config file.'));
+          console.log('\nAn unexpected error occurred. You may want to try setting the debug option to `true` in your config file.');
+          reject(new Error('An unexpected error occurred. You may want to try setting the debug option to `true` in your config file.'));
           return;
         }
         resolve();

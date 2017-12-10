@@ -1,7 +1,10 @@
 var crypto = require('crypto');
 var fs = require('fs');
 
-function getFileHash(filename) {
+function getFileHash (filename) {
+  if (!filename) {
+    return '';
+  }
   return new Promise(resolve => {
     var md5sum = crypto.createHash('md5');
     var stream = fs.ReadStream(filename);
@@ -14,11 +17,13 @@ function getFileHash(filename) {
 module.exports = function (refImage, testImage) {
   return Promise.all([getFileHash(refImage), getFileHash(testImage)])
     .then(hashes => {
-      if(hashes[0] !== hashes[1]) {
+      if (hashes[0] !== hashes[1]) {
         throw new Error('Images do not match');
       }
-      return { isSameDimensions: true,
+      return {
+        isSameDimensions: true,
         dimensionDifference: { width: 0, height: 0 },
-        misMatchPercentage: '0.00'}
-    })
+        misMatchPercentage: '0.00'
+      };
+    });
 };

@@ -25,7 +25,7 @@ function writeBrowserReport (config, reporter) {
   }
   logger.log('Writing browser report');
   return fs.copy(config.comparePath, toAbsolute(config.html_report)).then(function () {
-    logger.log('Browser reported copied');
+    logger.log('Resources copied');
 
     // Fixing URLs in the configuration
     var report = toAbsolute(config.html_report);
@@ -109,7 +109,7 @@ module.exports = {
 
         if (failed) {
           logger.error('*** Mismatch errors found ***');
-          logger.log('For a detailed report run `backstop openReport`\n');
+          // logger.log('For a detailed report run `backstop openReport`\n');
           throw new Error('Mismatch errors found.');
         }
       });
