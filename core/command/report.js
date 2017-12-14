@@ -1,6 +1,5 @@
 var path = require('path');
 var chalk = require('chalk');
-var junitWriter = new (require('junitwriter'))();
 
 var allSettled = require('../util/allSettled');
 var fs = require('../util/fs');
@@ -58,7 +57,7 @@ function writeBrowserReport (config, reporter) {
 
 function writeJunitReport (config, reporter) {
   logger.log('Writing jUnit Report');
-
+  var junitWriter = new (require('junitwriter'))();
   var testSuite = junitWriter.addTestsuite(reporter.testSuite);
 
   for (var i in reporter.tests) {
