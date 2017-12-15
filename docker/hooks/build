@@ -1,0 +1,4 @@
+#!/bin/bash
+BACKSTOPJS_VERSION=$(grep -Po '(?<="version": ")[^"]*' $(dirname "$0")/../../package.json)
+
+docker build --build-arg BACKSTOPJS_VERSION=$BACKSTOPJS_VERSION -t $IMAGE_NAME .
