@@ -536,10 +536,10 @@ Example usage:
 
 ```
 module.exports = function (chromy, scenario, vp, isReference, chromyStatic) {
-	if(vp.label === "phone") {
-		chromyStatic.addCustomDevice({ name: "some-phone", /.../ });
-		chromy.emulate("some-phone");
-	}	
+  if(vp.label === "phone") {
+    chromyStatic.addCustomDevice({ name: "some-phone", /.../ });
+    chromy.emulate("some-phone");
+  }	
 }
 ```
 For more info, see the [Chromy script documentation](https://github.com/OnetapInc/chromy).
