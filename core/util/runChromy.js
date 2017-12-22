@@ -27,11 +27,6 @@ module.exports = function (args) {
   const runId = args.id;
   const scenarioLabelSafe = makeSafe(scenario.label);
   const variantOrScenarioLabelSafe = scenario._parent ? makeSafe(scenario._parent.label) : scenarioLabelSafe;
-
-  if(viewport.emulate) {
-    console.log('##### Adding custom device: ' + viewport.emulate.name + ' #####');
-    Chromy.addCustomDevice(viewport.emulate);
-  }
   
   return processScenarioView(scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, config, runId);
 };
@@ -104,10 +99,6 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
 
   console.log('Starting Chromy:', JSON.stringify(chromyOptions));
   let chromy = new Chromy(chromyOptions).chain();
-  if(viewport.emulate) {
-    console.log('##### Emulating as ' + viewport.emulate.name + ' #####');
-    chromy.emulate(viewport.emulate.name);
-  }
 
   /**
    * =================
@@ -181,7 +172,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   if (onBeforeScript) {
     var beforeScriptPath = path.resolve(engineScriptsPath, onBeforeScript);
     if (fs.existsSync(beforeScriptPath)) {
-      require(beforeScriptPath)(chromy, scenario, viewport, isReference);
+      require(beforeScriptPath)(chromy, scenario, viewport, isReference, Chromy);
     } else {
       console.warn(PORT, ' WARNING: script not found: ' + beforeScriptPath);
     }
@@ -256,7 +247,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   if (onReadyScript) {
     var readyScriptPath = path.resolve(engineScriptsPath, onReadyScript);
     if (fs.existsSync(readyScriptPath)) {
-      require(readyScriptPath)(chromy, scenario, viewport, isReference);
+      require(readyScriptPath)(chromy, scenario, viewport, isReference, Chromy);
     } else {
       console.warn(PORT, 'WARNING: script not found: ' + readyScriptPath);
     }
