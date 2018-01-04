@@ -529,6 +529,21 @@ An example config below...
 }
 ```
 
+### Using Chromy static functions
+To access use of Chromys static functions (such as addCustomDevice) the static chromy reference is sent as the fifth parameter to your onBefore/onReady scripts.
+
+Example usage:
+
+```
+module.exports = function (chromy, scenario, vp, isReference, chromyStatic) {
+  if(vp.label === "phone") {
+    chromyStatic.addCustomDevice({ name: "some-phone", /.../ });
+    chromy.emulate("some-phone");
+  }	
+}
+```
+For more info, see the [Chromy script documentation](https://github.com/OnetapInc/chromy).
+
 ### Integration options (local install)
 
 TLDR; run the example here...
