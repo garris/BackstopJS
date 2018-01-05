@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 import Modal from 'react-modal'
-import { closeModal } from '../../actions'
+import { closeModal, toggleScrubberMode } from '../../actions'
 
 // styles & icons
 import { colors, fonts, shadows } from '../../styles'
@@ -20,9 +20,9 @@ const Wrapper = styled.div`
 const ButtonClose = styled.button`
   position: absolute;
   right: 60px;
-  top: 25px;
-  width: 40px;
-  height: 40px;
+  top: 35px;
+  width: 30px;
+  height: 30px;
   background-image: url(${iconClose});
   background-size: 100%;
   background-repeat: no-repeat;
@@ -35,6 +35,26 @@ const ButtonClose = styled.button`
 
   &:hover {
     cursor: pointer;
+  }
+`
+
+const ButtonToggleView = styled.button`
+  display: block;
+  margin: 0 auto;
+  border: none;
+  border-radius: 3px;
+  background-color: ${colors.lightGray};
+  text-align: center;
+  padding: 12px 40px;
+  color: ${colors.secondaryText};
+  font-size: 16px;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &:focus {
+    outline: none;
   }
 `
 
@@ -57,25 +77,30 @@ class ScrubberModal extends React.Component {
   }
 
   render() {
-    let { reference: refImage, test: testImage } = this.props.scrubber.test
-    let { visible } = this.props.scrubber
+    const { reference: refImage, test: testImage } = this.props.scrubber.test
+    const { visible, mode } = this.props.scrubber
+    const { closeModal, handleButtonMode } = this.props
 
     return (
       <Wrapper>
         <Modal
           isOpen={visible}
           /* onAfterOpen={this.afterOpenModal} */
-          onRequestClose={this.props.closeModal}
+          onRequestClose={closeModal}
           style={customStyles}
           contentLabel="Example Modal"
         >
-          <ButtonClose onClick={this.props.closeModal} />
+          <ButtonClose onClick={closeModal} />
           <Logo />
+          <ButtonToggleView onClick={handleButtonMode}>
+            DIFF / SCRUB
+          </ButtonToggleView>
           {/* <div style={{ paddingTop: '20px', paddingLeft: '5px' }}>
             <TextDetails {...this.props} />
           </div> */}
-
-          <ImageScrubber testImage={testImage} refImage={refImage} />
+          {mode === 'scrub' && (
+            <ImageScrubber testImage={testImage} refImage={refImage} />
+          )}
         </Modal>
       </Wrapper>
     )
@@ -92,6 +117,9 @@ const mapDispatchToProps = dispatch => {
   return {
     closeModal: () => {
       dispatch(closeModal(false))
+    },
+    handleButtonMode: mode => {
+      dispatch(toggleScrubberMode(mode))
     }
   }
 }

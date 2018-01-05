@@ -39,3 +39,10 @@ export const closeModal = value => {
     value
   }
 }
+
+export const toggleScrubberMode = value => {
+  return {
+    type: 'TOGGLE_SCRUBBER_MODE',
+    value
+  }
+}

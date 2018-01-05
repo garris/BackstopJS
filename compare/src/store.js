@@ -30,6 +30,7 @@ const defaultState = {
   ],
   scrubber: {
     visible: false,
+    mode: 'scrub',
     test: {}
   },
   layoutSettings: {
