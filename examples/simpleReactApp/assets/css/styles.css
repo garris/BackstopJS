@@ -6,6 +6,7 @@
 
 h1 {
 	margin-bottom: 20px;
+  text-shadow: 0 0 1px rgba(120, 120, 120, 19);
 }
 
 #geocoding_form {
@@ -41,7 +42,7 @@ h1 {
 	line-height: 1.4;
 }
 
-.current-location .glyphicon-star, 
+.current-location .glyphicon-star,
 .current-location .glyphicon-star-empty {
 	display: inline-block;
 	margin-left: 10px;
