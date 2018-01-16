@@ -154,7 +154,7 @@ clickSelector            // Click the specified DOM element prior to screen shot
 postInteractionWait      // Wait for a selector after interacting with hoverSelector or clickSelector (optionally accepts wait time in ms. Idea for use with a click or hover element transition. available with default onReadyScript)
 selectors                // Array of selectors to capture. Defaults to document if omitted. Use "viewport" to capture the viewport size. See Targeting elements in the next section for more info...
 selectorExpansion        // See Targeting elements in the next section for more info...
-misMatchThreshold        // Around of change before a test is marked failed
+misMatchThreshold        // Percentage of different pixels allowed to pass test
 requireSameDimensions    // If set to true -- any change in selector size will trigger a test failure.
 ```
 
@@ -700,7 +700,9 @@ optional parameters
 
 ### Modifying output settings of image-diffs
 
-By specifying `resembleOutputOptions` in your backstop.json file you can modify the image-diffs transparency, errorcolor, etc. (See [Resemble.js outputSettings](https://github.com/Huddle/Resemble.js) for the full list.
+By specifying `resembleOutputOptions` in your backstop.json file you can modify the image-diffs transparency, errorcolor, etc. (See [Resemble.js outputSettings](https://github.com/Huddle/Resemble.js) for the full list.)
+
+Instead of calling resemble`s ignoreAntialiasing(), you may set it as a property in the config. (See [example](examples/simpleReactApp/backstop.json))
 ```json
 "resembleOutputOptions": {
   "errorColor": {
@@ -709,7 +711,8 @@ By specifying `resembleOutputOptions` in your backstop.json file you can modify 
     "blue": 255
   },
   "errorType": "movement",
-  "transparency": 0.3
+  "transparency": 0.3,
+  "ignoreAntialiasing": true
 }
 ```
 

@@ -6,6 +6,7 @@
   "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "dev-backstop-test": "node ../../cli/index.js test",
     "watch": "watchify -v -d -t [ reactify --es6 ] main.js -o compiled.js",
     "build": "NODE_ENV=production browserify -t [ reactify --es6 ] main.js | uglifyjs > compiled.js && backstop test"
   },
