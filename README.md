@@ -539,7 +539,7 @@ module.exports = function (chromy, scenario, vp, isReference, chromyStatic) {
   if(vp.label === "phone") {
     chromyStatic.addCustomDevice({ name: "some-phone", /.../ });
     chromy.emulate("some-phone");
-  }	
+  }
 }
 ```
 For more info, see the [Chromy script documentation](https://github.com/OnetapInc/chromy).
@@ -729,8 +729,8 @@ Please turn your linter on. Thank you. 🙇🏽
 Use the command below for testing BackstopJS locally.  Everything should work.  If it doesn't, something is broke.
 
 ```
-    cd <some test directory>/node_modules/backstopjs/test/configs/
-    ../../cli/index.js test --config=backstop_features
+    cd <your project directory>/node_modules/backstopjs/
+    npm run sanity-test
 ```
 Please make sure this is working before submitting any PR's.  Thanks!
 
