@@ -17,7 +17,7 @@
     "echo": "node ./cli/index.js echo",
     "unit-test": "mocha --reporter spec --recursive test/cli",
     "integration-test": "rm -rf newdir && mkdir newdir && cd newdir && node ../cli/index.js genConfig && node ../cli/index.js reference && node ../cli/index.js test && node -e \"require('../')('test')\"",
-    "sanity-test": "cd test/configs/; node ../../cli/index.js test --config=backstop_features"
+    "smoke-test": "cd test/configs/; node ../../cli/index.js test --config=backstop_features"
   },
   "repository": {
     "type": "git",

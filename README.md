@@ -724,18 +724,24 @@ First off, You are awesome! Thanks for your interest, time and hard work!  Here 
 Please turn your linter on. Thank you. 🙇🏽
 
 
-### There is a BackstopJS sanity check
-
-Use the command below for testing BackstopJS locally.  Everything should work.  If it doesn't, something is broke.
-
-```
-    cd <your project directory>/node_modules/backstopjs/
-    npm run sanity-test
-```
-Please make sure this is working before submitting any PR's.  Thanks!
+### There is a BackstopJS SMOKE TEST
+See the next section for running the SMOKE TEST -- Please make sure this is working before submitting any PR's.  Thanks!
 
 
 ## Troubleshooting
+
+### SANITY TEST: Does Backstop work in my enviornment?
+Run the following command from your Desktop, home or project directory to check that Backstop will install and run in your enviornment.
+```
+mkdir backstopSanityTest; cd backstopSanityTest; npm install backstopjs; node_modules/backstopjs/cli/index.js test --config=node_modules/backstopjs/test/configs/backstop
+```
+
+### SMOKE TEST: Are backstop features working ok?
+Run this command if you have made changes to the BackstopJS codebase and you want to make sure that you haven't hosed anything.
+```
+    cd <your project directory>/node_modules/backstopjs/
+    npm run smoke-test
+```
 
 ### Debugging
 If you are using Chrome-Headless engine then you have the option of displaying the Chrome window as tests are running.  This can be helpful for visually monitoring your app state at the time of your test.  To enable use...
