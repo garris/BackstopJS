@@ -27,6 +27,7 @@ module.exports = function (args) {
   const runId = args.id;
   const scenarioLabelSafe = makeSafe(scenario.label);
   const variantOrScenarioLabelSafe = scenario._parent ? makeSafe(scenario._parent.label) : scenarioLabelSafe;
+  
   return processScenarioView(scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, config, runId);
 };
 
@@ -50,26 +51,54 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
 
   const engineScriptsPath = config.env.engine_scripts || config.env.casper_scripts || config.env.engine_scripts_default;
   const isReference = config.isReference;
-  const engineFlags = (Array.isArray(config.hostFlags) && config.hostFlags) || (Array.isArray(config.engineFlags) && config.engineFlags) || [];
   /**
    *  =============
    *  START CHROMY SESSION
    *  =============
    */
-  const w = viewport.width || viewport.viewport.width;
-  const h = viewport.height || viewport.viewport.height;
-  const windowFlag = /--window-size=/i.test(engineFlags.toString()) ? null : '--window-size={w},{h}'.replace(/{w}/, w).replace(/{h}/, h);
-  let flags = (engineFlags.length && engineFlags) || ['--disable-gpu', '--force-device-scale-factor=1', '--disable-infobars=true'];
-  flags = windowFlag ? flags.concat(windowFlag) : flags;
-  const port = CHROMY_STARTING_PORT_NUMBER + runId;
+  const VP_W = viewport.width || viewport.viewport.width;
+  const VP_H = viewport.height || viewport.viewport.height;
 
-  console.log('Starting Chromy:', `port:${port}`, flags.toString());
-  let chromy = new Chromy({
-    chromeFlags: flags,
-    port: port,
+  const DEFAULT_CHROME_FLAGS = ['--disable-gpu', '--force-device-scale-factor=1', '--disable-infobars=true'];
+  const PORT = (config.startingPort || CHROMY_STARTING_PORT_NUMBER) + runId;
+  let defaultOptions = {
+    chromeFlags: undefined,
+    port: PORT,
     waitTimeout: TEST_TIMEOUT,
     visible: config.debugWindow || false
-  }).chain();
+  };
+
+  // This option is depricated.
+  const chromeFlags = (Array.isArray(config.hostFlags) && config.hostFlags) || (Array.isArray(config.engineFlags) && config.engineFlags) || [];
+
+  // set up engineOptions obj
+  let engineOptions = {};
+  if (typeof config.engineOptions === 'object') {
+    engineOptions = config.engineOptions;
+  } else {
+    // Check for (legacy) chromeFlags setting if there is no engineOptions config. chromeFlags option is depricated.
+    if (chromeFlags.length) {
+      console.warn('***The chromeFlags property is depricated -- please see documentation for recommended way of setting chromeFlags.***');
+      engineOptions.chromeFlags = chromeFlags;
+    }
+  }
+
+  // create base chromyOptions with default & config engineOptions
+  let chromyOptions = Object.assign({}, defaultOptions, engineOptions);
+
+  // if chromeFlags has not been explicitly set, then set it. (this is the expected case)
+  if (!chromyOptions.chromeFlags) {
+    chromyOptions.chromeFlags = DEFAULT_CHROME_FLAGS;
+  }
+
+  // if --window-size= has not been explicity set, then set it. (this is the expected case)
+  if (!/--window-size=/i.test(chromyOptions.chromeFlags.toString())) {
+    chromyOptions.chromeFlags = chromyOptions.chromeFlags.concat('--window-size=' + VP_W + ',' + VP_H + '');
+    // chromyOptions.chromeFlags = chromyOptions.chromeFlags.concat(`--window-size=${VP_W},${VP_H}`);
+  }
+
+  console.log('Starting Chromy:', JSON.stringify(chromyOptions));
+  let chromy = new Chromy(chromyOptions).chain();
 
   /**
    * =================
@@ -109,7 +138,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   // --- set up console output ---
   chromy.console(function (text, consoleObj) {
     if (console[consoleObj.level]) {
-      console[consoleObj.level](port + ' ' + (consoleObj.level).toUpperCase() + ' > ', text);
+      console[consoleObj.level](PORT + ' ' + (consoleObj.level).toUpperCase() + ' > ', text);
     }
   });
 
@@ -119,9 +148,9 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
       return v ? parseInt(v[2], 10) : 0;
     })
     .result(chromeVersion => {
-      console.info(`${port} Chrome v${chromeVersion} detected.`);
+      console.info(`${PORT} Chrome v${chromeVersion} detected.`);
       if (chromeVersion < MIN_CHROME_VERSION) {
-        console.warn(`${port} ***WARNING! CHROME VERSION ${MIN_CHROME_VERSION} OR GREATER IS REQUIRED. PLEASE UPDATE YOUR CHROME APP!***`);
+        console.warn(`${PORT} ***WARNING! CHROME VERSION ${MIN_CHROME_VERSION} OR GREATER IS REQUIRED. PLEASE UPDATE YOUR CHROME APP!***`);
       }
     });
 
@@ -143,9 +172,9 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   if (onBeforeScript) {
     var beforeScriptPath = path.resolve(engineScriptsPath, onBeforeScript);
     if (fs.existsSync(beforeScriptPath)) {
-      require(beforeScriptPath)(chromy, scenario, viewport, isReference);
+      require(beforeScriptPath)(chromy, scenario, viewport, isReference, Chromy);
     } else {
-      console.warn(port, ' WARNING: script not found: ' + beforeScriptPath);
+      console.warn(PORT, ' WARNING: script not found: ' + beforeScriptPath);
     }
   }
 
@@ -185,9 +214,9 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   if (config.debug) {
     chromy
       .evaluate(_ => document.head.outerHTML)
-      .result(headStr => console.log(port + 'HEAD > ', headStr))
+      .result(headStr => console.log(PORT + 'HEAD > ', headStr))
       .evaluate(_ => document.body.outerHTML)
-      .result(htmlStr => console.log(port + 'BODY > ', htmlStr));
+      .result(htmlStr => console.log(PORT + 'BODY > ', htmlStr));
   }
 
   // --- REMOVE SELECTORS ---
@@ -218,9 +247,9 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   if (onReadyScript) {
     var readyScriptPath = path.resolve(engineScriptsPath, onReadyScript);
     if (fs.existsSync(readyScriptPath)) {
-      require(readyScriptPath)(chromy, scenario, viewport, isReference);
+      require(readyScriptPath)(chromy, scenario, viewport, isReference, Chromy);
     } else {
-      console.warn(port, 'WARNING: script not found: ' + readyScriptPath);
+      console.warn(PORT, 'WARNING: script not found: ' + readyScriptPath);
     }
   }
 
