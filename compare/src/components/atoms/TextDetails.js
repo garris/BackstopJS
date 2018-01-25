@@ -25,14 +25,51 @@ const Value = styled.span`
   padding-right: 20px;
 `
 
+const DetailsPanel = styled.div`
+  display: ${props => (props.showPanel ? 'block' : 'none')};
+  position: absolute;
+  background-color: #fff;
+  padding: 10px;
+  top: -20px;
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+  z-index: 999;
+`
+
 class TextDetails extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      showPanel: false
+    }
+
+    this.showPanel = this.showPanel.bind(this)
+    this.hidePanel = this.hidePanel.bind(this)
+  }
+
+  showPanel() {
+    const { settings } = this.props
+    if (!settings.textInfo) {
+      this.setState({
+        showPanel: true
+      })
+    }
+  }
+
+  hidePanel() {
+    this.setState({
+      showPanel: false
+    })
+  }
+
   render() {
     const { label, fileName, selector, diff } = this.props.info
     const { settings } = this.props
+    const { showPanel } = this.state
 
     return (
-      <WrapperDetails hidden={!settings.textInfo}>
-        <Row>
+      <WrapperDetails>
+        <Row hidden={!settings.textInfo}>
           <Label>label: </Label>
           <Value>{label}</Value>
           <Label>selector: </Label>
@@ -40,9 +77,9 @@ class TextDetails extends React.Component {
         </Row>
         <Row>
           <Label>filename: </Label>
-          <Value>{fileName}</Value>
+          <Value onMouseOver={this.showPanel}>{fileName}</Value>
         </Row>
-        <Row>
+        <Row hidden={!settings.textInfo}>
           <Label>diff%: </Label>
           <Value>{diff.misMatchPercentage}</Value>
           <Label>diff-x: </Label>
@@ -50,6 +87,26 @@ class TextDetails extends React.Component {
           <Label>diff-y: </Label>
           <Value>{diff.dimensionDifference.height}</Value>
         </Row>
+        <DetailsPanel {...{ showPanel }} onMouseLeave={this.hidePanel}>
+          <Row>
+            <Label>label: </Label>
+            <Value>{label}</Value>
+            <Label>selector: </Label>
+            <Value>{selector}</Value>
+          </Row>
+          <Row>
+            <Label>filename: </Label>
+            <Value>{fileName}</Value>
+          </Row>
+          <Row>
+            <Label>diff%: </Label>
+            <Value>{diff.misMatchPercentage}</Value>
+            <Label>diff-x: </Label>
+            <Value>{diff.dimensionDifference.width}</Value>
+            <Label>diff-y: </Label>
+            <Value>{diff.dimensionDifference.height}</Value>
+          </Row>
+        </DetailsPanel>
       </WrapperDetails>
     )
   }

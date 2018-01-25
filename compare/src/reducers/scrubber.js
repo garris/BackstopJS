@@ -12,6 +12,11 @@ const scrubber = (state = {}, action) => {
         test: {}
       })
 
+    case 'TOGGLE_SCRUBBER_MODE':
+      return Object.assign({}, state, {
+        mode: state.mode === 'scrub' ? 'diff' : 'scrub'
+      })
+
     default:
       return state
   }

@@ -30,10 +30,11 @@ const defaultState = {
   ],
   scrubber: {
     visible: false,
+    mode: 'scrub',
     test: {}
   },
   layoutSettings: {
-    textInfo: true,
+    textInfo: false,
     refImage: true,
     testImage: true,
     diffImage: true
