@@ -20,7 +20,8 @@
     "build-compare": "webpack --config ./compare/webpack.config.js",
     "dev-compare": "webpack-dev-server --content-base ./compare/output --config ./compare/webpack.config.js",
     "integration-test": "rm -rf newdir && mkdir newdir && cd newdir && node ../cli/index.js genConfig && node ../cli/index.js reference && node ../cli/index.js test && node -e \"require('../')('test')\"",
-    "smoke-test": "cd test/configs/; node ../../cli/index.js test --config=backstop_features"
+    "smoke-test": "cd test/configs/; node ../../cli/index.js test --config=backstop_features",
+    "kill-zombies": "pkill -f \"(chrome)?(--headless)\""
   },
   "lint-staged": {
     "compare/src/**/*.js": [
