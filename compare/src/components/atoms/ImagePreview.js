@@ -7,7 +7,7 @@ import { colors, fonts } from '../../styles'
 const Image = styled.img`
   width: auto;
   max-width: 100%;
-  max-height: ${props => (props.settings.textInfo ? '150px' : '300px')};
+  max-height: ${props => (props.settings.textInfo ? '150px' : '400px')};
 
   &:hover {
     cursor: pointer;
@@ -17,7 +17,7 @@ const Image = styled.img`
 const Wrapper = styled.div`
   flex: 1 1 auto;
   padding: 0 25px;
-  padding-top: ${props => (props.withText ? '20px' : '60px')};
+  padding-top: ${props => (props.withText ? '10px' : '20px')};
   text-align: center;
 `
 
