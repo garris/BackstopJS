@@ -17,7 +17,7 @@ const Button = styled.button`
   color: ${colors.primaryText};
   margin-right: 15px;
   padding: 0px 30px;
-  opacity: ${props => (props.selected ? '0.6' : '1')};
+  opacity: ${props => (props.selected ? '1' : '0.6')};
   outline: none;
   height: 100%;
 
