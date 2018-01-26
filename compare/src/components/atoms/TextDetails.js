@@ -30,7 +30,8 @@ const DetailsPanel = styled.div`
   position: absolute;
   background-color: #fff;
   padding: 10px;
-  top: -20px;
+  top: -28px;
+  left: 20px;
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
   z-index: 999;
 `
