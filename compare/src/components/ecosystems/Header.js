@@ -21,7 +21,7 @@ export default class Header extends React.Component {
     return (
       <HeaderWrapper className="header">
         <Topbar />
-        <Sticky topOffset={200}>
+        <Sticky topOffset={72}>
           {({
             isSticky,
             wasSticky,
