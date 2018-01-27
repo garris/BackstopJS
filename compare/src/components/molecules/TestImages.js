@@ -22,9 +22,9 @@ class TestImages extends React.Component {
     }
   }
 
-  onImageClick() {
+  onImageClick(img) {
     let { openModal } = this.props
-
+    this.props.info.targetImg = img
     openModal(this.props.info)
   }
 
@@ -63,7 +63,7 @@ class TestImages extends React.Component {
             src={img.src}
             id={img.id}
             label={img.label}
-            onClick={this.onImageClick.bind(this)}
+            onClick={this.onImageClick.bind(this, img)}
             key={i}
             hidden={!img.visible}
           />

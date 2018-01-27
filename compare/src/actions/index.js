@@ -53,3 +53,17 @@ export const showScrubberTestImage = value => {
     value
   }
 }
+
+export const showScrubberRefImage = value => {
+  return {
+    type: 'SHOW_SCRUBBER_REF_IMAGE',
+    value
+  }
+}
+
+export const showScrubber = value => {
+  return {
+    type: 'SHOW_SCRUBBER',
+    value
+  }
+}

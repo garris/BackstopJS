@@ -5,7 +5,9 @@ import Modal from 'react-modal'
 import {
   closeModal,
   toggleScrubberMode,
-  showScrubberTestImage
+  showScrubberTestImage,
+  showScrubberRefImage,
+  showScrubber
 } from '../../actions'
 
 // styles & icons
@@ -83,7 +85,13 @@ class ScrubberModal extends React.Component {
   render() {
     const { reference: refImage, test: testImage } = this.props.scrubber.test
     const { visible, mode, position } = this.props.scrubber
-    const { closeModal, handleButtonMode, showScrubberTestImage } = this.props
+    const {
+      closeModal,
+      handleButtonMode,
+      showScrubberTestImage,
+      showScrubberRefImage,
+      showScrubber
+    } = this.props
 
     return (
       <Wrapper>
@@ -108,6 +116,8 @@ class ScrubberModal extends React.Component {
               refImage={refImage}
               position={position}
               showScrubberTestImage={showScrubberTestImage}
+              showScrubberRefImage={showScrubberRefImage}
+              showScrubber={showScrubber}
             />
           )}
         </Modal>
@@ -132,6 +142,12 @@ const mapDispatchToProps = dispatch => {
     },
     showScrubberTestImage: val => {
       dispatch(showScrubberTestImage(val))
+    },
+    showScrubberRefImage: val => {
+      dispatch(showScrubberRefImage(val))
+    },
+    showScrubber: val => {
+      dispatch(showScrubber(val))
     }
   }
 }

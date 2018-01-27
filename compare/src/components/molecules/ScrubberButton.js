@@ -40,7 +40,6 @@ class ScrubberButton extends React.Component {
 
   onClick() {
     let { openModal } = this.props
-
     openModal(this.props.info)
   }
 

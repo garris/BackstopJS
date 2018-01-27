@@ -1,14 +1,36 @@
 import React from 'react'
 import styled from 'styled-components'
 import TwentyTwenty from 'react-twentytwenty'
+import iconDown from '../../assets/icons/iconDown.png'
 
 import { colors, fonts } from '../../styles'
+
+const ScrubberViewBtn = styled.button`
+  margin: 1em;
+  padding: 10px 20px;
+  background-color: ${colors.lightGray};
+  color: ${colors.secondaryText};
+  border-radius: 3px;
+  text-transform: uppercase;
+  font-family: ${fonts.latoRegular};
+  text-align: center;
+  font-size: 12px;
+  border: none;
+
+  &:focus {
+    outline: none;
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+`
 
 const Wrapper = styled.div`
   height: 100%;
   cursor: ew-resize;
-  padding-top: 40px;
   padding-bottom: 20px;
+  overflow: auto;
 
   .slider {
     height: 100%;
@@ -23,6 +45,7 @@ const Wrapper = styled.div`
 
 const WrapTitle = styled.div`
   display: flex;
+  justify-content: center;
 `
 
 const Title = styled.h3`
@@ -36,22 +59,34 @@ export default function ImageScrubber({
   position,
   refImage,
   testImage,
-  showScrubberTestImage
+  showScrubberTestImage,
+  showScrubberRefImage,
+  showScrubber
 }) {
-  // render() {
-  console.log('hiya>>>', showScrubberTestImage)
   return (
     <Wrapper>
       <WrapTitle>
-        <Title>REFERENCE</Title>
-        <button
+        <ScrubberViewBtn
           onClick={() => {
-            console.log('>>> fire')
+            showScrubberRefImage()
+          }}
+        >
+          REFERENCE
+        </ScrubberViewBtn>
+        <ScrubberViewBtn
+          onClick={() => {
             showScrubberTestImage()
           }}
         >
           TEST
-        </button>
+        </ScrubberViewBtn>
+        <ScrubberViewBtn
+          onClick={() => {
+            showScrubber()
+          }}
+        >
+          SCRUBBER
+        </ScrubberViewBtn>
       </WrapTitle>
       <TwentyTwenty
         verticalAlign="top"
