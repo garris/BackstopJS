@@ -17,7 +17,7 @@ const Wrapper = styled.div`
   }
 
   .testImage {
-    opacity: 0.7;
+    opacity: 1;
   }
 `
 
@@ -32,24 +32,39 @@ const Title = styled.h3`
   color: ${colors.primaryText};
 `
 
-export default class ImageScrubber extends React.Component {
-  render() {
-    return (
-      <Wrapper>
-        <WrapTitle>
-          <Title>REFERENCE</Title>
-          <Title>TEST</Title>
-        </WrapTitle>
-        <TwentyTwenty
-          verticalAlign="top"
-          minDistanceToBeginInteraction={0}
-          maxAngleToBeginInteraction={Infinity}
+export default function ImageScrubber({
+  position,
+  refImage,
+  testImage,
+  showScrubberTestImage
+}) {
+  // render() {
+  console.log('hiya>>>', showScrubberTestImage)
+  return (
+    <Wrapper>
+      <WrapTitle>
+        <Title>REFERENCE</Title>
+        <button
+          onClick={() => {
+            console.log('>>> fire')
+            showScrubberTestImage()
+          }}
         >
-          <img className="refImage" src={this.props.refImage} />
-          <img className="testImage" src={this.props.testImage} />
-          <div className="slider" />
-        </TwentyTwenty>
-      </Wrapper>
-    )
-  }
+          TEST
+        </button>
+      </WrapTitle>
+      <TwentyTwenty
+        verticalAlign="top"
+        minDistanceToBeginInteraction={0}
+        maxAngleToBeginInteraction={Infinity}
+        initialPosition={position}
+        newPosition={position}
+      >
+        <img className="refImage" src={refImage} />
+        <img className="testImage" src={testImage} />
+        <div className="slider" />
+      </TwentyTwenty>
+    </Wrapper>
+  )
+  // }
 }

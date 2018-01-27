@@ -46,3 +46,10 @@ export const toggleScrubberMode = value => {
     value
   }
 }
+
+export const showScrubberTestImage = value => {
+  return {
+    type: 'SHOW_SCRUBBER_TEST_IMAGE',
+    value
+  }
+}
