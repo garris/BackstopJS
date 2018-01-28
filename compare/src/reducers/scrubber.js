@@ -30,11 +30,6 @@ const scrubber = (state = {}, action) => {
         test: {}
       })
 
-    case 'TOGGLE_SCRUBBER_MODE':
-      return Object.assign({}, state, {
-        mode: state.mode === 'scrub' ? 'diff' : 'scrub'
-      })
-
     case 'SHOW_SCRUBBER_TEST_IMAGE':
       return Object.assign({}, state, {
         position: getPosFromImgId('testImage')

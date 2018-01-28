@@ -21,7 +21,7 @@ function ButtonsFilter(props) {
       status={status.id}
       key={status.id}
       label={status.label}
-      selected={props.filterStatus === status.id ? true : false}
+      selected={props.filterStatus === status.id}
       count={status.count}
       onClick={() => props.onClick(status.id)}
     />

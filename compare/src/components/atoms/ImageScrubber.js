@@ -1,21 +1,25 @@
 import React from 'react'
 import styled from 'styled-components'
 import TwentyTwenty from 'react-twentytwenty'
-import iconDown from '../../assets/icons/iconDown.png'
 
-import { colors, fonts } from '../../styles'
+import { colors, fonts, shadows } from '../../styles'
 
 const ScrubberViewBtn = styled.button`
   margin: 1em;
-  padding: 10px 20px;
-  background-color: ${colors.lightGray};
-  color: ${colors.secondaryText};
+  padding: 10px 16px;
+  height: 32px;
+  background-color: ${props =>
+    props.selected ? colors.secondaryText : colors.lightGray};
+  color: ${props => (props.selected ? colors.lightGray : colors.secondaryText)};
   border-radius: 3px;
   text-transform: uppercase;
   font-family: ${fonts.latoRegular};
   text-align: center;
   font-size: 12px;
   border: none;
+  box-shadow: ${props => (props.selected ? 'none' : shadows.shadow01)};
+
+  transition: all 0.3s ease-in-out;
 
   &:focus {
     outline: none;
@@ -23,6 +27,7 @@ const ScrubberViewBtn = styled.button`
 
   &:hover {
     cursor: pointer;
+    box-shadow: ${props => (!props.selected ? shadows.shadow02 : '')};
   }
 `
 
@@ -41,6 +46,11 @@ const Wrapper = styled.div`
   .testImage {
     opacity: 1;
   }
+
+  .testImage,
+  .refImage {
+    width: 100%;
+  }
 `
 
 const WrapTitle = styled.div`
@@ -48,17 +58,11 @@ const WrapTitle = styled.div`
   justify-content: center;
 `
 
-const Title = styled.h3`
-  flex-basis: 50%;
-  text-align: center;
-  font-family: ${fonts.latoBold};
-  color: ${colors.primaryText};
-`
-
 export default function ImageScrubber({
   position,
   refImage,
   testImage,
+  showButtons,
   showScrubberTestImage,
   showScrubberRefImage,
   showScrubber
@@ -66,27 +70,34 @@ export default function ImageScrubber({
   return (
     <Wrapper>
       <WrapTitle>
-        <ScrubberViewBtn
-          onClick={() => {
-            showScrubberRefImage()
-          }}
-        >
-          REFERENCE
-        </ScrubberViewBtn>
-        <ScrubberViewBtn
-          onClick={() => {
-            showScrubberTestImage()
-          }}
-        >
-          TEST
-        </ScrubberViewBtn>
-        <ScrubberViewBtn
-          onClick={() => {
-            showScrubber()
-          }}
-        >
-          SCRUBBER
-        </ScrubberViewBtn>
+        {showButtons && (
+          <div>
+            <ScrubberViewBtn
+              selected={position === 100}
+              onClick={() => {
+                showScrubberRefImage()
+              }}
+            >
+              REFERENCE
+            </ScrubberViewBtn>
+            <ScrubberViewBtn
+              selected={position === 0}
+              onClick={() => {
+                showScrubberTestImage()
+              }}
+            >
+              TEST
+            </ScrubberViewBtn>
+            <ScrubberViewBtn
+              selected={position !== 100 && position !== 0}
+              onClick={() => {
+                showScrubber()
+              }}
+            >
+              SCRUBBER
+            </ScrubberViewBtn>
+          </div>
+        )}
       </WrapTitle>
       <TwentyTwenty
         verticalAlign="top"
