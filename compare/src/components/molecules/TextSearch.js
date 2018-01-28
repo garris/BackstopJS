@@ -1,29 +1,29 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import styled from 'styled-components'
-import { findTests, filterTests } from '../../actions'
+import React from 'react';
+import { connect } from 'react-redux';
+import styled from 'styled-components';
+import { findTests, filterTests } from '../../actions';
 
-import InputTextSearch from '../atoms/InputTextSearch'
+import InputTextSearch from '../atoms/InputTextSearch';
 
-import { colors, fonts } from '../../styles'
+import { colors, fonts } from '../../styles';
 
 const InputWrapper = styled.div`
   flex: 1 1 auto;
   height: 100%;
-`
+`;
 
 class TextSearch extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
   }
 
   onChange(event) {
-    let value = event.target.value
+    let value = event.target.value;
 
     if (value.length > 0) {
-      this.props.findTest(value)
+      this.props.findTest(value);
     } else {
-      this.props.filterTests(this.props.tests.filterStatus)
+      this.props.filterTests(this.props.tests.filterStatus);
     }
   }
 
@@ -32,29 +32,29 @@ class TextSearch extends React.Component {
       <InputWrapper>
         <InputTextSearch onChange={this.onChange.bind(this)} />
       </InputWrapper>
-    )
+    );
   }
 }
 
 const mapStateToProps = state => {
   return {
     tests: state.tests
-  }
-}
+  };
+};
 
 const mapDispatchToProps = dispatch => {
   return {
     findTest: value => {
-      dispatch(findTests(value))
+      dispatch(findTests(value));
     },
     filterTests: status => {
-      dispatch(filterTests(status))
+      dispatch(filterTests(status));
     }
-  }
-}
+  };
+};
 
 const TextSearchContainer = connect(mapStateToProps, mapDispatchToProps)(
   TextSearch
-)
+);
 
-export default TextSearchContainer
+export default TextSearchContainer;

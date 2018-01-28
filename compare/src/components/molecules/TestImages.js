@@ -1,36 +1,36 @@
-import React from 'react'
-import styled from 'styled-components'
-import { connect } from 'react-redux'
-import { openModal } from '../../actions'
+import React from 'react';
+import styled from 'styled-components';
+import { connect } from 'react-redux';
+import { openModal } from '../../actions';
 
-import { colors, shadows } from '../../styles'
+import { colors, shadows } from '../../styles';
 
 // atoms
-import ImagePreview from '../atoms/ImagePreview'
+import ImagePreview from '../atoms/ImagePreview';
 
 const ImagesWrapper = styled.div`
   position: relative;
   display: flex;
-`
+`;
 
 class TestImages extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       images: []
-    }
+    };
   }
 
   onImageClick(img) {
-    let { openModal } = this.props
-    this.props.info.targetImg = img
-    openModal(this.props.info)
+    let { openModal } = this.props;
+    this.props.info.targetImg = img;
+    openModal(this.props.info);
   }
 
   render() {
-    let { reference, test } = this.props.info
-    let { status, settings } = this.props
+    let { reference, test } = this.props.info;
+    let { status, settings } = this.props;
 
     this.state.images = [
       {
@@ -45,7 +45,7 @@ class TestImages extends React.Component {
         src: test,
         visible: settings.testImage
       }
-    ]
+    ];
 
     if (status !== 'pass') {
       this.state.images.push({
@@ -53,7 +53,7 @@ class TestImages extends React.Component {
         label: 'Diff',
         src: this.props.info.diffImage,
         visible: settings.diffImage
-      })
+      });
     }
 
     return (
@@ -69,26 +69,26 @@ class TestImages extends React.Component {
           />
         ))}
       </ImagesWrapper>
-    )
+    );
   }
 }
 
 const mapStateToProps = state => {
   return {
     settings: state.layoutSettings
-  }
-}
+  };
+};
 
 const mapDispatchToProps = dispatch => {
   return {
     openModal: value => {
-      dispatch(openModal(value))
+      dispatch(openModal(value));
     }
-  }
-}
+  };
+};
 
 const TestImagesContainer = connect(mapStateToProps, mapDispatchToProps)(
   TestImages
-)
+);
 
-export default TestImagesContainer
+export default TestImagesContainer;

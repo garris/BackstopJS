@@ -1,8 +1,8 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import styled from 'styled-components'
+import React from 'react';
+import { connect } from 'react-redux';
+import styled from 'styled-components';
 
-import { colors, fonts } from '../../styles'
+import { colors, fonts } from '../../styles';
 
 const Image = styled.img`
   width: auto;
@@ -12,14 +12,14 @@ const Image = styled.img`
   &:hover {
     cursor: pointer;
   }
-`
+`;
 
 const Wrapper = styled.div`
   flex: 1 1 auto;
   padding: 0 25px;
   padding-top: ${props => (props.withText ? '10px' : '20px')};
   text-align: center;
-`
+`;
 
 const Label = styled.span`
   text-align: center;
@@ -31,27 +31,27 @@ const Label = styled.span`
   padding: 5px 0;
   padding-bottom: 15px;
   font-size: 12px;
-`
+`;
 
 class ImagePreview extends React.Component {
   render() {
-    let { hidden, settings } = this.props
+    let { hidden, settings } = this.props;
 
     return (
       <Wrapper hidden={hidden} withText={settings.textInfo}>
         <Label>{this.props.label}</Label>
         <Image {...this.props} />
       </Wrapper>
-    )
+    );
   }
 }
 
 const mapStateToProps = state => {
   return {
     settings: state.layoutSettings
-  }
-}
+  };
+};
 
-const ImagePreviewContainer = connect(mapStateToProps)(ImagePreview)
+const ImagePreviewContainer = connect(mapStateToProps)(ImagePreview);
 
-export default ImagePreviewContainer
+export default ImagePreviewContainer;

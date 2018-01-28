@@ -1,10 +1,10 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from 'react';
+import styled from 'styled-components';
 
-import jump from 'jump.js'
+import jump from 'jump.js';
 
-import { colors } from '../../styles'
-import iconDown from '../../assets/icons/iconDown.png'
+import { colors } from '../../styles';
+import iconDown from '../../assets/icons/iconDown.png';
 
 const Wrapper = styled.div`
   display: flex;
@@ -15,7 +15,7 @@ const Wrapper = styled.div`
   a {
     display: inline-block;
   }
-`
+`;
 
 const ButtonNav = styled.div`
   background-color: ${colors.lightGray};
@@ -32,28 +32,28 @@ const ButtonNav = styled.div`
   &:hover {
     cursor: pointer;
   }
-`
+`;
 
 export default class NavButtons extends React.Component {
   nextTest() {
-    let dest = `#test${this.props.currentId + 1}`
-    this.jumpTo(dest)
+    let dest = `#test${this.props.currentId + 1}`;
+    this.jumpTo(dest);
   }
 
   prevTest() {
-    let dest = `#test${this.props.currentId - 1}`
-    this.jumpTo(dest)
+    let dest = `#test${this.props.currentId - 1}`;
+    this.jumpTo(dest);
   }
 
   jumpTo(dest) {
     jump(dest, {
       duration: 0,
       offset: -100
-    })
+    });
   }
 
   render() {
-    let { currentId, lastId } = this.props
+    let { currentId, lastId } = this.props;
 
     return (
       <Wrapper>
@@ -64,6 +64,6 @@ export default class NavButtons extends React.Component {
           <ButtonNav onClick={this.nextTest.bind(this)} />
         )}
       </Wrapper>
-    )
+    );
   }
 }

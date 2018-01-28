@@ -1,31 +1,31 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import styled from 'styled-components'
-import Modal from 'react-modal'
+import React from 'react';
+import { connect } from 'react-redux';
+import styled from 'styled-components';
+import Modal from 'react-modal';
 import {
   closeModal,
   showScrubberTestImage,
   showScrubberRefImage,
   showScrubber
-} from '../../actions'
+} from '../../actions';
 
 // styles & icons
-import { colors, fonts, shadows } from '../../styles'
-import iconClose from '../../assets/icons/close.png'
+import { colors, fonts, shadows } from '../../styles';
+import iconClose from '../../assets/icons/close.png';
 
 // atoms
-import Logo from '../atoms/Logo'
-import TextDetails from '../atoms/TextDetails'
-import ImageScrubber from '../atoms/ImageScrubber'
+import Logo from '../atoms/Logo';
+import TextDetails from '../atoms/TextDetails';
+import ImageScrubber from '../atoms/ImageScrubber';
 
 const Wrapper = styled.div`
   display: block;
-`
+`;
 
 const ModalHeader = styled.div`
   display: block;
   position: relative;
-`
+`;
 
 const ButtonClose = styled.button`
   position: absolute;
@@ -46,7 +46,7 @@ const ButtonClose = styled.button`
   &:hover {
     cursor: pointer;
   }
-`
+`;
 
 const customStyles = {
   content: {
@@ -59,11 +59,11 @@ const customStyles = {
     padding: '25px 60px',
     boxSizing: 'border-box'
   }
-}
+};
 
 class ScrubberModal extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
   }
 
   render() {
@@ -71,17 +71,17 @@ class ScrubberModal extends React.Component {
       reference: refImage,
       test: testImage,
       diffImage
-    } = this.props.scrubber.test
-    const { visible, mode, position } = this.props.scrubber
+    } = this.props.scrubber.test;
+    const { visible, mode, position } = this.props.scrubber;
     const {
       closeModal,
       showScrubberTestImage,
       showScrubberRefImage,
       showScrubber
-    } = this.props
+    } = this.props;
 
-    console.log(this.props)
-    if (!diffImage) console.log('no diff')
+    console.log(this.props);
+    if (!diffImage) console.log('no diff');
 
     return (
       <Wrapper>
@@ -107,35 +107,35 @@ class ScrubberModal extends React.Component {
           />
         </Modal>
       </Wrapper>
-    )
+    );
   }
 }
 
 const mapStateToProps = state => {
   return {
     scrubber: state.scrubber
-  }
-}
+  };
+};
 
 const mapDispatchToProps = dispatch => {
   return {
     closeModal: () => {
-      dispatch(closeModal(false))
+      dispatch(closeModal(false));
     },
     showScrubberTestImage: val => {
-      dispatch(showScrubberTestImage(val))
+      dispatch(showScrubberTestImage(val));
     },
     showScrubberRefImage: val => {
-      dispatch(showScrubberRefImage(val))
+      dispatch(showScrubberRefImage(val));
     },
     showScrubber: val => {
-      dispatch(showScrubber(val))
+      dispatch(showScrubber(val));
     }
-  }
-}
+  };
+};
 
 const ScrubberModalContainer = connect(mapStateToProps, mapDispatchToProps)(
   ScrubberModal
-)
+);
 
-export default ScrubberModalContainer
+export default ScrubberModalContainer;

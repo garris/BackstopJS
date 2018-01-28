@@ -1,8 +1,8 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import styled from 'styled-components'
+import React from 'react';
+import { connect } from 'react-redux';
+import styled from 'styled-components';
 
-import { colors, fonts } from '../../styles'
+import { colors, fonts } from '../../styles';
 
 const IdTitle = styled.h3`
   font-size: 14px;
@@ -27,20 +27,20 @@ const IdTitle = styled.h3`
     left: 0;
     top: -10px;
   }
-`
+`;
 
 class IdConfig extends React.Component {
   render() {
-    return <IdTitle>{this.props.idConfig}</IdTitle>
+    return <IdTitle>{this.props.idConfig}</IdTitle>;
   }
 }
 
 const mapStateToProps = state => {
   return {
     idConfig: state.suiteInfo.idConfig
-  }
-}
+  };
+};
 
-const IdContainer = connect(mapStateToProps)(IdConfig)
+const IdContainer = connect(mapStateToProps)(IdConfig);
 
-export default IdContainer
+export default IdContainer;

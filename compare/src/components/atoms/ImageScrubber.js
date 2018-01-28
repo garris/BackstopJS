@@ -1,8 +1,8 @@
-import React from 'react'
-import styled from 'styled-components'
-import TwentyTwenty from 'react-twentytwenty'
+import React from 'react';
+import styled from 'styled-components';
+import TwentyTwenty from 'react-twentytwenty';
 
-import { colors, fonts, shadows } from '../../styles'
+import { colors, fonts, shadows } from '../../styles';
 
 const ScrubberViewBtn = styled.button`
   margin: 1em;
@@ -29,7 +29,7 @@ const ScrubberViewBtn = styled.button`
     cursor: pointer;
     box-shadow: ${props => (!props.selected ? shadows.shadow02 : '')};
   }
-`
+`;
 
 const Wrapper = styled.div`
   height: 100%;
@@ -51,12 +51,12 @@ const Wrapper = styled.div`
   .refImage {
     width: 100%;
   }
-`
+`;
 
 const WrapTitle = styled.div`
   display: flex;
   justify-content: center;
-`
+`;
 
 export default function ImageScrubber({
   position,
@@ -75,7 +75,7 @@ export default function ImageScrubber({
             <ScrubberViewBtn
               selected={position === 100}
               onClick={() => {
-                showScrubberRefImage()
+                showScrubberRefImage();
               }}
             >
               REFERENCE
@@ -83,7 +83,7 @@ export default function ImageScrubber({
             <ScrubberViewBtn
               selected={position === 0}
               onClick={() => {
-                showScrubberTestImage()
+                showScrubberTestImage();
               }}
             >
               TEST
@@ -91,7 +91,7 @@ export default function ImageScrubber({
             <ScrubberViewBtn
               selected={position !== 100 && position !== 0}
               onClick={() => {
-                showScrubber()
+                showScrubber();
               }}
             >
               SCRUBBER
@@ -111,6 +111,6 @@ export default function ImageScrubber({
         <div className="slider" />
       </TwentyTwenty>
     </Wrapper>
-  )
+  );
   // }
 }

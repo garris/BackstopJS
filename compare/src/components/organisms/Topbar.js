@@ -1,11 +1,11 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from 'react';
+import styled from 'styled-components';
 
-import { colors } from '../../styles'
+import { colors } from '../../styles';
 
-import SuiteNameContainer from '../atoms/SuiteName'
-import IdContainer from '../atoms/IdContainer'
-import Logo from '../atoms/Logo'
+import SuiteNameContainer from '../atoms/SuiteName';
+import IdContainer from '../atoms/IdContainer';
+import Logo from '../atoms/Logo';
 
 const TopbarWrapper = styled.section`
   width: 100%;
@@ -15,7 +15,7 @@ const TopbarWrapper = styled.section`
   align-items: center;
   box-sizing: border-box;
   flex-wrap: wrap;
-`
+`;
 
 const Separator = styled.div`
   width: 100%;
@@ -23,7 +23,7 @@ const Separator = styled.div`
   background: ${colors.borderGray};
   flex-basis: 100%;
   margin: 10px 0;
-`
+`;
 
 export default class Topbar extends React.Component {
   render() {
@@ -34,6 +34,6 @@ export default class Topbar extends React.Component {
         <Logo />
         <Separator />
       </TopbarWrapper>
-    )
+    );
   }
 }

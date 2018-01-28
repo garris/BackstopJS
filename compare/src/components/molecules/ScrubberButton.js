@@ -1,14 +1,14 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import styled from 'styled-components'
-import { openModal } from '../../actions'
+import React from 'react';
+import { connect } from 'react-redux';
+import styled from 'styled-components';
+import { openModal } from '../../actions';
 
 // styles & icons
-import { colors, fonts, shadows } from '../../styles'
+import { colors, fonts, shadows } from '../../styles';
 
 const Wrapper = styled.div`
   display: block;
-`
+`;
 
 const ButtonSD = styled.button`
   position: absolute;
@@ -31,16 +31,16 @@ const ButtonSD = styled.button`
   &:hover {
     cursor: pointer;
   }
-`
+`;
 
 class ScrubberButton extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
   }
 
   onClick() {
-    let { openModal } = this.props
-    openModal(this.props.info)
+    let { openModal } = this.props;
+    openModal(this.props.info);
   }
 
   render() {
@@ -53,26 +53,26 @@ class ScrubberButton extends React.Component {
           SHOW DIFFS
         </ButtonSD>
       </Wrapper>
-    )
+    );
   }
 }
 
 const mapStateToProps = state => {
   return {
     scrubber: state.scrubber
-  }
-}
+  };
+};
 
 const mapDispatchToProps = dispatch => {
   return {
     openModal: value => {
-      dispatch(openModal(value))
+      dispatch(openModal(value));
     }
-  }
-}
+  };
+};
 
 const ScrubberButtonContainer = connect(mapStateToProps, mapDispatchToProps)(
   ScrubberButton
-)
+);
 
-export default ScrubberButtonContainer
+export default ScrubberButtonContainer;

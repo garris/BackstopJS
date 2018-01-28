@@ -1,11 +1,11 @@
-import React from 'react'
-import styled from 'styled-components'
-import { Sticky } from 'react-sticky'
+import React from 'react';
+import styled from 'styled-components';
+import { Sticky } from 'react-sticky';
 
-import Topbar from '../organisms/topbar'
-import Toolbar from '../organisms/Toolbar'
+import Topbar from '../organisms/topbar';
+import Toolbar from '../organisms/Toolbar';
 
-import { colors } from '../../styles'
+import { colors } from '../../styles';
 
 const HeaderWrapper = styled.section`
   width: 100%;
@@ -14,7 +14,7 @@ const HeaderWrapper = styled.section`
   z-index: 999;
   box-sizing: border-box;
   position: relative;
-`
+`;
 
 export default class Header extends React.Component {
   render() {
@@ -30,10 +30,10 @@ export default class Header extends React.Component {
             distanceFromBottom,
             calculatedHeight
           }) => {
-            return <Toolbar style={style} />
+            return <Toolbar style={style} />;
           }}
         </Sticky>
       </HeaderWrapper>
-    )
+    );
   }
 }

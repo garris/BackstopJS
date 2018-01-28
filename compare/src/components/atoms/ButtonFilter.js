@@ -1,7 +1,7 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from 'react';
+import styled from 'styled-components';
 
-import { colors, fonts, shadows } from '../../styles'
+import { colors, fonts, shadows } from '../../styles';
 
 const Button = styled.button`
   font-size: 20px;
@@ -34,11 +34,11 @@ const Button = styled.button`
     background-color: ${colors.red};
     color: ${colors.white};
   }
-`
+`;
 
 export default class ButtonFilter extends React.Component {
   render() {
-    let { count, label, status } = this.props
+    let { count, label, status } = this.props;
 
     return (
       <Button
@@ -48,6 +48,6 @@ export default class ButtonFilter extends React.Component {
       >
         {status !== 'all' ? count : ''} {label}
       </Button>
-    )
+    );
   }
 }

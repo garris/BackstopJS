@@ -1,10 +1,10 @@
 const suiteInfo = (state = {}, action) => {
   switch (action.type) {
     case 'SET_VISIBILITY_FILTER':
-      return action.filter
+      return action.filter;
     default:
-      return state
+      return state;
   }
-}
+};
 
-export default suiteInfo
+export default suiteInfo;

@@ -1,29 +1,29 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import styled from 'styled-components'
+import React from 'react';
+import { connect } from 'react-redux';
+import styled from 'styled-components';
 
-import { colors, fonts } from '../../styles'
+import { colors, fonts } from '../../styles';
 
 // styled
-const WrapperDetails = styled.div``
+const WrapperDetails = styled.div``;
 
 const Row = styled.div`
   padding: 5px 0;
-`
+`;
 
 const Label = styled.span`
   font-family: ${fonts.latoRegular};
   color: ${colors.secondaryText};
   font-size: 14px;
   padding-right: 8px;
-`
+`;
 
 const Value = styled.span`
   font-family ${fonts.latoBold};
   color: ${colors.primaryText};
   font-size: 14px;
   padding-right: 20px;
-`
+`;
 
 const DetailsPanel = styled.div`
   display: ${props => (props.showPanel ? 'block' : 'none')};
@@ -34,39 +34,39 @@ const DetailsPanel = styled.div`
   left: 20px;
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
   z-index: 999;
-`
+`;
 
 class TextDetails extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       showPanel: false
-    }
+    };
 
-    this.showPanel = this.showPanel.bind(this)
-    this.hidePanel = this.hidePanel.bind(this)
+    this.showPanel = this.showPanel.bind(this);
+    this.hidePanel = this.hidePanel.bind(this);
   }
 
   showPanel() {
-    const { settings } = this.props
+    const { settings } = this.props;
     if (!settings.textInfo) {
       this.setState({
         showPanel: true
-      })
+      });
     }
   }
 
   hidePanel() {
     this.setState({
       showPanel: false
-    })
+    });
   }
 
   render() {
-    const { label, fileName, selector, diff } = this.props.info
-    const { settings } = this.props
-    const { showPanel } = this.state
+    const { label, fileName, selector, diff } = this.props.info;
+    const { settings } = this.props;
+    const { showPanel } = this.state;
 
     return (
       <WrapperDetails>
@@ -109,16 +109,16 @@ class TextDetails extends React.Component {
           </Row>
         </DetailsPanel>
       </WrapperDetails>
-    )
+    );
   }
 }
 
 const mapStateToProps = state => {
   return {
     settings: state.layoutSettings
-  }
-}
+  };
+};
 
-const TextDetailsContainer = connect(mapStateToProps)(TextDetails)
+const TextDetailsContainer = connect(mapStateToProps)(TextDetails);
 
-export default TextDetailsContainer
+export default TextDetailsContainer;

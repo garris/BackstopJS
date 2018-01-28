@@ -1,22 +1,22 @@
-import React from 'react'
-import styled from 'styled-components'
-import { connect } from 'react-redux'
+import React from 'react';
+import styled from 'styled-components';
+import { connect } from 'react-redux';
 
 // organisms
-import TestCard from '../organisms/TestCard'
+import TestCard from '../organisms/TestCard';
 
 const ListWrapper = styled.section`
   width: 100%;
   margin: 0 auto;
   margin-top: 20px;
   z-index: 1;
-`
+`;
 
 class List extends React.Component {
   render() {
-    let { tests, settings } = this.props
+    let { tests, settings } = this.props;
     let onlyText =
-      !settings.refImage && !settings.testImage && !settings.diffImage
+      !settings.refImage && !settings.testImage && !settings.diffImage;
 
     return (
       <ListWrapper>
@@ -31,7 +31,7 @@ class List extends React.Component {
           />
         ))}
       </ListWrapper>
-    )
+    );
   }
 }
 
@@ -39,9 +39,9 @@ const mapStateToProps = state => {
   return {
     tests: state.tests.filtered,
     settings: state.layoutSettings
-  }
-}
+  };
+};
 
-const ListContainer = connect(mapStateToProps)(List)
+const ListContainer = connect(mapStateToProps)(List);
 
-export default ListContainer
+export default ListContainer;

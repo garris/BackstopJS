@@ -1,9 +1,9 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from 'react';
+import styled from 'styled-components';
 
-import { colors, fonts, shadows } from '../../styles'
+import { colors, fonts, shadows } from '../../styles';
 
-import settingsIcon from '../../assets/icons/settings.png'
+import settingsIcon from '../../assets/icons/settings.png';
 
 const Button = styled.button`
   border: none;
@@ -45,17 +45,17 @@ const Button = styled.button`
     font-family: ${fonts.latoRegular};
     color: ${colors.secondaryText};
   }
-`
+`;
 
 export default class ButtonSettings extends React.Component {
   render() {
-    let isActive = this.props.active ? 'active' : ''
+    let isActive = this.props.active ? 'active' : '';
 
     return (
       <Button onClick={this.props.onClick} className={isActive}>
         <span className="icon" />
         {/* <span className="label">settings</span> */}
       </Button>
-    )
+    );
   }
 }

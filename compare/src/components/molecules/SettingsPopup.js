@@ -1,11 +1,11 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import styled from 'styled-components'
-import { updateSettings, toggleAllImages, toggleTextInfo } from '../../actions'
+import React from 'react';
+import { connect } from 'react-redux';
+import styled from 'styled-components';
+import { updateSettings, toggleAllImages, toggleTextInfo } from '../../actions';
 
-import { colors, fonts, shadows } from '../../styles'
+import { colors, fonts, shadows } from '../../styles';
 
-import SettingOption from '../atoms/SettingOption'
+import SettingOption from '../atoms/SettingOption';
 
 const PopupWrapper = styled.div`
   display: block;
@@ -35,37 +35,37 @@ const PopupWrapper = styled.div`
     right: 30px;
     top: -16px;
   }
-`
+`;
 
 class SettingsPopup extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       hideAll: false
-    }
+    };
   }
 
   toggleAll(val) {
     this.setState({
       hideAll: !val
-    })
+    });
 
-    this.props.toggleAll(val)
+    this.props.toggleAll(val);
   }
 
   onToggle(id, val) {
     if (!val) {
       this.setState({
         hideAll: false
-      })
+      });
     }
 
-    this.props.onToggle(id)
+    this.props.onToggle(id);
   }
 
   render() {
-    let { onToggle, settings } = this.props
+    let { onToggle, settings } = this.props;
 
     return (
       <PopupWrapper>
@@ -100,32 +100,32 @@ class SettingsPopup extends React.Component {
           onToggle={this.onToggle.bind(this, 'diffImage')}
         />
       </PopupWrapper>
-    )
+    );
   }
 }
 
 const mapStateToProps = state => {
   return {
     settings: state.layoutSettings
-  }
-}
+  };
+};
 
 const mapDispatchToProps = dispatch => {
   return {
     onToggle: id => {
-      dispatch(updateSettings(id))
+      dispatch(updateSettings(id));
     },
     toggleAll: value => {
-      dispatch(toggleAllImages(value))
+      dispatch(toggleAllImages(value));
     },
     toogleTextInfo: value => {
-      dispatch(toggleTextInfo(value))
+      dispatch(toggleTextInfo(value));
     }
-  }
-}
+  };
+};
 
 const PopupContainer = connect(mapStateToProps, mapDispatchToProps)(
   SettingsPopup
-)
+);
 
-export default PopupContainer
+export default PopupContainer;

@@ -5,12 +5,12 @@ const tests = (state = {}, action) => {
         return Object.assign({}, state, {
           filtered: state.all.filter(e => e.status === action.status),
           filterStatus: action.status
-        })
+        });
       } else {
         return Object.assign({}, state, {
           filtered: state.all,
           filterStatus: action.status
-        })
+        });
       }
 
     // @TODO: to optimize
@@ -18,8 +18,8 @@ const tests = (state = {}, action) => {
       if (action.value.length > 0) {
         return Object.assign({}, state, {
           filtered: state.all.filter(e => {
-            let fileName = e.pair.fileName.toLowerCase()
-            let label = e.pair.label.toLowerCase()
+            let fileName = e.pair.fileName.toLowerCase();
+            let label = e.pair.label.toLowerCase();
 
             if (state.filterStatus !== 'all') {
               if (
@@ -27,23 +27,23 @@ const tests = (state = {}, action) => {
                 (label.indexOf(action.value.toLowerCase()) !== -1 ||
                   fileName.indexOf(action.value.toLowerCase()) !== -1)
               ) {
-                return true
+                return true;
               }
             } else {
               if (
                 label.indexOf(action.value.toLowerCase()) !== -1 ||
                 fileName.indexOf(action.value.toLowerCase()) !== -1
               ) {
-                return true
+                return true;
               }
             }
           })
-        })
+        });
       }
 
     default:
-      return state
+      return state;
   }
-}
+};
 
-export default tests
+export default tests;
