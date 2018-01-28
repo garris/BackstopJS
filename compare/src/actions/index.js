@@ -40,13 +40,6 @@ export const closeModal = value => {
   }
 }
 
-export const toggleScrubberMode = value => {
-  return {
-    type: 'TOGGLE_SCRUBBER_MODE',
-    value
-  }
-}
-
 export const showScrubberTestImage = value => {
   return {
     type: 'SHOW_SCRUBBER_TEST_IMAGE',

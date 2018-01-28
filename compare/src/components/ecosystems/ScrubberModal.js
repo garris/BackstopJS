@@ -4,7 +4,6 @@ import styled from 'styled-components'
 import Modal from 'react-modal'
 import {
   closeModal,
-  toggleScrubberMode,
   showScrubberTestImage,
   showScrubberRefImage,
   showScrubber
@@ -44,26 +43,6 @@ const ButtonClose = styled.button`
   }
 `
 
-const ButtonToggleView = styled.button`
-  display: block;
-  margin: 0 auto;
-  border: none;
-  border-radius: 3px;
-  background-color: ${colors.lightGray};
-  text-align: center;
-  padding: 12px 40px;
-  color: ${colors.secondaryText};
-  font-size: 16px;
-
-  &:hover {
-    cursor: pointer;
-  }
-
-  &:focus {
-    outline: none;
-  }
-`
-
 const customStyles = {
   content: {
     width: '100%',
@@ -83,15 +62,21 @@ class ScrubberModal extends React.Component {
   }
 
   render() {
-    const { reference: refImage, test: testImage } = this.props.scrubber.test
+    const {
+      reference: refImage,
+      test: testImage,
+      diffImage
+    } = this.props.scrubber.test
     const { visible, mode, position } = this.props.scrubber
     const {
       closeModal,
-      handleButtonMode,
       showScrubberTestImage,
       showScrubberRefImage,
       showScrubber
     } = this.props
+
+    console.log(this.props)
+    if (!diffImage) console.log('no diff')
 
     return (
       <Wrapper>
@@ -104,17 +89,12 @@ class ScrubberModal extends React.Component {
         >
           <ButtonClose onClick={closeModal} />
           <Logo />
-          {/* <ButtonToggleView onClick={handleButtonMode}>
-            DIFF / SCRUB
-          </ButtonToggleView>*/}
-          {/* <div style={{ paddingTop: '20px', paddingLeft: '5px' }}>
-            <TextDetails {...this.props} />
-          </div> */}
           {mode === 'scrub' && (
             <ImageScrubber
               testImage={testImage}
               refImage={refImage}
               position={position}
+              showButtons={diffImage && diffImage.length > 0}
               showScrubberTestImage={showScrubberTestImage}
               showScrubberRefImage={showScrubberRefImage}
               showScrubber={showScrubber}
@@ -136,9 +116,6 @@ const mapDispatchToProps = dispatch => {
   return {
     closeModal: () => {
       dispatch(closeModal(false))
-    },
-    handleButtonMode: mode => {
-      dispatch(toggleScrubberMode(mode))
     },
     showScrubberTestImage: val => {
       dispatch(showScrubberTestImage(val))

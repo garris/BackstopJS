@@ -48,17 +48,11 @@ const WrapTitle = styled.div`
   justify-content: center;
 `
 
-const Title = styled.h3`
-  flex-basis: 50%;
-  text-align: center;
-  font-family: ${fonts.latoBold};
-  color: ${colors.primaryText};
-`
-
 export default function ImageScrubber({
   position,
   refImage,
   testImage,
+  showButtons,
   showScrubberTestImage,
   showScrubberRefImage,
   showScrubber
@@ -66,27 +60,31 @@ export default function ImageScrubber({
   return (
     <Wrapper>
       <WrapTitle>
-        <ScrubberViewBtn
-          onClick={() => {
-            showScrubberRefImage()
-          }}
-        >
-          REFERENCE
-        </ScrubberViewBtn>
-        <ScrubberViewBtn
-          onClick={() => {
-            showScrubberTestImage()
-          }}
-        >
-          TEST
-        </ScrubberViewBtn>
-        <ScrubberViewBtn
-          onClick={() => {
-            showScrubber()
-          }}
-        >
-          SCRUBBER
-        </ScrubberViewBtn>
+        {showButtons && (
+          <div>
+            <ScrubberViewBtn
+              onClick={() => {
+                showScrubberRefImage()
+              }}
+            >
+              REFERENCE
+            </ScrubberViewBtn>
+            <ScrubberViewBtn
+              onClick={() => {
+                showScrubberTestImage()
+              }}
+            >
+              TEST
+            </ScrubberViewBtn>
+            <ScrubberViewBtn
+              onClick={() => {
+                showScrubber()
+              }}
+            >
+              SCRUBBER
+            </ScrubberViewBtn>
+          </div>
+        )}
       </WrapTitle>
       <TwentyTwenty
         verticalAlign="top"
