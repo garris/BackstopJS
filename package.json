@@ -9,7 +9,6 @@
     "lint": "npm run lint-web && npm run lint-node",
     "lint-web": "eslint --env browser compare/*.js compare/**/*.js --fix",
     "lint-node": "eslint --env node core/*.js core/**/*.js cli/*.js cli/**/*.js capture/*.js capture/**/*.js --fix",
-    "format": "prettier-eslint --write \"compare/src/**/*.js\"",
     "genConfig": "node ./cli/index.js genConfig",
     "init": "node ./cli/index.js init",
     "reference": "node ./cli/index.js reference",
@@ -26,7 +25,7 @@
   },
   "lint-staged": {
     "compare/src/**/*.js": [
-      "node_modules/.bin/prettier --single-quote --no-semi --write",
+      "node_modules/.bin/prettier --single-quote --write",
       "git add"
     ]
   },
