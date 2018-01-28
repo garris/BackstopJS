@@ -67,14 +67,13 @@ export default function ImageScrubber({
   showScrubberRefImage,
   showScrubber
 }) {
-  console.log('position', position)
   return (
     <Wrapper>
       <WrapTitle>
         {showButtons && (
           <div>
             <ScrubberViewBtn
-              selected={position === 110}
+              selected={position === 100}
               onClick={() => {
                 showScrubberRefImage()
               }}
@@ -82,7 +81,7 @@ export default function ImageScrubber({
               REFERENCE
             </ScrubberViewBtn>
             <ScrubberViewBtn
-              selected={position === -10}
+              selected={position === 0}
               onClick={() => {
                 showScrubberTestImage()
               }}
@@ -90,7 +89,7 @@ export default function ImageScrubber({
               TEST
             </ScrubberViewBtn>
             <ScrubberViewBtn
-              selected={position !== 110 && position !== -10}
+              selected={position !== 100 && position !== 0}
               onClick={() => {
                 showScrubber()
               }}
