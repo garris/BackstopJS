@@ -46,6 +46,11 @@ const Wrapper = styled.div`
   .testImage {
     opacity: 1;
   }
+
+  .testImage,
+  .refImage {
+    width: 100%;
+  }
 `
 
 const WrapTitle = styled.div`
