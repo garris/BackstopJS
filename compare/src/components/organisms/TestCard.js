@@ -22,7 +22,7 @@ const CardWrapper = styled.div`
   &:before {
     content: '';
     display: block;
-    width: 5px;
+    width: 8px;
     height: 100%;
     background-color: ${props =>
       props.status === 'pass' ? colors.green : colors.red};
