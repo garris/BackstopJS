@@ -22,10 +22,15 @@ const Wrapper = styled.div`
   display: block;
 `
 
+const ModalHeader = styled.div`
+  display: block;
+  position: relative;
+`
+
 const ButtonClose = styled.button`
   position: absolute;
-  right: 60px;
-  top: 35px;
+  right: 30px;
+  top: 0;
   width: 30px;
   height: 30px;
   background-image: url(${iconClose});
@@ -87,19 +92,19 @@ class ScrubberModal extends React.Component {
           style={customStyles}
           contentLabel="Example Modal"
         >
-          <ButtonClose onClick={closeModal} />
-          <Logo />
-          {mode === 'scrub' && (
-            <ImageScrubber
-              testImage={testImage}
-              refImage={refImage}
-              position={position}
-              showButtons={diffImage && diffImage.length > 0}
-              showScrubberTestImage={showScrubberTestImage}
-              showScrubberRefImage={showScrubberRefImage}
-              showScrubber={showScrubber}
-            />
-          )}
+          <ModalHeader>
+            <ButtonClose onClick={closeModal} />
+            <Logo />
+          </ModalHeader>
+          <ImageScrubber
+            testImage={testImage}
+            refImage={refImage}
+            position={position}
+            showButtons={diffImage && diffImage.length > 0}
+            showScrubberTestImage={showScrubberTestImage}
+            showScrubberRefImage={showScrubberRefImage}
+            showScrubber={showScrubber}
+          />
         </Modal>
       </Wrapper>
     )
