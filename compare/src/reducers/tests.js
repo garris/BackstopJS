@@ -13,7 +13,7 @@ const tests = (state = {}, action) => {
         })
       }
 
-    //@TODO: to optimize
+    // @TODO: to optimize
     case 'SEARCH_TESTS':
       if (action.value.length > 0) {
         return Object.assign({}, state, {
@@ -26,14 +26,16 @@ const tests = (state = {}, action) => {
                 e.status === state.filterStatus &&
                 (label.indexOf(action.value.toLowerCase()) !== -1 ||
                   fileName.indexOf(action.value.toLowerCase()) !== -1)
-              )
+              ) {
                 return true
+              }
             } else {
               if (
                 label.indexOf(action.value.toLowerCase()) !== -1 ||
                 fileName.indexOf(action.value.toLowerCase()) !== -1
-              )
+              ) {
                 return true
+              }
             }
           })
         })
