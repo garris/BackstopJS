@@ -12,7 +12,6 @@ function getPosFromImgId(imgId) {
 const scrubber = (state = {}, action) => {
   switch (action.type) {
     case 'OPEN_SCRUBBER_MODAL':
-      console.log('>>>', action)
       let targetImgId = ''
       try {
         targetImgId = action.value.targetImg.id
