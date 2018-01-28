@@ -1,9 +1,9 @@
 function getPosFromImgId(imgId) {
   switch (imgId) {
     case 'refImage':
-      return 110
+      return 100
     case 'testImage':
-      return -10
+      return 0
     default:
       return 50
   }
