@@ -11,7 +11,7 @@ const ToolbarWrapper = styled.section`
   width: 100%;
   padding: 10px 30px;
   background: ${colors.bodyColor};
-  height: 80px;
+  height: 70px;
   display: flex;
   box-sizing: border-box;
 `

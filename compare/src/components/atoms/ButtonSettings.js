@@ -1,5 +1,4 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import styled from 'styled-components'
 
 import { colors, fonts, shadows } from '../../styles'
@@ -29,12 +28,13 @@ const Button = styled.button`
   }
 
   .icon {
-    height: 16px;
-    width: 16px;
+    height: 18px;
+    width: 18px;
     display: block;
     background-image: url(${settingsIcon});
     background-size: 100%;
     background-repeat: no-repeat;
+    background-position: center;
     margin: 0 auto;
     padding-bottom: 5px;
   }
@@ -52,7 +52,7 @@ export default class ButtonSettings extends React.Component {
     return (
       <Button onClick={this.props.onClick} className={isActive}>
         <span className="icon" />
-        <span className="label">settings</span>
+        {/* <span className="label">settings</span> */}
       </Button>
     )
   }

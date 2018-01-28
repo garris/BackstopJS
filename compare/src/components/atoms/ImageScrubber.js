@@ -1,7 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
 import TwentyTwenty from 'react-twentytwenty'
-import iconDown from '../../assets/icons/iconDown.png'
 
 import { colors, fonts } from '../../styles'
 
@@ -57,6 +56,7 @@ export default function ImageScrubber({
   showScrubberRefImage,
   showScrubber
 }) {
+  console.log('position', position)
   return (
     <Wrapper>
       <WrapTitle>
