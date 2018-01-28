@@ -13,6 +13,7 @@ const Button = styled.button`
   margin-left: 15px;
   padding: 0 20px;
   box-shadow: ${shadows.shadow01};
+  transition: all 0.3s ease-in-out;
 
   &.active {
     box-shadow: none;
@@ -21,6 +22,7 @@ const Button = styled.button`
 
   &:hover {
     cursor: pointer;
+    box-shadow: ${props => (!props.selected ? shadows.shadow02 : '')};
   }
 
   &:focus {
