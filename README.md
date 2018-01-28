@@ -764,15 +764,29 @@ https://github.com/garris/BackstopJS/issues/537#issuecomment-339710797
 
 
 ### `Error: Failed to launch a browser.`
-Sometimes (usually after an app error) a chrome process is left open. If that's the case try...
+Sometimes (usually after an app error) a chrome process is left open. If that's the case,
+
+MacOS and Linux users try...
 ```
 pkill -f "(chrome)?(--headless)"
 ```
 
+Windows users try... (in PowerShell)
+```
+Get-CimInstance Win32_Process -Filter "Name = 'chrome.exe' AND CommandLine LIKE '%--headless%'" | %{Stop-Process $_.ProcessId}
+```
+
 ### `Chromy error: Error. See scenario ...`
-Same as the above issue. If a zombie Chrome instance is blocking a port, you can run...
+Same as the above issue. If a zombie Chrome instance is blocking a port,
+
+MacOS and Linux users can run...
 ```
 pkill -f "(chrome)?(--headless)"
+```
+
+Windows users can run... (in PowerShell)
+```
+Get-CimInstance Win32_Process -Filter "Name = 'chrome.exe' AND CommandLine LIKE '%--headless%'" | %{Stop-Process $_.ProcessId}
 ```
 
 
