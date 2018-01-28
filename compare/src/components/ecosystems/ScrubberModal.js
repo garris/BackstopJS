@@ -25,10 +25,10 @@ const Wrapper = styled.div`
 
 const ButtonClose = styled.button`
   position: absolute;
-  right: 60px;
-  top: 35px;
-  width: 30px;
-  height: 30px;
+  right: 10px;
+  top: 10px;
+  width: 20px;
+  height: 20px;
   background-image: url(${iconClose});
   background-size: 100%;
   background-repeat: no-repeat;
@@ -72,7 +72,9 @@ const customStyles = {
     left: '0',
     border: 'none',
     borderRadius: 'none',
-    padding: '25px 60px',
+    // padding: '25px 60px',
+    padding: '0',
+    overflow: 'hidden',
     boxSizing: 'border-box'
   }
 }

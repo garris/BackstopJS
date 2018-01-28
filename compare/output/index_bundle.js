@@ -27385,9 +27385,9 @@ Object.defineProperty(exports, "__esModule", {
 function getPosFromImgId(imgId) {
   switch (imgId) {
     case 'refImage':
-      return 110;
+      return 100;
     case 'testImage':
-      return -10;
+      return 0;
     default:
       return 50;
   }
@@ -31694,7 +31694,7 @@ Object.defineProperty(exports, "__esModule", {
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _templateObject = _taggedTemplateLiteral(['\n  display: block;\n'], ['\n  display: block;\n']),
-    _templateObject2 = _taggedTemplateLiteral(['\n  position: absolute;\n  right: 60px;\n  top: 35px;\n  width: 30px;\n  height: 30px;\n  background-image: url(', ');\n  background-size: 100%;\n  background-repeat: no-repeat;\n  background-color: transparent;\n  border: none;\n\n  &:focus {\n    outline: none;\n  }\n\n  &:hover {\n    cursor: pointer;\n  }\n'], ['\n  position: absolute;\n  right: 60px;\n  top: 35px;\n  width: 30px;\n  height: 30px;\n  background-image: url(', ');\n  background-size: 100%;\n  background-repeat: no-repeat;\n  background-color: transparent;\n  border: none;\n\n  &:focus {\n    outline: none;\n  }\n\n  &:hover {\n    cursor: pointer;\n  }\n']),
+    _templateObject2 = _taggedTemplateLiteral(['\n  position: absolute;\n  right: 10px;\n  top: 10px;\n  width: 20px;\n  height: 20px;\n  background-image: url(', ');\n  background-size: 100%;\n  background-repeat: no-repeat;\n  background-color: transparent;\n  border: none;\n\n  &:focus {\n    outline: none;\n  }\n\n  &:hover {\n    cursor: pointer;\n  }\n'], ['\n  position: absolute;\n  right: 10px;\n  top: 10px;\n  width: 20px;\n  height: 20px;\n  background-image: url(', ');\n  background-size: 100%;\n  background-repeat: no-repeat;\n  background-color: transparent;\n  border: none;\n\n  &:focus {\n    outline: none;\n  }\n\n  &:hover {\n    cursor: pointer;\n  }\n']),
     _templateObject3 = _taggedTemplateLiteral(['\n  display: block;\n  margin: 0 auto;\n  border: none;\n  border-radius: 3px;\n  background-color: ', ';\n  text-align: center;\n  padding: 12px 40px;\n  color: ', ';\n  font-size: 16px;\n\n  &:hover {\n    cursor: pointer;\n  }\n\n  &:focus {\n    outline: none;\n  }\n'], ['\n  display: block;\n  margin: 0 auto;\n  border: none;\n  border-radius: 3px;\n  background-color: ', ';\n  text-align: center;\n  padding: 12px 40px;\n  color: ', ';\n  font-size: 16px;\n\n  &:hover {\n    cursor: pointer;\n  }\n\n  &:focus {\n    outline: none;\n  }\n']);
 
 var _react = __webpack_require__(3);
@@ -31761,7 +31761,9 @@ var customStyles = {
     left: '0',
     border: 'none',
     borderRadius: 'none',
-    padding: '25px 60px',
+    // padding: '25px 60px',
+    padding: '0',
+    overflow: 'hidden',
     boxSizing: 'border-box'
   }
 };
@@ -32932,23 +32934,29 @@ function ImageScrubber(_ref) {
       null,
       _react2.default.createElement(
         ScrubberViewBtn,
-        { onClick: function onClick() {
+        {
+          onClick: function onClick() {
             showScrubberRefImage();
-          } },
+          }
+        },
         'REFERENCE'
       ),
       _react2.default.createElement(
         ScrubberViewBtn,
-        { onClick: function onClick() {
+        {
+          onClick: function onClick() {
             showScrubberTestImage();
-          } },
+          }
+        },
         'TEST'
       ),
       _react2.default.createElement(
         ScrubberViewBtn,
-        { onClick: function onClick() {
+        {
+          onClick: function onClick() {
             showScrubber();
-          } },
+          }
+        },
         'SCRUBBER'
       )
     ),
