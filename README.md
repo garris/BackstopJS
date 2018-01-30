@@ -154,7 +154,7 @@ clickSelector            // Click the specified DOM element prior to screen shot
 postInteractionWait      // Wait for a selector after interacting with hoverSelector or clickSelector (optionally accepts wait time in ms. Idea for use with a click or hover element transition. available with default onReadyScript)
 selectors                // Array of selectors to capture. Defaults to document if omitted. Use "viewport" to capture the viewport size. See Targeting elements in the next section for more info...
 selectorExpansion        // See Targeting elements in the next section for more info...
-misMatchThreshold        // Around of change before a test is marked failed
+misMatchThreshold        // Percentage of different pixels allowed to pass test
 requireSameDimensions    // If set to true -- any change in selector size will trigger a test failure.
 ```
 
@@ -468,7 +468,7 @@ By default, BackstopJS saves generated resources into the `backstop_data` direct
 ```
 
 ### Changing the rendering engine
-BackstopJS supports using Chrome-Headless, PhantomJS or SlimerJS for web app rendering. PhantomJS is currently the default value and will be installed by default.
+BackstopJS supports using Chrome-Headless, PhantomJS or SlimerJS for web app rendering. Chrome-headless (chromy) is currently the default value and will be installed by default.
 
 #### Chrome-Headless (The latest webkit library)
 This will also enable the very cool _chromy.js_ (https://github.com/OnetapInc/chromy) library.  (When creating onBefore and onReady scripts please make sure you are referring to the [Chromy script documentation](https://github.com/OnetapInc/chromy).  Casper features will not work with this setting.)
@@ -499,7 +499,7 @@ The default port used by BackstopJS is 3001.   You can change it by setting the 
 -->
 
 ### Setting Casper command-line flags
-This is for you if for some reason you find yourself needing advanced configuration access to CasperJS.  You can set CasperJS flags via `casperFlags` like so...
+See casperjs documentation for more info on instance options.  An example config below...
 
 ```json
 "casperFlags": [
@@ -510,7 +510,49 @@ This is for you if for some reason you find yourself needing advanced configurat
 ]
 ```
 
+### Setting Chromy option flags
+Chromy enables a lot of behavior via constructor options.  See Chromy documentation for more info.
+
+**NOTE:** Backstop sets defaults for many Chromy properties. Setting a parameter value with engineOptions will override any default value set by backstop. _But please watch out for the following..._
+- (TLDR) Setting `port` is _very_ _very_ not advised. But you can change starting port in configuration. `"startingPort": 9333`
+- Setting `chromeFlags` will override all chromeFlags properties set by backstop -- **EXCEPT FOR `--window-size`***...  (i.e. `--window-size` flag will be added by backstop if not found in chromeFlags)
+- Setting `--window-size` explicitly in `chromeFlags` will override values used in your viewport settings.
+
+
+An example config below...
+
+```js
+"engineOptions": {
+  waitTimeout: 120000,
+  chromePath: /path/to/chrome,
+  chromeFlags: ['--disable-gpu', '--force-device-scale-factor=1']
+}
+```
+
+### Using Chromy static functions
+To access use of Chromys static functions (such as addCustomDevice) the static chromy reference is sent as the fifth parameter to your onBefore/onReady scripts.
+
+Example usage:
+
+```
+module.exports = function (chromy, scenario, vp, isReference, chromyStatic) {
+  if(vp.label === "phone") {
+    chromyStatic.addCustomDevice({ name: "some-phone", /.../ });
+    chromy.emulate("some-phone");
+  }
+}
+```
+For more info, see the [Chromy script documentation](https://github.com/OnetapInc/chromy).
+
 ### Integration options (local install)
+
+TLDR; run the example here...
+```
+cd backstopjs/test/configs/
+node multi_step node_example
+```
+
+Details...
 
 Installing BackstopJS locally to your project makes a few integration options available.
 
@@ -527,13 +569,7 @@ npm install backstopjs
 ./node_modules/backstopjs/cli/index.js test --config=<myConfigPath>
 ```
 
-If you are going to call backstop from another app you will probably want to do something like this...
-
-```sh
-$ npm install backstopjs
-```
-
-Once installed you can require your local backstop installation into your project.
+If you are going to call backstop from another app you can import it into your project...
 
 ```js
 const backstop = require('backstopjs');
@@ -556,8 +592,22 @@ backstop('test', {config:'custom/backstop/config.json'});
 
 #### Pass a config object to the command
 ```js
-// you can also pass
+// you can also pass a literal object
 backstop('test', {
+  config: {
+    id: "foo",
+    scenarios: [
+      //some scenarios here
+    ]
+  }
+});
+```
+
+#### The `--filter` argument still works too -- just pass a `filter` prop instead.
+```js
+// you can also pass a literal object
+backstop('test', {
+  filter: 'someScenarioLabelAsRegExString',
   config: {
     id: "foo",
     scenarios: [
@@ -650,7 +700,9 @@ optional parameters
 
 ### Modifying output settings of image-diffs
 
-By specifying `resembleOutputOptions` in your backstop.json file you can modify the image-diffs transparency, errorcolor, etc. (See [Resemble.js outputSettings](https://github.com/Huddle/Resemble.js) for the full list.
+By specifying `resembleOutputOptions` in your backstop.json file you can modify the image-diffs transparency, errorcolor, etc. (See [Resemble.js outputSettings](https://github.com/Huddle/Resemble.js) for the full list.)
+
+Instead of calling resemble`s ignoreAntialiasing(), you may set it as a property in the config. (See [example](examples/simpleReactApp/backstop.json))
 ```json
 "resembleOutputOptions": {
   "errorColor": {
@@ -659,7 +711,8 @@ By specifying `resembleOutputOptions` in your backstop.json file you can modify 
     "blue": 255
   },
   "errorType": "movement",
-  "transparency": 0.3
+  "transparency": 0.3,
+  "ignoreAntialiasing": true
 }
 ```
 
@@ -671,18 +724,24 @@ First off, You are awesome! Thanks for your interest, time and hard work!  Here 
 Please turn your linter on. Thank you. 🙇🏽
 
 
-### There is a BackstopJS sanity check
-
-Use the command below for testing BackstopJS locally.  Everything should work.  If it doesn't, something is broke.
-
-```
-    cd <some test directory>/node_modules/backstopjs/test/configs/
-    ../../cli/index.js test --config=backstop_features
-```
-Please make sure this is working before submitting any PR's.  Thanks!
+### There is a BackstopJS SMOKE TEST
+See the next section for running the SMOKE TEST -- Please make sure this is working before submitting any PR's.  Thanks!
 
 
 ## Troubleshooting
+
+### SANITY TEST: Does Backstop work in my enviornment?
+Run the following command from your Desktop, home or project directory to check that Backstop will install and run in your enviornment.
+```
+mkdir backstopSanityTest; cd backstopSanityTest; npm install backstopjs; node_modules/backstopjs/cli/index.js test --config=node_modules/backstopjs/test/configs/backstop
+```
+
+### SMOKE TEST: Are backstop features working ok?
+Run this command if you have made changes to the BackstopJS codebase and you want to make sure that you haven't hosed anything.
+```
+    cd <your project directory>/node_modules/backstopjs/
+    npm run smoke-test
+```
 
 ### Debugging
 If you are using Chrome-Headless engine then you have the option of displaying the Chrome window as tests are running.  This can be helpful for visually monitoring your app state at the time of your test.  To enable use...
@@ -696,18 +755,48 @@ For all engines there is also the `debug` setting.  This enables verbose console
 "debug": true
 ```
 
+### Issues with Chrome-Headless in Docker
+Please keep in mind, Chrome-Headless will need a lot of memory. Take a look at these if you are seeing weird timeout errors with Docker...
 
-### The dreaded: `Error: Failed to launch a browser.`
-Sometimes (usually after an app error) a chrome process is left open. If that's the case try...
+https://github.com/garris/BackstopJS/issues/603#issuecomment-346478523
+
+https://github.com/garris/BackstopJS/issues/537#issuecomment-339710797
+
+
+### `Error: Failed to launch a browser.`
+Sometimes (usually after an app error) a chrome process is left open. If that's the case,
+
+MacOS and Linux users try...
 ```
 pkill -f "(chrome)?(--headless)"
 ```
+
+Windows users try... (in PowerShell)
+```
+Get-CimInstance Win32_Process -Filter "Name = 'chrome.exe' AND CommandLine LIKE '%--headless%'" | %{Stop-Process $_.ProcessId}
+```
+
+### `Chromy error: Error. See scenario ...`
+Same as the above issue. If a zombie Chrome instance is blocking a port,
+
+MacOS and Linux users can run...
+```
+pkill -f "(chrome)?(--headless)"
+```
+
+Windows users can run... (in PowerShell)
+```
+Get-CimInstance Win32_Process -Filter "Name = 'chrome.exe' AND CommandLine LIKE '%--headless%'" | %{Stop-Process $_.ProcessId}
+```
+
 
 ### The dreaded: _command-not-found_ error...
 
 Did you install BackstopJS with the global option?  If installing globally remember to add that `-g` when installing with npm *i.e.* `npm install backstop -g`.     If you installed *locally*, remember that the `backstop <command>` pattern will only be available to your npm scripts -- see the local installation section above for more info.
 
+### Issues when installing
 
+Somethimes bad permissions happen to good people.  It's ok, this is a safe space.  Hopefully this will help... https://github.com/garris/BackstopJS/issues/545
 
 
 ### Projects don't work when I share with other users or run in different environments.

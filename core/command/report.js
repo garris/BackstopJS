@@ -57,6 +57,7 @@ function writeBrowserReport (config, reporter) {
 
 function writeJunitReport (config, reporter) {
   logger.log('Writing jUnit Report');
+  
   var junitWriter = new (require('junitwriter'))();
   var testSuite = junitWriter.addTestsuite(reporter.testSuite);
 

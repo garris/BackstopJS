@@ -1,6 +1,6 @@
 {
   "name": "backstopjs",
-  "version": "3.0.31",
+  "version": "3.0.39",
   "description": "BackstopJS: Catch CSS curveballs.",
   "bin": {
     "backstop": "./cli/index.js"
@@ -15,8 +15,9 @@
     "test": "node ./cli/index.js test",
     "openReport": "node ./cli/index.js openReport",
     "echo": "node ./cli/index.js echo",
-    "unit-test": "mocha --reporter spec --recursive test/",
-    "integration-test": "rm -rf newdir && mkdir newdir && cd newdir && node ../cli/index.js genConfig && node ../cli/index.js reference && node ../cli/index.js test && node -e \"require('../')('test')\""
+    "unit-test": "mocha --reporter spec --recursive test/cli",
+    "integration-test": "rm -rf newdir && mkdir newdir && cd newdir && node ../cli/index.js genConfig && node ../cli/index.js reference && node ../cli/index.js test && node -e \"require('../')('test')\"",
+    "smoke-test": "cd test/configs/; node ../../cli/index.js test --config=backstop_features"
   },
   "repository": {
     "type": "git",
