@@ -144,6 +144,14 @@ function flatMapTestPairs (rawTestPairs) {
     var testPairs = result.testPairs;
     if (!testPairs) {
       testPairs = {
+        diff: {
+          isSameDimensions: '',
+          dimensionDifference: {
+            width: '',
+            height: ''
+          },
+          misMatchPercentage: ''
+        },
         reference: '',
         test: '',
         selector: '',

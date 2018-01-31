@@ -24,7 +24,7 @@ function writeBrowserReport (config, reporter) {
   }
   logger.log('Writing browser report');
   return fs.copy(config.comparePath, toAbsolute(config.html_report)).then(function () {
-    logger.log('Browser reported copied');
+    logger.log('Resources copied');
 
     // Fixing URLs in the configuration
     var report = toAbsolute(config.html_report);
