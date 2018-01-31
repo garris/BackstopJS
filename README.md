@@ -822,6 +822,7 @@ _see https://github.com/garris/BackstopJS/issues/185_
 
 
 ---
+<!--
 ## Tutorials, Extensions and more
 
 - (RECOMMENDED Updated for version 2) Regression testing with BackstopJS, in-depth tutorial by [Angela Riggs](https://twitter.com/AngelaRiggs_) http://www.metaltoad.com/blog/regression-testing-backstopjs
@@ -837,7 +838,7 @@ _see https://github.com/garris/BackstopJS/issues/185_
 - Generate a BackstopJS configuration file from sitemap.xml with [BackstopJS Scenarios Constructor](https://github.com/enzosterro/bscm/) by [Enzo Sterro](https://github.com/enzosterro)
 
 - BackstopJS brochure at [http://BackstopJS.org/](http://garris.github.io/BackstopJS/).
-
+-->
 
 ## Credits
 BackstopJS was created and is maintained by [Garris Shipon](https://www.linkedin.com/in/garrisshipon/)
@@ -846,7 +847,8 @@ BackstopJS was created and is maintained by [Garris Shipon](https://www.linkedin
 
 💙㊗️🙇 Many many thanks to [all the contributors](https://github.com/garris/BackstopJS/graphs/contributors) with special thanks to our BackstopJS core contributors...
 
-Features by:
+- [Gabriele Mantovani](https://github.com/mantovanig) for our beautiful new UI in 3.1.0.
+- [Pavel Zbytovský](https://github.com/zbycz), [Đinh Quang Trung](https://github.com/trungdq88), [Dan Pettersson](https://github.com/deap82), [anton-kulagin](https://github.com/anton-kulagin), [Baltazardoung](https://github.com/Baltazardoung), [kiran-redhat](https://github.com/kiran-redhat), [lsuchanek](https://github.com/lsuchanek), [Michal Vyšinský](https://github.com/vysinsky), [Leonid Makarov](https://github.com/lmakarov), [Vladislav Dekov](https://github.com/vdekov) 3.0 post release fixes and features.
 - [Shinji Yamada](https://github.com/dotneet) for Chrome Headless & Chromy.JS integration support in 3.0.0.
 - [Shane McGraw](https://github.com/shanemcgraw) for testing and awesomeness during 3.0 development.
 - [Steve Fischer](https://github.com/stevecfischer), [uğur mirza zeyrek](mirzazeyrek), [Sven Wütherich](svwu), [Alex Bondarev](https://github.com/skip405) for concurrency support, JS config passing, JPEG support, CLI Auth support.
