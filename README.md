@@ -54,7 +54,7 @@ $ npm install -g backstopjs
 ## Getting started
 ### Installation
 
-**[Chrome 62 or greater is required!](https://www.google.com/chrome/browser/beta.html)**
+_[Chrome 62 or greater is required](https://www.google.com/chrome/browser)_
 
 #### Global installation (recommended)
 ```sh
