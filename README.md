@@ -545,30 +545,19 @@ For more info, see the [Chromy script documentation](https://github.com/OnetapIn
 
 ### Integration options (local install)
 
-TLDR; run the example here...
-```
-cd backstopjs/test/configs/
-node multi_step node_example
-```
-
-Details...
-
 Installing BackstopJS locally to your project makes a few integration options available.
 
-The most basic example probably looks like this....
+Using Backstop as a locally installed standalone app looks like this....
 
 ```
 # Install from your project root
 npm install backstopjs
 
-# Set up a new project
-./node_modules/backstopjs/cli/index.js init
-
-# Run a test etc...
+# Then, run commands by directly calling the cli
 ./node_modules/backstopjs/cli/index.js test --config=<myConfigPath>
 ```
 
-If you are going to call backstop from another app you can import it into your project...
+The more interesting case is calling backstop from another node app...
 
 ```js
 const backstop = require('backstopjs');
@@ -654,7 +643,7 @@ When BackstopJS is installed locally, NPM will recognize the `backstop <command>
 }
 ```
 
-The above is a crude example -- there are other fancy mappings you can create as well -- check out the NPM documentation for more info.
+The above is a basic example -- check out the NPM documentation for more info.
 
 ### Tuning BackstopJS performance
 During a test, BackstopJS processes image capture and image comparisons in parallel. You can adjust how much BackstopJS does at one time by changing
