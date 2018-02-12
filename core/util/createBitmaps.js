@@ -5,12 +5,14 @@ var fs = require('./fs');
 var each = require('./each');
 var pMap = require('p-map');
 
+var getFreePorts = require('./getFreePorts');
 var runCasper = require('./runCasper');
 var runChromy = require('./runChromy');
 const ensureDirectoryPath = require('./ensureDirectoryPath');
 var logger = require('./logger')('createBitmaps');
 
 var CONCURRENCY_DEFAULT = 10;
+const CHROMY_STARTING_PORT_NUMBER = 9222;
 var GENERATE_BITMAPS_SCRIPT = 'capture/genBitmaps.js';
 
 function regexTest (string, search) {
@@ -120,9 +122,17 @@ function delegateScenarios (config) {
     });
   });
 
-  var asyncCaptureLimit = config.asyncCaptureLimit === 0 ? 1 : config.asyncCaptureLimit || CONCURRENCY_DEFAULT;
+  const PORT = (config.startingPort || CHROMY_STARTING_PORT_NUMBER);
+  const asyncCaptureLimit = config.asyncCaptureLimit === 0 ? 1 : config.asyncCaptureLimit || CONCURRENCY_DEFAULT;
 
-  return pMap(scenarioViews, runChromy, {concurrency: asyncCaptureLimit});
+  return getFreePorts(PORT, scenarioViews.length).then(freeports => {
+    console.log('These ports will be used:', JSON.stringify(freeports));
+    scenarioViews.forEach((scenarioView, i) => {
+      scenarioView.assignedPort = freeports[i];
+    });
+    return pMap(scenarioViews, runChromy, {concurrency: asyncCaptureLimit});
+  });
+
 }
 
 function pad (number) {

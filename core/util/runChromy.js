@@ -25,10 +25,11 @@ module.exports = function (args) {
   const viewport = args.viewport;
   const config = args.config;
   const runId = args.id;
+  const assignedPort = args.assignedPort;
   const scenarioLabelSafe = makeSafe(scenario.label);
   const variantOrScenarioLabelSafe = scenario._parent ? makeSafe(scenario._parent.label) : scenarioLabelSafe;
-  
-  return processScenarioView(scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, config, runId);
+
+  return processScenarioView(scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, config, runId, assignedPort);
 };
 
 /**
@@ -40,7 +41,7 @@ module.exports = function (args) {
  * @param  {[type]} config                 [description]
  * @return {[type]}                        [description]
  */
-function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, config, runId) {
+function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, config, runId, assignedPort) {
   if (!config.paths) {
     config.paths = {};
   }
@@ -60,7 +61,8 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   const VP_H = viewport.height || viewport.viewport.height;
 
   const DEFAULT_CHROME_FLAGS = ['--disable-gpu', '--force-device-scale-factor=1', '--disable-infobars=true'];
-  const PORT = (config.startingPort || CHROMY_STARTING_PORT_NUMBER) + runId;
+  // const PORT = (config.startingPort || CHROMY_STARTING_PORT_NUMBER) + runId;
+  const PORT = assignedPort;
   let defaultOptions = {
     chromeFlags: undefined,
     port: PORT,
