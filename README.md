@@ -751,7 +751,7 @@ This is a grey area for BackstopJS.  When you click a link to a new page inside 
  
 
 ### Chrome Zombies!
-Sometimes when developing scrips -- browser errors can actually cause Chrome-Headless and Chromy to loose their special connection to each other.  If find that Chome zombies are accumulating in your ENV spacetime continuum then please follow these steps:
+Sometimes when developing scrips -- browser errors can actually cause Chrome-Headless and Chromy to loose their special connection to each other.  If you find that Chome zombies are accumulating in your ENV spacetime continuum then please follow these steps:
 
    1) DONT PANIC!
    
