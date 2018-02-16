@@ -759,6 +759,10 @@ Windows users try... (in PowerShell)
 Get-CimInstance Win32_Process -Filter "Name = 'chrome.exe' AND CommandLine LIKE '%--headless%'" | %{Stop-Process $_.ProcessId}
 ```
 
+### Interaction: clicking a link that loads a new page
+This is a grey area for BackstopJS.  When you click a link to a new page inside of Chrome headless then you are unloading all your current app state and starting fresh with a new app state.  If this is your case, the best practice is to simply create a new BackstopJS scenario with the required URL state etc.  If you have some kind of situation which really requires this kind of behavior then it's doable -- take a look at this issue for inspiration... https://github.com/garris/BackstopJS/issues/657
+ 
+
 ### `Chromy error: Error. See scenario ...`
 Same as the above issue. If a zombie Chrome instance is blocking a port,
 
