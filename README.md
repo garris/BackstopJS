@@ -746,35 +746,28 @@ https://github.com/garris/BackstopJS/issues/603#issuecomment-346478523
 https://github.com/garris/BackstopJS/issues/537#issuecomment-339710797
 
 
-### `Error: Failed to launch a browser.`
-Sometimes (usually after an app error) a chrome process is left open. If that's the case,
-
-MacOS and Linux users try...
-```
-pkill -f "(chrome)?(--headless)"
-```
-
-Windows users try... (in PowerShell)
-```
-Get-CimInstance Win32_Process -Filter "Name = 'chrome.exe' AND CommandLine LIKE '%--headless%'" | %{Stop-Process $_.ProcessId}
-```
-
 ### Interaction: clicking a link that loads a new page
 This is a grey area for BackstopJS.  When you click a link to a new page inside of Chrome headless then you are unloading all your current app state and starting fresh with a new app state.  If this is your case, the best practice is to simply create a new BackstopJS scenario with the required URL state etc.  If you have some kind of situation which really requires this kind of behavior then it's doable -- take a look at this issue for inspiration... https://github.com/garris/BackstopJS/issues/657
  
 
-### `Chromy error: Error. See scenario ...`
-Same as the above issue. If a zombie Chrome instance is blocking a port,
+### Chrome Zombies!
+Sometimes when developing scrips -- browser errors can actually cause Chrome-Headless and Chromy to loose their special connection to each other.  If find that Chome zombies are accumulating in your ENV spacetime continuum then please follow these steps:
 
-MacOS and Linux users can run...
-```
-pkill -f "(chrome)?(--headless)"
-```
+   1) DONT PANIC!
+   
+   2) Remain calm.
 
-Windows users can run... (in PowerShell)
-```
-Get-CimInstance Win32_Process -Filter "Name = 'chrome.exe' AND CommandLine LIKE '%--headless%'" | %{Stop-Process $_.ProcessId}
-```
+   3) do the following...
+
+      MacOS and Linux users can run...
+      ```
+      pkill -f "(chrome)?(--headless)"
+      ```
+
+      Windows users can run... (in PowerShell)
+      ```
+      Get-CimInstance Win32_Process -Filter "Name = 'chrome.exe' AND CommandLine LIKE '%--headless%'" | %{Stop-Process $_.ProcessId}
+      ```
 
 
 ### The dreaded: _command-not-found_ error...
