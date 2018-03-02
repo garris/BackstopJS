@@ -99,7 +99,7 @@ class TextDetails extends React.Component {
           </Row>
           <Row>
             <Label>filename: </Label>
-            <Value>{fileName}</Value>w
+            <Value>{fileName}</Value>
           </Row>
           <Row>
             <Label>url: </Label>
