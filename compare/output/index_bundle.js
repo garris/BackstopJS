@@ -453,7 +453,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_stylis___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_stylis__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_prop_types__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_prop_types__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_prop_types__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_hoist_non_react_statics__ = __webpack_require__(248);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_hoist_non_react_statics___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_hoist_non_react_statics__);
@@ -3075,7 +3075,7 @@ var _prodInvariant = __webpack_require__(4),
     _assign = __webpack_require__(8);
 
 var CallbackQueue = __webpack_require__(73);
-var PooledClass = __webpack_require__(19);
+var PooledClass = __webpack_require__(20);
 var ReactFeatureFlags = __webpack_require__(74);
 var ReactReconciler = __webpack_require__(23);
 var Transaction = __webpack_require__(33);
@@ -3328,7 +3328,7 @@ module.exports = ReactUpdates;
 
 var _assign = __webpack_require__(8);
 
-var PooledClass = __webpack_require__(19);
+var PooledClass = __webpack_require__(20);
 
 var emptyFunction = __webpack_require__(12);
 var warning = __webpack_require__(2);
@@ -3803,6 +3803,41 @@ module.exports = DOMProperty;
 /* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
+/* WEBPACK VAR INJECTION */(function(process) {/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+if (process.env.NODE_ENV !== 'production') {
+  var REACT_ELEMENT_TYPE = (typeof Symbol === 'function' &&
+    Symbol.for &&
+    Symbol.for('react.element')) ||
+    0xeac7;
+
+  var isValidElement = function(object) {
+    return typeof object === 'object' &&
+      object !== null &&
+      object.$$typeof === REACT_ELEMENT_TYPE;
+  };
+
+  // By explicitly using `prop-types` you are opting into new development behavior.
+  // http://fb.me/prop-types-in-prod
+  var throwOnDirectAccess = true;
+  module.exports = __webpack_require__(68)(isValidElement, throwOnDirectAccess);
+} else {
+  // By explicitly using `prop-types` you are opting into new production behavior.
+  // http://fb.me/prop-types-in-prod
+  module.exports = __webpack_require__(213)();
+}
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports, __webpack_require__) {
+
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {/**
  * Copyright (c) 2014-present, Facebook, Inc.
@@ -4145,7 +4180,7 @@ module.exports = ReactElement;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4261,41 +4296,6 @@ module.exports = PooledClass;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 20 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(process) {/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-if (process.env.NODE_ENV !== 'production') {
-  var REACT_ELEMENT_TYPE = (typeof Symbol === 'function' &&
-    Symbol.for &&
-    Symbol.for('react.element')) ||
-    0xeac7;
-
-  var isValidElement = function(object) {
-    return typeof object === 'object' &&
-      object !== null &&
-      object.$$typeof === REACT_ELEMENT_TYPE;
-  };
-
-  // By explicitly using `prop-types` you are opting into new development behavior.
-  // http://fb.me/prop-types-in-prod
-  var throwOnDirectAccess = true;
-  module.exports = __webpack_require__(68)(isValidElement, throwOnDirectAccess);
-} else {
-  // By explicitly using `prop-types` you are opting into new production behavior.
-  // http://fb.me/prop-types-in-prod
-  module.exports = __webpack_require__(213)();
-}
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
-
-/***/ }),
 /* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -4315,7 +4315,7 @@ var _assign = __webpack_require__(38);
 var ReactBaseClasses = __webpack_require__(62);
 var ReactChildren = __webpack_require__(111);
 var ReactDOMFactories = __webpack_require__(115);
-var ReactElement = __webpack_require__(18);
+var ReactElement = __webpack_require__(19);
 var ReactPropTypes = __webpack_require__(119);
 var ReactVersion = __webpack_require__(122);
 
@@ -9012,7 +9012,7 @@ module.exports = getIteratorFn;
 
 var ReactCurrentOwner = __webpack_require__(14);
 var ReactComponentTreeHook = __webpack_require__(11);
-var ReactElement = __webpack_require__(18);
+var ReactElement = __webpack_require__(19);
 
 var checkReactTypeSpec = __webpack_require__(116);
 
@@ -9996,7 +9996,7 @@ var _prodInvariant = __webpack_require__(4);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var PooledClass = __webpack_require__(19);
+var PooledClass = __webpack_require__(20);
 
 var invariant = __webpack_require__(1);
 
@@ -12331,7 +12331,7 @@ module.exports = getHostComponentFromComposite;
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return subscriptionShape; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return storeShape; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_prop_types__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_prop_types__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_prop_types__);
 
 
@@ -13309,7 +13309,9 @@ var TextDetails = function (_React$Component) {
           label = _props$info.label,
           fileName = _props$info.fileName,
           selector = _props$info.selector,
-          diff = _props$info.diff;
+          diff = _props$info.diff,
+          url = _props$info.url,
+          referenceUrl = _props$info.referenceUrl;
       var settings = this.props.settings;
       var showPanel = this.state.showPanel;
 
@@ -13395,6 +13397,43 @@ var TextDetails = function (_React$Component) {
               Value,
               null,
               fileName
+            ),
+            'w'
+          ),
+          _react2.default.createElement(
+            Row,
+            null,
+            _react2.default.createElement(
+              Label,
+              null,
+              'url: '
+            ),
+            _react2.default.createElement(
+              Value,
+              null,
+              _react2.default.createElement(
+                'a',
+                { href: url, target: '_blank' },
+                url
+              )
+            )
+          ),
+          referenceUrl && _react2.default.createElement(
+            Row,
+            null,
+            _react2.default.createElement(
+              Label,
+              null,
+              'reference url: '
+            ),
+            _react2.default.createElement(
+              Value,
+              null,
+              _react2.default.createElement(
+                'a',
+                { href: referenceUrl, target: '_blank' },
+                referenceUrl
+              )
             )
           ),
           _react2.default.createElement(_DiffDetails2.default, { diff: diff })
@@ -13670,7 +13709,7 @@ _reactDom2.default.render(_react2.default.createElement(
 
 
 var PooledClass = __webpack_require__(112);
-var ReactElement = __webpack_require__(18);
+var ReactElement = __webpack_require__(19);
 
 var emptyFunction = __webpack_require__(12);
 var traverseAllChildren = __webpack_require__(113);
@@ -14221,7 +14260,7 @@ module.exports = KeyEscapeUtils;
 
 
 
-var ReactElement = __webpack_require__(18);
+var ReactElement = __webpack_require__(19);
 
 /**
  * Create a factory that creates HTML tag elements.
@@ -14534,7 +14573,7 @@ module.exports = ReactPropTypesSecret;
 
 
 
-var _require = __webpack_require__(18),
+var _require = __webpack_require__(19),
     isValidElement = _require.isValidElement;
 
 var factory = __webpack_require__(67);
@@ -14740,7 +14779,7 @@ module.exports = '15.6.2';
 var _require = __webpack_require__(62),
     Component = _require.Component;
 
-var _require2 = __webpack_require__(18),
+var _require2 = __webpack_require__(19),
     isValidElement = _require2.isValidElement;
 
 var ReactNoopUpdateQueue = __webpack_require__(63);
@@ -15739,7 +15778,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 
 var _prodInvariant = __webpack_require__(22);
 
-var ReactElement = __webpack_require__(18);
+var ReactElement = __webpack_require__(19);
 
 var invariant = __webpack_require__(1);
 
@@ -16450,7 +16489,7 @@ module.exports = BeforeInputEventPlugin;
 
 var _assign = __webpack_require__(8);
 
-var PooledClass = __webpack_require__(19);
+var PooledClass = __webpack_require__(20);
 
 var getTextContentAccessor = __webpack_require__(72);
 
@@ -22529,7 +22568,7 @@ module.exports = flattenChildren;
 
 var _assign = __webpack_require__(8);
 
-var PooledClass = __webpack_require__(19);
+var PooledClass = __webpack_require__(20);
 var Transaction = __webpack_require__(33);
 var ReactInstrumentation = __webpack_require__(13);
 var ReactServerUpdateQueue = __webpack_require__(176);
@@ -23208,7 +23247,7 @@ var _assign = __webpack_require__(8);
 
 var EventListener = __webpack_require__(89);
 var ExecutionEnvironment = __webpack_require__(9);
-var PooledClass = __webpack_require__(19);
+var PooledClass = __webpack_require__(20);
 var ReactDOMComponentTree = __webpack_require__(7);
 var ReactUpdates = __webpack_require__(15);
 
@@ -23444,7 +23483,7 @@ module.exports = ReactInjection;
 var _assign = __webpack_require__(8);
 
 var CallbackQueue = __webpack_require__(73);
-var PooledClass = __webpack_require__(19);
+var PooledClass = __webpack_require__(20);
 var ReactBrowserEventEmitter = __webpack_require__(37);
 var ReactInputSelection = __webpack_require__(90);
 var ReactInstrumentation = __webpack_require__(13);
@@ -25759,7 +25798,7 @@ module.exports = ReactDOMInvalidARIAHook;
 /* WEBPACK VAR INJECTION */(function(process) {/* harmony export (immutable) */ __webpack_exports__["a"] = createProvider;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_PropTypes__ = __webpack_require__(94);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_warning__ = __webpack_require__(58);
@@ -29207,7 +29246,7 @@ var _reactDom = __webpack_require__(41);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _propTypes = __webpack_require__(20);
+var _propTypes = __webpack_require__(18);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -29369,7 +29408,7 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(20);
+var _propTypes = __webpack_require__(18);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -31952,7 +31991,7 @@ var _reactDom = __webpack_require__(41);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _propTypes = __webpack_require__(20);
+var _propTypes = __webpack_require__(18);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -32199,7 +32238,7 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(20);
+var _propTypes = __webpack_require__(18);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -33133,6 +33172,10 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _propTypes = __webpack_require__(18);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -33149,13 +33192,19 @@ var TwentyTwenty = function (_Component) {
   function TwentyTwenty(props) {
     _classCallCheck(this, TwentyTwenty);
 
+    // initialPosition was between 0 and 100, defaultPosition is between 0 and 1
     var _this = _possibleConstructorReturn(this, (TwentyTwenty.__proto__ || Object.getPrototypeOf(TwentyTwenty)).call(this, props));
+
+    var _props$initialPositio = props.initialPosition,
+        initialPosition = _props$initialPositio === undefined ? 50 : _props$initialPositio,
+        _props$defaultPositio = props.defaultPosition,
+        defaultPosition = _props$defaultPositio === undefined ? initialPosition / 100 : _props$defaultPositio;
 
     _this.state = {
       startX: NaN,
       startY: NaN,
       isDragging: false,
-      position: props.initialPosition
+      position: defaultPosition
     };
 
     _this.beginDrag = _this.beginDrag.bind(_this);
@@ -33170,24 +33219,19 @@ var TwentyTwenty = function (_Component) {
       this.endDrag();
     }
   }, {
-    key: 'componentWillReceiveProps',
-    value: function componentWillReceiveProps(_ref) {
-      var newPosition = _ref.newPosition;
-
-      this.setState({ position: newPosition });
-    }
-  }, {
     key: 'onDragMove',
     value: function onDragMove(e) {
+      var _this2 = this;
+
       if (!this.props.isDraggingEnabled) return;
 
       var isDragging = this.state.isDragging;
 
       var isTouch = 'touches' in e;
 
-      var _ref2 = isTouch ? e.touches[0] : e,
-          pageX = _ref2.pageX,
-          pageY = _ref2.pageY;
+      var _ref = isTouch ? e.touches[0] : e,
+          pageX = _ref.pageX,
+          pageY = _ref.pageY;
 
       if (!isDragging && isTouch) {
         var _props = this.props,
@@ -33218,9 +33262,18 @@ var TwentyTwenty = function (_Component) {
           left = _refs$component$getBo.left,
           width = _refs$component$getBo.width;
 
-      var position = 100 * (pageX - left) / width;
-      position = Math.max(Math.min(position, 100), 0);
-      this.setState({ position: position, isDragging: isDragging });
+      var position = (pageX - left) / width;
+      position = Math.max(Math.min(position, 1), 0);
+
+      if (this.props.position != null) {
+        this.setState(function (state) {
+          return !state.isDragging !== isDragging ? { isDragging: isDragging } : null;
+        }, function () {
+          _this2.props.onChange(position);
+        });
+      } else {
+        this.setState({ position: position, isDragging: isDragging });
+      }
     }
   }, {
     key: 'beginDrag',
@@ -33228,9 +33281,9 @@ var TwentyTwenty = function (_Component) {
       if (e) e.preventDefault();
       if (!this.props.isDraggingEnabled) return;
 
-      var _ref3 = 'touches' in e ? e.touches[0] : e,
-          pageX = _ref3.pageX,
-          pageY = _ref3.pageY;
+      var _ref2 = 'touches' in e ? e.touches[0] : e,
+          pageX = _ref2.pageX,
+          pageY = _ref2.pageY;
 
       this.setState({ startX: pageX, startY: pageY });
 
@@ -33252,18 +33305,21 @@ var TwentyTwenty = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
-      var position = this.state.position;
+      var _props$position = this.props.position,
+          position = _props$position === undefined ? this.state.position : _props$position;
       var _props2 = this.props,
-          children = _props2.children,
+          _props2$children = _props2.children,
+          children = _props2$children === undefined ? [] : _props2$children,
+          _props2$left = _props2.left,
+          left = _props2$left === undefined ? children[0] : _props2$left,
+          _props2$right = _props2.right,
+          right = _props2$right === undefined ? children[1] : _props2$right,
+          _props2$slider = _props2.slider,
+          slider = _props2$slider === undefined ? children[2] : _props2$slider,
           verticalAlign = _props2.verticalAlign,
           leftHorizontalAlign = _props2.leftHorizontalAlign,
           rightHorizontalAlign = _props2.rightHorizontalAlign;
 
-
-      if (children.length !== 2 && children.length !== 3) {
-        console.warn('Expected exactly two or three children'); // eslint-disable-line
-        return null;
-      }
 
       return _react2.default.createElement(
         'div',
@@ -33278,13 +33334,13 @@ var TwentyTwenty = function (_Component) {
           {
             style: {
               position: 'absolute',
-              left: position + '%',
+              left: position * 100 + '%',
               height: '100%',
               width: 0,
               zIndex: 1
             }
           },
-          children[2]
+          slider
         ),
         _react2.default.createElement(
           'div',
@@ -33294,7 +33350,7 @@ var TwentyTwenty = function (_Component) {
               width: '100%',
               position: 'relative',
               verticalAlign: verticalAlign,
-              left: position - 100 + '%',
+              left: (position - 1) * 100 + '%',
               overflow: 'hidden'
             }
           },
@@ -33303,11 +33359,11 @@ var TwentyTwenty = function (_Component) {
             {
               style: {
                 position: 'relative',
-                right: position - 100 + '%',
+                right: (position - 1) * 100 + '%',
                 textAlign: leftHorizontalAlign
               }
             },
-            children[0]
+            left
           )
         ),
         _react2.default.createElement(
@@ -33318,7 +33374,7 @@ var TwentyTwenty = function (_Component) {
               width: '100%',
               position: 'relative',
               verticalAlign: verticalAlign,
-              left: position - 100 + '%',
+              left: (position - 1) * 100 + '%',
               overflow: 'hidden'
             }
           },
@@ -33327,11 +33383,11 @@ var TwentyTwenty = function (_Component) {
             {
               style: {
                 position: 'relative',
-                right: position + '%',
+                right: position * 100 + '%',
                 textAlign: rightHorizontalAlign
               }
             },
-            children[1]
+            right
           )
         )
       );
@@ -33345,14 +33401,18 @@ exports.default = TwentyTwenty;
 
 
 TwentyTwenty.propTypes = {
-  children: _react.PropTypes.array,
-  verticalAlign: _react.PropTypes.string,
-  leftHorizontalAlign: _react.PropTypes.string,
-  rightHorizontalAlign: _react.PropTypes.string,
-  minDistanceToBeginInteraction: _react.PropTypes.number,
-  maxAngleToBeginInteraction: _react.PropTypes.number,
-  initialPosition: _react.PropTypes.number,
-  isDraggingEnabled: _react.PropTypes.bool
+  left: _propTypes2.default.element.isRequired,
+  right: _propTypes2.default.element.isRequired,
+  splitter: _propTypes2.default.element,
+  verticalAlign: _propTypes2.default.string,
+  leftHorizontalAlign: _propTypes2.default.string,
+  rightHorizontalAlign: _propTypes2.default.string,
+  minDistanceToBeginInteraction: _propTypes2.default.number,
+  maxAngleToBeginInteraction: _propTypes2.default.number,
+  defaultPosition: _propTypes2.default.number,
+  position: _propTypes2.default.number,
+  isDraggingEnabled: _propTypes2.default.bool,
+  onChange: _propTypes2.default.func
 };
 
 TwentyTwenty.defaultProps = {
@@ -33361,8 +33421,8 @@ TwentyTwenty.defaultProps = {
   rightHorizontalAlign: 'center',
   minDistanceToBeginInteraction: 15,
   maxAngleToBeginInteraction: 30,
-  initialPosition: 50,
-  isDraggingEnabled: true
+  isDraggingEnabled: true,
+  onChange: function onChange() {}
 };
 
 

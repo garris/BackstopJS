@@ -65,7 +65,14 @@ class TextDetails extends React.Component {
   }
 
   render() {
-    const { label, fileName, selector, diff } = this.props.info;
+    const {
+      label,
+      fileName,
+      selector,
+      diff,
+      url,
+      referenceUrl
+    } = this.props.info;
     const { settings } = this.props;
     const { showPanel } = this.state;
 
@@ -92,8 +99,26 @@ class TextDetails extends React.Component {
           </Row>
           <Row>
             <Label>filename: </Label>
-            <Value>{fileName}</Value>
+            <Value>{fileName}</Value>w
           </Row>
+          <Row>
+            <Label>url: </Label>
+            <Value>
+              <a href={url} target="_blank">
+                {url}
+              </a>
+            </Value>
+          </Row>
+          {referenceUrl && (
+            <Row>
+              <Label>reference url: </Label>
+              <Value>
+                <a href={referenceUrl} target="_blank">
+                  {referenceUrl}
+                </a>
+              </Value>
+            </Row>
+          )}
           <DiffDetails diff={diff} />
         </DetailsPanel>
       </WrapperDetails>
