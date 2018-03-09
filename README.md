@@ -802,9 +802,12 @@ _see https://github.com/garris/BackstopJS/issues/185_
 
 
 ---
-<!--
+
 ## Tutorials, Extensions and more
 
+- [A Simple grunt-backstopjs plugin](http://www.obqo.de/blog/2016/12/30/grunt-backstopjs/) - For the Grunt enthusiasts
+
+<!--
 - (RECOMMENDED Updated for version 2) Regression testing with BackstopJS, in-depth tutorial by [Angela Riggs](https://twitter.com/AngelaRiggs_) http://www.metaltoad.com/blog/regression-testing-backstopjs
 
 - BackstopJS tutorial on [css-tricks.com](http://css-tricks.com/automating-css-regression-testing/)
