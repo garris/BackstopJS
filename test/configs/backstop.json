@@ -27,7 +27,7 @@
       "removeSelectors": [],
       "hoverSelector": "",
       "clickSelector": "",
-      "postInteractionWait": "",
+      "postInteractionWait": 0,
       "selectors": [],
       "selectorExpansion": true,
       "misMatchThreshold" : 0.1,
