@@ -14,10 +14,38 @@
 
     <!-- Custom styles for this template -->
     <link href="pricing.css" rel="stylesheet">
+
+    <style type="text/css">
+      .doNotRazz {
+        width: 100%;
+      }
+    </style>
   </head>
 
   <body>
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <img class="doNotRazz" src="./do_not_razz_the_lemur.png">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Nope</button>
+        <button type="button" class="btn btn-primary"  data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
 
+
+<!-- CONTENT -->
     <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
       <h5 class="my-0 mr-md-auto font-weight-normal">BackstopJS</h5>
       <nav class="my-2 my-md-0 mr-md-3">
@@ -26,7 +54,10 @@
         <a class="p-2 text-dark" href="#">Support</a>
         <a class="p-2 text-dark" href="#">Pricing</a>
       </nav>
-      <a class="btn btn-outline-primary" href="#">Sign up</a>
+      <!-- <a class="btn btn-outline-primary" href="#">Sign up</a> -->
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+        Sign up
+      </button>
     </div>
 
     <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
