@@ -18,8 +18,4 @@ See backstop.json: `"resembleOutputOptions": {"ignoreAntialiasing": true}`
 
 **A BackstopJS test configuration file has already been added to this project.**
 
-To test, change directory...
-`cd node_modules/backstopjs/`
-
-...then
-`npm run test`
+To test, simply run the build command above, and Backstop will open the html report in `./backstop_data/html_report`.
