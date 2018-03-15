@@ -5,9 +5,10 @@ var fs = require('./fs');
 var each = require('./each');
 var pMap = require('p-map');
 
-var getFreePorts = require('./getFreePorts');
 var runCasper = require('./runCasper');
 var runChromy = require('./runChromy');
+var runPuppet = require('./runPuppet');
+
 const ensureDirectoryPath = require('./ensureDirectoryPath');
 var logger = require('./logger')('createBitmaps');
 
@@ -125,14 +126,7 @@ function delegateScenarios (config) {
   const PORT = (config.startingPort || CHROMY_STARTING_PORT_NUMBER);
   const asyncCaptureLimit = config.asyncCaptureLimit === 0 ? 1 : config.asyncCaptureLimit || CONCURRENCY_DEFAULT;
 
-  return getFreePorts(PORT, scenarioViews.length).then(freeports => {
-    console.log('These ports will be used:', JSON.stringify(freeports));
-    scenarioViews.forEach((scenarioView, i) => {
-      scenarioView.assignedPort = freeports[i];
-    });
-    return pMap(scenarioViews, runChromy, {concurrency: asyncCaptureLimit});
-  });
-
+  return pMap(scenarioViews, runPuppet, {concurrency: asyncCaptureLimit});
 }
 
 function pad (number) {
@@ -189,7 +183,7 @@ module.exports = function (config, isReference) {
         return writeCompareConfigFile(config.tempCompareConfigFileName, result);
       })
       // Make sure that all Chromy instances are cleaned up.
-      .then(() => Chromy.cleanup());
+      // .then(() => Chromy.cleanup());
   }
 
   return writeReferenceCreateConfig(config, isReference).then(function () {
