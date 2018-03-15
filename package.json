@@ -57,7 +57,6 @@
     "mockery": "^1.4.0",
     "prettier": "^1.7.4",
     "prettier-eslint-cli": "^4.7.0",
-    "puppeteer": "^1.1.1",
     "url-loader": "^0.5.9"
   },
   "dependencies": {
@@ -76,6 +75,7 @@
     "p-map": "^1.1.1",
     "path": "^0.12.7",
     "phantomjs-prebuilt": "^2.1.7",
+    "puppeteer": "^1.1.1",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-modal": "^3.0.3",
