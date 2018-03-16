@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import DiffDetails from './DiffDetails';
+import UrlDetails from './UrlDetails';
 
 import { colors, fonts } from '../../styles';
 
@@ -102,24 +103,9 @@ class TextDetails extends React.Component {
             <Value>{fileName}</Value>
           </Row>
           <Row>
-            <Label>url: </Label>
-            <Value>
-              <a href={url} target="_blank">
-                {url}
-              </a>
-            </Value>
+            <UrlDetails url={url} referenceUrl={referenceUrl} />
+            <DiffDetails diff={diff} />
           </Row>
-          {referenceUrl && (
-            <Row>
-              <Label>reference url: </Label>
-              <Value>
-                <a href={referenceUrl} target="_blank">
-                  {referenceUrl}
-                </a>
-              </Value>
-            </Row>
-          )}
-          <DiffDetails diff={diff} />
         </DetailsPanel>
       </WrapperDetails>
     );
