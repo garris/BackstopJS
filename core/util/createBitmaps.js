@@ -199,7 +199,7 @@ module.exports = function (config, isReference) {
     if (/chrom./i.test(config.engine)) {
       promise.then(() => Chromy.cleanup());
     }
-      console.log(config.engine);
+
     return promise; 
   }
 
