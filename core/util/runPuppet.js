@@ -317,23 +317,35 @@ function delegateSelectors (page, browser, scenario, viewport, variantOrScenario
 
 // TODO: remove filepath_
 async function captureScreenshot (page, browser, selector, selectorMap, config, selectors) {
-  const filePath = selectorMap[selector].filePath;
-  ensureDirectoryPath(filePath);
-  
-  if (selector === VIEWPORT_SELECTOR || selector === BODY_SELECTOR) {
-    // VIEWPORT screenshot
-    await page
-      .screenshot({path: filePath});
-  } else if (selector === NOCLIP_SELECTOR || selector === DOCUMENT_SELECTOR) {
-    // DOCUMENT screenshot
+  let filePath
+  let fullPage = (selector === NOCLIP_SELECTOR || selector === DOCUMENT_SELECTOR)
+  if (selector) {
+    filePath = selectorMap[selector].filePath;
+    ensureDirectoryPath(filePath);
     await page
       .screenshot({
         path: filePath,
-        fullPage: true
+        fullPage: fullPage
       });
   } else {
     // OTHER-SELECTOR screenshot
-    // TODO....
+    const selectorShot = async (s, path) => {
+      const el = await page.$(s)
+      await el.screenshot({
+        path: path
+      })
+    }
+    
+    const selectorsShot = async () => {
+      return Promise.all(
+        selectors.map(async s => { 
+          filePath = selectorMap[s].filePath;
+          ensureDirectoryPath(filePath);
+          await selectorShot(s, filePath);
+        })
+      );
+    }
+    await selectorsShot()
   }
 
   return new Promise (function (resolve, reject) {
