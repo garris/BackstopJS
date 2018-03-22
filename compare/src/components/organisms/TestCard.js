@@ -18,6 +18,7 @@ const CardWrapper = styled.div`
   background-color: ${colors.cardWhite};
   box-shadow: ${shadows.shadow01};
   min-height: 40px;
+  break-inside: avoid;
 
   &:before {
     content: '';
