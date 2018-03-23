@@ -370,7 +370,9 @@ function delegateSelectors (chromy, scenario, viewport, variantOrScenarioLabelSa
         fileName: fileName,
         label: scenario.label,
         requireSameDimensions: requireSameDimensions,
-        misMatchThreshold: engineTools.getMisMatchThreshHold(scenario, config)
+        misMatchThreshold: engineTools.getMisMatchThreshHold(scenario, config),
+        url: scenario.url,
+        referenceUrl: scenario.referenceUrl
       });
     }
 

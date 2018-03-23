@@ -16,21 +16,29 @@ const Value = styled.span`
   padding-right: 20px;
 `;
 
+const Link = styled.a`
+  &::before {
+    content: ${props => (props.withSeperator ? '"|"' : '')};
+    margin: ${props => (props.withSeperator ? '0 10px' : '')};
+  }
+`;
+
 export default class DiffDetails extends React.Component {
   render() {
-    let { diff, suppress } = this.props;
-    if (!diff || suppress) {
-      return null;
-    }
-
+    const { url, referenceUrl } = this.props;
     return (
       <span>
-        <Label>diff%: </Label>
-        <Value>{diff.misMatchPercentage}</Value>
-        <Label>diff-x: </Label>
-        <Value>{diff.dimensionDifference.width}</Value>
-        <Label>diff-y: </Label>
-        <Value>{diff.dimensionDifference.height}</Value>
+        <Label>url: </Label>
+        <Value>
+          <Link href={url} target="_blank">
+            TEST
+          </Link>
+          {referenceUrl && (
+            <Link withSeperator href={referenceUrl} target="_blank">
+              REFERENCE
+            </Link>
+          )}
+        </Value>
       </span>
     );
   }

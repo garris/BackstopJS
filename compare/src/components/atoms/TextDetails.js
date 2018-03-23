@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import DiffDetails from './DiffDetails';
+import UrlDetails from './UrlDetails';
 
 import { colors, fonts } from '../../styles';
 
@@ -65,7 +66,14 @@ class TextDetails extends React.Component {
   }
 
   render() {
-    const { label, fileName, selector, diff } = this.props.info;
+    const {
+      label,
+      fileName,
+      selector,
+      diff,
+      url,
+      referenceUrl
+    } = this.props.info;
     const { settings } = this.props;
     const { showPanel } = this.state;
 
@@ -94,7 +102,10 @@ class TextDetails extends React.Component {
             <Label>filename: </Label>
             <Value>{fileName}</Value>
           </Row>
-          <DiffDetails diff={diff} />
+          <Row>
+            <UrlDetails url={url} referenceUrl={referenceUrl} />
+            <DiffDetails diff={diff} />
+          </Row>
         </DetailsPanel>
       </WrapperDetails>
     );
