@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-import TwentyTwenty from 'react-twentytwenty';
+import TwentyTwenty from 'backstop-twentytwenty';
 import { colors, fonts, shadows } from '../../styles';
 
 const BASE64_PNG_STUB =

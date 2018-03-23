@@ -686,6 +686,7 @@ optional parameters
 By specifying `resembleOutputOptions` in your backstop.json file you can modify the image-diffs transparency, errorcolor, etc. (See [Resemble.js outputSettings](https://github.com/Huddle/Resemble.js) for the full list.)
 
 Instead of calling resemble`s ignoreAntialiasing(), you may set it as a property in the config. (See [example](examples/simpleReactApp/backstop.json))
+
 ```json
 "resembleOutputOptions": {
   "errorColor": {
@@ -710,6 +711,35 @@ Please turn your linter on. Thank you. 🙇🏽
 ### There is a BackstopJS SMOKE TEST
 See the next section for running the SMOKE TEST -- Please make sure this is working before submitting any PR's.  Thanks!
 
+### HTML report development
+Here's some suggestions if you want to work on the HTML report locally...
+
+- The HTML front end is a React app.  It lives in `/compare/src/`
+- To test your work you can build with
+
+	```
+	npm run build-and-copy-report-bundle
+	```
+
+- 👆 As a convienience, this command will move your newly built React bundle into `test/configs/backstop_data/html_report/` so you can test with some of these suggested commands...
+
+	```
+	# From root directory
+	# ---------------
+	# simple test
+		npm run sanity-test
+		
+	# longer test covering many features
+		npm run smoke-test
+
+	
+	# From test/configs/ directory
+	# ---------------
+	# simple test
+		../../cli/index.js test --config=backstop
+	# longer test covering many features
+		../../cli/index.js test --config=./test/configs/backstop_features
+	```
 
 ## Troubleshooting
 
