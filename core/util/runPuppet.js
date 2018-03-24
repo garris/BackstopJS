@@ -84,7 +84,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
   }
 
   //  --- OPEN URL ---
-  var url = scenario.url;
+  var url = translateUrl(scenario.url);
   if (isReference && scenario.referenceUrl) {
     url = scenario.referenceUrl;
   }
@@ -100,7 +100,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     await page.waitForFunction(() => {
       return window._backstopTools.hasLogged(window._readyEvent);
     });
-      
+
     await page.evaluate(_ => console.info('readyEvent ok'));
   }
 
@@ -133,7 +133,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
         })
       );
     }
-    
+
     await removeSelectors();
   }
 
@@ -327,10 +327,10 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
         path: path
       })
     }
-    
+
     const selectorsShot = async () => {
       return Promise.all(
-        selectors.map(async s => { 
+        selectors.map(async s => {
           filePath = selectorMap[s].filePath;
           ensureDirectoryPath(filePath);
           await selectorShot(s, filePath);
@@ -343,4 +343,16 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
   return new Promise (function (resolve, reject) {
     resolve();
   });
+}
+
+// handle relative file name
+function translateUrl (url) {
+  const RE = new RegExp('^[./]');
+  if (RE.test(url)) {
+    const fileUrl = 'file://' + path.join(process.cwd(), url);
+    console.log('Relative filename detected -- translating to ' + fileUrl);
+    return fileUrl;
+  } else {
+    return url;
+  }
 }
