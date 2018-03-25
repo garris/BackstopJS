@@ -338,7 +338,7 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
           filePath = selectorMap[s].filePath;
           ensureDirectoryPath(filePath);
           try {
-            await selectorShot(s, filePath);
+            await selectorShot(s, filePath); 
           } catch (e) {
             console.log(chalk.red(`Error capturing Element ${s}`), e);
           }
