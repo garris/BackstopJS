@@ -47,7 +47,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
   const VP_W = viewport.width || viewport.viewport.width;
   const VP_H = viewport.height || viewport.viewport.height;
 
-  const browser = await puppeteer.launch({ignoreHTTPSErrors: true});
+  const browser = await puppeteer.launch({ignoreHTTPSErrors: true, headless: !!!config.debugWindow});
   const page = await browser.newPage();
 
   page.setViewport({width: VP_W, height: VP_H});
@@ -323,9 +323,13 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
     // OTHER-SELECTOR screenshot
     const selectorShot = async (s, path) => {
       const el = await page.$(s)
-      await el.screenshot({
-        path: path
-      })
+      if (el) {
+        await el.screenshot({
+          path: path
+        })
+      } else {
+        console.log(chalk.red(`Element not found for capuring: ${s}`));
+      }
     }
 
     const selectorsShot = async () => {
@@ -333,7 +337,11 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
         selectors.map(async s => {
           filePath = selectorMap[s].filePath;
           ensureDirectoryPath(filePath);
-          await selectorShot(s, filePath);
+          try {
+            await selectorShot(s, filePath); 
+          } catch (e) {
+            console.log(chalk.red(`Error capturing Element ${s}`), e);
+          }
         })
       );
     }
