@@ -89,11 +89,11 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     }
 
     //  --- OPEN URL ---
-    var url = translateUrl(scenario.url);
+    var url = scenario.url;
     if (isReference && scenario.referenceUrl) {
       url = scenario.referenceUrl;
     }
-    await page.goto(url);
+    await page.goto(translateUrl(url));
   
     await injectBackstopTools(page);
 
