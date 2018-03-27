@@ -5,9 +5,10 @@ var fs = require('./fs');
 var each = require('./each');
 var pMap = require('p-map');
 
-var getFreePorts = require('./getFreePorts');
 var runCasper = require('./runCasper');
 var runChromy = require('./runChromy');
+var runPuppet = require('./runPuppet');
+
 const ensureDirectoryPath = require('./ensureDirectoryPath');
 var logger = require('./logger')('createBitmaps');
 
@@ -121,18 +122,24 @@ function delegateScenarios (config) {
       });
     });
   });
-
-  const PORT = (config.startingPort || CHROMY_STARTING_PORT_NUMBER);
+  
   const asyncCaptureLimit = config.asyncCaptureLimit === 0 ? 1 : config.asyncCaptureLimit || CONCURRENCY_DEFAULT;
-
-  return getFreePorts(PORT, scenarioViews.length).then(freeports => {
-    console.log('These ports will be used:', JSON.stringify(freeports));
-    scenarioViews.forEach((scenarioView, i) => {
-      scenarioView.assignedPort = freeports[i];
+  
+  if (/chrom./i.test(config.engine)) {
+    const PORT = (config.startingPort || CHROMY_STARTING_PORT_NUMBER);
+    var getFreePorts = require('./getFreePorts');
+    return getFreePorts(PORT, scenarioViews.length).then(freeports => {
+      console.log('These ports will be used:', JSON.stringify(freeports));
+      scenarioViews.forEach((scenarioView, i) => {
+        scenarioView.assignedPort = freeports[i];
+      });
+      return pMap(scenarioViews, runChromy, {concurrency: asyncCaptureLimit});
     });
-    return pMap(scenarioViews, runChromy, {concurrency: asyncCaptureLimit});
-  });
-
+  } else if (config.engine.startsWith('puppet')) {
+    return pMap(scenarioViews, runPuppet, {concurrency: asyncCaptureLimit});
+  } else {
+    logger.error('Engine not known to Backstop!');
+  }
 }
 
 function pad (number) {
@@ -178,8 +185,8 @@ function flatMapTestPairs (rawTestPairs) {
 }
 
 module.exports = function (config, isReference) {
-  if (/chrom./i.test(config.engine)) {
-    return delegateScenarios(decorateConfigForCapture(config, isReference))
+  if (/chrom./i.test(config.engine) || config.engine.startsWith('puppet')) {
+    const promise = delegateScenarios(decorateConfigForCapture(config, isReference))
       .then(rawTestPairs => {
         const result = {
           compareConfig: {
@@ -187,9 +194,13 @@ module.exports = function (config, isReference) {
           }
         };
         return writeCompareConfigFile(config.tempCompareConfigFileName, result);
-      })
-      // Make sure that all Chromy instances are cleaned up.
-      .then(() => Chromy.cleanup());
+      });
+
+    if (/chrom./i.test(config.engine)) {
+      promise.then(() => Chromy.cleanup());
+    }
+
+    return promise; 
   }
 
   return writeReferenceCreateConfig(config, isReference).then(function () {

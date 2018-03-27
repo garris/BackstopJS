@@ -1,5 +1,5 @@
-const ENGINE = 'chrome';
-const SCRIPT_PATH = 'chromy';
+const ENGINE = 'puppet';
+const SCRIPT_PATH = 'puppet';
 
 module.exports = {
   id: `${ENGINE}_backstop_features`,
@@ -87,18 +87,18 @@ module.exports = {
       url: 'https://garris.github.io/BackstopJS/?cookie',
       selectors: ['.moneyshot']
     },
-    {
-      label: 'customReadyScript',
-      onReadyScript: `${SCRIPT_PATH}/overrideCSS.js`,
-      url: '../../index.html',
-      selectors: ['.moneyshot']
-    },
-    {
-      label: 'redirect',
-      url: '../../index.html',
-      onReadyScript: `${SCRIPT_PATH}/redirect.js`,
-      selectors: ['.moneyshot']
-    },
+    // {
+    //   label: 'customReadyScript',
+    //   onReadyScript: `${SCRIPT_PATH}/overrideCSS.js`,
+    //   url: '../../index.html',
+    //   selectors: ['.moneyshot']
+    // },
+    // {
+    //   label: 'redirect',
+    //   url: '../../index.html',
+    //   onReadyScript: `${SCRIPT_PATH}/redirect.js`,
+    //   selectors: ['.moneyshot']
+    // },
     {
       label: 'hover',
       url: '../../index.html?click',

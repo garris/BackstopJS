@@ -3,6 +3,7 @@ const Chromy = require('chromy');
 const fs = require('./fs');
 const path = require('path');
 const ensureDirectoryPath = require('./ensureDirectoryPath');
+const engineTools = require('./engineTools');
 
 const MIN_CHROME_VERSION = 62;
 const TEST_TIMEOUT = 30000;
@@ -10,8 +11,8 @@ const CHROMY_STARTING_PORT_NUMBER = 9222;
 const DEFAULT_FILENAME_TEMPLATE = '{configId}_{scenarioLabel}_{selectorIndex}_{selectorLabel}_{viewportIndex}_{viewportLabel}';
 const DEFAULT_BITMAPS_TEST_DIR = 'bitmaps_test';
 const DEFAULT_BITMAPS_REFERENCE_DIR = 'bitmaps_reference';
-const SELECTOR_NOT_FOUND_PATH = '/capture/resources/selectorNotFound_noun_164558_cc.png';
-const HIDDEN_SELECTOR_PATH = '/capture/resources/hiddenSelector_noun_63405.png';
+const SELECTOR_NOT_FOUND_PATH = '/capture/resources/notFound.png';
+const HIDDEN_SELECTOR_PATH = '/capture/resources/notVisible.png';
 const BODY_SELECTOR = 'body';
 const DOCUMENT_SELECTOR = 'document';
 const NOCLIP_SELECTOR = 'body:noclip';
@@ -26,8 +27,8 @@ module.exports = function (args) {
   const config = args.config;
   const runId = args.id;
   const assignedPort = args.assignedPort;
-  const scenarioLabelSafe = makeSafe(scenario.label);
-  const variantOrScenarioLabelSafe = scenario._parent ? makeSafe(scenario._parent.label) : scenarioLabelSafe;
+  const scenarioLabelSafe = engineTools.makeSafe(scenario.label);
+  const variantOrScenarioLabelSafe = scenario._parent ? engineTools.makeSafe(scenario._parent.label) : scenarioLabelSafe;
 
   return processScenarioView(scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, config, runId, assignedPort);
 };
@@ -335,7 +336,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
  */
 function delegateSelectors (chromy, scenario, viewport, variantOrScenarioLabelSafe, scenarioLabelSafe, config, selectors, selectorMap) {
   const fileNameTemplate = config.fileNameTemplate || DEFAULT_FILENAME_TEMPLATE;
-  const configId = config.id || genHash(config.backstopConfigFileName);
+  const configId = config.id || engineTools.genHash(config.backstopConfigFileName);
   const bitmapsTestPath = config.paths.bitmaps_test || DEFAULT_BITMAPS_TEST_DIR;
   const bitmapsReferencePath = config.paths.bitmaps_reference || DEFAULT_BITMAPS_REFERENCE_DIR;
   const outputFileFormatSuffix = '.' + (config.outputFormat && config.outputFormat.match(/jpg|jpeg/) || 'png');
@@ -348,8 +349,8 @@ function delegateSelectors (chromy, scenario, viewport, variantOrScenarioLabelSa
 
   selectors.forEach(function (selector, i) {
     var cleanedSelectorName = selector.replace(/[^a-z0-9_-]/gi, ''); // remove anything that's not a letter or a number
-    var fileName = getFilename(fileNameTemplate, outputFileFormatSuffix, configId, scenario.sIndex, variantOrScenarioLabelSafe, i, cleanedSelectorName, viewport.vIndex, viewport.label);
-    var referenceFilePath = bitmapsReferencePath + '/' + getFilename(fileNameTemplate, outputFileFormatSuffix, configId, scenario.sIndex, scenarioLabelSafe, i, cleanedSelectorName, viewport.vIndex, viewport.label);
+    var fileName = engineTools.getFilename(fileNameTemplate, outputFileFormatSuffix, configId, scenario.sIndex, variantOrScenarioLabelSafe, i, cleanedSelectorName, viewport.vIndex, viewport.label);
+    var referenceFilePath = bitmapsReferencePath + '/' + engineTools.getFilename(fileNameTemplate, outputFileFormatSuffix, configId, scenario.sIndex, scenarioLabelSafe, i, cleanedSelectorName, viewport.vIndex, viewport.label);
     var testFilePath = bitmapsTestPath + '/' + config.screenshotDateTime + '/' + fileName;
     var filePath = config.isReference ? referenceFilePath : testFilePath;
 
@@ -369,7 +370,7 @@ function delegateSelectors (chromy, scenario, viewport, variantOrScenarioLabelSa
         fileName: fileName,
         label: scenario.label,
         requireSameDimensions: requireSameDimensions,
-        misMatchThreshold: getMisMatchThreshHold(scenario, config),
+        misMatchThreshold: engineTools.getMisMatchThreshHold(scenario, config),
         url: scenario.url,
         referenceUrl: scenario.referenceUrl
       });
@@ -496,59 +497,7 @@ function captureScreenshot (chromy, filePath_, selector, selectorMap, config, se
   });
 }
 
-function getMisMatchThreshHold (scenario, config) {
-  if (typeof scenario.misMatchThreshold !== 'undefined') { return scenario.misMatchThreshold; }
-  if (typeof config.misMatchThreshold !== 'undefined') { return config.misMatchThreshold; }
-  return config.defaultMisMatchThreshold;
-}
 
-function ensureFileSuffix (filename, suffix) {
-  var re = new RegExp('\.' + suffix + '$', ''); // eslint-disable-line no-useless-escape
-  return filename.replace(re, '') + '.' + suffix;
-}
-
-// merge both strings while soft-enforcing a single slash between them
-function glueStringsWithSlash (stringA, stringB) {
-  return stringA.replace(/\/$/, '') + '/' + stringB.replace(/^\//, '');
-}
-
-function genHash (str) {
-  var hash = 0;
-  var i;
-  var chr;
-  var len;
-  if (!str) return hash;
-  str = str.toString();
-  for (i = 0, len = str.length; i < len; i++) {
-    chr = str.charCodeAt(i);
-    hash = ((hash << 5) - hash) + chr;
-    hash |= 0; // Convert to 32bit integer
-  }
-  // return a string and replace a negative sign with a zero
-  return hash.toString().replace(/^-/, 0);
-}
-
-function makeSafe (str) {
-  return str.replace(/[ /]/g, '_');
-}
-
-function getFilename (fileNameTemplate, outputFileFormatSuffix, configId, scenarioIndex, scenarioLabelSafe, selectorIndex, selectorLabel, viewportIndex, viewportLabel) {
-  var fileName = fileNameTemplate
-    .replace(/\{configId\}/, configId)
-    .replace(/\{scenarioIndex\}/, scenarioIndex)
-    .replace(/\{scenarioLabel\}/, scenarioLabelSafe)
-    .replace(/\{selectorIndex\}/, selectorIndex)
-    .replace(/\{selectorLabel\}/, selectorLabel)
-    .replace(/\{viewportIndex\}/, viewportIndex)
-    .replace(/\{viewportLabel\}/, makeSafe(viewportLabel))
-    .replace(/[^a-z0-9_-]/gi, ''); // remove anything that's not a letter or a number or dash or underscore.
-
-  var extRegExp = new RegExp(outputFileFormatSuffix + '$', 'i');
-  if (!extRegExp.test(fileName)) {
-    fileName = fileName + outputFileFormatSuffix;
-  }
-  return fileName;
-}
 
 // TODO: ESCAPE ALL SELECTOR VALUES
 // function escapeSingleQuote (string) {
