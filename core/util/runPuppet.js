@@ -130,7 +130,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
 
             await page
               .evaluate(() => {
-                Array.prototype.forEach.call(document.querySelectorAll(window._backstopSelector), function (s, j) {
+                document.querySelectorAll(window._backstopSelector).forEach(s => {
                   s.style.display = 'none';
                   s.classList.add('__86d');
                 });
@@ -166,7 +166,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
 
             await page
               .evaluate(() => {
-                Array.prototype.forEach.call(document.querySelectorAll(window._backstopSelector), function (s, j) {
+                document.querySelectorAll(window._backstopSelector).forEach(s => {
                   s.style.visibility = 'hidden';
                 });
               });
