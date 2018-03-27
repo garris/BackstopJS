@@ -12,8 +12,8 @@ const TEST_TIMEOUT = 60000;
 const DEFAULT_FILENAME_TEMPLATE = '{configId}_{scenarioLabel}_{selectorIndex}_{selectorLabel}_{viewportIndex}_{viewportLabel}';
 const DEFAULT_BITMAPS_TEST_DIR = 'bitmaps_test';
 const DEFAULT_BITMAPS_REFERENCE_DIR = 'bitmaps_reference';
-const SELECTOR_NOT_FOUND_PATH = '/capture/resources/selectorNotFound_noun_164558_cc.png';
-const HIDDEN_SELECTOR_PATH = '/capture/resources/hiddenSelector_noun_63405.png';
+const SELECTOR_NOT_FOUND_PATH = '/capture/resources/notFound.png';
+const HIDDEN_SELECTOR_PATH = '/capture/resources/notVisible.png';
 const BODY_SELECTOR = 'body';
 const DOCUMENT_SELECTOR = 'document';
 const NOCLIP_SELECTOR = 'body:noclip';
@@ -338,7 +338,7 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
           filePath = selectorMap[s].filePath;
           ensureDirectoryPath(filePath);
           try {
-            await selectorShot(s, filePath); 
+            await selectorShot(s, filePath);
           } catch (e) {
             console.log(chalk.red(`Error capturing Element ${s}`), e);
           }

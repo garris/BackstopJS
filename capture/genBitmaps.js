@@ -24,9 +24,8 @@ if (args.length !== 1) {
 
 var scriptName = fs.absolute(require('system').args[3]);
 var __dirname = scriptName.substring(0, scriptName.lastIndexOf('/'));
-
-var selectorNotFoundPath = __dirname + '/resources/selectorNotFound_noun_164558_cc.png';
-var hiddenSelectorPath = __dirname + '/resources/hiddenSelector_noun_63405.png';
+var selectorNotFoundPath = __dirname + '/resources/notFound.png';
+var hiddenSelectorPath = __dirname + '/resources/notVisible.png';
 var genConfigPath = captureConfigFileName; // TODO :: find a way to use that directly from the main configuration
 
 var config = require(genConfigPath);
