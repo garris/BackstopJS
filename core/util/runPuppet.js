@@ -14,6 +14,7 @@ const DEFAULT_BITMAPS_TEST_DIR = 'bitmaps_test';
 const DEFAULT_BITMAPS_REFERENCE_DIR = 'bitmaps_reference';
 const SELECTOR_NOT_FOUND_PATH = '/capture/resources/notFound.png';
 const HIDDEN_SELECTOR_PATH = '/capture/resources/notVisible.png';
+const ERROR_SELECTOR_PATH = '/capture/resources/unexpectedError.png';
 const BODY_SELECTOR = 'body';
 const DOCUMENT_SELECTOR = 'document';
 const NOCLIP_SELECTOR = 'body:noclip';
@@ -324,11 +325,18 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
     const selectorShot = async (s, path) => {
       const el = await page.$(s)
       if (el) {
-        await el.screenshot({
-          path: path
-        })
+        const box = await el.boundingBox();
+        if (box) {
+          await el.screenshot({
+            path: path
+          })
+        } else {
+          console.log(chalk.yellow(`Element not visible for capuring: ${s}`));
+          return fs.copy(config.env.backstop + HIDDEN_SELECTOR_PATH, filePath);
+        }
       } else {
         console.log(chalk.red(`Element not found for capuring: ${s}`));
+        return fs.copy(config.env.backstop + SELECTOR_NOT_FOUND_PATH, filePath);
       }
     }
 
@@ -341,6 +349,7 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
             await selectorShot(s, filePath); 
           } catch (e) {
             console.log(chalk.red(`Error capturing Element ${s}`), e);
+            return fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
           }
         })
       );
