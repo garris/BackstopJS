@@ -721,18 +721,18 @@ Here's some suggestions if you want to work on the HTML report locally...
 	npm run build-and-copy-report-bundle
 	```
 
-- 👆 As a convienience, this command will move your newly built React bundle into `test/configs/backstop_data/html_report/` so you can test with some of these suggested commands...
+- 👆 As a convenience, this command will move your newly built React bundle into `test/configs/backstop_data/html_report/` so you can test with some of these suggested commands...
 
 	```
 	# From root directory
 	# ---------------
 	# simple test
 		npm run sanity-test
-		
+
 	# longer test covering many features
 		npm run smoke-test
 
-	
+
 	# From test/configs/ directory
 	# ---------------
 	# simple test
@@ -743,8 +743,8 @@ Here's some suggestions if you want to work on the HTML report locally...
 
 ## Troubleshooting
 
-### SANITY TEST: Does Backstop work in my enviornment?
-Run the following command from your Desktop, home or project directory to check that Backstop will install and run in your enviornment.
+### SANITY TEST: Does Backstop work in my environment?
+Run the following command from your Desktop, home or project directory to check that Backstop will install and run in your environment.
 ```
 mkdir backstopSanityTest; cd backstopSanityTest; npm install backstopjs; node_modules/backstopjs/cli/index.js test --config=node_modules/backstopjs/test/configs/backstop
 ```
@@ -778,13 +778,12 @@ https://github.com/garris/BackstopJS/issues/537#issuecomment-339710797
 
 ### Interaction: clicking a link that loads a new page
 This is a grey area for BackstopJS.  When you click a link to a new page inside of Chrome headless then you are unloading all your current app state and starting fresh with a new app state.  If this is your case, the best practice is to simply create a new BackstopJS scenario with the required URL state etc.  If you have some kind of situation which really requires this kind of behavior then it's doable -- take a look at this issue for inspiration... https://github.com/garris/BackstopJS/issues/657
- 
 
 ### Chrome Zombies!
 Sometimes when developing scrips -- browser errors can actually cause Chrome-Headless and Chromy to loose their special connection to each other.  If you find that Chome zombies are accumulating in your ENV spacetime continuum then please follow these steps:
 
-   1) DONT PANIC!
-   
+   1) DON’T PANIC!
+
    2) Remain calm.
 
    3) do the following...
@@ -802,11 +801,11 @@ Sometimes when developing scrips -- browser errors can actually cause Chrome-Hea
 
 ### The dreaded: _command-not-found_ error...
 
-Did you install BackstopJS with the global option?  If installing globally remember to add that `-g` when installing with npm *i.e.* `npm install backstop -g`.     If you installed *locally*, remember that the `backstop <command>` pattern will only be available to your npm scripts -- see the local installation section above for more info.
+Did you install BackstopJS with the global option?  If installing globally remember to add that `-g` when installing with npm *i.e.* `npm install -g backstopjs`. If you installed *locally*, remember that the `backstop <command>` pattern will only be available to your npm scripts -- see the [local installation section](#local-installation) above for more info.
 
 ### Issues when installing
 
-Somethimes bad permissions happen to good people.  It's ok, this is a safe space.  Hopefully this will help... https://github.com/garris/BackstopJS/issues/545
+Sometimes bad permissions happen to good people. It's ok, this is a safe space. Hopefully this will help... https://github.com/garris/BackstopJS/issues/545
 
 
 ### Projects don't work when I share with other users or run in different environments.
@@ -881,4 +880,3 @@ BackstopJS uses icons from [the Noun Project](http://thenounproject.com/)
 
 * [Tag](https://thenounproject.com/term/tag/164558/) by  [Straw Dog Design](https://thenounproject.com/StrawDogDesign)
 * [Hidden](https://thenounproject.com/term/hidden/63405/) by [Roberto Chiaveri](https://thenounproject.com/robertochiaveri/)
-
