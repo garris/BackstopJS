@@ -50,7 +50,16 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
   const VP_W = viewport.width || viewport.viewport.width;
   const VP_H = viewport.height || viewport.viewport.height;
 
-  const browser = await puppeteer.launch({ignoreHTTPSErrors: true, headless: !!!config.debugWindow});
+  const puppeteerArgs = Object.assign(
+    {},
+    {
+      ignoreHTTPSErrors: true,
+      headless: !!!config.debugWindow
+    },
+    config.puppeteerArgs
+  );
+
+  const browser = await puppeteer.launch(puppeteerArgs);
   const page = await browser.newPage();
 
   page.setViewport({width: VP_W, height: VP_H});
