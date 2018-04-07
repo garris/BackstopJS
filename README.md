@@ -538,6 +538,28 @@ module.exports = function (chromy, scenario, vp, isReference, chromyStatic) {
 ```
 For more info, see the [Chromy script documentation](https://github.com/OnetapInc/chromy).
 
+### Setting Puppeteer option flags
+
+Similarly to Chromy, Puppeteer also allows setting flags to modify behaviour. They can be set with the engineOptions config line.
+
+Notably, if you get the "No usable sandbox" error when starting puppeteer, you can (probably) fix it by setting the following two flags in your config file:
+```json
+"engineOptions": {"args": ["--no-sandbox", "--disable-setuid-sandbox"]}
+```
+**NOTE:** Backstop sets two defaults for Puppeteer, which you can override by setting them in engineOptions. These are:
+
+```json
+ignoreHTTPSErrors: true,
+headless: !!!config.debugWindow
+```
+For more information about flags and Puppeteer in general, [visit their repository](https://github.com/GoogleChrome/puppeteer).
+
+### Integration options (local install)
+
+Installing BackstopJS locally to your project makes a few integration options available.
+
+Using Backstop as a locally installed standalone app looks like this....
+
 ### Integration options (local install)
 
 Installing BackstopJS locally to your project makes a few integration options available.
