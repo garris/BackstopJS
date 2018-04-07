@@ -56,7 +56,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
       ignoreHTTPSErrors: true,
       headless: !!!config.debugWindow
     },
-    config.puppeteerArgs
+    config.engineOptions
   );
 
   const browser = await puppeteer.launch(puppeteerArgs);
