@@ -560,12 +560,6 @@ Installing BackstopJS locally to your project makes a few integration options av
 
 Using Backstop as a locally installed standalone app looks like this....
 
-### Integration options (local install)
-
-Installing BackstopJS locally to your project makes a few integration options available.
-
-Using Backstop as a locally installed standalone app looks like this....
-
 ```
 # Install from your project root
 npm install backstopjs
