@@ -8,7 +8,7 @@ BackstopJS automates visual regression testing of your responsive web UI by comp
 ## Version 3 Features
 
 - Render with **Chrome Headless**, **Phantom** and **Slimer**
-- Simulate user interactions with **ChromyJS** and **CasperJS** scripts
+- Simulate user interactions with **Puppeteer**, **ChromyJS** and **CasperJS** scripts
 - Browser reports with visual diffs
 - CLI reports
 - JUnit reports
