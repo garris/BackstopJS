@@ -1,6 +1,12 @@
 /**
  * IGNORE CSP HEADERS
- * Pass in a request. If it matches scenario.url then fetch the request manually and return it without the CSP headers (if any).
+ * Listen to all requests.
+ * If a request matches scenario.url then fetch the request again manually
+ * and respond to the original request without CSP headers.
+ * Allows `ignoreHTTPSErrors: true` BUT... requires `debugWindow: true`
+ *
+ * see https://github.com/GoogleChrome/puppeteer/issues/1229#issuecomment-380133332
+ * this is the workaround until Page.setBypassCSP lands... https://github.com/GoogleChrome/puppeteer/pull/2324
  *
  * @param      {REQUEST}  request
  * @return     {VOID}
@@ -12,7 +18,6 @@
   }
   ```
  *
- * NOTE: as of this writing -- `debugWindow: true` is required for this to work.
  */
 
 const fetch = require('node-fetch');
