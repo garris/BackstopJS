@@ -1,7 +1,7 @@
 /**
  * IGNORE CSP HEADERS
- * Listen to all requests.
- * If a request matches scenario.url then fetch the request again manually
+ * Listen to all requests. If a request matches scenario.url
+ * then fetch the request again manually, strip out CSP headers
  * and respond to the original request without CSP headers.
  * Allows `ignoreHTTPSErrors: true` BUT... requires `debugWindow: true`
  *
@@ -35,7 +35,7 @@ module.exports = async function (page, scenario) {
       const cookiesList = await page.cookies(requestUrl);
       const cookies = cookiesList.map(cookie => `${cookie.name}=${cookie.value}`).join('; ');
       const headers = Object.assign(request.headers(), {cookie: cookies});
-      const init = {
+      const options = {
         headers: headers,
         body: request.postData(),
         method: request.method(),
@@ -43,7 +43,7 @@ module.exports = async function (page, scenario) {
         agent
       };
 
-      const result = await fetch(requestUrl, init);
+      const result = await fetch(requestUrl, options);
 
       const buffer = await result.buffer();
       let cleanedHeaders = result.headers._headers || {};
