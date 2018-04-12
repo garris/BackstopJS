@@ -775,9 +775,9 @@ Here's some suggestions if you want to work on the HTML report locally...
 ## Troubleshooting
 
 ### SANITY TEST: Does Backstop work in my environment?
-Run the following command from your Desktop, home or project directory to check that Backstop will install and run in your environment.
+Run the following command from your Desktop, home or project directory to check that Backstop will install and run in your environment. _Windows users: please use Powershell_
 ```
-mkdir backstopSanityTest; cd backstopSanityTest; npm install backstopjs; node_modules/backstopjs/cli/index.js test --config=node_modules/backstopjs/test/configs/backstop
+mkdir backstopSanityTest; cd backstopSanityTest; npm install backstopjs; node ./node_modules/backstopjs/cli/index.js test --config=node_modules/backstopjs/test/configs/backstop
 ```
 
 ### SMOKE TEST: Are backstop features working ok?
