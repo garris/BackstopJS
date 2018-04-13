@@ -132,7 +132,7 @@ module.exports = {
   report: ['browser'],
   engine: ENGINE,
   engineFlags: [],
-  asyncCaptureLimit: 5,
+  asyncCaptureLimit: 1,
   asyncCompareLimit: 50,
   debug: false,
   debugWindow: false

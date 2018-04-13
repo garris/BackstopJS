@@ -12,8 +12,8 @@
       "height": 768
     }
   ],
-  "onBeforeScript": "chromy/onBefore.js",
-  "onReadyScript": "chromy/onReady.js",
+  "onBeforeScript": "puppet/onBefore.js",
+  "onReadyScript": "puppet/onReady.js",
   "scenarios": [
     {
       "label": "BackstopJS Homepage",
@@ -42,7 +42,7 @@
     "ci_report": "backstop_data/ci_report"
   },
   "report": ["browser"],
-  "engine": "chrome",
+  "engine": "puppeteer",
   "engineFlags": [],
   "asyncCaptureLimit": 5,
   "asyncCompareLimit": 50,
