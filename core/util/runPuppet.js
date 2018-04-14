@@ -31,11 +31,11 @@ module.exports = function (args) {
   const scenarioLabelSafe = engineTools.makeSafe(scenario.label);
   const variantOrScenarioLabelSafe = scenario._parent ? engineTools.makeSafe(scenario._parent.label) : scenarioLabelSafe;
 
-  return processScenarioView(scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, config, runId);
+  return processScenarioView(scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, config);
 };
 
 
-async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, config, runId) {
+async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, config) {
   if (!config.paths) {
     config.paths = {};
   }
@@ -215,34 +215,35 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     })
   }
   
+  let error
   await puppetCommands().catch(e => {
-    result = {
-      backstopSelectorsExp: [],
-      backstopSelectorsExpMap: []
-    };
     console.log(chalk.red("######## Error running Puppeteer #########"), e);
+    error = e;
   })
   
   let compareConfig
-  let error
-  try {
-    compareConfig = await delegateSelectors(
-      page,
-      browser,
-      scenario,
-      viewport,
-      variantOrScenarioLabelSafe,
-      scenarioLabelSafe,
-      config,
-      result.backstopSelectorsExp,
-      result.backstopSelectorsExpMap
-    )
-  } catch (e) {
-    error = e;
+  if (!error) {
+    try {
+      compareConfig = await delegateSelectors(
+        page,
+        browser,
+        scenario,
+        viewport,
+        variantOrScenarioLabelSafe,
+        scenarioLabelSafe,
+        config,
+        result.backstopSelectorsExp,
+        result.backstopSelectorsExpMap
+      )
+    } catch (e) {
+      error = e;
+    }
+  } else {
+    await browser.close();
   }
   
   return new Promise((resolve, reject) => {
-    if (compareConfig) {
+    if (compareConfig && !error) {
       resolve(compareConfig);
     } else {
       resolve(new BackstopException('Puppeteer error', scenario, viewport, error));
