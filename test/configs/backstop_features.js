@@ -109,9 +109,10 @@ module.exports = {
     {
       label: 'click',
       url: '../../index.html?click',
-      clickSelector: '#theLemur',
+      clickSelector: '#xtheLemur',
       postInteractionWait: '._the_lemur_is_ready_to_see_you',
-      selectors: ['.moneyshot']
+      selectors: ['.moneyshot', '.television', 'div'],
+      selectorExpansion: true
     },
     {
       label: 'misMatchThreshold_requireSameDimensions',
@@ -131,9 +132,9 @@ module.exports = {
   },
   report: ['browser'],
   engine: ENGINE,
-  engineFlags: [],
+  engineOptions: {},
   asyncCaptureLimit: 10,
   asyncCompareLimit: 50,
   debug: false,
-  debugWindow: false
+  debugWindow: false,
 };

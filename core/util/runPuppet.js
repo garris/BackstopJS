@@ -31,9 +31,14 @@ module.exports = function (args) {
   const scenarioLabelSafe = engineTools.makeSafe(scenario.label);
   const variantOrScenarioLabelSafe = scenario._parent ? engineTools.makeSafe(scenario._parent.label) : scenarioLabelSafe;
 
+  config._bitmapsTestPath = config.paths.bitmaps_test || DEFAULT_BITMAPS_TEST_DIR;
+  config._bitmapsReferencePath = config.paths.bitmaps_reference || DEFAULT_BITMAPS_REFERENCE_DIR;
+  config._fileNameTemplate = config.fileNameTemplate || DEFAULT_FILENAME_TEMPLATE;
+  config._outputFileFormatSuffix = '.' + (config.outputFormat && config.outputFormat.match(/jpg|jpeg/) || 'png');
+  config._configId = config.id || engineTools.genHash(config.backstopConfigFileName);
+
   return processScenarioView(scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, config);
 };
-
 
 async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, config) {
   if (!config.paths) {
@@ -83,7 +88,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
   if (chromeVersion < MIN_CHROME_VERSION) {
     console.warn(`***WARNING! CHROME VERSION ${MIN_CHROME_VERSION} OR GREATER IS REQUIRED. PLEASE UPDATE YOUR CHROME APP!***`);
   }
-  
+
   let result;
   const puppetCommands = async () => {
     // --- BEFORE SCRIPT ---
@@ -103,7 +108,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
       url = scenario.referenceUrl;
     }
     await page.goto(translateUrl(url));
-  
+
     await injectBackstopTools(page);
 
     //  --- WAIT FOR READY EVENT ---
@@ -181,8 +186,8 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
               });
           })
         );
-      }
-      await hideSelectors()
+      };
+      await hideSelectors();
     }
 
     // --- HANDLE NO-SELECTORS ---
@@ -190,8 +195,8 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
       scenario.selectors = [DOCUMENT_SELECTOR];
     }
 
-    await page.evaluate(`window._selectorExpansion = '${scenario.selectorExpansion}'`)
-    await page.evaluate(`window._backstopSelectors = '${scenario.selectors}'`)
+    await page.evaluate(`window._selectorExpansion = '${scenario.selectorExpansion}'`);
+    await page.evaluate(`window._backstopSelectors = '${scenario.selectors}'`);
     result = await page.evaluate(() => {
       if (window._selectorExpansion.toString() === 'true') {
         window._backstopSelectorsExp = window._backstopTools.expandSelectors(window._backstopSelectors);
@@ -212,16 +217,17 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
         backstopSelectorsExp: window._backstopSelectorsExp,
         backstopSelectorsExpMap: window._backstopSelectorsExpMap
       };
-    })
-  }
-  
-  let error
+    });
+  };
+
+  let error;
   await puppetCommands().catch(e => {
-    console.log(chalk.red("######## Error running Puppeteer #########"), e);
+    console.log(chalk.red(`Puppeteer encountered an error while running scenario "${scenario.label}"`));
+    console.log(chalk.red(e));
     error = e;
-  })
-  
-  let compareConfig
+  });
+
+  let compareConfig;
   if (!error) {
     try {
       compareConfig = await delegateSelectors(
@@ -234,30 +240,40 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
         config,
         result.backstopSelectorsExp,
         result.backstopSelectorsExpMap
-      )
+      );
     } catch (e) {
       error = e;
     }
   } else {
     await browser.close();
   }
-  
-  return new Promise((resolve, reject) => {
-    if (compareConfig && !error) {
-      resolve(compareConfig);
-    } else {
-      resolve(new BackstopException('Puppeteer error', scenario, viewport, error));
-    }
-  });
+
+  if (error) {
+    const testPair = engineTools.generateTestPair(config, scenario, viewport, variantOrScenarioLabelSafe, scenarioLabelSafe, 0, `${scenario.selectors.join('__')}`);
+    const filePath = config.isReference ? testPair.reference : testPair.test;
+    testPair.engineErrorMsg = error.message;
+
+    compareConfig = {
+      testPairs: [ testPair ]
+    };
+    fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
+  }
+
+  return Promise.resolve(compareConfig);
 }
 
 // TODO: Should be in engineTools
-async function delegateSelectors (page, browser, scenario, viewport, variantOrScenarioLabelSafe, scenarioLabelSafe, config, selectors, selectorMap) {
-  const fileNameTemplate = config.fileNameTemplate || DEFAULT_FILENAME_TEMPLATE;
-  const configId = config.id || engineTools.genHash(config.backstopConfigFileName);
-  const bitmapsTestPath = config.paths.bitmaps_test || DEFAULT_BITMAPS_TEST_DIR;
-  const bitmapsReferencePath = config.paths.bitmaps_reference || DEFAULT_BITMAPS_REFERENCE_DIR;
-  const outputFileFormatSuffix = '.' + (config.outputFormat && config.outputFormat.match(/jpg|jpeg/) || 'png');
+async function delegateSelectors (
+  page,
+  browser,
+  scenario,
+  viewport,
+  variantOrScenarioLabelSafe,
+  scenarioLabelSafe,
+  config,
+  selectors,
+  selectorMap
+) {
 
   let compareConfig = {testPairs: []};
   let captureDocument = false;
@@ -265,31 +281,14 @@ async function delegateSelectors (page, browser, scenario, viewport, variantOrSc
   let captureList = [];
   let captureJobs = [];
 
-  selectors.forEach(function (selector, i) {
-    var cleanedSelectorName = selector.replace(/[^a-z0-9_-]/gi, ''); // remove anything that's not a letter or a number
-    var fileName = engineTools.getFilename(fileNameTemplate, outputFileFormatSuffix, configId, scenario.sIndex, variantOrScenarioLabelSafe, i, cleanedSelectorName, viewport.vIndex, viewport.label);
-    var referenceFilePath = bitmapsReferencePath + '/' + engineTools.getFilename(fileNameTemplate, outputFileFormatSuffix, configId, scenario.sIndex, scenarioLabelSafe, i, cleanedSelectorName, viewport.vIndex, viewport.label);
-    var testFilePath = bitmapsTestPath + '/' + config.screenshotDateTime + '/' + fileName;
-    var filePath = config.isReference ? referenceFilePath : testFilePath;
+  selectors.forEach(function (selector, selectorIndex) {
+    const testPair = engineTools.generateTestPair(config, scenario, viewport, variantOrScenarioLabelSafe, scenarioLabelSafe, selectorIndex, selector);
+    const filePath = config.isReference ? testPair.reference : testPair.test;
+
+console.log('TESTPAIR>>>', testPair, filePath);
 
     if (!config.isReference) {
-      var requireSameDimensions;
-      if (scenario.requireSameDimensions !== undefined) {
-        requireSameDimensions = scenario.requireSameDimensions;
-      } else if (config.requireSameDimensions !== undefined) {
-        requireSameDimensions = config.requireSameDimensions;
-      } else {
-        requireSameDimensions = config.defaultRequireSameDimensions;
-      }
-      compareConfig.testPairs.push({
-        reference: referenceFilePath,
-        test: testFilePath,
-        selector: selector,
-        fileName: fileName,
-        label: scenario.label,
-        requireSameDimensions: requireSameDimensions,
-        misMatchThreshold: engineTools.getMisMatchThreshHold(scenario, config)
-      });
+      compareConfig.testPairs.push(testPair);
     }
 
     selectorMap[selector].filePath = filePath;
@@ -343,10 +342,9 @@ async function delegateSelectors (page, browser, scenario, viewport, variantOrSc
   }).then(_ => compareConfig);
 }
 
-
 async function captureScreenshot (page, browser, selector, selectorMap, config, selectors) {
-  let filePath
-  let fullPage = (selector === NOCLIP_SELECTOR || selector === DOCUMENT_SELECTOR)
+  let filePath;
+  let fullPage = (selector === NOCLIP_SELECTOR || selector === DOCUMENT_SELECTOR);
   if (selector) {
     filePath = selectorMap[selector].filePath;
     ensureDirectoryPath(filePath);
@@ -355,7 +353,7 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
         .screenshot({
           path: filePath,
           fullPage: fullPage
-        }); 
+        });
     } catch (e) {
       console.log(chalk.red(`Error capturing..`), e);
       return fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
@@ -363,13 +361,13 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
   } else {
     // OTHER-SELECTOR screenshot
     const selectorShot = async (s, path) => {
-      const el = await page.$(s)
+      const el = await page.$(s);
       if (el) {
         const box = await el.boundingBox();
         if (box) {
           await el.screenshot({
             path: path
-          })
+          });
         } else {
           console.log(chalk.yellow(`Element not visible for capturing: ${s}`));
           return fs.copy(config.env.backstop + HIDDEN_SELECTOR_PATH, filePath);
@@ -378,17 +376,17 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
         console.log(chalk.magenta(`Element not found for capturing: ${s}`));
         return fs.copy(config.env.backstop + SELECTOR_NOT_FOUND_PATH, filePath);
       }
-    }
+    };
 
     const selectorsShot = async () => {
       return Promise.all(
-        selectors.map(async s => {
-          filePath = selectorMap[s].filePath;
+        selectors.map(async selector => {
+          filePath = selectorMap[selector].filePath;
           ensureDirectoryPath(filePath);
           try {
-            await selectorShot(s, filePath); 
+            await selectorShot(selector, filePath);
           } catch (e) {
-            console.log(chalk.red(`Error capturing Element ${s}`), e);
+            console.log(chalk.red(`Error capturing Element ${selector}`), e);
             return fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
           }
         })
