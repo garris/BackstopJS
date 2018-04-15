@@ -16,7 +16,7 @@ const DEFAULT_BITMAPS_TEST_DIR = 'bitmaps_test';
 const DEFAULT_BITMAPS_REFERENCE_DIR = 'bitmaps_reference';
 const SELECTOR_NOT_FOUND_PATH = '/capture/resources/notFound.png';
 const HIDDEN_SELECTOR_PATH = '/capture/resources/notVisible.png';
-const ERROR_SELECTOR_PATH = '/capture/resources/unexpectedError.png';
+const ERROR_SELECTOR_PATH = '/capture/resources/unexpectedErrorSm.png';
 const BODY_SELECTOR = 'body';
 const DOCUMENT_SELECTOR = 'document';
 const NOCLIP_SELECTOR = 'body:noclip';
@@ -274,7 +274,6 @@ async function delegateSelectors (
   selectors,
   selectorMap
 ) {
-
   let compareConfig = {testPairs: []};
   let captureDocument = false;
   let captureViewport = false;
@@ -284,8 +283,6 @@ async function delegateSelectors (
   selectors.forEach(function (selector, selectorIndex) {
     const testPair = engineTools.generateTestPair(config, scenario, viewport, variantOrScenarioLabelSafe, scenarioLabelSafe, selectorIndex, selector);
     const filePath = config.isReference ? testPair.reference : testPair.test;
-
-console.log('TESTPAIR>>>', testPair, filePath);
 
     if (!config.isReference) {
       compareConfig.testPairs.push(testPair);
