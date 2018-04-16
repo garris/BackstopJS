@@ -50,7 +50,13 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
   const VP_W = viewport.width || viewport.viewport.width;
   const VP_H = viewport.height || viewport.viewport.height;
 
-  const browser = await puppeteer.launch({ignoreHTTPSErrors: true, headless: !!!config.debugWindow});
+  let engineOptions = {};
+  if (typeof config.engineOptions === 'object') {
+    engineOptions = config.engineOptions;
+  }
+  const launchOptions = Object.assign({}, engineOptions, {ignoreHTTPSErrors: true, headless: !!!config.debugWindow});
+
+  const browser = await puppeteer.launch(launchOptions);
   const page = await browser.newPage();
 
   page.setViewport({width: VP_W, height: VP_H});
@@ -74,7 +80,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
   if (chromeVersion < MIN_CHROME_VERSION) {
     console.warn(`***WARNING! CHROME VERSION ${MIN_CHROME_VERSION} OR GREATER IS REQUIRED. PLEASE UPDATE YOUR CHROME APP!***`);
   }
-  
+
   let result;
   const puppetCommands = async () => {
     // --- BEFORE SCRIPT ---
@@ -94,7 +100,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
       url = scenario.referenceUrl;
     }
     await page.goto(translateUrl(url));
-  
+
     await injectBackstopTools(page);
 
     //  --- WAIT FOR READY EVENT ---
@@ -205,7 +211,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
       };
     })
   }
-  
+
   await puppetCommands().catch(e => {
     result = {
       backstopSelectorsExp: [],
@@ -213,7 +219,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     };
     console.log(chalk.red("######## Error running Puppeteer #########"), e);
   })
-  
+
   let compareConfig
   let error
   try {
@@ -231,7 +237,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
   } catch (e) {
     error = e;
   }
-  
+
   return new Promise((resolve, reject) => {
     if (compareConfig) {
       resolve(compareConfig);
@@ -345,7 +351,7 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
         .screenshot({
           path: filePath,
           fullPage: fullPage
-        }); 
+        });
     } catch (e) {
       console.log(chalk.red(`Error capturing..`), e);
       return fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
@@ -376,7 +382,7 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
           filePath = selectorMap[s].filePath;
           ensureDirectoryPath(filePath);
           try {
-            await selectorShot(s, filePath); 
+            await selectorShot(s, filePath);
           } catch (e) {
             console.log(chalk.red(`Error capturing Element ${s}`), e);
             return fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
