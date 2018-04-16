@@ -109,7 +109,7 @@ module.exports = {
     {
       label: 'click',
       url: '../../index.html?click',
-      clickSelector: '#xtheLemur',
+      clickSelector: '#theLemur',
       postInteractionWait: '._the_lemur_is_ready_to_see_you',
       selectors: ['.moneyshot', '.television', 'div'],
       selectorExpansion: true
