@@ -66,7 +66,7 @@ function getFilename (fileNameTemplate, outputFileFormatSuffix, configId, scenar
   return fileName;
 }
 
-function getEngineOption(config, optionName, fallBack) {
+function getEngineOption (config, optionName, fallBack) {
   if (typeof config.engineOptions === 'object' && config.engineOptions[optionName]) {
     return config.engineOptions[optionName];
   }

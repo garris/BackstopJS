@@ -82,9 +82,6 @@ function writeReferenceCreateConfig (config, isReference) {
 }
 
 function delegateScenarios (config) {
-  var screenshotNow = new Date();
-  var screenshotDateTime = screenshotNow.getFullYear() + pad(screenshotNow.getMonth() + 1) + pad(screenshotNow.getDate()) + '-' + pad(screenshotNow.getHours()) + pad(screenshotNow.getMinutes()) + pad(screenshotNow.getSeconds());
-
   // TODO: start chromy here?  Or later?  maybe later because maybe changing resolutions doesn't work after starting?
   // casper.start();
 
@@ -122,9 +119,9 @@ function delegateScenarios (config) {
       });
     });
   });
-  
+
   const asyncCaptureLimit = config.asyncCaptureLimit === 0 ? 1 : config.asyncCaptureLimit || CONCURRENCY_DEFAULT;
-  
+
   if (/chrom./i.test(config.engine)) {
     const PORT = (config.startingPort || CHROMY_STARTING_PORT_NUMBER);
     var getFreePorts = require('./getFreePorts');
@@ -200,7 +197,7 @@ module.exports = function (config, isReference) {
       promise.then(() => Chromy.cleanup());
     }
 
-    return promise; 
+    return promise;
   }
 
   return writeReferenceCreateConfig(config, isReference).then(function () {

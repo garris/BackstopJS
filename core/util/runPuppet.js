@@ -7,8 +7,6 @@ const ensureDirectoryPath = require('./ensureDirectoryPath');
 const injectBackstopTools = require('../../capture/backstopTools.js');
 const engineTools = require('./engineTools');
 
-const BackstopException = require('../util/BackstopException.js');
-
 const MIN_CHROME_VERSION = 62;
 const TEST_TIMEOUT = 60000;
 const DEFAULT_FILENAME_TEMPLATE = '{configId}_{scenarioLabel}_{selectorIndex}_{selectorLabel}_{viewportIndex}_{viewportLabel}';
@@ -26,8 +24,6 @@ module.exports = function (args) {
   const scenario = args.scenario;
   const viewport = args.viewport;
   const config = args.config;
-  const runId = args.id;
-  const assignedPort = args.assignedPort;
   const scenarioLabelSafe = engineTools.makeSafe(scenario.label);
   const variantOrScenarioLabelSafe = scenario._parent ? engineTools.makeSafe(scenario._parent.label) : scenarioLabelSafe;
 
@@ -59,7 +55,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     {},
     {
       ignoreHTTPSErrors: true,
-      headless: !!!config.debugWindow
+      headless: !config.debugWindow
     },
     config.engineOptions
   );
@@ -76,14 +72,13 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
 
   // --- set up console output ---
   page.on('console', msg => {
-    for (let i = 0; i < msg.args().length; ++i)
-      console.log(`Browser Console Log ${i}: ${msg.args()[i]}`);
+    for (let i = 0; i < msg.args().length; ++i) { console.log(`Browser Console Log ${i}: ${msg.args()[i]}`); }
   });
 
   let chromeVersion = await page.evaluate(_ => {
     let v = navigator.userAgent.match(/Chrom(e|ium)\/([0-9]+)\./);
     return v ? parseInt(v[2], 10) : 0;
-  })
+  });
 
   if (chromeVersion < MIN_CHROME_VERSION) {
     console.warn(`***WARNING! CHROME VERSION ${MIN_CHROME_VERSION} OR GREATER IS REQUIRED. PLEASE UPDATE YOUR CHROME APP!***`);
@@ -114,7 +109,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     //  --- WAIT FOR READY EVENT ---
     var readyEvent = scenario.readyEvent || config.readyEvent;
     if (readyEvent) {
-      await page.evaluate(`window._readyEvent = '${readyEvent}'`)
+      await page.evaluate(`window._readyEvent = '${readyEvent}'`);
 
       await page.waitForFunction(() => {
         return window._backstopTools.hasLogged(window._readyEvent);
@@ -134,7 +129,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
       await page.waitFor(scenario.delay);
     }
 
-    //--- REMOVE SELECTORS ---
+    // --- REMOVE SELECTORS ---
     if (scenario.hasOwnProperty('removeSelectors')) {
       const removeSelectors = async () => {
         return Promise.all(
@@ -151,7 +146,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
               });
           })
         );
-      }
+      };
 
       await removeSelectors();
     }
@@ -176,7 +171,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
         return Promise.all(
           scenario.hideSelectors.map(async (selector) => {
             await page
-              .evaluate(`window._backstopSelector = '${selector}'`)
+              .evaluate(`window._backstopSelector = '${selector}'`);
 
             await page
               .evaluate(() => {
@@ -388,8 +383,8 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
           }
         })
       );
-    }
-    await selectorsShot()
+    };
+    await selectorsShot();
   }
 }
 
