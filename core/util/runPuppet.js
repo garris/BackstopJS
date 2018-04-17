@@ -78,7 +78,6 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
   const readyEvent = scenario.readyEvent || config.readyEvent;
   let readyResolve, readyPromise;
   if (readyEvent) {
-    await page.evaluate(`window._readyEvent = '${readyEvent}'`);
     readyPromise = new Promise(resolve => {
       readyResolve = resolve;
     });
@@ -127,6 +126,8 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
 
     //  --- WAIT FOR READY EVENT ---
     if (readyEvent) {
+      await page.evaluate(`window._readyEvent = '${readyEvent}'`);
+
       await readyPromise;
 
       await page.evaluate(_ => console.info('readyEvent ok'));
