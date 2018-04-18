@@ -70,9 +70,23 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     console.log(chalk.blue('CREATING NEW REFERENCE FILE'));
   }
 
-  // --- set up console output ---
+  // --- set up console output and ready event ---
+  const readyEvent = scenario.readyEvent || config.readyEvent;
+  let readyResolve, readyPromise;
+  if (readyEvent) {
+    readyPromise = new Promise(resolve => {
+      readyResolve = resolve;
+    });
+  }
+
   page.on('console', msg => {
-    for (let i = 0; i < msg.args().length; ++i) { console.log(`Browser Console Log ${i}: ${msg.args()[i]}`); }
+    for (let i = 0; i < msg.args().length; ++i) {
+      const line = msg.args()[i];
+      console.log(`Browser Console Log ${i}: ${line}`);
+      if (readyEvent && new RegExp(readyEvent).test(line)) {
+        readyResolve();
+      }
+    }
   });
 
   let chromeVersion = await page.evaluate(_ => {
@@ -107,13 +121,10 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     await injectBackstopTools(page);
 
     //  --- WAIT FOR READY EVENT ---
-    var readyEvent = scenario.readyEvent || config.readyEvent;
     if (readyEvent) {
       await page.evaluate(`window._readyEvent = '${readyEvent}'`);
 
-      await page.waitForFunction(() => {
-        return window._backstopTools.hasLogged(window._readyEvent);
-      });
+      await readyPromise;
 
       await page.evaluate(_ => console.info('readyEvent ok'));
     }
