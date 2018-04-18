@@ -149,6 +149,7 @@ hideSelectors            // Array of selectors set to visibility: hidden
 removeSelectors          // Array of selectors set to display: none
 onReadyScript            // After the above conditions are met -- use this script to modify UI state prior to screen shots e.g. hovers, clicks etc.
 hoverSelector            // Move the pointer over the specified DOM element prior to screen shot (available with default onReadyScript)
+activeSelector           // (Chromy only) Press the pointer on the specified DOM element prior to screen shot (available with default onReadyScript)
 clickSelector            // Click the specified DOM element prior to screen shot (available with default onReadyScript)
 postInteractionWait      // Wait for a selector after interacting with hoverSelector or clickSelector (optionally accepts wait time in ms. Idea for use with a click or hover element transition. available with default onReadyScript)
 selectors                // Array of selectors to capture. Defaults to document if omitted. Use "viewport" to capture the viewport size. See Targeting elements in the next section for more info...
@@ -158,15 +159,24 @@ requireSameDimensions    // If set to true -- any change in selector size will t
 ```
 
 
-### Testing click and hover interactions
+### Testing click, hover and active interactions
 BackstopJS ships with an onReady script that enables the following interaction selectors...
 ```
 clickSelector: ".my-hamburger-menu",
 hoverSelector: ".my-hamburger-menu .some-menu-item",
 ```
-The above would tell BackstopJS to wait for your app to generate an element with a `.my-hamburger-menu` class, then click that selector.   Then it would wait again for a `.my-hamburger-menu .some-menu-item` class, then move the cursor over that element (causing a hover state).  Then BackstopJS would take a screenshot.
+The above would tell BackstopJS to wait for your app to generate an element with a `.my-hamburger-menu` class, then click that selector. Then it would wait again for a `.my-hamburger-menu .some-menu-item` class, then move the cursor over that element (causing a hover state). Then BackstopJS would take a screenshot.
 
-You can use these properties independent of each other to easily test various click and or hover states in your app.  These are obviously simple scenarios -- if you have more complex needs then this example should serve as a pretty good starting point create your own onReady scripts.
+#### Only in Chromy
+If you want to get an active state for an element (this is when you keep the mouse button pressed on an element) you can do so by:
+
+```
+activeSelector: ".my-card-box-with-shadow-when-pressed",
+```
+
+This will move the mouse pointer in the center of the elements position and keeps the mouse button pressed. After it BackstopJS would take a screenshot.
+
+You can use these properties independent of each other to easily test various click, hover and or active states in your app.  These are obviously simple scenarios -- if you have more complex needs then this example should serve as a pretty good starting point create your own onReady scripts.
 
 
 ### Setting cookies
