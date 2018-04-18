@@ -736,8 +736,10 @@ Instead of calling resemble`s ignoreAntialiasing(), you may set it as a property
 First off, You are awesome! Thanks for your interest, time and hard work!  Here are some tips...
 
 ### We use `eslint-config-semistandard`.
-Please turn your linter on. Thank you. 🙇🏽
-
+Please run the linter before each submit, as follows. Thank you. 🙇🏽
+```sh
+$ npm run lint
+```
 
 ### There is a BackstopJS SMOKE TEST
 See the next section for running the SMOKE TEST -- Please make sure this is working before submitting any PR's.  Thanks!
