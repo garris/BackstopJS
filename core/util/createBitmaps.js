@@ -99,6 +99,7 @@ function delegateScenarios (config) {
   config.scenarios.forEach(function (scenario, i) {
     // var scenarioLabelSafe = makeSafe(scenario.label);
     scenario.sIndex = i;
+    scenario.selectors = scenario.selectors || [];
     scenarios.push(scenario);
 
     if (!config.isReference && scenario.hasOwnProperty('variants')) {
@@ -185,7 +186,7 @@ function flatMapTestPairs (rawTestPairs) {
 }
 
 module.exports = function (config, isReference) {
-  if (/chrom./i.test(config.engine) || config.engine.startsWith('puppet')) {
+  if (/chrom./i.test(config.engine) || /puppet/i.test(config.engine)) {
     const promise = delegateScenarios(decorateConfigForCapture(config, isReference))
       .then(rawTestPairs => {
         const result = {
