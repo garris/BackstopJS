@@ -474,7 +474,7 @@ To use chrome headless you have two options for scripting engines, the default _
 
 
 ```json
-"engine": "puppeteer"
+"engine": "puppet"
 ```
 or
 
