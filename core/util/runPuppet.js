@@ -115,6 +115,8 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
       }
     }
 
+    console.error('This error is to test the travis build failing!');
+
     //  --- OPEN URL ---
     var url = scenario.url;
     if (isReference && scenario.referenceUrl) {
