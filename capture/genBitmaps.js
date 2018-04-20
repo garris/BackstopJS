@@ -283,14 +283,14 @@ function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabe
         captureScreenshot(casper, filePath, o, vp);
 
         if (!isReference) {
-            var requireSameDimensions;
-            if (scenario.requireSameDimensions !== undefined) {
-                requireSameDimensions = scenario.requireSameDimensions;
-            } else if (config.requireSameDimensions !== undefined) {
-                requireSameDimensions = config.requireSameDimensions;
-            } else {
-                requireSameDimensions = config.defaultRequireSameDimensions;
-            }
+          var requireSameDimensions;
+          if (scenario.requireSameDimensions !== undefined) {
+            requireSameDimensions = scenario.requireSameDimensions;
+          } else if (config.requireSameDimensions !== undefined) {
+            requireSameDimensions = config.requireSameDimensions;
+          } else {
+            requireSameDimensions = config.defaultRequireSameDimensions;
+          }
           compareConfig.testPairs.push({
             reference: referenceFilePath,
             test: testFilePath,

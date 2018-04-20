@@ -12,7 +12,6 @@ module.exports = {
     console.log('Copying from ' + config.bitmaps_test + ' to ' + config.bitmaps_reference + '.');
     return new Promise((resolve, reject) => {
       fs.readdir(config.bitmaps_test, (err, list) => {
-
         if (err) {
           console.log(err.stack);
           reject();
