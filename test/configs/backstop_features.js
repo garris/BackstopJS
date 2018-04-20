@@ -132,7 +132,7 @@ module.exports = {
   },
   report: ['CI'],
   engine: ENGINE,
-  engineOptions: {},
+  engineOptions: {args: '--no-sandbox'}, // TODO Only do this for travis testing
   asyncCaptureLimit: 10,
   asyncCompareLimit: 50,
   debug: false,
