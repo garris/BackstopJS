@@ -22,7 +22,7 @@ let configFile = 'backstop_features';
 if (ciMode) {
   let contents = fs.readFileSync(path.join(__dirname, '../configs/backstop_features.js'), {encoding: 'utf8'});
   contents = mustReplace(contents, `report: ['browser']`, `report: ['CI']`);
-  contents = mustReplace(contents, 'engineOptions: {}', `engineOptions: {args: ['--no-sandbox']}`);
+  contents = mustReplace(contents, 'engineOptions: {}', `engineOptions: {args: ['--no-sandbox', '--enable-font-antialiasing']}`);
   fs.writeFileSync(path.join(__dirname, '../configs/backstop_ci.js'), contents);
   configFile = 'backstop_ci.js';
 }
@@ -55,7 +55,7 @@ const stdErrs = [];
 child.stderr.on('data', function (buf) {
   const line = String(buf);
   util.print('StdErr:', line);
-  if (!allowedStdErr.filter(allowed => line.includes(allowed))) {
+  if (allowedStdErr.filter(allowed => line.includes(allowed)).length === 0) {
     stdErrs.push(line.trim());
   }
 });
