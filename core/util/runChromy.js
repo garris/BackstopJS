@@ -7,7 +7,7 @@ const engineTools = require('./engineTools');
 
 const MIN_CHROME_VERSION = 62;
 const TEST_TIMEOUT = 30000;
-const CHROMY_STARTING_PORT_NUMBER = 9222;
+// const CHROMY_STARTING_PORT_NUMBER = 9222;
 const DEFAULT_FILENAME_TEMPLATE = '{configId}_{scenarioLabel}_{selectorIndex}_{selectorLabel}_{viewportIndex}_{viewportLabel}';
 const DEFAULT_BITMAPS_TEST_DIR = 'bitmaps_test';
 const DEFAULT_BITMAPS_REFERENCE_DIR = 'bitmaps_reference';
@@ -437,7 +437,7 @@ function delegateSelectors (chromy, scenario, viewport, variantOrScenarioLabelSa
 
 // TODO: remove filepath_
 function captureScreenshot (chromy, filePath_, selector, selectorMap, config, selectors) {
-  return new Promise (function (resolve, reject) {
+  return new Promise(function (resolve, reject) {
     // VIEWPORT screenshot
     if (selector === VIEWPORT_SELECTOR || selector === BODY_SELECTOR) {
       chromy
@@ -496,8 +496,6 @@ function captureScreenshot (chromy, filePath_, selector, selectorMap, config, se
     }
   });
 }
-
-
 
 // TODO: ESCAPE ALL SELECTOR VALUES
 // function escapeSingleQuote (string) {

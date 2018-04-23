@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+// ESLint
+/* eslint-disable no-unused-vars */
 import { StickyContainer } from 'react-sticky';
 
 import Header from './ecosystems/Header';
