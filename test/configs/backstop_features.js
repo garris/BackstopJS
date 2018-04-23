@@ -130,9 +130,10 @@ module.exports = {
     html_report: 'backstop_data/html_report',
     ci_report: 'backstop_data/ci_report'
   },
-  report: ['CI'],
+  // If you change the report or engine option at all, you must also change smoke_test.js
+  report: ['browser'],
   engine: ENGINE,
-  engineOptions: {args: '--no-sandbox'}, // TODO Only do this for travis testing
+  engineOptions: {},
   asyncCaptureLimit: 10,
   asyncCompareLimit: 50,
   debug: false,
