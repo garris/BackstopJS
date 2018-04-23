@@ -35,8 +35,7 @@ const child = childProcess.spawn(
 
 const requiredStdout = [
   'Element not found for capturing: .monkey',
-  'report | 44 Passed',
-  'report | 14 Failed'
+  'report | 0 Failed'
 ];
 
 const allowedStdErr = [
