@@ -892,6 +892,8 @@ BackstopJS was created and is maintained by [Garris Shipon](https://www.linkedin
 
 💙㊗️🙇 Many many thanks to [all the contributors](https://github.com/garris/BackstopJS/graphs/contributors) with special thanks to our BackstopJS core contributors...
 
+- [Christopher Frank](https://github.com/krisdigital) for our Puppeteer integration in 3.2.
+- [@KenCoder](https://github.com/KenCoder), [@AkA84](https://github.com/AkA84), [@VesterDe](https://github.com/VesterDe), [Vladislav Altanov](https://github.com/cactusa), [Alice Young](https://github.com/aliceyoung9) for documentation, fixes, improved test hygene and support with 3.2 release
 - [Gabriele Mantovani](https://github.com/mantovanig) for our beautiful new UI in 3.1.0.
 - [Pavel Zbytovský](https://github.com/zbycz), [Đinh Quang Trung](https://github.com/trungdq88), [Dan Pettersson](https://github.com/deap82), [anton-kulagin](https://github.com/anton-kulagin), [Baltazardoung](https://github.com/Baltazardoung), [kiran-redhat](https://github.com/kiran-redhat), [lsuchanek](https://github.com/lsuchanek), [Michal Vyšinský](https://github.com/vysinsky), [Leonid Makarov](https://github.com/lmakarov), [Vladislav Dekov](https://github.com/vdekov) 3.0 post release fixes and features.
 - [Shinji Yamada](https://github.com/dotneet) for Chrome Headless & Chromy.JS integration support in 3.0.0.
