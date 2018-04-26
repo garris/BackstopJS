@@ -23,7 +23,7 @@ module.exports = async (page, scenario) => {
         await page.setCookie(cookie);
       })
     );
-  }
+  };
   await setCookies();
   console.log('Cookie state restored with:', JSON.stringify(cookies, null, 2));
 };

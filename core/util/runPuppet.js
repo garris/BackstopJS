@@ -7,8 +7,6 @@ const ensureDirectoryPath = require('./ensureDirectoryPath');
 const injectBackstopTools = require('../../capture/backstopTools.js');
 const engineTools = require('./engineTools');
 
-const BackstopException = require('../util/BackstopException.js');
-
 const MIN_CHROME_VERSION = 62;
 const TEST_TIMEOUT = 60000;
 const DEFAULT_FILENAME_TEMPLATE = '{configId}_{scenarioLabel}_{selectorIndex}_{selectorLabel}_{viewportIndex}_{viewportLabel}';
@@ -16,7 +14,7 @@ const DEFAULT_BITMAPS_TEST_DIR = 'bitmaps_test';
 const DEFAULT_BITMAPS_REFERENCE_DIR = 'bitmaps_reference';
 const SELECTOR_NOT_FOUND_PATH = '/capture/resources/notFound.png';
 const HIDDEN_SELECTOR_PATH = '/capture/resources/notVisible.png';
-const ERROR_SELECTOR_PATH = '/capture/resources/unexpectedError.png';
+const ERROR_SELECTOR_PATH = '/capture/resources/unexpectedErrorSm.png';
 const BODY_SELECTOR = 'body';
 const DOCUMENT_SELECTOR = 'document';
 const NOCLIP_SELECTOR = 'body:noclip';
@@ -26,16 +24,19 @@ module.exports = function (args) {
   const scenario = args.scenario;
   const viewport = args.viewport;
   const config = args.config;
-  const runId = args.id;
-  const assignedPort = args.assignedPort;
   const scenarioLabelSafe = engineTools.makeSafe(scenario.label);
   const variantOrScenarioLabelSafe = scenario._parent ? engineTools.makeSafe(scenario._parent.label) : scenarioLabelSafe;
 
-  return processScenarioView(scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, config, runId);
+  config._bitmapsTestPath = config.paths.bitmaps_test || DEFAULT_BITMAPS_TEST_DIR;
+  config._bitmapsReferencePath = config.paths.bitmaps_reference || DEFAULT_BITMAPS_REFERENCE_DIR;
+  config._fileNameTemplate = config.fileNameTemplate || DEFAULT_FILENAME_TEMPLATE;
+  config._outputFileFormatSuffix = '.' + (config.outputFormat && config.outputFormat.match(/jpg|jpeg/) || 'png');
+  config._configId = config.id || engineTools.genHash(config.backstopConfigFileName);
+
+  return processScenarioView(scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, config);
 };
 
-
-async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, config, runId) {
+async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, config) {
   if (!config.paths) {
     config.paths = {};
   }
@@ -54,7 +55,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     {},
     {
       ignoreHTTPSErrors: true,
-      headless: !!!config.debugWindow
+      headless: !config.debugWindow
     },
     config.engineOptions
   );
@@ -69,21 +70,34 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     console.log(chalk.blue('CREATING NEW REFERENCE FILE'));
   }
 
-  // --- set up console output ---
+  // --- set up console output and ready event ---
+  const readyEvent = scenario.readyEvent || config.readyEvent;
+  let readyResolve, readyPromise;
+  if (readyEvent) {
+    readyPromise = new Promise(resolve => {
+      readyResolve = resolve;
+    });
+  }
+
   page.on('console', msg => {
-    for (let i = 0; i < msg.args().length; ++i)
-      console.log(`Browser Console Log ${i}: ${msg.args()[i]}`);
+    for (let i = 0; i < msg.args().length; ++i) {
+      const line = msg.args()[i];
+      console.log(`Browser Console Log ${i}: ${line}`);
+      if (readyEvent && new RegExp(readyEvent).test(line)) {
+        readyResolve();
+      }
+    }
   });
 
   let chromeVersion = await page.evaluate(_ => {
     let v = navigator.userAgent.match(/Chrom(e|ium)\/([0-9]+)\./);
     return v ? parseInt(v[2], 10) : 0;
-  })
+  });
 
   if (chromeVersion < MIN_CHROME_VERSION) {
     console.warn(`***WARNING! CHROME VERSION ${MIN_CHROME_VERSION} OR GREATER IS REQUIRED. PLEASE UPDATE YOUR CHROME APP!***`);
   }
-  
+
   let result;
   const puppetCommands = async () => {
     // --- BEFORE SCRIPT ---
@@ -103,17 +117,14 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
       url = scenario.referenceUrl;
     }
     await page.goto(translateUrl(url));
-  
+
     await injectBackstopTools(page);
 
     //  --- WAIT FOR READY EVENT ---
-    var readyEvent = scenario.readyEvent || config.readyEvent;
     if (readyEvent) {
-      await page.evaluate(`window._readyEvent = '${readyEvent}'`)
+      await page.evaluate(`window._readyEvent = '${readyEvent}'`);
 
-      await page.waitForFunction(() => {
-        return window._backstopTools.hasLogged(window._readyEvent);
-      });
+      await readyPromise;
 
       await page.evaluate(_ => console.info('readyEvent ok'));
     }
@@ -129,7 +140,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
       await page.waitFor(scenario.delay);
     }
 
-    //--- REMOVE SELECTORS ---
+    // --- REMOVE SELECTORS ---
     if (scenario.hasOwnProperty('removeSelectors')) {
       const removeSelectors = async () => {
         return Promise.all(
@@ -146,7 +157,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
               });
           })
         );
-      }
+      };
 
       await removeSelectors();
     }
@@ -171,7 +182,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
         return Promise.all(
           scenario.hideSelectors.map(async (selector) => {
             await page
-              .evaluate(`window._backstopSelector = '${selector}'`)
+              .evaluate(`window._backstopSelector = '${selector}'`);
 
             await page
               .evaluate(() => {
@@ -181,8 +192,8 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
               });
           })
         );
-      }
-      await hideSelectors()
+      };
+      await hideSelectors();
     }
 
     // --- HANDLE NO-SELECTORS ---
@@ -190,8 +201,8 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
       scenario.selectors = [DOCUMENT_SELECTOR];
     }
 
-    await page.evaluate(`window._selectorExpansion = '${scenario.selectorExpansion}'`)
-    await page.evaluate(`window._backstopSelectors = '${scenario.selectors}'`)
+    await page.evaluate(`window._selectorExpansion = '${scenario.selectorExpansion}'`);
+    await page.evaluate(`window._backstopSelectors = '${scenario.selectors}'`);
     result = await page.evaluate(() => {
       if (window._selectorExpansion.toString() === 'true') {
         window._backstopSelectorsExp = window._backstopTools.expandSelectors(window._backstopSelectors);
@@ -212,83 +223,75 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
         backstopSelectorsExp: window._backstopSelectorsExp,
         backstopSelectorsExpMap: window._backstopSelectorsExpMap
       };
-    })
-  }
-  
+    });
+  };
+
+  let error;
   await puppetCommands().catch(e => {
-    result = {
-      backstopSelectorsExp: [],
-      backstopSelectorsExpMap: []
-    };
-    console.log(chalk.red("######## Error running Puppeteer #########"), e);
-  })
-  
-  let compareConfig
-  let error
-  try {
-    compareConfig = await delegateSelectors(
-      page,
-      browser,
-      scenario,
-      viewport,
-      variantOrScenarioLabelSafe,
-      scenarioLabelSafe,
-      config,
-      result.backstopSelectorsExp,
-      result.backstopSelectorsExpMap
-    )
-  } catch (e) {
+    console.log(chalk.red(`Puppeteer encountered an error while running scenario "${scenario.label}"`));
+    console.log(chalk.red(e));
     error = e;
-  }
-  
-  return new Promise((resolve, reject) => {
-    if (compareConfig) {
-      resolve(compareConfig);
-    } else {
-      resolve(new BackstopException('Puppeteer error', scenario, viewport, error));
-    }
   });
+
+  let compareConfig;
+  if (!error) {
+    try {
+      compareConfig = await delegateSelectors(
+        page,
+        browser,
+        scenario,
+        viewport,
+        variantOrScenarioLabelSafe,
+        scenarioLabelSafe,
+        config,
+        result.backstopSelectorsExp,
+        result.backstopSelectorsExpMap
+      );
+    } catch (e) {
+      error = e;
+    }
+  } else {
+    await browser.close();
+  }
+
+  if (error) {
+    const testPair = engineTools.generateTestPair(config, scenario, viewport, variantOrScenarioLabelSafe, scenarioLabelSafe, 0, `${scenario.selectors.join('__')}`);
+    const filePath = config.isReference ? testPair.reference : testPair.test;
+    testPair.engineErrorMsg = error.message;
+
+    compareConfig = {
+      testPairs: [ testPair ]
+    };
+    fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
+  }
+
+  return Promise.resolve(compareConfig);
 }
 
 // TODO: Should be in engineTools
-async function delegateSelectors (page, browser, scenario, viewport, variantOrScenarioLabelSafe, scenarioLabelSafe, config, selectors, selectorMap) {
-  const fileNameTemplate = config.fileNameTemplate || DEFAULT_FILENAME_TEMPLATE;
-  const configId = config.id || engineTools.genHash(config.backstopConfigFileName);
-  const bitmapsTestPath = config.paths.bitmaps_test || DEFAULT_BITMAPS_TEST_DIR;
-  const bitmapsReferencePath = config.paths.bitmaps_reference || DEFAULT_BITMAPS_REFERENCE_DIR;
-  const outputFileFormatSuffix = '.' + (config.outputFormat && config.outputFormat.match(/jpg|jpeg/) || 'png');
-
+async function delegateSelectors (
+  page,
+  browser,
+  scenario,
+  viewport,
+  variantOrScenarioLabelSafe,
+  scenarioLabelSafe,
+  config,
+  selectors,
+  selectorMap
+) {
   let compareConfig = {testPairs: []};
   let captureDocument = false;
   let captureViewport = false;
   let captureList = [];
   let captureJobs = [];
 
-  selectors.forEach(function (selector, i) {
-    var cleanedSelectorName = selector.replace(/[^a-z0-9_-]/gi, ''); // remove anything that's not a letter or a number
-    var fileName = engineTools.getFilename(fileNameTemplate, outputFileFormatSuffix, configId, scenario.sIndex, variantOrScenarioLabelSafe, i, cleanedSelectorName, viewport.vIndex, viewport.label);
-    var referenceFilePath = bitmapsReferencePath + '/' + engineTools.getFilename(fileNameTemplate, outputFileFormatSuffix, configId, scenario.sIndex, scenarioLabelSafe, i, cleanedSelectorName, viewport.vIndex, viewport.label);
-    var testFilePath = bitmapsTestPath + '/' + config.screenshotDateTime + '/' + fileName;
-    var filePath = config.isReference ? referenceFilePath : testFilePath;
+  selectors.forEach(function (selector, selectorIndex) {
+    const testPair = engineTools.generateTestPair(config, scenario, viewport, variantOrScenarioLabelSafe, scenarioLabelSafe, selectorIndex, selector);
+    const filePath = config.isReference ? testPair.reference : testPair.test;
 
     if (!config.isReference) {
-      var requireSameDimensions;
-      if (scenario.requireSameDimensions !== undefined) {
-        requireSameDimensions = scenario.requireSameDimensions;
-      } else if (config.requireSameDimensions !== undefined) {
-        requireSameDimensions = config.requireSameDimensions;
-      } else {
-        requireSameDimensions = config.defaultRequireSameDimensions;
-      }
-      compareConfig.testPairs.push({
-        reference: referenceFilePath,
-        test: testFilePath,
-        selector: selector,
-        fileName: fileName,
-        label: scenario.label,
-        requireSameDimensions: requireSameDimensions,
-        misMatchThreshold: engineTools.getMisMatchThreshHold(scenario, config)
-      });
+      compareConfig.testPairs.push(testPair);
     }
 
     selectorMap[selector].filePath = filePath;
@@ -342,10 +345,9 @@ async function delegateSelectors (page, browser, scenario, viewport, variantOrSc
   }).then(_ => compareConfig);
 }
 
-
 async function captureScreenshot (page, browser, selector, selectorMap, config, selectors) {
-  let filePath
-  let fullPage = (selector === NOCLIP_SELECTOR || selector === DOCUMENT_SELECTOR)
+  let filePath;
+  let fullPage = (selector === NOCLIP_SELECTOR || selector === DOCUMENT_SELECTOR);
   if (selector) {
     filePath = selectorMap[selector].filePath;
     ensureDirectoryPath(filePath);
@@ -354,7 +356,7 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
         .screenshot({
           path: filePath,
           fullPage: fullPage
-        }); 
+        });
     } catch (e) {
       console.log(chalk.red(`Error capturing..`), e);
       return fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
@@ -362,13 +364,13 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
   } else {
     // OTHER-SELECTOR screenshot
     const selectorShot = async (s, path) => {
-      const el = await page.$(s)
+      const el = await page.$(s);
       if (el) {
         const box = await el.boundingBox();
         if (box) {
           await el.screenshot({
             path: path
-          })
+          });
         } else {
           console.log(chalk.yellow(`Element not visible for capturing: ${s}`));
           return fs.copy(config.env.backstop + HIDDEN_SELECTOR_PATH, filePath);
@@ -377,23 +379,23 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
         console.log(chalk.magenta(`Element not found for capturing: ${s}`));
         return fs.copy(config.env.backstop + SELECTOR_NOT_FOUND_PATH, filePath);
       }
-    }
+    };
 
     const selectorsShot = async () => {
       return Promise.all(
-        selectors.map(async s => {
-          filePath = selectorMap[s].filePath;
+        selectors.map(async selector => {
+          filePath = selectorMap[selector].filePath;
           ensureDirectoryPath(filePath);
           try {
-            await selectorShot(s, filePath); 
+            await selectorShot(selector, filePath);
           } catch (e) {
-            console.log(chalk.red(`Error capturing Element ${s}`), e);
+            console.log(chalk.red(`Error capturing Element ${selector}`), e);
             return fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
           }
         })
       );
-    }
-    await selectorsShot()
+    };
+    await selectorsShot();
   }
 }
 

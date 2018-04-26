@@ -1,6 +1,6 @@
 var WAIT_TIMEOUT = 5000;
 
-module.exports = function(casper, scenario) {
+module.exports = function (casper, scenario) {
   var waitFor = require('./waitForHelperHelper')(casper, WAIT_TIMEOUT);
   var hoverSelector = scenario.hoverSelector,
       clickSelector = scenario.clickSelector,

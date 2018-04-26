@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { colors, shadows } from '../../styles';
 
 // atoms
+import ErrorMessages from '../atoms/ErrorMessages';
 import TextDetails from '../atoms/TextDetails';
 import NavButtons from '../atoms/NavButtons';
 
@@ -46,6 +47,7 @@ export default class TestCard extends React.Component {
         <TextDetails info={info} />
         <ScrubberButton info={info} onlyText={onlyText} />
         <TestImages info={info} status={status} />
+        <ErrorMessages info={info} status={status} />
       </CardWrapper>
     );
   }

@@ -8,7 +8,7 @@ BackstopJS automates visual regression testing of your responsive web UI by comp
 ## Version 3 Features
 
 - Render with **Chrome Headless**, **Phantom** and **Slimer**
-- Simulate user interactions with **ChromyJS** and **CasperJS** scripts
+- Simulate user interactions with **Puppeteer**, **ChromyJS** and **CasperJS** scripts
 - Browser reports with visual diffs
 - CLI reports
 - JUnit reports
@@ -54,7 +54,7 @@ $ npm install -g backstopjs
 ## Getting started
 ### Installation
 
-_[Chrome 62 or greater is required](https://www.google.com/chrome/browser)_
+_[Chrome latest is recommended](https://www.google.com/chrome/browser)_
 
 #### Global installation (recommended)
 ```sh
@@ -477,14 +477,19 @@ By default, BackstopJS saves generated resources into the `backstop_data` direct
 ```
 
 ### Changing the rendering engine
-BackstopJS supports using Chrome-Headless, PhantomJS or SlimerJS for web app rendering. Chrome-headless (chromy) is currently the default value and will be installed by default.
+BackstopJS supports using Chrome-Headless, PhantomJS or SlimerJS for web app rendering. Chrome-headless (via Puppeteer) is currently the default value and will be installed by default.
 
 #### Chrome-Headless (The latest webkit library)
-This will also enable the very cool _chromy.js_ (https://github.com/OnetapInc/chromy) library.  (When creating onBefore and onReady scripts please make sure you are referring to the [Chromy script documentation](https://github.com/OnetapInc/chromy).  Casper features will not work with this setting.)
+To use chrome headless you have two options for scripting engines, the default _puppeteer_ (https://github.com/GoogleChrome/puppeteer) or the very cool _chromy.js_ (https://github.com/OnetapInc/chromy) library.
 
-**You must also have [Chrome 62 or greater installed!](https://www.google.com/chrome/browser/beta.html).**
+
 ```json
-"engine": "chrome"
+"engine": "puppeteer"
+```
+or
+
+```json
+"engine": "chromy"
 ```
 
 #### Slimer (Gecko/Mozilla rendering)
@@ -499,7 +504,31 @@ Then, in your `backstop.json` config file, update the engine property to...
 ```json
 "engine": "slimerjs"
 ```
-That's it.
+
+#### To run phantom it's...
+
+```json
+"engine": "casper"
+```
+
+### Setting Puppeteer option flags
+Backstop sets two defaults for Puppeteer:
+
+```json
+ignoreHTTPSErrors: true,
+headless: <!!!config.debugWindow>
+```
+
+You can add more settings (or override the defaults) with the engineOptions property. (properties are merged)
+
+```json
+"engineOptions": {
+	ignoreHTTPSErrors: false,
+	args: ["--no-sandbox", "--disable-setuid-sandbox"]
+}
+```
+
+More info here: [Puppeteer on github](https://github.com/GoogleChrome/puppeteer).
 
 
 ### Setting Casper command-line flags
@@ -548,21 +577,7 @@ module.exports = function (chromy, scenario, vp, isReference, chromyStatic) {
 ```
 For more info, see the [Chromy script documentation](https://github.com/OnetapInc/chromy).
 
-### Setting Puppeteer option flags
 
-Similarly to Chromy, Puppeteer also allows setting flags to modify behaviour. They can be set with the engineOptions config line.
-
-Notably, if you get the "No usable sandbox" error when starting puppeteer, you can (probably) fix it by setting the following two flags in your config file:
-```json
-"engineOptions": {"args": ["--no-sandbox", "--disable-setuid-sandbox"]}
-```
-**NOTE:** Backstop sets two defaults for Puppeteer, which you can override by setting them in engineOptions. These are:
-
-```json
-ignoreHTTPSErrors: true,
-headless: !!!config.debugWindow
-```
-For more information about flags and Puppeteer in general, [visit their repository](https://github.com/GoogleChrome/puppeteer).
 
 ### Integration options (local install)
 
@@ -731,8 +746,10 @@ Instead of calling resemble`s ignoreAntialiasing(), you may set it as a property
 First off, You are awesome! Thanks for your interest, time and hard work!  Here are some tips...
 
 ### We use `eslint-config-semistandard`.
-Please turn your linter on. Thank you. 🙇🏽
-
+Please run the linter before each submit, as follows. Thank you. 🙇🏽
+```sh
+$ npm run lint
+```
 
 ### There is a BackstopJS SMOKE TEST
 See the next section for running the SMOKE TEST -- Please make sure this is working before submitting any PR's.  Thanks!
@@ -770,9 +787,9 @@ Here's some suggestions if you want to work on the HTML report locally...
 ## Troubleshooting
 
 ### SANITY TEST: Does Backstop work in my environment?
-Run the following command from your Desktop, home or project directory to check that Backstop will install and run in your environment.
+Run the following command from your Desktop, home or project directory to check that Backstop will install and run in your environment. _Windows users: please use Powershell_
 ```
-mkdir backstopSanityTest; cd backstopSanityTest; npm install backstopjs; node_modules/backstopjs/cli/index.js test --config=node_modules/backstopjs/test/configs/backstop
+mkdir backstopSanityTest; cd backstopSanityTest; npm install backstopjs; node ./node_modules/backstopjs/cli/index.js test --config=node_modules/backstopjs/test/configs/backstop
 ```
 
 ### SMOKE TEST: Are backstop features working ok?
@@ -859,7 +876,7 @@ _see https://github.com/garris/BackstopJS/issues/185_
 ---
 
 ## Tutorials, Extensions and more
-
+- [A really good one on refactoring CSS with BackstopJS](https://hannesdotkaeuflerdotnet.herokuapp.com/posts/refactoring-css) by Hannes Käufler
 - [A Simple grunt-backstopjs plugin](http://www.obqo.de/blog/2016/12/30/grunt-backstopjs/) - For the Grunt enthusiasts
 
 <!--

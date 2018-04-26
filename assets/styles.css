@@ -16,7 +16,7 @@ a:hover {
   display: inline-block;
   border-radius: 25px;
 }
-.lemur-link:hover {
+.lemur-link:hover, .logo-link:hover {
   background-color: transparent;
 }
 .page-root {

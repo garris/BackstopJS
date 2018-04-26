@@ -82,9 +82,6 @@ function writeReferenceCreateConfig (config, isReference) {
 }
 
 function delegateScenarios (config) {
-  var screenshotNow = new Date();
-  var screenshotDateTime = screenshotNow.getFullYear() + pad(screenshotNow.getMonth() + 1) + pad(screenshotNow.getDate()) + '-' + pad(screenshotNow.getHours()) + pad(screenshotNow.getMinutes()) + pad(screenshotNow.getSeconds());
-
   // TODO: start chromy here?  Or later?  maybe later because maybe changing resolutions doesn't work after starting?
   // casper.start();
 
@@ -99,6 +96,7 @@ function delegateScenarios (config) {
   config.scenarios.forEach(function (scenario, i) {
     // var scenarioLabelSafe = makeSafe(scenario.label);
     scenario.sIndex = i;
+    scenario.selectors = scenario.selectors || [];
     scenarios.push(scenario);
 
     if (!config.isReference && scenario.hasOwnProperty('variants')) {
@@ -122,9 +120,9 @@ function delegateScenarios (config) {
       });
     });
   });
-  
+
   const asyncCaptureLimit = config.asyncCaptureLimit === 0 ? 1 : config.asyncCaptureLimit || CONCURRENCY_DEFAULT;
-  
+
   if (/chrom./i.test(config.engine)) {
     const PORT = (config.startingPort || CHROMY_STARTING_PORT_NUMBER);
     var getFreePorts = require('./getFreePorts');
@@ -185,7 +183,7 @@ function flatMapTestPairs (rawTestPairs) {
 }
 
 module.exports = function (config, isReference) {
-  if (/chrom./i.test(config.engine) || config.engine.startsWith('puppet')) {
+  if (/chrom./i.test(config.engine) || /puppet/i.test(config.engine)) {
     const promise = delegateScenarios(decorateConfigForCapture(config, isReference))
       .then(rawTestPairs => {
         const result = {
@@ -200,7 +198,7 @@ module.exports = function (config, isReference) {
       promise.then(() => Chromy.cleanup());
     }
 
-    return promise; 
+    return promise;
   }
 
   return writeReferenceCreateConfig(config, isReference).then(function () {

@@ -1,14 +1,15 @@
 {
   "name": "backstopjs",
-  "version": "3.2.4",
+  "version": "3.2.15",
   "description": "BackstopJS: Catch CSS curveballs.",
   "bin": {
     "backstop": "./cli/index.js"
   },
   "scripts": {
-    "lint": "npm run lint-web && npm run lint-node",
-    "lint-web": "eslint --env browser compare/*.js compare/**/*.js --fix",
-    "lint-node": "eslint --env node core/*.js core/**/*.js cli/*.js cli/**/*.js capture/*.js capture/**/*.js --fix",
+    "lint": "npm run lint-web -- --fix && npm run lint-node -- --fix",
+    "lint-ci": "npm run lint-web && npm run lint-node",
+    "lint-web": "eslint --env browser compare/*.js compare/src/**/*.js",
+    "lint-node": "eslint --env node core/*.js core/**/*.js cli/*.js cli/**/*.js capture/*.js capture/**/*.js",
     "format": "prettier-eslint --write \"compare/src/**/*.js\"",
     "genConfig": "node ./cli/index.js genConfig",
     "init": "node ./cli/index.js init",
@@ -50,6 +51,7 @@
     "eslint-config-semistandard": "^7.0.0-beta.0",
     "eslint-config-standard": "^6.0.0",
     "eslint-plugin-promise": "^3.3.0",
+    "eslint-plugin-react": "^7.7.0",
     "eslint-plugin-standard": "^2.0.0",
     "file-loader": "^0.11.2",
     "gulp": "^3.9.1",
@@ -78,7 +80,7 @@
     "p-map": "^1.1.1",
     "path": "^0.12.7",
     "phantomjs-prebuilt": "^2.1.7",
-    "puppeteer": "^1.1.1",
+    "puppeteer": "^1.2.0-next.1523485686787",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-modal": "^3.0.3",

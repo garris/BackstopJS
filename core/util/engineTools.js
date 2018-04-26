@@ -30,6 +30,20 @@ function genHash (str) {
   return hash.toString().replace(/^-/, 0);
 }
 
+function getRequireSameDimentions (scenario, config) {
+  if (scenario.requireSameDimensions !== undefined) {
+    return scenario.requireSameDimensions;
+  } else if (config.requireSameDimensions !== undefined) {
+    return config.requireSameDimensions;
+  } else {
+    return config.defaultRequireSameDimensions;
+  }
+}
+
+function getSelectorName (selector) {
+  return selector.replace(/[^a-z0-9_-]/gi, ''); // remove anything that's not a letter or a number
+}
+
 function makeSafe (str) {
   return str.replace(/[ /]/g, '_');
 }
@@ -52,19 +66,59 @@ function getFilename (fileNameTemplate, outputFileFormatSuffix, configId, scenar
   return fileName;
 }
 
-function getEngineOption(config, optionName, fallBack) {
+function getEngineOption (config, optionName, fallBack) {
   if (typeof config.engineOptions === 'object' && config.engineOptions[optionName]) {
     return config.engineOptions[optionName];
   }
   return fallBack;
 }
 
+function generateTestPair (config, scenario, viewport, variantOrScenarioLabelSafe, scenarioLabelSafe, selectorIndex, selector) {
+  const cleanedSelectorName = getSelectorName(selector);
+  const fileName = getFilename(
+    config._fileNameTemplate,
+    config._outputFileFormatSuffix,
+    config._configId,
+    scenario.sIndex,
+    variantOrScenarioLabelSafe,
+    selectorIndex,
+    cleanedSelectorName,
+    viewport.vIndex,
+    viewport.label
+  );
+  const referenceFilePath = config._bitmapsReferencePath + '/' + getFilename(
+    config._fileNameTemplate,
+    config._outputFileFormatSuffix,
+    config._configId,
+    scenario.sIndex,
+    scenarioLabelSafe,
+    selectorIndex,
+    cleanedSelectorName,
+    viewport.vIndex,
+    viewport.label
+  );
+  const testFilePath = config._bitmapsTestPath + '/' + config.screenshotDateTime + '/' + fileName;
+
+  return {
+    reference: referenceFilePath,
+    test: testFilePath,
+    selector: selector,
+    fileName: fileName,
+    label: scenario.label,
+    requireSameDimensions: getRequireSameDimentions(scenario, config),
+    misMatchThreshold: getMisMatchThreshHold(scenario, config)
+  };
+}
+
 module.exports = {
+  generateTestPair: generateTestPair,
   getMisMatchThreshHold: getMisMatchThreshHold,
+  getRequireSameDimentions: getRequireSameDimentions,
   ensureFileSuffix: ensureFileSuffix,
   glueStringsWithSlash: glueStringsWithSlash,
   genHash: genHash,
   makeSafe: makeSafe,
   getFilename: getFilename,
-  getEngineOption: getEngineOption
-}
+  getEngineOption: getEngineOption,
+  getSelectorName: getSelectorName
+};
