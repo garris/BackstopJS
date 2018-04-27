@@ -46,7 +46,7 @@ module.exports = {
     {
       label: 'noDelay',
       url: '../../index.html?delay',
-      selectors: ['.moneyshot'],
+      selectors: ['.moneyshot']
     },
     {
       label: 'expanded',
@@ -67,7 +67,7 @@ module.exports = {
     {
       label: 'hideSelectors',
       url: '../../index.html',
-      hideSelectors: ['.moneyshot'],
+      hideSelectors: ['.moneyshot']
     },
     {
       label: 'removeSelectors',
@@ -139,5 +139,5 @@ module.exports = {
   asyncCaptureLimit: 10,
   asyncCompareLimit: 50,
   debug: false,
-  debugWindow: false,
+  debugWindow: false
 };
