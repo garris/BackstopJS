@@ -9,58 +9,52 @@ process.on('unhandledRejection', function (error) {
   process.exit(3);
 });
 
-const mustReplace = (str, find, replace) => {
-  const newStr = str.replace(find, replace);
-  if (str === newStr) {
-    throw new Error(`The file backstop_features.js should have contained the string ${find}. You probably need to udpate smoke_test.js`);
-  }
-  return newStr;
-};
+const configsDir = path.normalize(path.join(__dirname, '../configs'));
 
-const ciMode = process.argv.length > 2 && process.argv[2] === 'ci';
-let configFile = 'backstop_features';
+const extraSpawnOpts = {};
+const ciMode = process.argv.includes('ci');
 if (ciMode) {
-  let contents = fs.readFileSync(path.join(__dirname, '../configs/backstop_features.js'), {encoding: 'utf8'});
-  contents = mustReplace(contents, `report: ['browser']`, `report: ['CI']`);
-  contents = mustReplace(contents, 'engineOptions: {}', `engineOptions: {args: ['--no-sandbox', '--enable-font-antialiasing']}`);
-  fs.writeFileSync(path.join(__dirname, '../configs/backstop_ci.js'), contents);
-  configFile = 'backstop_ci.js';
+  extraSpawnOpts.env = { ...process.env, BACKSTOP_CI_MODE: '1' };
 }
 
-const child = childProcess.spawn(
-  path.join(__dirname, '../../cli/index.js'),
-  ['test', `--config=${configFile}`],
-  {cwd: path.join(__dirname, '../configs')}
-);
+function sleep (ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
-const requiredStdout = [
-  'Element not found for capturing: .monkey',
-  'report | 0 Failed'
-];
+async function runSmokeTest (description, commands) {
+  const child = childProcess.spawn(commands[0], commands.slice(1),
+    { cwd: configsDir, ...extraSpawnOpts }
+  );
 
-const allowedStdErr = [
-  'Possible EventEmitter memory leak detected.'
-];
+  const requiredStdout = [
+    'Element not found for capturing: .monkey',
+    'report | 0 Failed'
+  ];
 
-let missingStdOut = [...requiredStdout];
+  const allowedStdErr = [
+    'Possible EventEmitter memory leak detected.'
+  ];
 
-child.stdout.on('data', function (buf) {
-  const line = String(buf);
-  util.print(line);
-  const key = line.trim();
-  missingStdOut = missingStdOut.filter(el => !key.includes(el));
-});
+  let missingStdOut = [...requiredStdout];
 
-const stdErrs = [];
-child.stderr.on('data', function (buf) {
-  const line = String(buf);
-  util.print('StdErr:', line);
-  if (allowedStdErr.filter(allowed => line.includes(allowed)).length === 0) {
-    stdErrs.push(line.trim());
-  }
-});
+  child.stdout.on('data', function (buf) {
+    const line = String(buf);
+    util.print(line);
+    const key = line.trim();
+    missingStdOut = missingStdOut.filter(el => !key.includes(el));
+  });
 
-child.on('close', function (code) {
+  const stdErrs = [];
+  child.stderr.on('data', function (buf) {
+    const line = String(buf);
+    util.print('StdErr:', line);
+    if (allowedStdErr.filter(allowed => line.includes(allowed)).length === 0) {
+      stdErrs.push(line.trim());
+    }
+  });
+
+  const code = await new Promise(resolve => child.on('close', resolve));
+
   const problems = [];
   if (missingStdOut.length !== 0) {
     problems.push('The following line were expected in smoke test std output, but were not found:');
@@ -72,19 +66,37 @@ child.on('close', function (code) {
     problems.push(...stdErrs);
   }
 
-  if (code !== 1) {
-    problems.push(`Expected exit code 1, but it was ${code}`);
-  }
-  if (ciMode) {
-    fs.unlinkSync(path.join(__dirname, '../configs/backstop_ci.js'));
+  if (code !== 0) {
+    problems.push(`Expected exit code 0, but it was ${code}`);
   }
 
   if (problems.length > 0) {
     problems.forEach(line => console.error(line));
-    console.error('Smoke test FAILED:');
-    process.exit(1);
+    throw new Error(`${description} smoke test FAILED:\n`);
   } else {
-    console.error('Smoke test succeeded.');
-    process.exit(0);
+    console.log(`${description} smoke test succeeded.`);
   }
-});
+}
+
+async function runSmokeTests () {
+  const isMac = process.platform === 'darwin';
+
+  await runSmokeTest(isMac ? 'Mac' : 'Linux', [
+    '../../cli/index.js',
+    'test', '--config=backstop_features']);
+
+  if (ciMode && isMac) {
+    const linuxNodeModulesDir = path.join(configsDir, 'linux/node_modules');
+
+    if (!fs.existsSync(linuxNodeModulesDir)) {
+      console.log('\n\nAbout to build a container in which we will run the Linux smoke tests');
+      console.log('This will take a while -- you might want to get a cup of coffee.');
+      console.log('='.repeat(50));
+      await sleep(4000);
+    }
+
+    await runSmokeTest('Linux Docker', ['../smoke/docker_smoke.sh']);
+  }
+}
+
+runSmokeTests();
