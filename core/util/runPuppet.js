@@ -146,15 +146,12 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
         return Promise.all(
           scenario.removeSelectors.map(async (selector) => {
             await page
-              .evaluate(`window._backstopSelector = '${selector}'`);
-
-            await page
-              .evaluate(() => {
-                document.querySelectorAll(window._backstopSelector).forEach(s => {
+              .evaluate((sel) => {
+                document.querySelectorAll(sel).forEach(s => {
                   s.style.display = 'none';
                   s.classList.add('__86d');
                 });
-              });
+              }, selector);
           })
         );
       };
@@ -182,14 +179,11 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
         return Promise.all(
           scenario.hideSelectors.map(async (selector) => {
             await page
-              .evaluate(`window._backstopSelector = '${selector}'`);
-
-            await page
-              .evaluate(() => {
-                document.querySelectorAll(window._backstopSelector).forEach(s => {
+              .evaluate((sel) => {
+                document.querySelectorAll(sel).forEach(s => {
                   s.style.visibility = 'hidden';
                 });
-              });
+              }, selector);
           })
         );
       };
