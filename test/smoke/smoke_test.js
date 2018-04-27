@@ -11,10 +11,10 @@ process.on('unhandledRejection', function (error) {
 
 const configsDir = path.normalize(path.join(__dirname, '../configs'));
 
-const extraSpawnOpts = {};
+const processEnv = Object.assign({}, process.env);
 const ciMode = process.argv.includes('ci');
 if (ciMode) {
-  extraSpawnOpts.env = { ...process.env, BACKSTOP_CI_MODE: '1' };
+  processEnv.BACKSTOP_CI_MODE = '1';
 }
 
 function sleep (ms) {
@@ -23,7 +23,7 @@ function sleep (ms) {
 
 async function runSmokeTest (description, commands) {
   const child = childProcess.spawn(commands[0], commands.slice(1),
-    { cwd: configsDir, ...extraSpawnOpts }
+    { cwd: configsDir, env: processEnv }
   );
 
   const requiredStdout = [
