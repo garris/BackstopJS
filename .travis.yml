@@ -1,9 +1,11 @@
 addons: # get google-chrome [stable|beta]
   chrome: beta
 language: node_js
+services:
+  - docker
 node_js:
   - "8.1"
 install:
   - npm install
 script:
-  - npm run unit-test
+  - npm run unit-test && npm run smoke-test -- ci
