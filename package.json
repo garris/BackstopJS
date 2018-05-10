@@ -81,7 +81,7 @@
     "p-map": "^1.1.1",
     "path": "^0.12.7",
     "phantomjs-prebuilt": "^2.1.7",
-    "puppeteer": "^1.2.0-next.1523485686787",
+    "puppeteer": "^1.4.0",
     "react-modal": "^3.0.3",
     "react-redux": "^5.0.6",
     "react-sticky": "^6.0.1",
