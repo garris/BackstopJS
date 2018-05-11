@@ -771,7 +771,7 @@ Here's some suggestions if you want to work on the HTML report locally...
 	# simple test
 		../../cli/index.js test --config=backstop
 	# longer test covering many features
-		../../cli/index.js test --config=./test/configs/backstop_features
+		../../cli/index.js test --config=backstop_features
 	```
 
 ## Troubleshooting
