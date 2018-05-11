@@ -26,11 +26,11 @@ export default class DiffDetails extends React.Component {
     return (
       <span>
         <Label>diff%: </Label>
-        <Value>{diff.misMatchPercentage}</Value>
+        <Value>{diff.misMatchPercentage} </Value>
         <Label>diff-x: </Label>
-        <Value>{diff.dimensionDifference.width}</Value>
+        <Value>{diff.dimensionDifference.width} </Value>
         <Label>diff-y: </Label>
-        <Value>{diff.dimensionDifference.height}</Value>
+        <Value>{diff.dimensionDifference.height} </Value>
       </span>
     );
   }

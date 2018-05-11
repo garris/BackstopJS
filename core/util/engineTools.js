@@ -106,7 +106,9 @@ function generateTestPair (config, scenario, viewport, variantOrScenarioLabelSaf
     fileName: fileName,
     label: scenario.label,
     requireSameDimensions: getRequireSameDimentions(scenario, config),
-    misMatchThreshold: getMisMatchThreshHold(scenario, config)
+    misMatchThreshold: getMisMatchThreshHold(scenario, config),
+    url: scenario.url,
+    referenceUrl: scenario.referenceUrl
   };
 }
 

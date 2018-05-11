@@ -31,11 +31,11 @@ export default class DiffDetails extends React.Component {
         <Label>url: </Label>
         <Value>
           <Link href={url} target="_blank">
-            TEST
+            test
           </Link>
           {referenceUrl && (
             <Link withSeperator href={referenceUrl} target="_blank">
-              REFERENCE
+              reference
             </Link>
           )}
         </Value>
