@@ -42,6 +42,8 @@
   "license": "MIT",
   "main": "core/runner.js",
   "devDependencies": {
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
     "assert": "^1.4.1",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
