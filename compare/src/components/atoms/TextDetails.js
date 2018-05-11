@@ -94,13 +94,13 @@ class TextDetails extends React.Component {
         <DetailsPanel {...{ showPanel }} onMouseLeave={this.hidePanel}>
           <Row>
             <Label>label: </Label>
-            <Value>{label}</Value>
+            <Value>{label} </Value>
             <Label>selector: </Label>
-            <Value>{selector}</Value>
+            <Value>{selector} </Value>
           </Row>
           <Row>
             <Label>filename: </Label>
-            <Value>{fileName}</Value>
+            <Value>{fileName} </Value>
           </Row>
           <Row>
             <UrlDetails url={url} referenceUrl={referenceUrl} />

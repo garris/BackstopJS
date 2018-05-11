@@ -54,7 +54,8 @@ module.exports = {
     {
       label: 'notExpanded',
       url: '../../index.html',
-      selectors: ['p']
+      selectors: ['p'],
+      delay: 1000
     },
     {
       label: 'magicSelectors',
@@ -64,12 +65,12 @@ module.exports = {
     {
       label: 'hideSelectors',
       url: '../../index.html',
-      hideSelectors: ['.moneyshot']
+      hideSelectors: ['.logo-link', 'p']
     },
     {
       label: 'removeSelectors',
       url: '../../index.html',
-      removeSelectors: ['.moneyshot']
+      removeSelectors: ['.logo-link', 'p']
     },
     {
       label: 'notFound',
