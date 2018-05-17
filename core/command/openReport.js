@@ -1,4 +1,4 @@
-var open = require('open');
+var open = require('opn');
 var logger = require('../util/logger')('openReport');
 var path = require('path');
 
