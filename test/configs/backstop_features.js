@@ -5,7 +5,7 @@ const SCRIPT_PATH = 'puppet';
 const PLATFORM = process.env.BACKSTOP_SMOKE_PLATFORM || (process.platform === 'darwin' ? 'osx' : 'linux');
 
 module.exports = {
-  id: `${ENGINE}_backstop_features`,
+  id: `${PLATFORM}_${ENGINE}_backstop_features`,
   viewports: [
     {
       label: 'phone',
@@ -86,7 +86,7 @@ module.exports = {
     },
     {
       label: 'cookies',
-      cookiePath: `${PLATFORM}/backstop_data/cookies.json`,
+      cookiePath: 'backstop_data/cookies.json',
       url: 'https://garris.github.io/BackstopJS/?cookie',
       selectors: ['.moneyshot']
     },
@@ -126,11 +126,11 @@ module.exports = {
     }
   ],
   paths: {
-    bitmaps_reference: `${PLATFORM}/backstop_data/bitmaps_reference`,
-    bitmaps_test: `${PLATFORM}/backstop_data/bitmaps_test`,
-    engine_scripts: `engine_scripts`,
-    html_report: `${PLATFORM}/backstop_data/html_report`,
-    ci_report: `${PLATFORM}/backstop_data/ci_report`
+    bitmaps_reference: 'backstop_data/bitmaps_reference',
+    bitmaps_test: 'backstop_data/bitmaps_test',
+    engine_scripts: 'engine_scripts',
+    html_report: 'backstop_data/html_report',
+    ci_report: 'backstop_data/ci_report'
   },
   // If you change the report option, you must also change smoke_test.js
   report: process.env.BACKSTOP_CI_MODE ? ['CI'] : ['browser'],
