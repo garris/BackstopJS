@@ -137,5 +137,7 @@ module.exports = {
   makeSafe: makeSafe,
   getFilename: getFilename,
   getEngineOption: getEngineOption,
-  getSelectorName: getSelectorName
+  getSelectorName: getSelectorName,
+  getScenarioExpect: getScenarioExpect,
+  getScenarioKey: getScenarioKey
 };
