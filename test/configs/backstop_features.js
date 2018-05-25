@@ -58,6 +58,13 @@ module.exports = {
       delay: 1000
     },
     {
+      label: 'expect',
+      url: '../../index.html',
+      selectors: ['p'],
+      selectorExpansion: true,
+      expect: 7
+    },
+    {
       label: 'magicSelectors',
       url: '../../index.html',
       selectors: ['document', 'viewport']
