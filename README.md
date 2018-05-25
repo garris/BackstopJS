@@ -212,6 +212,37 @@ scenarios: [
 // Just captures the first <li> tag inside .aListOfStuff
 ```
 
+#### expect
+When working with selector expansion(set selectors in `selectors` properties and set `selectorExpansion` to `true`), you might want to explicitly set the number of results that you expect to find by the selectors. Set `expect` in the scenario to a number which is greater than 0, then the test will fail for the scenario if the number of selected result does not match the expect number.
+
+```json
+scenarios: [
+  {
+    "selectors": [
+      ".aListOfStuff li"
+    ],
+    "selectorExpansion": true,
+    "expect": 5
+  }
+]
+// captures all <li> tags inside .aListOfStuff, and make sure the number of <li> tags is 5
+```
+
+(Default behavior) If you don't care the number of the selected elements, just set `expect` to 0 or not set the property.
+
+```json
+scenarios: [
+  {
+    "selectors": [
+      ".aListOfStuff li"
+    ],
+    "selectorExpansion": false,
+    "expect": 0
+  }
+]
+// Captures all <li> tags inside .aListOfStuff, and not check the number of <li> tags
+```
+
 
 ### Testing Progressive apps, SPAs and AJAX content
 
