@@ -82,10 +82,6 @@ function getScenarioExpect (scenario) {
   return expect;
 }
 
-function getScenarioKey (scenario, viewport) {
-  return `${scenario.label}_${viewport.vIndex}_${viewport.label}`;
-}
-
 function generateTestPair (config, scenario, viewport, variantOrScenarioLabelSafe, scenarioLabelSafe, selectorIndex, selector) {
   const cleanedSelectorName = getSelectorName(selector);
   const fileName = getFilename(
@@ -123,7 +119,7 @@ function generateTestPair (config, scenario, viewport, variantOrScenarioLabelSaf
     url: scenario.url,
     referenceUrl: scenario.referenceUrl,
     expect: getScenarioExpect(scenario),
-    scenarioKey: getScenarioKey(scenario, viewport)
+    viewportLabel: viewport.label
   };
 }
 
@@ -138,6 +134,5 @@ module.exports = {
   getFilename: getFilename,
   getEngineOption: getEngineOption,
   getSelectorName: getSelectorName,
-  getScenarioExpect: getScenarioExpect,
-  getScenarioKey: getScenarioKey
+  getScenarioExpect: getScenarioExpect
 };

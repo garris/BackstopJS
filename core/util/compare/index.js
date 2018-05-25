@@ -43,10 +43,10 @@ function comparePair (pair, report, config, compareConfig) {
   }
 
   if (pair.expect) {
-    const scenarioCount = compareConfig.testPairs.filter(p => p.scenarioKey === pair.scenarioKey).length;
+    const scenarioCount = compareConfig.testPairs.filter(p => p.label === pair.label && p.viewportLabel === pair.viewportLabel).length;
     if (scenarioCount !== pair.expect) {
       Test.status = 'fail';
-      const error = `Expect ${pair.expect} images for scenario "${pair.label}", but actually ${scenarioCount} images be found.`;
+      const error = `Expect ${pair.expect} images for scenario "${pair.label} (${pair.viewportLabel})", but actually ${scenarioCount} images be found.`;
       logger.error(error);
       pair.error = error;
       return Promise.resolve(pair);

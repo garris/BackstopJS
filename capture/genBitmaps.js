@@ -300,7 +300,7 @@ function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabe
             requireSameDimensions: requireSameDimensions,
             misMatchThreshold: getMisMatchThreshHold(scenario),
             expect: getScenarioExpect(scenario),
-            scenarioKey: getScenarioKey(scenario, viewportIndex, vp.label)
+            viewportLabel: vp.label
           });
         }
         // casper.echo('remote capture to > '+filePath,'info');
@@ -316,10 +316,6 @@ function getScenarioExpect (scenario) {
   }
 
   return expect;
-}
-
-function getScenarioKey (scenario, viewportIndex, viewportLabel) {
-  return scenario.label + '_' + viewportIndex + '_' + viewportLabel;
 }
 
 function getMisMatchThreshHold (scenario) {

@@ -352,7 +352,7 @@ function delegateSelectors (chromy, scenario, viewport, variantOrScenarioLabelSa
     var fileName = engineTools.getFilename(fileNameTemplate, outputFileFormatSuffix, configId, scenario.sIndex, variantOrScenarioLabelSafe, i, cleanedSelectorName, viewport.vIndex, viewport.label);
     var referenceFilePath = bitmapsReferencePath + '/' + engineTools.getFilename(fileNameTemplate, outputFileFormatSuffix, configId, scenario.sIndex, scenarioLabelSafe, i, cleanedSelectorName, viewport.vIndex, viewport.label);
     var expect = engineTools.getScenarioExpect(scenario);
-    var scenarioKey = engineTools.getScenarioKey(scenario, viewport);
+    var viewportLabel = viewport.label;
     var testFilePath = bitmapsTestPath + '/' + config.screenshotDateTime + '/' + fileName;
     var filePath = config.isReference ? referenceFilePath : testFilePath;
 
@@ -376,7 +376,7 @@ function delegateSelectors (chromy, scenario, viewport, variantOrScenarioLabelSa
         url: scenario.url,
         referenceUrl: scenario.referenceUrl,
         expect: expect,
-        scenarioKey: scenarioKey
+        viewportLabel: viewportLabel
       });
     }
 
