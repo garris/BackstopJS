@@ -73,6 +73,15 @@ function getEngineOption (config, optionName, fallBack) {
   return fallBack;
 }
 
+function getScenarioExpect (scenario) {
+  let expect = 0;
+  if (scenario.selectorExpansion && scenario.selectors && scenario.selectors.length && scenario.expect) {
+    expect = scenario.expect;
+  }
+
+  return expect;
+}
+
 function generateTestPair (config, scenario, viewport, variantOrScenarioLabelSafe, scenarioLabelSafe, selectorIndex, selector) {
   const cleanedSelectorName = getSelectorName(selector);
   const fileName = getFilename(
@@ -108,7 +117,9 @@ function generateTestPair (config, scenario, viewport, variantOrScenarioLabelSaf
     requireSameDimensions: getRequireSameDimentions(scenario, config),
     misMatchThreshold: getMisMatchThreshHold(scenario, config),
     url: scenario.url,
-    referenceUrl: scenario.referenceUrl
+    referenceUrl: scenario.referenceUrl,
+    expect: getScenarioExpect(scenario),
+    viewportLabel: viewport.label
   };
 }
 
@@ -122,5 +133,6 @@ module.exports = {
   makeSafe: makeSafe,
   getFilename: getFilename,
   getEngineOption: getEngineOption,
-  getSelectorName: getSelectorName
+  getSelectorName: getSelectorName,
+  getScenarioExpect: getScenarioExpect
 };

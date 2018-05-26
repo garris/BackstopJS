@@ -298,13 +298,24 @@ function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabe
             fileName: fileName,
             label: scenario.label,
             requireSameDimensions: requireSameDimensions,
-            misMatchThreshold: getMisMatchThreshHold(scenario)
+            misMatchThreshold: getMisMatchThreshHold(scenario),
+            expect: getScenarioExpect(scenario),
+            viewportLabel: vp.label
           });
         }
         // casper.echo('remote capture to > '+filePath,'info');
       });// end topLevelModules.forEach
     });
   });// end casper.each viewports
+}
+
+function getScenarioExpect (scenario) {
+  var expect = 0;
+  if (scenario.selectorExpansion && scenario.selectors && scenario.selectors.length && scenario.expect) {
+    expect = scenario.expect;
+  }
+
+  return expect;
 }
 
 function getMisMatchThreshHold (scenario) {

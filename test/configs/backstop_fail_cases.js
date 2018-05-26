@@ -32,6 +32,13 @@ module.exports = {
       url: '../../index.html?click',
       clickSelector: '#alsoDoesNotExist',
       selectors: ['.moneyshot']
+    },
+    {
+      label: 'expect',
+      url: '../../index.html',
+      selectors: ['p'],
+      selectorExpansion: true,
+      expect: 8
     }
   ],
   paths: {
