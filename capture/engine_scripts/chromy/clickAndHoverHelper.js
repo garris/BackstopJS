@@ -1,6 +1,7 @@
 module.exports = function (chromy, scenario) {
   var hoverSelector = scenario.hoverSelector;
   var clickSelector = scenario.clickSelector;
+  var scrollToSelector = scenario.scrollToSelector;
   var postInteractionWait = scenario.postInteractionWait; // selector [str] | ms [int]
 
   if (hoverSelector) {
@@ -16,6 +17,15 @@ module.exports = function (chromy, scenario) {
     chromy
       .wait(clickSelector)
       .click(clickSelector);
+  }
+  
+  if (scrollToSelector) {
+    chromy
+      .wait()
+      .evaluate(`_scrollToSelector = '${scrollToSelector}'`)
+      .evaluate(function() {
+        document.querySelector(_scrollToSelector).scrollIntoView();
+      }, scrollToSelector);
   }
 
   if (postInteractionWait) {
