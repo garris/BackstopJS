@@ -42,6 +42,11 @@
     "ci_report": "backstop_data/ci_report"
   },
   "report": ["CI"],
+  "ci": {
+    "format" :  "junit" ,
+    "testReportFileName": "myproject-xunit", // in case if you want to override the default filename (xunit.xml)
+    "testSuiteName" :  "backstopJS"
+  },
   "engine": "puppeteer",
   "engineOptions": {
     "ignoreHTTPSErrors": true,

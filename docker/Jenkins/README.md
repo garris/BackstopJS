@@ -148,4 +148,7 @@ For more info about DooD, we **HIGHLY** suggest to read [the blog](https://conta
         ![Screenshot](Attachments/Jenkins_PostBuildActions_PublishHTML.png)
      
 3. Run build & Get the report
+   - HTML Report
    ![Screenshot](Attachments/Jenkins_HTMLReport.png) 
+   - CI Report
+   
