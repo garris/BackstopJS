@@ -114,24 +114,25 @@ For more info about DooD, we **HIGHLY** suggest to read [the blog](https://conta
      set +x
      sudo docker pull backstopjs/backstopjs:latest
      sudo docker run \
-         --workdir /src \
+         --workdir ${WORKSPACE} \
          --volumes-from jenkins_agent_1 \
          --rm \
          --shm-size 2048m \
          --name backstopjs \
+         --entrypoint=sh \
          backstopjs/backstopjs:latest \
-         /bin/bash -c "cd Sample/Backstop/BackstopJS_Chrome_ChromyEngine_SimulatePC_iPhone; backstop test"
+         -c "cd docker/Jenkins/Sample/; backstop test"
          
      # Debug Purpose: It will keep container there until job aborted
      # sudo docker run \
-     #    --workdir /src \
+     #    --workdir ${WORKSPACE} \
      #    --volumes-from jenkins_agent_1 \
      #    --rm \
      #    --shm-size 2048m \
      #    --name backstopjs \
      #    --entrypoint=sh \
      #    backstopjs/backstopjs:latest \
-     #    -c "cp -R ${WORKSPACE} /src; while true; do sleep 1; done"
+     #    -c "cd docker/Jenkins/Sample/; while true; do sleep 1; done"
      ```
    - Post-build Actions: 
      1) Add **Post build task** to delete the not exiting container
@@ -143,7 +144,7 @@ For more info about DooD, we **HIGHLY** suggest to read [the blog](https://conta
         ![Screenshot](Attachments/Jenkins_PostBuildActions_DeleteContainer.png)
         
      2) Add **Publish HTML reports**, and set as following.
-        Note: The **HTML directory to archive** is: Sample/Backstop/BackstopJS_Chrome_ChromyEngine_SimulatePC_iPhone/backstop_data/ 
+        Note: The **HTML directory to archive** is: docker/Jenkins/Sample/backstop_data/ 
         ![Screenshot](Attachments/Jenkins_PostBuildActions_PublishHTML.png)
      
 3. Run build & Get the report
