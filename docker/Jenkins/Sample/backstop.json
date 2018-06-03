@@ -41,7 +41,7 @@
     "html_report": "backstop_data/html_report",
     "ci_report": "backstop_data/ci_report"
   },
-  "report": ["ci"],
+  "report": ["CI"],
   "engine": "puppeteer",
   "engineOptions": {
     "ignoreHTTPSErrors": true,
