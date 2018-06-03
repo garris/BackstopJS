@@ -143,12 +143,19 @@ For more info about DooD, we **HIGHLY** suggest to read [the blog](https://conta
         ```
         ![Screenshot](Attachments/Jenkins_PostBuildActions_DeleteContainer.png)
         
-     2) Add **Publish HTML reports**, and set as following.
+     2) Add **Post build task** to avoid JUnite Test Report issue "Test reports were found but none of them are new. Did tests run?"
+        ``` 
+        cd docker/Jenkins/Sample/backstop_data/ci_report
+        touch *.xml
+        ```
+        ![Screenshot](Attachments/Jenkins_PostBuildActions_AvoidJUnitReportIssue.png)
+        
+     3) Add **Publish HTML reports**, and set as following.
         Note: The **HTML directory to archive** is: docker/Jenkins/Sample/backstop_data/ 
         ![Screenshot](Attachments/Jenkins_PostBuildActions_PublishHTML.png)
+        
+     4) Add **Publish JUnit test result report**, and set as following
+        ![Screenshot](Attachments/Jenkins_PostBuildActions_PublishJUnit.png)
      
-3. Run build & Get the report
-   - HTML Report
-   ![Screenshot](Attachments/Jenkins_HTMLReport.png) 
-   - CI Report
-   
+3. Run build - Get the HTML Report & JUnit Report
+   ![Screenshot](Attachments/Jenkins_Report.png)

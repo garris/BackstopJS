@@ -42,11 +42,6 @@
     "ci_report": "backstop_data/ci_report"
   },
   "report": ["CI"],
-  "ci": {
-    "format" :  "junit" ,
-    "testReportFileName": "myproject-xunit",
-    "testSuiteName" :  "backstopJS"
-  },
   "engine": "puppeteer",
   "engineOptions": {
     "ignoreHTTPSErrors": true,
