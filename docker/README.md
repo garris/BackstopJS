@@ -83,4 +83,4 @@ docker run --rm -v $(pwd):/src -it --entrypoint=bash backstopjs/backstopjs
 
 
 ## Jenkins Guide
-You could get a Jenkins Guide here: [Jenkins Guide](examples/Jenkins)
+You could get a Jenkins Guide here: [Jenkins Guide](../examples/Jenkins)
