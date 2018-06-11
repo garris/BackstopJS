@@ -544,8 +544,8 @@ You can add more settings (or override the defaults) with the engineOptions prop
 
 ```json
 "engineOptions": {
-	ignoreHTTPSErrors: false,
-	args: ["--no-sandbox", "--disable-setuid-sandbox"]
+	"ignoreHTTPSErrors": false,
+	"args": ["--no-sandbox", "--disable-setuid-sandbox"]
 }
 ```
 
