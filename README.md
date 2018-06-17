@@ -792,7 +792,7 @@ Here's some suggestions if you want to work on the HTML report locally...
 	npm run build-and-copy-report-bundle
 	```
 
-- 👆 As a convenience, this command will move your newly built React bundle into `test/configs/backstop_data/html_report/` so you can test with some of these suggested commands...
+- 👆 As a convenience, this command will move your newly built React bundle into `test/configs/backstop_data/html_report/` so you can then test your changes with some of these commands...
 
 	```
 	# From root directory
@@ -803,6 +803,7 @@ Here's some suggestions if you want to work on the HTML report locally...
 	# longer test covering many features
 		npm run smoke-test
 
+  # Or another way to test...
 
 	# From test/configs/ directory
 	# ---------------
@@ -823,7 +824,7 @@ mkdir backstopSanityTest; cd backstopSanityTest; npm install backstopjs; node ./
 ### SMOKE TEST: Are backstop features working ok?
 Run this command if you have made changes to the BackstopJS codebase and you want to make sure that you haven't hosed anything.
 ```
-    cd <your project directory>/node_modules/backstopjs/
+    # from the backstopjs directory
     npm run smoke-test
 ```
 
