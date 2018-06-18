@@ -148,8 +148,10 @@ delay                    // Wait for x milliseconds
 hideSelectors            // Array of selectors set to visibility: hidden
 removeSelectors          // Array of selectors set to display: none
 onReadyScript            // After the above conditions are met -- use this script to modify UI state prior to screen shots e.g. hovers, clicks etc.
-hoverSelector            // Move the pointer over the specified DOM element prior to screen shot (available with default onReadyScript)
-clickSelector            // Click the specified DOM element prior to screen shot (available with default onReadyScript)
+hoverSelector            // Move the pointer over the specified DOM element prior to screen shot. 
+hoverSelectors           // *Puppeteer only* takes array of selctors -- simulates multiple sequential hover interactions.
+clickSelector            // Click the specified DOM element prior to screen shot.
+clickSelectors           // *Puppeteer only* takes array of selctors -- simulates multiple sequential click interactions.
 postInteractionWait      // Wait for a selector after interacting with hoverSelector or clickSelector (optionally accepts wait time in ms. Idea for use with a click or hover element transition. available with default onReadyScript)
 selectors                // Array of selectors to capture. Defaults to document if omitted. Use "viewport" to capture the viewport size. See Targeting elements in the next section for more info...
 selectorExpansion        // See Targeting elements in the next section for more info...
@@ -168,6 +170,11 @@ The above would tell BackstopJS to wait for your app to generate an element with
 
 You can use these properties independent of each other to easily test various click and or hover states in your app.  These are obviously simple scenarios -- if you have more complex needs then this example should serve as a pretty good starting point create your own onReady scripts.
 
+NOTE: Puppeteer version optionally takes `clickSelectors` & `hoverSelectors` as arrays of selctors...
+```
+clickSelectors: [".my-hamburger-menu",".my-hamburger-item"],
+hoverSelectors: [".my-nav-menu-item",".my-nav-menu-dropdown-item"],
+```
 
 ### Setting cookies
 BackstopJS ships with an onBefore script that makes it easy to import cookie files…
@@ -544,8 +551,8 @@ You can add more settings (or override the defaults) with the engineOptions prop
 
 ```json
 "engineOptions": {
-	ignoreHTTPSErrors: false,
-	args: ["--no-sandbox", "--disable-setuid-sandbox"]
+	"ignoreHTTPSErrors": false,
+	"args": ["--no-sandbox", "--disable-setuid-sandbox"]
 }
 ```
 
@@ -785,7 +792,7 @@ Here's some suggestions if you want to work on the HTML report locally...
 	npm run build-and-copy-report-bundle
 	```
 
-- 👆 As a convenience, this command will move your newly built React bundle into `test/configs/backstop_data/html_report/` so you can test with some of these suggested commands...
+- 👆 As a convenience, this command will move your newly built React bundle into `test/configs/backstop_data/html_report/` so you can then test your changes with some of these commands...
 
 	```
 	# From root directory
@@ -796,6 +803,7 @@ Here's some suggestions if you want to work on the HTML report locally...
 	# longer test covering many features
 		npm run smoke-test
 
+  # Or another way to test...
 
 	# From test/configs/ directory
 	# ---------------
@@ -816,7 +824,7 @@ mkdir backstopSanityTest; cd backstopSanityTest; npm install backstopjs; node ./
 ### SMOKE TEST: Are backstop features working ok?
 Run this command if you have made changes to the BackstopJS codebase and you want to make sure that you haven't hosed anything.
 ```
-    cd <your project directory>/node_modules/backstopjs/
+    # from the backstopjs directory
     npm run smoke-test
 ```
 
