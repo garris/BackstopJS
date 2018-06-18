@@ -769,6 +769,18 @@ Instead of calling resemble`s ignoreAntialiasing(), you may set it as a property
 }
 ```
 
+### Git Integration
+For most users, it can be helpful to keep a record of reference files over the long haul -- but saving multiple _test_ screenshots is probably overkill. So, just like checking-in your unit tests with your production code you can similarly check in your Backstop reference files with your production code. 
+
+For many users, adding these lines to your `.gitignore` or `.git/info/exclude` files will pare down your backstop files in a sensible way.  
+```
+backstop_data/html_report/
+backstop_data/bitmaps_test/
+```
+_Of course you can alternatively change your default config to save these files somewhere else out of the source control scope -- thats cool too._
+
+
+
 ## Developing, bug fixing, contributing...
 
 First off, You are awesome! Thanks for your interest, time and hard work!  Here are some tips...
