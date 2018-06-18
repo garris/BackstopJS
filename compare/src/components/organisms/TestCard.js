@@ -32,6 +32,9 @@ const CardWrapper = styled.div`
     top: 0;
     left: 0;
   }
+  @media print {
+    box-shadow: none;
+  }
 `;
 
 export default class TestCard extends React.Component {

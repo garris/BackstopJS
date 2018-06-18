@@ -14,6 +14,10 @@ const ToolbarWrapper = styled.section`
   height: 70px;
   display: flex;
   box-sizing: border-box;
+  
+  @media print {
+    display: none;
+  }
 `;
 
 export default class Toolbar extends React.Component {

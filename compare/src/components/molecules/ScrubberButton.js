@@ -31,6 +31,10 @@ const ButtonSD = styled.button`
   &:hover {
     cursor: pointer;
   }
+  
+  @media print {
+    display: none;
+  }
 `;
 
 class ScrubberButton extends React.Component {
