@@ -3,6 +3,7 @@
 Here, we use the DooD (Docker-outside-of-Docker) to run the jenkins.
 
 For more info about DooD, we **HIGHLY** suggest to read [the blog](https://container-solutions.com/running-docker-in-jenkins-in-docker/) first.
+> Here, what we do more is we fix the "sudo" security issue
 
 ## Content
 - [Pre Conditions](#pre-conditions)
@@ -19,15 +20,32 @@ For more info about DooD, we **HIGHLY** suggest to read [the blog](https://conta
    ```
    docker pull jenkins/jenkins:lts
    ```
-2. Use RebuildJenkins/Dockerfile to rebuild image as "jenkins/jenkins2:lts": 
+
+2. Use --group-add to give jenkins user to have permission to run docker
+   
+   Run the command to see which group id the container automatically created when we map the **-v /var/run/docker.sock:/var/run/docker.sock**
+   
+   > Note: If the OS is **MAC**, change ownership of the /var/run/docker.sock to your current user: ``sudo chown `id -u`:staff /var/run/docker.sock``
+   
    ```
-   docker build -t jenkins/jenkins2:lts .
+   docker run \
+        -ti \
+        -v /var/run/docker.sock:/var/run/docker.sock \
+        --rm \
+        jenkins/jenkins:lts bash -c "ls -l /var/run/docker.sock"
    ```
+   
+   You will get the result as bellow, mark down the group id. Normally speaking, the id should be 999 or 998.
+
+   <sub>srw-rw---- 1 root **999** 0 Jun 16 19:18 /var/run/docker.sock</sub>
+
 3. Run Jenkins - Master
    
-   For more info about how to use the jenkins/jenkins:lts, please refer to: [https://github.com/jenkinsci/docker/blob/master/README.md](https://github.com/jenkinsci/docker/blob/master/README.md)
+   - For more info about how to use the jenkins/jenkins:lts, please refer to: [https://github.com/jenkinsci/docker/blob/master/README.md](https://github.com/jenkinsci/docker/blob/master/README.md)
 
-   Here, create a '~/jenkins_home' docker volume on the HOST machine, that will survive the container stop/restart/deletion.
+   - Here, create a '~/jenkins_home' docker volume on the HOST machine, that will survive the container stop/restart/deletion.
+   
+   - Get the group-id from step 2, for example 999
    
    ``` 
    docker run \
@@ -39,8 +57,10 @@ For more info about DooD, we **HIGHLY** suggest to read [the blog](https://conta
        --name jenkins2 \
        -d \
        --rm \
-       jenkins/jenkins2:lts
+       --group-add 999 \
+       jenkins/jenkins:lts
    ```
+   
 4. Open [http://127.0.0.1:8080/](http://127.0.0.1:8080/), and follow the jenkins guid to finish the installation.
 5. Install Additional Plugins in [http://127.0.0.1:8080/pluginManager/available](http://127.0.0.1:8080/pluginManager/available) with "Install without restart":
    - HTML Publisher
@@ -63,13 +83,32 @@ For more info about DooD, we **HIGHLY** suggest to read [the blog](https://conta
    ```
    docker pull jenkins/jnlp-slave
    ```
-2. Use RebuildJenkinsJnlpSlave/Dockerfile to rebuild image as "jenkins/jnlp-slave2:latest": 
+
+2. Use --group-add to give jenkins user to have permission to run docker
+   
+   Run the command to see which group id the container automatically created when we map the **-v /var/run/docker.sock:/var/run/docker.sock**
+   
+   > Note: If the OS is **MAC**, change ownership of the /var/run/docker.sock to your current user: ``sudo chown `id -u`:staff /var/run/docker.sock``
+   
    ```
-   docker build -t jenkins/jnlp-slave2 .
+   docker run \
+        -ti \
+        -v /var/run/docker.sock:/var/run/docker.sock \
+        --rm \
+        jenkins/jenkins:lts bash -c "ls -l /var/run/docker.sock"
    ```
+   
+   You will get the result as bellow, mark down the group id. Normally speaking, the id should be 999 or 998.
+
+   <sub>srw-rw---- 1 root **999** 0 Jun 16 19:18 /var/run/docker.sock</sub>
+   
 3. Start container for agent:
-   For more info about how to use jenkins/jnlp-slave2, please refer to: [https://github.com/jenkinsci/docker-jnlp-slave](https://github.com/jenkinsci/docker-jnlp-slave)
-   > Note: The master url should be **172.17.0.1:8080** between the docker containers
+   - For more info about how to use jenkins/jnlp-slave, please refer to: [https://github.com/jenkinsci/docker-jnlp-slave](https://github.com/jenkinsci/docker-jnlp-slave)
+   
+   - The master url should be **172.17.0.1:8080** between the docker containers
+   
+   - Get the group-id from step 2, for example 999
+   
    ```
    docker run \
         -v ~/jenkins_home:/home/jenkins \
@@ -78,7 +117,8 @@ For more info about DooD, we **HIGHLY** suggest to read [the blog](https://conta
         --name jenkins_agent_1 \
         -d \
         --rm \
-        jenkins/jnlp-slave2 -url http://172.17.0.1:8080 YOUR_SECRET Slave1
+        --group-add 999 \
+        jenkins/jnlp-slave -url http://172.17.0.1:8080 YOUR_SECRET Slave1
    ```
    For example:
    ```
@@ -89,7 +129,8 @@ For more info about DooD, we **HIGHLY** suggest to read [the blog](https://conta
         --name jenkins_agent_1 \
         -d \
         --rm \
-        jenkins/jnlp-slave2 -url http://172.17.0.1:8080 127b664578e071d8c5f78bc1f7c43500d1acefc043bff3572f880919a4595010 Slave1
+        --group-add 999 \
+        jenkins/jnlp-slave -url http://172.17.0.1:8080 127b664578e071d8c5f78bc1f7c43500d1acefc043bff3572f880919a4595010 Slave1
    ```
 4. You could see your agent working as below.
    ![Screenshot](Attachments/Jenkins_SlaveReady.png)
@@ -106,14 +147,13 @@ For more info about DooD, we **HIGHLY** suggest to read [the blog](https://conta
      1) You could run daily test by setting: **Build periodically** to **H 08 * * 1-5**
      2) You could Select **Poll SCM** and write "H/5 * * * *". This tells Jenkins to “ask” your repository every 5 minutes if there are changes. If there are any, trigger the job.
    - Build: Add **Execute Shell**, and add following for a sample.
-     > Note: 
-     > 1) Please use sudo docker to run test. This is a security risk for DooD.
-     > 2) You mount any volumes to the container by using --volumes-from \<container name\>
+     
+     **IMPORTANT**: Because we use DooD, you need to mount volumes to the container by using --volumes-from \<container name\> to make user the data is there.
        
      ```
      set +x
-     sudo docker pull backstopjs/backstopjs:latest
-     sudo docker run \
+     docker pull backstopjs/backstopjs:latest
+     docker run \
          --workdir ${WORKSPACE} \
          --volumes-from jenkins_agent_1 \
          --rm \
@@ -121,10 +161,10 @@ For more info about DooD, we **HIGHLY** suggest to read [the blog](https://conta
          --name backstopjs \
          --entrypoint=sh \
          backstopjs/backstopjs:latest \
-         -c "cd docker/Jenkins/Sample/; backstop test"
+         -c "cd examples/Jenkins/Sample/; backstop test"
          
      # Debug Purpose: It will keep container there until job aborted
-     # sudo docker run \
+     # docker run \
      #    --workdir ${WORKSPACE} \
      #    --volumes-from jenkins_agent_1 \
      #    --rm \
@@ -132,13 +172,13 @@ For more info about DooD, we **HIGHLY** suggest to read [the blog](https://conta
      #    --name backstopjs \
      #    --entrypoint=sh \
      #    backstopjs/backstopjs:latest \
-     #    -c "cd docker/Jenkins/Sample/; while true; do sleep 1; done"
+     #    -c "cd examples/Jenkins/Sample/; while true; do sleep 1; done"
      ```
    - Post-build Actions: 
      1) Add **Post build task** to delete the not exiting container
         ```
-        if [ "$(sudo docker ps -q -f name=backstopjs)" ]; then
-            sudo docker rm -f backstopjs
+        if [ "$(docker ps -q -f name=backstopjs)" ]; then
+            docker rm -f backstopjs
         fi
         ```
         ![Screenshot](Attachments/Jenkins_PostBuildActions_DeleteContainer.png)
