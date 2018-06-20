@@ -31,11 +31,11 @@ function writeBrowserReport (config, reporter) {
     for (var i in reporter.tests) {
       if (reporter.tests.hasOwnProperty(i)) {
         var pair = reporter.tests[i].pair;
-        reporter.tests[i].pair.reference = path.relative(report, toAbsolute(pair.reference));
-        reporter.tests[i].pair.test = path.relative(report, toAbsolute(pair.test));
+        pair.reference = path.relative(report, toAbsolute(pair.reference));
+        pair.test = path.relative(report, toAbsolute(pair.test));
 
         if (pair.diffImage) {
-          reporter.tests[i].pair.diffImage = path.relative(report, toAbsolute(pair.diffImage));
+          pair.diffImage = path.relative(report, toAbsolute(pair.diffImage));
         }
       }
     }

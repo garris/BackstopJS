@@ -54,6 +54,13 @@ export const showScrubberRefImage = value => {
   };
 };
 
+export const showScrubberDiffImage = value => {
+  return {
+    type: 'SHOW_SCRUBBER_DIFF_IMAGE',
+    value
+  };
+};
+
 export const showScrubber = value => {
   return {
     type: 'SHOW_SCRUBBER',

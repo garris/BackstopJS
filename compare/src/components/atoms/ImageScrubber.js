@@ -83,9 +83,11 @@ export default class ImageScrubber extends React.Component {
       position,
       refImage,
       testImage,
+      diffImage,
       showButtons,
       showScrubberTestImage,
       showScrubberRefImage,
+      showScrubberDiffImage,
       showScrubber
     } = this.props;
 
@@ -113,7 +115,15 @@ export default class ImageScrubber extends React.Component {
                 TEST
               </ScrubberViewBtn>
               <ScrubberViewBtn
-                selected={position !== 100 && position !== 0}
+                selected={position === -1}
+                onClick={() => {
+                  showScrubberDiffImage();
+                }}
+              >
+                DIFF
+              </ScrubberViewBtn>
+              <ScrubberViewBtn
+                selected={position !== 100 && position !== 0 && position !== -1}
                 onClick={() => {
                   showScrubber();
                 }}
@@ -126,6 +136,14 @@ export default class ImageScrubber extends React.Component {
         <img
           className="testImage"
           src={testImage}
+          style={{
+            margin: 'auto',
+            display: dontUseScrubberView ? 'block' : 'none'
+          }}
+        />
+        <img
+          className="diffImage"
+          src={diffImage}
           style={{
             margin: 'auto',
             display: dontUseScrubberView ? 'block' : 'none'
@@ -148,7 +166,7 @@ export default class ImageScrubber extends React.Component {
               src={refImage}
               onError={this.handleLoadingError}
             />
-            <img className="testImage" src={testImage} />
+            <img className="testImage" src={position === -1 ? diffImage : testImage} />
             <SliderBar className="slider" />
           </TwentyTwenty>
         </div>
