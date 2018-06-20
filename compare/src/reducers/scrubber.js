@@ -1,4 +1,4 @@
-function getPosFromImgId(imgId) {
+function getPosFromImgId (imgId) {
   switch (imgId) {
     case 'refImage':
       return 100;
