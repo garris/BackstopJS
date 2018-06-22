@@ -1,9 +1,11 @@
-function getPosFromImgId(imgId) {
+function getPosFromImgId (imgId) {
   switch (imgId) {
     case 'refImage':
       return 100;
     case 'testImage':
       return 0;
+    case 'diffImage':
+      return -1;
     default:
       return 50;
   }
@@ -37,6 +39,11 @@ const scrubber = (state = {}, action) => {
     case 'SHOW_SCRUBBER_REF_IMAGE':
       return Object.assign({}, state, {
         position: getPosFromImgId('refImage')
+      });
+
+    case 'SHOW_SCRUBBER_DIFF_IMAGE':
+      return Object.assign({}, state, {
+        position: getPosFromImgId('diffImage')
       });
 
     case 'SHOW_SCRUBBER':
