@@ -4830,6 +4830,13 @@ var showScrubberRefImage = exports.showScrubberRefImage = function showScrubberR
   };
 };
 
+var showScrubberDiffImage = exports.showScrubberDiffImage = function showScrubberDiffImage(value) {
+  return {
+    type: 'SHOW_SCRUBBER_DIFF_IMAGE',
+    value: value
+  };
+};
+
 var showScrubber = exports.showScrubber = function showScrubber(value) {
   return {
     type: 'SHOW_SCRUBBER',
@@ -27337,6 +27344,8 @@ function getPosFromImgId(imgId) {
       return 100;
     case 'testImage':
       return 0;
+    case 'diffImage':
+      return -1;
     default:
       return 50;
   }
@@ -27373,6 +27382,11 @@ var scrubber = function scrubber() {
     case 'SHOW_SCRUBBER_REF_IMAGE':
       return Object.assign({}, state, {
         position: getPosFromImgId('refImage')
+      });
+
+    case 'SHOW_SCRUBBER_DIFF_IMAGE':
+      return Object.assign({}, state, {
+        position: getPosFromImgId('diffImage')
       });
 
     case 'SHOW_SCRUBBER':
@@ -32057,6 +32071,7 @@ var ScrubberModal = function (_React$Component) {
           closeModal = _props.closeModal,
           showScrubberTestImage = _props.showScrubberTestImage,
           showScrubberRefImage = _props.showScrubberRefImage,
+          showScrubberDiffImage = _props.showScrubberDiffImage,
           showScrubber = _props.showScrubber;
 
 
@@ -32081,10 +32096,12 @@ var ScrubberModal = function (_React$Component) {
           _react2.default.createElement(_ImageScrubber2.default, {
             testImage: testImage,
             refImage: refImage,
+            diffImage: diffImage,
             position: position,
             showButtons: diffImage && diffImage.length > 0,
             showScrubberTestImage: showScrubberTestImage,
             showScrubberRefImage: showScrubberRefImage,
+            showScrubberDiffImage: showScrubberDiffImage,
             showScrubber: showScrubber
           })
         )
@@ -32111,6 +32128,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     },
     showScrubberRefImage: function showScrubberRefImage(val) {
       dispatch((0, _actions.showScrubberRefImage)(val));
+    },
+    showScrubberDiffImage: function showScrubberDiffImage(val) {
+      dispatch((0, _actions.showScrubberDiffImage)(val));
     },
     showScrubber: function showScrubber(val) {
       dispatch((0, _actions.showScrubber)(val));
@@ -33229,9 +33249,11 @@ var ImageScrubber = function (_React$Component) {
           position = _props.position,
           refImage = _props.refImage,
           testImage = _props.testImage,
+          diffImage = _props.diffImage,
           showButtons = _props.showButtons,
           showScrubberTestImage = _props.showScrubberTestImage,
           showScrubberRefImage = _props.showScrubberRefImage,
+          showScrubberDiffImage = _props.showScrubberDiffImage,
           showScrubber = _props.showScrubber;
 
 
@@ -33269,7 +33291,17 @@ var ImageScrubber = function (_React$Component) {
             _react2.default.createElement(
               ScrubberViewBtn,
               {
-                selected: position !== 100 && position !== 0,
+                selected: position === -1,
+                onClick: function onClick() {
+                  showScrubberDiffImage();
+                }
+              },
+              'DIFF'
+            ),
+            _react2.default.createElement(
+              ScrubberViewBtn,
+              {
+                selected: position !== 100 && position !== 0 && position !== -1,
                 onClick: function onClick() {
                   showScrubber();
                 }
@@ -33281,6 +33313,14 @@ var ImageScrubber = function (_React$Component) {
         _react2.default.createElement('img', {
           className: 'testImage',
           src: testImage,
+          style: {
+            margin: 'auto',
+            display: dontUseScrubberView ? 'block' : 'none'
+          }
+        }),
+        _react2.default.createElement('img', {
+          className: 'diffImage',
+          src: diffImage,
           style: {
             margin: 'auto',
             display: dontUseScrubberView ? 'block' : 'none'
@@ -33307,7 +33347,7 @@ var ImageScrubber = function (_React$Component) {
               src: refImage,
               onError: this.handleLoadingError
             }),
-            _react2.default.createElement('img', { className: 'testImage', src: testImage }),
+            _react2.default.createElement('img', { className: 'testImage', src: position === -1 ? diffImage : testImage }),
             _react2.default.createElement(SliderBar, { className: 'slider' })
           )
         )
