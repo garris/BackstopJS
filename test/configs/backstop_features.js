@@ -121,12 +121,6 @@ module.exports = {
       selectors: ['.moneyshot'],
       misMatchThreshold: 5.0,
       requireSameDimensions: false
-    },
-    {
-      label: 'scrollTo',
-      url: '../../index.html',
-      scrollToSelector: '.puppy-link',
-      selectors: ['puppy-link']
     }
   ],
   paths: {

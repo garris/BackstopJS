@@ -17,13 +17,12 @@ module.exports = async (page, scenario) => {
       await page.click(clickSelectorIndex);
     }
   }
-  
+
   if (scrollToSelector) {
-    for (const scrollToSelectorIndex of [].concat(scrollToSelector)) {
-      await page.waitFor(scrollToSelectorIndex);
-      await page.evaluate(scrollToSelectorIndex => {
-        document.querySelector(scrollToSelectorIndex).scrollIntoView();
-      }, scrollToSelectorIndex);
+    await page.waitFor(scrollToSelector);
+    await page.evaluate(scrollToSelector => {
+      document.querySelector(scrollToSelector).scrollIntoView();
+      }, scrollToSelector);
     }
   }
 

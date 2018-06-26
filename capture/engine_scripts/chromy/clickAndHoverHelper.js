@@ -18,13 +18,12 @@ module.exports = function (chromy, scenario) {
       .wait(clickSelector)
       .click(clickSelector);
   }
-  
+
   if (scrollToSelector) {
     chromy
-      .wait()
-      .evaluate(`_scrollToSelector = '${scrollToSelector}'`)
+      .wait(scrollToSelector)
       .evaluate(function() {
-        document.querySelector(_scrollToSelector).scrollIntoView();
+        document.querySelector(scrollToSelector).scrollIntoView();
       }, scrollToSelector);
   }
 
