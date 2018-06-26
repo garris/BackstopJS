@@ -42,8 +42,6 @@
   "license": "MIT",
   "main": "core/runner.js",
   "devDependencies": {
-    "react": "^15.6.1",
-    "react-dom": "^15.6.1",
     "assert": "^1.4.1",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
@@ -60,17 +58,19 @@
     "lint-staged": "^4.3.0",
     "mocha": "^1.21.5",
     "mockery": "^1.4.0",
+    "url-loader": "^0.5.9",
     "prettier": "^1.7.4",
     "prettier-eslint-cli": "^4.7.0",
-    "url-loader": "^0.5.9",
-    "webpack": "^3.5.6",
-    "webpack-dev-server": "^2.7.1",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
     "react-modal": "^3.0.3",
     "react-redux": "^5.0.6",
     "react-sticky": "^6.0.1",
     "react-toggle-button": "^2.1.0",
     "redux": "^3.7.2",
-    "sinon": "^1.17.7"
+    "sinon": "^1.17.7",
+    "webpack": "^3.5.6",
+    "webpack-dev-server": "^2.7.1"
   },
   "dependencies": {
     "backstop-twentytwenty": "^1.0.4",
