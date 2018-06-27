@@ -689,10 +689,10 @@ module.exports = options => {
 #### Since the backstop returns promises so it can run natively as a task in build systems like gulp
 ```js
 const gulp = require('gulp');
-const backstopjs = require('backstopjs');
+const backstop = require('backstopjs');
 
-gulp.task('backstop_reference', () => backstopjs('reference'));
-gulp.task('backstop_test', () => backstopjs('test'));
+gulp.task('backstop_reference', () => backstop('reference'));
+gulp.task('backstop_test', () => backstop('test'));
 ```
 
 #### Using npm run scripts
