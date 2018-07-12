@@ -2,7 +2,7 @@ const ENGINE = 'chromy';
 const SCRIPT_PATH = 'chromy';
 
 module.exports = {
-  id: `${ENGINE}_backstop_features`,
+  id: `${ENGINE}_special_cases`,
   viewports: [
     {
       label: 'phone',

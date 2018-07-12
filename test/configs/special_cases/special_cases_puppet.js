@@ -2,7 +2,7 @@ const ENGINE = 'puppeteer';
 const SCRIPT_PATH = 'puppeteer';
 
 module.exports = {
-  id: `${ENGINE}_backstop_features`,
+  id: `${ENGINE}_special_cases`,
   viewports: [
     {
       label: 'phone',
