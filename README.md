@@ -16,15 +16,14 @@ BackstopJS automates visual regression testing of your responsive web UI by comp
 ![BakcstopJS browser report](http://garris.github.io/BackstopJS/assets/backstopjs_new_ui_.png)
 
 - CLI reports
-
-![BakcstopJS cli report](http://garris.github.io/BackstopJS/assets/cli-report.png)
-
 - Render tests with **Chrome Headless**, **Phantom** and **Slimer**
 - Simulate user interactions with **Puppeteer**, **ChromyJS** and **CasperJS** scripts
 - JUnit reports
 - Plays nice with CI and source control
 - Run globally or locally as a standalone package app or `require('backstopjs')` right into your node app
 - Incredibly easy to use: just 3 commands go a long long way!
+
+![BakcstopJS cli report](http://garris.github.io/BackstopJS/assets/cli-report.png)
 
 
 ## Install BackstopJS now
