@@ -367,11 +367,11 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
           });
         } else {
           console.log(chalk.yellow(`Element not visible for capturing: ${s}`));
-          return fs.copy(config.env.backstop + HIDDEN_SELECTOR_PATH, filePath);
+          return fs.copy(config.env.backstop + HIDDEN_SELECTOR_PATH, path);
         }
       } else {
         console.log(chalk.magenta(`Element not found for capturing: ${s}`));
-        return fs.copy(config.env.backstop + SELECTOR_NOT_FOUND_PATH, filePath);
+        return fs.copy(config.env.backstop + SELECTOR_NOT_FOUND_PATH, path);
       }
     };
 
