@@ -17,7 +17,7 @@ BackstopJS automates visual regression testing of your responsive web UI by comp
 
 - CLI reports
 
-![BakcstopJS cli report](http://garris.github.io/BackstopJS/cli-report.png)
+![BakcstopJS cli report](http://garris.github.io/BackstopJS/assets/cli-report.png)
 
 - Render tests with **Chrome Headless**, **Phantom** and **Slimer**
 - Simulate user interactions with **Puppeteer**, **ChromyJS** and **CasperJS** scripts
