@@ -127,6 +127,12 @@ module.exports = {
       selectors: ['.moneyshot']
     },
     {
+      label: 'scrollToSelector',
+      url: './special_cases/scrollToSelector.html',
+      scrollToSelector: '.lemurFace',
+      selectors: ['.lemurFace']
+    },
+    {
       label: 'misMatchThreshold_requireSameDimensions',
       url: 'https://garris.github.io/BackstopJS/',
       referenceUrl: 'https://garris.github.io/BackstopJS/?cookie',
