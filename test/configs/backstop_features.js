@@ -23,6 +23,11 @@ module.exports = {
       url: '../../index.html'
     },
     {
+      label: 'pkra bug test',
+      url: '../../index.html',
+      selectors: ['#pkratest', '.logoBlock']
+    },
+    {
       label: 'delay',
       url: '../../index.html?delay',
       delay: 5000,
