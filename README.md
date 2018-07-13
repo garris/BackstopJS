@@ -7,17 +7,17 @@ BackstopJS automates visual regression testing of your responsive web UI by comp
 
 ## Version 3 Features
 
-- In-browser reports with...
+- In-browser reporting UI with...
 	* customizable layout
 	* scenario display filtering
 	* reference, test, visual diff inspector
 	* cool scrubber thingy
 	
-![I'm in your webapps -- checkin your screens](http://garris.github.io/BackstopJS/assets/backstopjs_new_ui_.png)
+![BakcstopJS browser report](http://garris.github.io/BackstopJS/assets/backstopjs_new_ui_.png)
 
 - CLI reports
 
-![I'm in your webapps -- checkin your screens](http://garris.github.io/BackstopJS/assets/cli-report.png)
+![BakcstopJS cli report](http://garris.github.io/BackstopJS/cli-report.png)
 
 - Render tests with **Chrome Headless**, **Phantom** and **Slimer**
 - Simulate user interactions with **Puppeteer**, **ChromyJS** and **CasperJS** scripts
