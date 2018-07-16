@@ -627,15 +627,13 @@ We've found that different enviornments can render the same webpage in slightly 
 
 You can make this issue go away by rendering in a BackstopJS Docker container.  Lucky for you we've made it incredbily easy to do.  
 
-First, go ahead and install docker on your machine.  Make sure it's working (lots of online resources for this).  Then, simply tack a `--docker` flag onto your commands.  
+First, go ahead and install docker on your machine.  Make sure it's working (lots of online resources for this).  Then, simply tack a `--docker` flag onto your commands. E.G...
 
-E.G.
 ```
 backstop test --docker
-
 ```
 
-The above flag will cause BackstopJS to hit your Docker client, spin up the BackstopJS container at https://hub.docker.com/r/backstopjs/backstopjs/ and execute your test.
+The above flag will cause BackstopJS to hit your Docker local client, spin up the BackstopJS container at https://hub.docker.com/r/backstopjs/backstopjs/ and execute your test.
 
 
 
