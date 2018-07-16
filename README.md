@@ -629,6 +629,9 @@ You can make this issue go away by rendering in a BackstopJS Docker container.  
 
 First, go ahead and install docker on your machine from the [Docker Downloads Page](https://store.docker.com/search?type=edition&offering=community&architecture=amd64).
 
+Make sure Docker is running on your machine.  On MacOS there is a menu item that looks like this... ![MacOS Docker Menu Item](https://user-images.githubusercontent.com/447033/42773728-fef034f4-88e2-11e8-9956-d58a7d432402.png)
+
+
 Then, simply add a `--docker` flag onto your commands. E.G...
 
 ```
