@@ -622,7 +622,8 @@ For more info, see the [Chromy script documentation](https://github.com/OnetapIn
 
 ### Using Docker for testing across different environments
 We've found that different enviornments can render the same webpage in slightly different ways -- in particular with text. E.G. see the text in this example rendering slightly differently between Linux and Mac...
-![BakcstopJS cli report](http://garris.github.io/BackstopJS/assets/osRenderDifference.png)
+
+![BakcstopJS OS rendering differences](http://garris.github.io/BackstopJS/assets/osRenderDifference.png)
 
 You can make this issue go away by rendering in a BackstopJS Docker container.  Lucky for you we've made it incredbily easy to do.  
 
