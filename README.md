@@ -15,6 +15,7 @@ BackstopJS automates visual regression testing of your responsive web UI by comp
 	
 ![BakcstopJS browser report](http://garris.github.io/BackstopJS/assets/backstopjs_new_ui_.png)
 
+- Integrated Docker rendering -- to eliminate cross-platform rendering shenanigans
 - CLI reports
 - Render tests with **Chrome Headless**, **Phantom** and **Slimer**
 - Simulate user interactions with **Puppeteer**, **ChromyJS** and **CasperJS** scripts
@@ -126,6 +127,7 @@ Pass a `--config=<configFilePathStr>` argument to test using a different config 
 
 Pass a `--filter=<scenarioLabelRegex>` argument to just run scenarios matching your scenario label.
 
+Pass a `--docker` flag to render your test in a Docker container -- this will help with consistency if you are attempting to compare references across multiple enviornments.
 
 ### Approving changes
 
@@ -365,9 +367,8 @@ BackstopJS recognizes two magic selectors: `document` and `viewport` -- these ca
 ]
 ```
 
-
-### Testing across different environments
-Comparing against different environments is easy. (e.g. compare a production environment against a staging environment).
+### Comparing different endpoints (e.g. comparing staging and production)
+Pointing to different endpoints is easy. (e.g. to compare a production environment against a staging environment).
 
 You can create reference files (without previewing) by using the command `backstop reference`.  By default this command calls the `url` property specified in your config.  Optionally, you can add a `referenceUrl` property to your scenario configuration. If found, BackstopJS will use `referenceUrl` for screen grabs when running `$ backstop reference`.
 
@@ -615,6 +616,26 @@ module.exports = function (chromy, scenario, vp, isReference, chromyStatic) {
 }
 ```
 For more info, see the [Chromy script documentation](https://github.com/OnetapInc/chromy).
+
+
+
+
+### Using Docker for testing across different environments
+We've found that different enviornments can render the same webpage in slightly different ways -- in particular with text. E.G. see the text in this example rendering slightly differently between Linux and Mac...
+![BakcstopJS cli report](http://garris.github.io/BackstopJS/assets/osRenderDifference.png)
+
+You can make this issue go away by rendering in a BackstopJS Docker container.  Lucky for you we've made it incredbily easy to do.  
+
+First, go ahead and install docker on your machine.  Make sure it's working (lots of online resources for this).  Then, simply tack a `--docker` flag onto your commands.  
+
+E.G.
+```
+backstop test --docker
+
+```
+
+The above flag will cause BackstopJS to hit your Docker client, spin up the BackstopJS container at https://hub.docker.com/r/backstopjs/backstopjs/ and execute your test.
+
 
 
 
