@@ -1,4 +1,4 @@
-var open = require('open');
+var open = require('opn');
 var logger = require('../util/logger')('openReport');
 var path = require('path');
 
@@ -11,14 +11,7 @@ module.exports = {
       return path.join(config.projectPath, p);
     }
 
-    return new Promise(function (resolve, reject) {
-      logger.log('Opening report.');
-      open(toAbsolute(config.compareReportURL), function (err) {
-        if (err) {
-          logger.error('An error occured while opening report in the default browser.');
-        }
-        resolve();
-      });
-    });
+    logger.log('Opening report.');
+    return open(toAbsolute(config.compareReportURL), {wait: false});
   }
 };

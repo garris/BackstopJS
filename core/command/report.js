@@ -1,6 +1,5 @@
 var path = require('path');
 var chalk = require('chalk');
-var junitWriter = new (require('junitwriter'))();
 
 var allSettled = require('../util/allSettled');
 var fs = require('../util/fs');
@@ -25,18 +24,18 @@ function writeBrowserReport (config, reporter) {
   }
   logger.log('Writing browser report');
   return fs.copy(config.comparePath, toAbsolute(config.html_report)).then(function () {
-    logger.log('Browser reported copied');
+    logger.log('Resources copied');
 
     // Fixing URLs in the configuration
     var report = toAbsolute(config.html_report);
     for (var i in reporter.tests) {
       if (reporter.tests.hasOwnProperty(i)) {
         var pair = reporter.tests[i].pair;
-        reporter.tests[i].pair.reference = path.relative(report, toAbsolute(pair.reference));
-        reporter.tests[i].pair.test = path.relative(report, toAbsolute(pair.test));
+        pair.reference = path.relative(report, toAbsolute(pair.reference));
+        pair.test = path.relative(report, toAbsolute(pair.test));
 
         if (pair.diffImage) {
-          reporter.tests[i].pair.diffImage = path.relative(report, toAbsolute(pair.diffImage));
+          pair.diffImage = path.relative(report, toAbsolute(pair.diffImage));
         }
       }
     }
@@ -59,6 +58,7 @@ function writeBrowserReport (config, reporter) {
 function writeJunitReport (config, reporter) {
   logger.log('Writing jUnit Report');
 
+  var junitWriter = new (require('junitwriter'))();
   var testSuite = junitWriter.addTestsuite(reporter.testSuite);
 
   for (var i in reporter.tests) {
@@ -109,7 +109,7 @@ module.exports = {
 
         if (failed) {
           logger.error('*** Mismatch errors found ***');
-          logger.log('For a detailed report run `backstop openReport`\n');
+          // logger.log('For a detailed report run `backstop openReport`\n');
           throw new Error('Mismatch errors found.');
         }
       });

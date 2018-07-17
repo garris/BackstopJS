@@ -1,3 +1,4 @@
+const Chromy = require('chromy');
 var cloneDeep = require('lodash/cloneDeep');
 var path = require('path');
 var fs = require('./fs');
@@ -6,10 +7,13 @@ var pMap = require('p-map');
 
 var runCasper = require('./runCasper');
 var runChromy = require('./runChromy');
+var runPuppet = require('./runPuppet');
+
 const ensureDirectoryPath = require('./ensureDirectoryPath');
 var logger = require('./logger')('createBitmaps');
 
 var CONCURRENCY_DEFAULT = 10;
+const CHROMY_STARTING_PORT_NUMBER = 9222;
 var GENERATE_BITMAPS_SCRIPT = 'capture/genBitmaps.js';
 
 function regexTest (string, search) {
@@ -33,7 +37,7 @@ function decorateConfigForCapture (config, isReference) {
   if (typeof config.args.config === 'object') {
     configJSON = config.args.config;
   } else {
-    configJSON = require(config.backstopConfigFileName);
+    configJSON = Object.assign({}, require(config.backstopConfigFileName));
   }
   configJSON.scenarios = configJSON.scenarios || [];
   ensureViewportLabel(configJSON);
@@ -52,15 +56,15 @@ function decorateConfigForCapture (config, isReference) {
   configJSON.defaultRequireSameDimensions = config.defaultRequireSameDimensions;
 
   if (config.args.filter) {
-    var scenarii = [];
+    var scenarios = [];
     config.args.filter.split(',').forEach(function (filteredTest) {
       each(configJSON.scenarios, function (scenario) {
         if (regexTest(scenario.label, filteredTest)) {
-          scenarii.push(scenario);
+          scenarios.push(scenario);
         }
       });
     });
-    configJSON.scenarios = scenarii;
+    configJSON.scenarios = scenarios;
   }
 
   logger.log('Selected ' + configJSON.scenarios.length + ' of ' + totalScenarioCount + ' scenarios.');
@@ -69,7 +73,7 @@ function decorateConfigForCapture (config, isReference) {
 
 /**
  * Utility for generating a temporary config file required by GENERATE_BITMAPS_SCRIPT.
- * @config  {Object}        Base user config object (derrived by user config file + CL param overrides).
+ * @config  {Object}        Base user config object (derived by user config file + CL param overrides).
  * @isReference  {Boolean}  True if running reference flow.
  * @return {Promise}        Resolves when fs.writeFile has completed.
  */
@@ -78,10 +82,7 @@ function writeReferenceCreateConfig (config, isReference) {
 }
 
 function delegateScenarios (config) {
-  var screenshotNow = new Date();
-  var screenshotDateTime = screenshotNow.getFullYear() + pad(screenshotNow.getMonth() + 1) + pad(screenshotNow.getDate()) + '-' + pad(screenshotNow.getHours()) + pad(screenshotNow.getMinutes()) + pad(screenshotNow.getSeconds());
-
-  // TODO: start chromy here?  Or later?  maybe later because maybe changing resoloutions doesn't work after starting?
+  // TODO: start chromy here?  Or later?  maybe later because maybe changing resolutions doesn't work after starting?
   // casper.start();
 
   var scenarios = [];
@@ -95,6 +96,7 @@ function delegateScenarios (config) {
   config.scenarios.forEach(function (scenario, i) {
     // var scenarioLabelSafe = makeSafe(scenario.label);
     scenario.sIndex = i;
+    scenario.selectors = scenario.selectors || [];
     scenarios.push(scenario);
 
     if (!config.isReference && scenario.hasOwnProperty('variants')) {
@@ -119,9 +121,23 @@ function delegateScenarios (config) {
     });
   });
 
-  var asyncCaptureLimit = config.asyncCaptureLimit === 0 ? 1 : config.asyncCaptureLimit || CONCURRENCY_DEFAULT;
+  const asyncCaptureLimit = config.asyncCaptureLimit === 0 ? 1 : config.asyncCaptureLimit || CONCURRENCY_DEFAULT;
 
-  return pMap(scenarioViews, runChromy, {concurrency: asyncCaptureLimit});
+  if (/chrom./i.test(config.engine)) {
+    const PORT = (config.startingPort || CHROMY_STARTING_PORT_NUMBER);
+    var getFreePorts = require('./getFreePorts');
+    return getFreePorts(PORT, scenarioViews.length).then(freeports => {
+      console.log('These ports will be used:', JSON.stringify(freeports));
+      scenarioViews.forEach((scenarioView, i) => {
+        scenarioView.assignedPort = freeports[i];
+      });
+      return pMap(scenarioViews, runChromy, {concurrency: asyncCaptureLimit});
+    });
+  } else if (config.engine.startsWith('puppet')) {
+    return pMap(scenarioViews, runPuppet, {concurrency: asyncCaptureLimit});
+  } else {
+    logger.error('Engine not known to Backstop!');
+  }
 }
 
 function pad (number) {
@@ -138,14 +154,51 @@ function writeCompareConfigFile (comparePairsFileName, compareConfig) {
   return fs.writeFile(comparePairsFileName, compareConfigJSON);
 }
 
+function flatMapTestPairs (rawTestPairs) {
+  return rawTestPairs.reduce((acc, result) => {
+    var testPairs = result.testPairs;
+    if (!testPairs) {
+      testPairs = {
+        diff: {
+          isSameDimensions: '',
+          dimensionDifference: {
+            width: '',
+            height: ''
+          },
+          misMatchPercentage: ''
+        },
+        reference: '',
+        test: '',
+        selector: '',
+        fileName: '',
+        label: '',
+        scenario: result.scenario,
+        viewport: result.viewport,
+        msg: result.msg,
+        error: result.originalError && result.originalError.name
+      };
+    }
+    return acc.concat(testPairs);
+  }, []);
+}
+
 module.exports = function (config, isReference) {
-  if (/chrom./i.test(config.engine)) {
-    return delegateScenarios(decorateConfigForCapture(config, isReference)).then(output => {
-      var testPairsFlatMap = output.reduce((acc, result) => {
-        return acc.concat(result.testPairs);
-      }, []);
-      return writeCompareConfigFile(config.tempCompareConfigFileName, { compareConfig: { testPairs: testPairsFlatMap } });
-    });
+  if (/chrom./i.test(config.engine) || /puppet/i.test(config.engine)) {
+    const promise = delegateScenarios(decorateConfigForCapture(config, isReference))
+      .then(rawTestPairs => {
+        const result = {
+          compareConfig: {
+            testPairs: flatMapTestPairs(rawTestPairs)
+          }
+        };
+        return writeCompareConfigFile(config.tempCompareConfigFileName, result);
+      });
+
+    if (/chrom./i.test(config.engine)) {
+      promise.then(() => Chromy.cleanup());
+    }
+
+    return promise;
   }
 
   return writeReferenceCreateConfig(config, isReference).then(function () {
@@ -158,8 +211,8 @@ module.exports = function (config, isReference) {
         console.log('\n' + result);
         // exit if there was some kind of failure in the casperChild process
         if (code !== 0) {
-          console.log('\nAn unexpected error occured. You may want to try setting the debug option to `true` in your config file.');
-          reject(new Error('An unexpected error occured. You may want to try setting the debug option to `true` in your config file.'));
+          console.log('\nAn unexpected error occurred. You may want to try setting the debug option to `true` in your config file.');
+          reject(new Error('An unexpected error occurred. You may want to try setting the debug option to `true` in your config file.'));
           return;
         }
         resolve();

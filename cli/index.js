@@ -5,8 +5,6 @@ var usage = require('./usage');
 var version = require('../package.json').version;
 var runner = require('../core/runner');
 
-console.log('BackstopJS v' + version);
-
 var argsOptions = parseArgs(process.argv.slice(2), {
   boolean: ['h', 'help', 'v', 'version', 'i'],
   string: ['config'],
@@ -26,7 +24,7 @@ if (argsOptions.h || argsOptions.help) {
 }
 
 if (argsOptions.v || argsOptions.version) {
-  console.log('BackstopJS ' + version);
+  console.log('BackstopJS v' + version);
   process.exit();
 }
 
@@ -36,11 +34,14 @@ if (/^init$/i.test(commandName)) {
   commandName = 'genConfig';
 }
 
+// TODO: need command for:  `pkill -f "(chrome)?(--headless)"`
+
 if (!commandName) {
   console.log(usage);
   process.exit();
 } else {
   var exitCode = 0;
+  console.log('BackstopJS v' + version);
   runner(commandName, argsOptions).catch(function () {
     exitCode = 1;
   });

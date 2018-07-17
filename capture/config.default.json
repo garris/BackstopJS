@@ -12,8 +12,8 @@
       "height": 768
     }
   ],
-  "onBeforeScript": "chromy/onBefore.js",
-  "onReadyScript": "chromy/onReady.js",
+  "onBeforeScript": "puppet/onBefore.js",
+  "onReadyScript": "puppet/onReady.js",
   "scenarios": [
     {
       "label": "BackstopJS Homepage",
@@ -27,9 +27,10 @@
       "removeSelectors": [],
       "hoverSelector": "",
       "clickSelector": "",
-      "postInteractionWait": "",
+      "postInteractionWait": 0,
       "selectors": [],
       "selectorExpansion": true,
+      "expect": 0,
       "misMatchThreshold" : 0.1,
       "requireSameDimensions": true
     }
@@ -42,8 +43,10 @@
     "ci_report": "backstop_data/ci_report"
   },
   "report": ["browser"],
-  "engine": "chrome",
-  "engineFlags": [],
+  "engine": "puppeteer",
+  "engineOptions": {
+    "args": ["--no-sandbox"]
+  },
   "asyncCaptureLimit": 5,
   "asyncCompareLimit": 50,
   "debug": false,

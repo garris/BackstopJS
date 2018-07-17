@@ -27,7 +27,7 @@
       ],
       "readyEvent": "gmapResponded",
       "delay": 100,
-      "misMatchThreshold" : 1,
+      "misMatchThreshold" : 0,
       "onBeforeScript": "onBefore.js",
       "onReadyScript": "onReady.js"
     }
@@ -42,5 +42,8 @@
   "casperFlags": [],
   "engine": "phantomjs",
   "report": ["browser"],
+  "resembleOutputOptions": {
+    "ignoreAntialiasing": true
+  },
   "debug": false
 }

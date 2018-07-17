@@ -66,8 +66,11 @@ var commands = commandNames
         });
 
         return promise.then(function (result) {
+          if (/openReport/.test(command.name)) {
+            return;
+          }
           var perf = (new Date() - config.perf[command.name].started) / 1000;
-          logger.success('Command `' + command.name + '` sucessfully executed in [' + perf + 's]');
+          logger.success('Command `' + command.name + '` successfully executed in [' + perf + 's]');
           return result;
         });
       }
