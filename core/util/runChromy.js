@@ -42,7 +42,7 @@ module.exports = function (args) {
  * @param  {[type]} config                 [description]
  * @return {[type]}                        [description]
  */
-function processScenarioView(scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, config, runId, assignedPort) {
+function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, config, runId, assignedPort) {
   if (!config.paths) {
     config.paths = {};
   }
@@ -226,15 +226,15 @@ function processScenarioView(scenario, variantOrScenarioLabelSafe, scenarioLabel
   if (scenario.hasOwnProperty('removeSelectors')) {
     scenario.removeSelectors.forEach(function (selector) {
       chromy
-        .evaluate(`window._backstopSelector = '${selector}'`)
-        .evaluate(
-          () => {
-            Array.prototype.forEach.call(document.querySelectorAll(window._backstopSelector), function (s, j) {
-              s.style.display = 'none';
-              s.classList.add('__86d');
-            });
-          }
-        );
+      .evaluate(`window._backstopSelector = '${selector}'`)
+      .evaluate(
+        () => {
+          Array.prototype.forEach.call(document.querySelectorAll(window._backstopSelector), function (s, j) {
+            s.style.display = 'none';
+            s.classList.add('__86d');
+          });
+        }
+      );
     });
   }
 
@@ -263,14 +263,14 @@ function processScenarioView(scenario, variantOrScenarioLabelSafe, scenarioLabel
   if (scenario.hasOwnProperty('hideSelectors')) {
     scenario.hideSelectors.forEach(function (selector) {
       chromy
-        .evaluate(`window._backstopSelector = '${selector}'`)
-        .evaluate(
-          () => {
-            Array.prototype.forEach.call(document.querySelectorAll(window._backstopSelector), function (s, j) {
-              s.style.visibility = 'hidden';
-            });
-          }
-        );
+      .evaluate(`window._backstopSelector = '${selector}'`)
+      .evaluate(
+        () => {
+          Array.prototype.forEach.call(document.querySelectorAll(window._backstopSelector), function (s, j) {
+            s.style.visibility = 'hidden';
+          });
+        }
+      );
     });
   }
   // CREATE SCREEN SHOTS AND TEST COMPARE CONFIGURATION (CONFIG FILE WILL BE SAVED WHEN THIS PROCESS RETURNS)
@@ -334,16 +334,14 @@ function processScenarioView(scenario, variantOrScenarioLabelSafe, scenarioLabel
  * @param  {[type]} config                     [description]
  * @return {[type]}                            [description]
  */
-function delegateSelectors(chromy, scenario, viewport, variantOrScenarioLabelSafe, scenarioLabelSafe, config, selectors, selectorMap) {
+function delegateSelectors (chromy, scenario, viewport, variantOrScenarioLabelSafe, scenarioLabelSafe, config, selectors, selectorMap) {
   const fileNameTemplate = config.fileNameTemplate || DEFAULT_FILENAME_TEMPLATE;
   const configId = config.id || engineTools.genHash(config.backstopConfigFileName);
   const bitmapsTestPath = config.paths.bitmaps_test || DEFAULT_BITMAPS_TEST_DIR;
   const bitmapsReferencePath = config.paths.bitmaps_reference || DEFAULT_BITMAPS_REFERENCE_DIR;
   const outputFileFormatSuffix = '.' + (config.outputFormat && config.outputFormat.match(/jpg|jpeg/) || 'png');
 
-  let compareConfig = {
-    testPairs: []
-  };
+  let compareConfig = {testPairs: []};
   let captureDocument = false;
   let captureViewport = false;
   let captureList = [];
@@ -393,20 +391,14 @@ function delegateSelectors(chromy, scenario, viewport, variantOrScenarioLabelSaf
   });
 
   if (captureDocument) {
-    captureJobs.push(function () {
-      return captureScreenshot(chromy, null, captureDocument, selectorMap, config, []);
-    });
+    captureJobs.push(function () { return captureScreenshot(chromy, null, captureDocument, selectorMap, config, []); });
   }
   // TODO: push captureViewport into captureList (instead of calling captureScreenshot()) to improve perf.
   if (captureViewport) {
-    captureJobs.push(function () {
-      return captureScreenshot(chromy, null, captureViewport, selectorMap, config, []);
-    });
+    captureJobs.push(function () { return captureScreenshot(chromy, null, captureViewport, selectorMap, config, []); });
   }
   if (captureList.length) {
-    captureJobs.push(function () {
-      return captureScreenshot(chromy, null, null, selectorMap, config, captureList);
-    });
+    captureJobs.push(function () { return captureScreenshot(chromy, null, null, selectorMap, config, captureList); });
   }
 
   return new Promise(function (resolve, reject) {
@@ -448,7 +440,7 @@ function delegateSelectors(chromy, scenario, viewport, variantOrScenarioLabelSaf
  */
 
 // TODO: remove filepath_
-function captureScreenshot(chromy, filePath_, selector, selectorMap, config, selectors) {
+function captureScreenshot (chromy, filePath_, selector, selectorMap, config, selectors) {
   return new Promise(function (resolve, reject) {
     // VIEWPORT screenshot
     if (selector === VIEWPORT_SELECTOR || selector === BODY_SELECTOR) {
@@ -457,10 +449,10 @@ function captureScreenshot(chromy, filePath_, selector, selectorMap, config, sel
         .result(buffer => {
           return saveViewport(buffer, selector);
         });
-      // DOCUMENT screenshot
+    // DOCUMENT screenshot
     } else if (selector === NOCLIP_SELECTOR || selector === DOCUMENT_SELECTOR) {
       chromy.screenshotMultipleSelectors(['body'], saveSelector);
-      // OTHER-SELECTOR screenshot
+    // OTHER-SELECTOR screenshot
     } else {
       chromy.screenshotMultipleSelectors(selectors, saveSelector);
     }
@@ -477,7 +469,7 @@ function captureScreenshot(chromy, filePath_, selector, selectorMap, config, sel
     // result helpers
 
     // saveViewport: selectors will be `body` or `viewport` ONLY
-    function saveViewport(buffer, selector) {
+    function saveViewport (buffer, selector) {
       const filePath = selectorMap[selector].filePath;
 
       ensureDirectoryPath(filePath);
@@ -486,7 +478,7 @@ function captureScreenshot(chromy, filePath_, selector, selectorMap, config, sel
 
     // saveSelector: selectorArr will contain any valid selector (not body or viewport).
     // If body *is* found in selector arr then it was originally DOCUMENT_SELECTOR -- and it will be reset back to DOCUMENT_SELECTOR -- this is because chromy takes a Document shot when BODY is used.
-    function saveSelector(err, buffer, index, selectorArr) {
+    function saveSelector (err, buffer, index, selectorArr) {
       let selector = selectorArr[index];
       if (selector === BODY_SELECTOR) {
         selector = DOCUMENT_SELECTOR;
@@ -516,3 +508,4 @@ function captureScreenshot(chromy, filePath_, selector, selectorMap, config, sel
 //   }
 //   return string.replace(/'/g, '\\\'')
 // }
+
