@@ -6,14 +6,14 @@ module.exports = {
   execute: function (config) {
 	const executeCommand = require('./index');
   	if (config.args.docker) {
-		const passAlongArgs = process.argv
-								.slice(3)
-								.filter(argument => !/docker/i.test(argument))
-								.join(' ');
-  		const DOCKER_TEST = `docker run --rm -it --mount type=bind,source="$(pwd)",target=/src backstopjs/backstopjs test ${passAlongArgs}`;
-  		console.log('Delegating command to Docker...', passAlongArgs)
+	    const passAlongArgs = process.argv
+	                .slice(3)
+	                .join(' ')
+	                .replace(/--docker/, '--moby');
 
-		const { spawn } = require('child_process');
+	    const DOCKER_TEST = `docker run --rm -it --mount type=bind,source="$(pwd)",target=/src backstopjs/backstopjs reference ${passAlongArgs}`;
+	    const { spawn } = require('child_process');
+	    console.log('Delegating command to Docker...', DOCKER_TEST)
 
 		return new Promise((resolve, reject) => {		
 			const dockerProcess = spawn(DOCKER_TEST, {stdio: 'inherit', shell: true});

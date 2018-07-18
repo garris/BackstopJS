@@ -640,7 +640,29 @@ backstop test --docker
 
 The above flag will cause BackstopJS to hit your Docker local client, spin up the BackstopJS container at https://hub.docker.com/r/backstopjs/backstopjs/ and execute your test.
 
+#### Requirements for when you're using docker...
+**1) If you are using a config generated prior to version 3.5 and you get an error like this...**
 
+```
+  COMMAND | Command "test" ended with an error after [0.312s]
+  COMMAND | Error: Failed to launch chrome!
+            ... Running as root without --no-sandbox is not supported. See https://crbug.com/638180.
+            TROUBLESHOOTING: https://github.com/GoogleChrome/puppeteer/blob/master/docs/troubleshooting.md
+```
+
+then you need to add this to the root of your config...
+
+```
+"engineOptions": {
+    "args": ["--no-sandbox"]
+},
+```
+
+**2) `localhost` won't work in your scenarios -- instead, mac and win users can use `host.docker.internal` e.g.**
+
+```
+"url": "https://host.docker.internal/?someCoolAppParameter=true"
+```
 
 
 ### Integration options (local install)
