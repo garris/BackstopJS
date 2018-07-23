@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import VisibilitySensor from 'react-visibility-sensor';
 import styled from 'styled-components';
 import { colors, fonts } from '../../styles';
 
@@ -35,11 +36,30 @@ const Label = styled.span`
   font-size: 12px;
 `;
 
+const visibilitySensorProps = {
+  offset: {
+    bottom: -400
+  },
+  partialVisibility: true
+};
+
 class ImagePreview extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      isVisible: false,
+    };
     this.onLoadError = this.onLoadError.bind(this);
+    this.onChange = this.onChange.bind(this);
+  }
+
+  onChange(isVisible) {
+    if (isVisible && !this.state.isVisible) {
+      console.log('setting state to visible');
+      this.setState({
+        isVisible: true
+      });
+    }
   }
 
   onLoadError() {
@@ -53,12 +73,15 @@ class ImagePreview extends React.Component {
     if (!src || src === '../..' || this.state.imgLoadError) {
       src = BASE64_PNG_STUB;
     }
-    return (
-      <Wrapper hidden={hidden} withText={settings.textInfo}>
-        <Label>{label}</Label>
-        <Image {...this.props} src={src} onError={this.onLoadError} />
-      </Wrapper>
-    );
+    if (this.state.isVisible) {
+      return (
+        <Wrapper hidden={hidden} withText={settings.textInfo}>
+          <Label>{label}</Label>
+          <Image {...this.props} src={src} onError={this.onLoadError} />
+        </Wrapper>
+      );
+    }
+    return <VisibilitySensor {...visibilitySensorProps} onChange={this.onChange} />;
   }
 }
 
