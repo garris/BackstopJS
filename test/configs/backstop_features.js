@@ -23,6 +23,11 @@ module.exports = {
       url: '../../index.html'
     },
     {
+      label: 'pkra bug test',
+      url: '../../index.html',
+      selectors: ['#pkratest', '.logoBlock']
+    },
+    {
       label: 'delay',
       url: '../../index.html?delay',
       delay: 5000,
@@ -120,6 +125,12 @@ module.exports = {
       clickSelector: '#theLemur',
       postInteractionWait: '._the_lemur_is_ready_to_see_you',
       selectors: ['.moneyshot']
+    },
+    {
+      label: 'scrollToSelector',
+      url: './special_cases/scrollToSelector.html',
+      scrollToSelector: '.lemurFace',
+      selectors: ['.lemurFace']
     },
     {
       label: 'misMatchThreshold_requireSameDimensions',

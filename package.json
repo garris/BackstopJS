@@ -1,6 +1,6 @@
 {
   "name": "backstopjs",
-  "version": "3.2.19",
+  "version": "3.5.2",
   "description": "BackstopJS: Catch CSS curveballs.",
   "bin": {
     "backstop": "./cli/index.js"
@@ -67,8 +67,10 @@
     "react-redux": "^5.0.6",
     "react-sticky": "^6.0.1",
     "react-toggle-button": "^2.1.0",
+    "react-visibility-sensor": "^3.11.1",
     "redux": "^3.7.2",
     "sinon": "^1.17.7",
+    "styled-components": "^2.1.2",
     "webpack": "^3.5.6",
     "webpack-dev-server": "^2.7.1"
   },
@@ -90,7 +92,6 @@
     "path": "^0.12.7",
     "phantomjs-prebuilt": "^2.1.7",
     "puppeteer": "^1.2.0-next.1523485686787",
-    "styled-components": "^2.1.2",
     "temp": "^0.8.3"
   }
 }

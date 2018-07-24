@@ -7,14 +7,24 @@ BackstopJS automates visual regression testing of your responsive web UI by comp
 
 ## Version 3 Features
 
-- Render with **Chrome Headless**, **Phantom** and **Slimer**
-- Simulate user interactions with **Puppeteer**, **ChromyJS** and **CasperJS** scripts
-- Browser reports with visual diffs
+- In-browser reporting UI with...
+	* customizable layout
+	* scenario display filtering
+	* reference, test, visual diff inspector
+	* cool scrubber thingy
+	
+![BakcstopJS browser report](http://garris.github.io/BackstopJS/assets/backstopjs_new_ui_.png)
+
+- Integrated Docker rendering -- to eliminate cross-platform rendering shenanigans
 - CLI reports
+- Render tests with **Chrome Headless**, **Phantom** and **Slimer**
+- Simulate user interactions with **Puppeteer**, **ChromyJS** and **CasperJS** scripts
 - JUnit reports
 - Plays nice with CI and source control
 - Run globally or locally as a standalone package app or `require('backstopjs')` right into your node app
 - Incredibly easy to use: just 3 commands go a long long way!
+
+![BakcstopJS cli report](http://garris.github.io/BackstopJS/assets/cli-report.png)
 
 
 ## Install BackstopJS now
@@ -117,6 +127,7 @@ Pass a `--config=<configFilePathStr>` argument to test using a different config 
 
 Pass a `--filter=<scenarioLabelRegex>` argument to just run scenarios matching your scenario label.
 
+Pass a `--docker` flag to render your test in a Docker container -- this will help with consistency if you are attempting to compare references across multiple enviornments.
 
 ### Approving changes
 
@@ -136,6 +147,7 @@ Pass a `--filter=<scenarioLabelRegex>` argument to promote only the test capture
 
 ### Advanced Scenarios
 Scenario properties are described throughout this document and **processed sequentially in the following order...**
+
 ```js
 label                    // [required] Tag saved with your reference images
 onBeforeScript           // Used to set up browser state e.g. cookies.
@@ -149,10 +161,11 @@ hideSelectors            // Array of selectors set to visibility: hidden
 removeSelectors          // Array of selectors set to display: none
 onReadyScript            // After the above conditions are met -- use this script to modify UI state prior to screen shots e.g. hovers, clicks etc.
 hoverSelector            // Move the pointer over the specified DOM element prior to screen shot. 
-hoverSelectors           // *Puppeteer only* takes array of selctors -- simulates multiple sequential hover interactions.
+hoverSelectors           // *Puppeteer only* takes array of selectors -- simulates multiple sequential hover interactions.
 clickSelector            // Click the specified DOM element prior to screen shot.
-clickSelectors           // *Puppeteer only* takes array of selctors -- simulates multiple sequential click interactions.
+clickSelectors           // *Puppeteer only* takes array of selectors -- simulates multiple sequential click interactions.
 postInteractionWait      // Wait for a selector after interacting with hoverSelector or clickSelector (optionally accepts wait time in ms. Idea for use with a click or hover element transition. available with default onReadyScript)
+scrollToSelector         // Scrolls the specified DOM element into view prior to screen shot (available with default onReadyScript)
 selectors                // Array of selectors to capture. Defaults to document if omitted. Use "viewport" to capture the viewport size. See Targeting elements in the next section for more info...
 selectorExpansion        // See Targeting elements in the next section for more info...
 misMatchThreshold        // Percentage of different pixels allowed to pass test
@@ -170,7 +183,7 @@ The above would tell BackstopJS to wait for your app to generate an element with
 
 You can use these properties independent of each other to easily test various click and or hover states in your app.  These are obviously simple scenarios -- if you have more complex needs then this example should serve as a pretty good starting point create your own onReady scripts.
 
-NOTE: Puppeteer version optionally takes `clickSelectors` & `hoverSelectors` as arrays of selctors...
+NOTE: Puppeteer version optionally takes `clickSelectors` & `hoverSelectors` as arrays of selectors...
 ```
 clickSelectors: [".my-hamburger-menu",".my-hamburger-item"],
 hoverSelectors: [".my-nav-menu-item",".my-nav-menu-dropdown-item"],
@@ -354,9 +367,8 @@ BackstopJS recognizes two magic selectors: `document` and `viewport` -- these ca
 ]
 ```
 
-
-### Testing across different environments
-Comparing against different environments is easy. (e.g. compare a production environment against a staging environment).
+### Comparing different endpoints (e.g. comparing staging and production)
+Pointing to different endpoints is easy. (e.g. to compare a production environment against a staging environment).
 
 You can create reference files (without previewing) by using the command `backstop reference`.  By default this command calls the `url` property specified in your config.  Optionally, you can add a `referenceUrl` property to your scenario configuration. If found, BackstopJS will use `referenceUrl` for screen grabs when running `$ backstop reference`.
 
@@ -607,6 +619,52 @@ For more info, see the [Chromy script documentation](https://github.com/OnetapIn
 
 
 
+
+### Using Docker for testing across different environments
+We've found that different enviornments can render the same webpage in slightly different ways -- in particular with text. E.G. see the text in this example rendering slightly differently between Linux and Mac...
+
+![BakcstopJS OS rendering differences](http://garris.github.io/BackstopJS/assets/osRenderDifference.png)
+
+You can make this issue go away by rendering in a BackstopJS Docker container.  Lucky for you we've made it incredbily easy to do.  
+
+First, go ahead and install docker on your machine from the [Docker Downloads Page](https://store.docker.com/search?type=edition&offering=community&architecture=amd64).
+
+Make sure Docker is running on your machine.  On MacOS there is a menu item that looks like this... ![MacOS Docker Menu Item](https://user-images.githubusercontent.com/447033/42773728-fef034f4-88e2-11e8-9956-d58a7d432402.png)
+
+
+Then, simply add a `--docker` flag onto your commands. E.G...
+
+```
+backstop test --docker
+```
+
+The above flag will cause BackstopJS to hit your Docker local client, spin up the BackstopJS container at https://hub.docker.com/r/backstopjs/backstopjs/ and execute your test.
+
+#### Requirements for when you're using docker...
+**1) If you are using a config generated prior to version 3.5 and you get an error like this...**
+
+```
+  COMMAND | Command "test" ended with an error after [0.312s]
+  COMMAND | Error: Failed to launch chrome!
+            ... Running as root without --no-sandbox is not supported. See https://crbug.com/638180.
+            TROUBLESHOOTING: https://github.com/GoogleChrome/puppeteer/blob/master/docs/troubleshooting.md
+```
+
+then you need to add this to the root of your config...
+
+```
+"engineOptions": {
+    "args": ["--no-sandbox"]
+},
+```
+
+**2) `localhost` won't work in your scenarios -- instead, mac and win users can use `host.docker.internal` e.g.**
+
+```
+"url": "https://host.docker.internal/?someCoolAppParameter=true"
+```
+
+
 ### Integration options (local install)
 
 Installing BackstopJS locally to your project makes a few integration options available.
@@ -689,10 +747,10 @@ module.exports = options => {
 #### Since the backstop returns promises so it can run natively as a task in build systems like gulp
 ```js
 const gulp = require('gulp');
-const backstopjs = require('backstopjs');
+const backstop = require('backstopjs');
 
-gulp.task('backstop_reference', () => backstopjs('reference'));
-gulp.task('backstop_test', () => backstopjs('test'));
+gulp.task('backstop_reference', () => backstop('reference'));
+gulp.task('backstop_test', () => backstop('test'));
 ```
 
 #### Using npm run scripts
