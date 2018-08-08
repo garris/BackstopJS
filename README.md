@@ -975,7 +975,7 @@ _see https://github.com/garris/BackstopJS/issues/185_
 ---
 
 ## Tutorials, Extensions and more
-- [a cool project template for static sites](https://github.com/wlsf82/backstop-config) by https://twitter.com/walmyrlimaesilv 
+- [a cool project template for static sites](https://github.com/wlsf82/backstop-config) by Walmyr Filho [@wlsf82](https://github.com/wlsf82) https://twitter.com/walmyrlimaesilv 
 - [A really good one on refactoring CSS with BackstopJS](https://hannesdotkaeuflerdotnet.herokuapp.com/posts/refactoring-css) by Hannes Käufler
 - [A Simple grunt-backstopjs plugin](http://www.obqo.de/blog/2016/12/30/grunt-backstopjs/) - For the Grunt enthusiasts
 
