@@ -1,6 +1,6 @@
 'use strict';
-module.exports = (chromy) => {
-  return chromy.evaluate(() => {
+module.exports = (target) => {
+  return target.evaluate(() => {
     if (window._backstopTools) {
       return false;
     }
