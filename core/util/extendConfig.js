@@ -22,7 +22,6 @@ function extendConfig (config, userConfig) {
   config.resembleOutputOptions = userConfig.resembleOutputOptions;
   config.asyncCompareLimit = userConfig.asyncCompareLimit;
   config.backstopVersion = version;
-  config.cleanupBitmapsTestDir = userConfig.cleanupBitmapsTestDir || false;
   return config;
 }
 
