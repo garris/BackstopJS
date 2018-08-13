@@ -44,6 +44,8 @@ $ npm install -g backstopjs
 
 [Using BackstopJS](#using-backstopjs)
 
+[Developing, bug fixing, contributing...](#developing-bug-fixing-contributing)
+
 [Troubleshooting](#troubleshooting)
 
 [Tutorials, Extensions and more](#tutorials-extensions-and-more)
