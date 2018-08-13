@@ -6,7 +6,7 @@ const cleanupBitmapsTestDir = require('../util/cleanupBitmapsTestDir');
 // NOTE: If there is no bitmaps_reference directory or if the bitmaps_reference directory is empty then a new batch of reference files will be generated in the bitmaps_reference directory.  Reporting will be skipped in this case.
 module.exports = {
   execute: function (config) {
-    return cleanupBitmapsTestDir(config)
+    cleanupBitmapsTestDir(config)
       .finally(() => {
         const executeCommand = require('./index');
         if (shouldRunDocker(config)) {
