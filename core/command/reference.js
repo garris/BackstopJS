@@ -6,7 +6,7 @@ const cleanupBitmapsTestDir = require('../util/cleanupBitmapsTestDir');
 
 module.exports = {
   execute: function (config) {
-    cleanupBitmapsTestDir(config)
+    return cleanupBitmapsTestDir(config)
       .finally(() => {
         if (shouldRunDocker(config)) {
           return runDocker(config, 'reference');
