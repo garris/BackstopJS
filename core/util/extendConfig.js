@@ -22,6 +22,11 @@ function extendConfig (config, userConfig) {
   config.resembleOutputOptions = userConfig.resembleOutputOptions;
   config.asyncCompareLimit = userConfig.asyncCompareLimit;
   config.backstopVersion = version;
+
+  if (userConfig.docker) {
+    config.args['docker'] = true;
+  }
+
   return config;
 }
 
