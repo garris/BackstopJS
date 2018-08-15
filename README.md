@@ -640,6 +640,13 @@ Then, simply add a `--docker` flag onto your commands. E.G...
 backstop test --docker
 ```
 
+or for a local install
+
+```
+const backstop = require('backstopjs');
+backstop('test', {docker: true});
+```
+
 The above flag will cause BackstopJS to hit your Docker local client, spin up the BackstopJS container at https://hub.docker.com/r/backstopjs/backstopjs/ and execute your test.
 
 #### Requirements for when you're using docker...
