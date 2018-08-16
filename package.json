@@ -22,7 +22,7 @@
     "build-compare": "webpack --config ./compare/webpack.config.js",
     "dev-compare": "webpack-dev-server --content-base ./compare/output --config ./compare/webpack.config.js",
     "integration-test": "rm -rf newdir && mkdir newdir && cd newdir && node ../cli/index.js genConfig && node ../cli/index.js reference && node ../cli/index.js test && node -e \"require('../')('test')\"",
-    "smoke-test": "node test/smoke/smoke_test.js",
+    "smoke-test": "node test/smoke/smokeTest.js",
     "sanity-test": "cd test/configs/; node ../../cli/index.js test",
     "kill-zombies": "pkill -f \"(chrome)?(--headless)\"",
     "copy-report-bundle": "cp compare/output/index_bundle.js test/configs/backstop_data/html_report/",

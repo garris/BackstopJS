@@ -128,11 +128,10 @@ module.exports = {
   paths: {
     bitmaps_reference: 'backstop_data/bitmaps_reference',
     bitmaps_test: 'backstop_data/bitmaps_test',
-    engine_scripts: 'engine_scripts',
+    engine_scripts: 'backstop_data/engine_scripts',
     html_report: 'backstop_data/html_report',
     ci_report: 'backstop_data/ci_report'
   },
-  // If you change the report option, you must also change smoke_test.js
   report: process.env.BACKSTOP_CI_MODE ? ['CI'] : ['browser'],
   engine: ENGINE,
   engineOptions: {args: ['--no-sandbox']},

@@ -1,7 +1,16 @@
 const path = require('path');
 const childProcess = require('child_process');
-const util = require('util');
 const fs = require('fs');
+const SmokeTestErrorTracker = require('./errorTracker.js');
+
+const requiredStdout = [
+  'Element not found for capturing: .monkey',
+  'report | 0 Failed'
+];
+
+const allowedStdErr = [
+  'Possible EventEmitter memory leak detected.'
+];
 
 // Catch errors from failing promises
 process.on('unhandledRejection', function (error) {
@@ -26,45 +35,19 @@ async function runSmokeTest (description, commands) {
     { cwd: configsDir, env: processEnv }
   );
 
-  const requiredStdout = [
-    'Element not found for capturing: .monkey',
-    'report | 0 Failed'
-  ];
-
-  const allowedStdErr = [
-    'Possible EventEmitter memory leak detected.'
-  ];
-
-  let missingStdOut = [...requiredStdout];
+  const errorTracker = new SmokeTestErrorTracker(requiredStdout, allowedStdErr);
 
   child.stdout.on('data', function (buf) {
-    const line = String(buf);
-    util.print(line);
-    const key = line.trim();
-    missingStdOut = missingStdOut.filter(el => !key.includes(el));
+    errorTracker.recordStdOut(buf);
   });
 
-  const stdErrs = [];
   child.stderr.on('data', function (buf) {
-    const line = String(buf);
-    util.print('StdErr:', line);
-    if (allowedStdErr.filter(allowed => line.includes(allowed)).length === 0) {
-      stdErrs.push(line.trim());
-    }
+    errorTracker.recordStdErr(buf);
   });
 
   const code = await new Promise(resolve => child.on('close', resolve));
 
-  const problems = [];
-  if (missingStdOut.length !== 0) {
-    problems.push('The following line were expected in smoke test std output, but were not found:');
-    problems.push(...missingStdOut);
-  }
-
-  if (stdErrs.length !== 0) {
-    problems.push('Unexpected output on Std Error of smoke test:');
-    problems.push(...stdErrs);
-  }
+  const problems = errorTracker.getProblemsAfterRunning()
 
   if (code !== 0) {
     problems.push(`Expected exit code 0, but it was ${code}`);
