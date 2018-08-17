@@ -17,7 +17,7 @@ module.exports.runDocker = (config, backstopCommand) => {
       configArgs = configArgs.replace(/--docker/, '--moby');
     }
 
-    const DOCKER_COMMAND = `docker run --rm -t -v /src:${process.cwd()} backstopjs/backstopjs ${backstopCommand}${configArgs} "${passAlongArgs}"`;
+    const DOCKER_COMMAND = `docker run --rm -t -v ${process.cwd()}:/src backstopjs/backstopjs ${backstopCommand}${configArgs} "${passAlongArgs}"`;
     const { spawn } = require('child_process');
     console.log('Delegating command to Docker...', DOCKER_COMMAND);
 
