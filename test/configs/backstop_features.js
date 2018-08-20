@@ -48,6 +48,7 @@ module.exports = {
     {
       label: 'noDelay',
       url: '../../index.html?delay',
+      delay: 1000,
       selectors: ['.moneyshot']
     },
     {
