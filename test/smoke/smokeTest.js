@@ -47,7 +47,7 @@ async function runSmokeTest (description, commands) {
 
   const code = await new Promise(resolve => child.on('close', resolve));
 
-  const problems = errorTracker.getProblemsAfterRunning()
+  const problems = errorTracker.getProblemsAfterRunning();
 
   if (code !== 0) {
     problems.push(`Expected exit code 0, but it was ${code}`);
@@ -75,10 +75,10 @@ async function runSmokeTests () {
       console.log('\n\nAbout to build a container in which we will run the Linux smoke tests');
       console.log('This will take a while -- you might want to get a cup of coffee.');
       console.log('='.repeat(50));
-      await sleep(4000);
+      await sleep(2000);
     }
 
-    await runSmokeTest('Linux Docker', ['../smoke/docker_smoke.sh']);
+    await runSmokeTest('Linux Docker', ['../smoke/launch_docker_smoke.sh']);
   }
 }
 

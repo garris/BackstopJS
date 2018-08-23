@@ -2,7 +2,7 @@ const util = require('util');
 
 /**
  * This class watches stdOut and stdErr of a process, and makes sure that all of required set of
- * messages appear ons stdOut, and also that no messages other than a whitelist of errors appears
+ * messages appear on stdOut, and also that no messages other than a whitelist of errors appears
  * on stdErr
  */
 class SmokeTestErrorTracker {

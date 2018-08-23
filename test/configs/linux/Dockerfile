@@ -9,11 +9,13 @@ RUN sudo add-apt-repository "deb http://dl.google.com/linux/chrome/deb/ stable m
 
 RUN	apt-get -y update && \
 	apt-get -y install google-chrome-stable
-RUN npm install -g http-server
 RUN mkdir /host-bs-folder
 
+# This volume mirrors the backstop directory into Docker
 VOLUME /host-backstop
+
+# This excludes the node_modules directory, since Docker and MacOS will have different
+# node_modules folders. So a separate volume is mounted here.
 VOLUME /host-backstop/node_modules
 
 WORKDIR /host-backstop
-EXPOSE 8085
