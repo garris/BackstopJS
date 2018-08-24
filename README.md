@@ -110,6 +110,17 @@ As a new user setting up tests for your project, you will be primarily concerned
 
 - **`scenarios[n].label`** – Required. Also used for screenshot naming.
 - **`scenarios[n].url`** – Required. Tells BackstopJS what endpoint/document you want to test.  This can be an absolute URL or local to your current working directory.
+- **`scenarios[n].selectors`** – An array of CSS selector strings enabling you specify what part of your DOM you want to test.  The default value is `document`, which will attempt to capture your entire layout.
+- **`scenarios[n].viewports`** – An array of screen size objects your DOM will be tested against.  Add as many as you like.
+
+### Creating or updating reference bitmaps
+
+From your project directory...
+```sh
+$ backstop reference
+```
+
+This will create a `bitmaps_reference` directory with screen captures of all DOM elements specified in your config. See [scenario filtering](https://github.com/garris/BackstopJS#incremental-scenario-referencetesting-filtering) for more options.
 
 _TIP: no other SCENARIO properties are required. Other properties can just be added as necessary_
 
@@ -232,6 +243,26 @@ scenarios: [
   }
 ]
 // Just captures the first <li> tag inside .aListOfStuff
+```
+#### viewports
+
+This is helpful if you want to test few scenarios explicitly for certain viewports without having second config file. For e.g. after navigating you have different selectors for laptop and mobile before taking screen shot, then you can split those scenarios.
+```
+"scenarios": [
+    {
+      "viewports": [
+        {
+          "name": "phone_s",
+          "width": 320,
+          "height": 480
+        },
+        {
+          "name": "tablet_h_s",
+          "width": 1024,
+          "height": 768
+        }
+      ],
+   ]
 ```
 
 #### expect
@@ -532,6 +563,11 @@ or
 
 ```json
 "engine": "chromy"
+```
+
+If you want to specify chrome location use following in Backstop config file(do not specify if you wanted Chromy to find chrome executable):
+```json
+"chromePath": "path/to/chrome/executable"
 ```
 
 #### Slimer (Gecko/Mozilla rendering)

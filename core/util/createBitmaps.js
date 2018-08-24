@@ -111,6 +111,12 @@ function delegateScenarios (config) {
 
   var scenarioViewId = 0;
   scenarios.forEach(function (scenario) {
+
+    // Change to scenario's viewports if exists
+    if(scenario.viewports) {
+      config.viewports = scenario.viewports;
+      console.log(`Following viewports will be used for scenario: '${scenario.label}': ` + JSON.stringify(scenario.viewports));
+    }
     config.viewports.forEach(function (viewport) {
       scenarioViews.push({
         scenario: scenario,

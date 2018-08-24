@@ -84,6 +84,12 @@ function capturePageSelectors (scenarios, viewports, bitmapsReferencePath, bitma
     var scenarioLabelSafe = makeSafe(scenario.label);
     scenario.sIndex = i;
 
+    // Change to scenario's viewports if exists
+    if(scenario.viewports) {
+      viewports = scenario.viewports;
+      console.log(`Following viewports will be used for scenario: '${scenario.label}': ` + JSON.stringify(scenario.viewports));
+    }
+
     processScenario(casper, scenario, scenarioLabelSafe, scenarioLabelSafe, viewports, bitmapsReferencePath, bitmapsTestPath, screenshotDateTime);
 
     if (!isReference && scenario.hasOwnProperty('variants')) {
