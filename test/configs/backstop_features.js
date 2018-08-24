@@ -139,6 +139,18 @@ module.exports = {
       selectors: ['.moneyshot'],
       misMatchThreshold: 5.0,
       requireSameDimensions: false
+    },
+    {
+      label: 'scenarioSpecificViewports',
+      url: '../../index.html',
+      selectors: ['document', 'viewport'],
+      viewports: [
+        {
+          label: 'tablet',
+          width: 1024,
+          height: 768
+        }
+      ]
     }
   ],
   paths: {
