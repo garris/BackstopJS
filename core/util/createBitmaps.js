@@ -81,6 +81,10 @@ function writeReferenceCreateConfig (config, isReference) {
   return fs.writeFile(config.captureConfigFileName, JSON.stringify(decorateConfigForCapture(config, isReference)));
 }
 
+function saveViewportIndexes (viewport, index) {
+  viewport.vIndex = index;
+}
+
 function delegateScenarios (config) {
   // TODO: start chromy here?  Or later?  maybe later because maybe changing resolutions doesn't work after starting?
   // casper.start();
@@ -88,15 +92,14 @@ function delegateScenarios (config) {
   var scenarios = [];
   var scenarioViews = [];
 
-  config.viewports.forEach(function (o, i) {
-    o.vIndex = i;
-  });
+  config.viewports.forEach(saveViewportIndexes);
 
   // casper.each(scenarios, function (casper, scenario, i) {
   config.scenarios.forEach(function (scenario, i) {
     // var scenarioLabelSafe = makeSafe(scenario.label);
     scenario.sIndex = i;
     scenario.selectors = scenario.selectors || [];
+    scenario.viewports && scenario.viewports.forEach(saveViewportIndexes);
     scenarios.push(scenario);
 
     if (!config.isReference && scenario.hasOwnProperty('variants')) {
@@ -111,7 +114,13 @@ function delegateScenarios (config) {
 
   var scenarioViewId = 0;
   scenarios.forEach(function (scenario) {
-    config.viewports.forEach(function (viewport) {
+    var desiredViewportsForScenario = config.viewports;
+
+    if (scenario.viewports && scenario.viewports.length > 0) {
+      desiredViewportsForScenario = scenario.viewports;
+    }
+
+    desiredViewportsForScenario.forEach(function (viewport) {
       scenarioViews.push({
         scenario: scenario,
         viewport: viewport,

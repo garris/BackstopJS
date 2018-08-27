@@ -81,15 +81,20 @@ function capturePageSelectors (scenarios, viewports, bitmapsReferencePath, bitma
   casper.start();
 
   casper.each(scenarios, function (casper, scenario, i) {
+    var viewportsForScenario = viewports;
     var scenarioLabelSafe = makeSafe(scenario.label);
     scenario.sIndex = i;
 
-    processScenario(casper, scenario, scenarioLabelSafe, scenarioLabelSafe, viewports, bitmapsReferencePath, bitmapsTestPath, screenshotDateTime);
+    if (scenario.viewports && scenario.viewports.length > 0) {
+      viewportsForScenario = scenario.viewports;
+    }
+
+    processScenario(casper, scenario, scenarioLabelSafe, scenarioLabelSafe, viewportsForScenario, bitmapsReferencePath, bitmapsTestPath, screenshotDateTime);
 
     if (!isReference && scenario.hasOwnProperty('variants')) {
       scenario.variants.forEach(function (variant) {
         var variantLabelSafe = makeSafe(variant.label);
-        processScenario(casper, variant, variantLabelSafe, scenarioLabelSafe, viewports, bitmapsReferencePath, bitmapsTestPath, screenshotDateTime);
+        processScenario(casper, variant, variantLabelSafe, scenarioLabelSafe, viewportsForScenario, bitmapsReferencePath, bitmapsTestPath, screenshotDateTime);
       });
     }
   });// end casper.each scenario
