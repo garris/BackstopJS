@@ -1029,8 +1029,3 @@ BackstopJS was created and is maintained by [Garris Shipon](https://www.linkedin
 - [Benedikt Rötsch](https://github.com/axe312ger) for help on the 0.6.0 release
 - [Yulia Tsareva](https://github.com/YuliaTsareva) for help on the 0.5.0 release -- windows support
 - [Lewis Nyman](https://github.com/lewisnyman) and [Stoutie](https://github.com/jehoshua02) for help with 0.4.0 release -- you guys are responsible for really getting the ball rolling!
-
-BackstopJS uses icons from [the Noun Project](http://thenounproject.com/)
-
-* [Tag](https://thenounproject.com/term/tag/164558/) by  [Straw Dog Design](https://thenounproject.com/StrawDogDesign)
-* [Hidden](https://thenounproject.com/term/hidden/63405/) by [Roberto Chiaveri](https://thenounproject.com/robertochiaveri/)
