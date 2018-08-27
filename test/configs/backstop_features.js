@@ -146,14 +146,14 @@ module.exports = {
       selectors: ['document', 'viewport'],
       viewports: [
         {
-          label: 'Galaxy_S5',
+          label: 'Galaxy-S5',
           width: 360,
           height: 640
         }
       ]
     },
     {
-      label: 'scenarioSpecificViewports_withEmptyViewports',
+      label: 'scenarioSpecificViewports-withEmptyViewports',
       url: '../../index.html',
       viewports: []
     },
