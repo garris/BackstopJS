@@ -81,9 +81,13 @@ function capturePageSelectors (scenarios, viewports, bitmapsReferencePath, bitma
   casper.start();
 
   casper.each(scenarios, function (casper, scenario, i) {
-    var viewportsForScenario = scenario.viewports && viewports;
+    var viewportsForScenario = viewports;
     var scenarioLabelSafe = makeSafe(scenario.label);
     scenario.sIndex = i;
+
+    if (scenario.viewports && scenario.viewports.length > 0) {
+      viewportsForScenario = scenario.viewports;
+    }
 
     processScenario(casper, scenario, scenarioLabelSafe, scenarioLabelSafe, viewportsForScenario, bitmapsReferencePath, bitmapsTestPath, screenshotDateTime);
 
