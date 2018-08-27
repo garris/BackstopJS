@@ -151,9 +151,9 @@ module.exports = {
       selectors: ['document', 'viewport'],
       viewports: [
         {
-          label: 'tablet',
-          width: 1024,
-          height: 768
+          label: 'Galaxy_S5',
+          width: 360,
+          height: 640
         }
       ]
     }
