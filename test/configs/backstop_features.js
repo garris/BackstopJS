@@ -141,11 +141,6 @@ module.exports = {
       requireSameDimensions: false
     },
     {
-      label: 'scenarioSpecificViewports_withEmptyViewports',
-      url: '../../index.html',
-      viewports: []
-    },
-    {
       label: 'scenarioSpecificViewports',
       url: '../../index.html',
       selectors: ['document', 'viewport'],
@@ -156,6 +151,11 @@ module.exports = {
           height: 640
         }
       ]
+    },
+    {
+      label: 'scenarioSpecificViewports_withEmptyViewports',
+      url: '../../index.html',
+      viewports: []
     }
   ],
   paths: {
