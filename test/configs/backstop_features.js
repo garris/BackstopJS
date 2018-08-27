@@ -182,6 +182,34 @@ module.exports = {
           height: 1366
         }
       ]
+    },
+    {
+      label: 'scenarioSpecificViewports-withExpandSelector',
+      url: '../../index.html',
+      selectors: ['p'],
+      selectorExpansion: true,
+      viewports: [
+        {
+          label: 'Pixel-2',
+          width: 411,
+          height: 731
+        },
+        {
+          label: 'Pixel2-XL',
+          width: 411,
+          height: 823
+        },
+        {
+          label: 'iPhone-X',
+          width: 375,
+          height: 812
+        },
+        {
+          label: 'iPad-Pro',
+          width: 1024,
+          height: 1366
+        }
+      ]
     }
   ],
   paths: {
