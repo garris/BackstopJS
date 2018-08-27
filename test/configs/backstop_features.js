@@ -156,6 +156,32 @@ module.exports = {
       label: 'scenarioSpecificViewports_withEmptyViewports',
       url: '../../index.html',
       viewports: []
+    },
+    {
+      label: 'scenarioSpecificViewports-withMultipleViewports',
+      url: '../../index.html',
+      viewports: [
+        {
+          label: 'Pixel-2',
+          width: 411,
+          height: 731
+        },
+        {
+          label: 'Pixel2-XL',
+          width: 411,
+          height: 823
+        },
+        {
+          label: 'iPhone-X',
+          width: 375,
+          height: 812
+        },
+        {
+          label: 'iPad-Pro',
+          width: 1024,
+          height: 1366
+        }
+      ]
     }
   ],
   paths: {
