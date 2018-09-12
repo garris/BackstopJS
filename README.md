@@ -898,7 +898,12 @@ Here's some suggestions if you want to work on the HTML report locally...
 ### SANITY TEST: Does Backstop work in my environment?
 Run the following command from your Desktop, home or project directory to check that Backstop will install and run in your environment. _Please make sure you have node version 8 or above. Windows users: Powershell is recommended._
 ```
-mkdir backstopSanityTest; cd backstopSanityTest; npm install backstopjs; node ./node_modules/backstopjs/cli/index.js test --config=node_modules/backstopjs/test/configs/backstop
+mkdir backstopSanityTest; cd backstopSanityTest; npm install backstopjs; node ./node_modules/backstopjs/cli/ init; node ./node_modules/backstopjs/cli/ test
+
+```
+Here is a sanity test which also uses docker...
+```
+mkdir backstopSanityTest; cd backstopSanityTest; npm install backstopjs; node ./node_modules/backstopjs/cli/ init; node ./node_modules/backstopjs/cli/ test --docker
 ```
 
 ### SMOKE TEST: Are backstop features working ok?
