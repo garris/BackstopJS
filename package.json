@@ -93,6 +93,7 @@
     "phantomjs-prebuilt": "^2.1.7",
     "portfinder": "^1.0.17",
     "puppeteer": "^1.2.0-next.1523485686787",
+    "resemblejs": "^2.10.3",
     "temp": "^0.8.3"
   }
 }
