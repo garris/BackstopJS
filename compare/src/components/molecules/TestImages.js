@@ -3,8 +3,6 @@ import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { openModal } from '../../actions';
 
-import { colors, shadows } from '../../styles';
-
 // atoms
 import ImagePreview from '../atoms/ImagePreview';
 
@@ -32,20 +30,22 @@ class TestImages extends React.Component {
     let { reference, test } = this.props.info;
     let { status, settings } = this.props;
 
-    this.state.images = [
-      {
-        id: 'refImage',
-        label: 'Reference',
-        src: reference,
-        visible: settings.refImage
-      },
-      {
-        id: 'testImage',
-        label: 'Test',
-        src: test,
-        visible: settings.testImage
-      }
-    ];
+    this.setState({
+      images: [
+        {
+          id: 'refImage',
+          label: 'Reference',
+          src: reference,
+          visible: settings.refImage
+        },
+        {
+          id: 'testImage',
+          label: 'Test',
+          src: test,
+          visible: settings.testImage
+        }
+      ]
+    });
 
     if (status !== 'pass') {
       this.state.images.push({

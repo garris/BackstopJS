@@ -11,7 +11,7 @@ const LogoImage = styled.img`
 export default class Logo extends React.Component {
   render() {
     return (
-      <a href="https://garris.github.io/BackstopJS/" target="_blank">
+      <a href="https://garris.github.io/BackstopJS/" rel="noopener noreferrer" target="_blank">
         <LogoImage src={LogoImg} />
       </a>
     );

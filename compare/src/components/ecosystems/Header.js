@@ -5,8 +5,6 @@ import { Sticky } from 'react-sticky';
 import Topbar from '../organisms/topbar';
 import Toolbar from '../organisms/Toolbar';
 
-import { colors } from '../../styles';
-
 const HeaderWrapper = styled.section`
   width: 100%;
   margin: 0 auto;

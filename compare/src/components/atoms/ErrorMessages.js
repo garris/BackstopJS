@@ -5,7 +5,7 @@ import { colors, fonts } from '../../styles';
 
 const DetailsPanel = styled.div`
   background: transparent;
-  display: ${props => (!!props.display ? 'block' : 'none')};
+  display: ${props => (props.display ? 'block' : 'none')};
   padding: 10px;
   font-family: ${fonts.latoRegular};
   color: ${colors.secondaryText};
@@ -17,7 +17,7 @@ const ErrorMsg = styled.p`
   background: rgb(251, 234, 234);
   padding: 2ex;
   color: brown;
-  display: ${props => (!!props.display ? 'block' : 'none')};
+  display: ${props => (props.display ? 'block' : 'none')};
 `;
 
 class ErrorMessages extends React.Component {

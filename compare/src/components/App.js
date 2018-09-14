@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-// ESLint
-/* eslint-disable no-unused-vars */
+
 import { StickyContainer } from 'react-sticky';
 
 import Header from './ecosystems/Header';
@@ -13,7 +12,7 @@ const Wrapper = styled.section`
 `;
 
 export default class App extends React.Component {
-  render () {
+  render() {
     return (
       <StickyContainer>
         <Header />
