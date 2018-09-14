@@ -221,8 +221,8 @@ module.exports = {
   },
   report: ['browser'],
   engine: ENGINE,
-  "engineOptions": {
-    "args": ["--no-sandbox"]
+  engineOptions: {
+    args: ['--no-sandbox']
   },
   asyncCaptureLimit: 10,
   asyncCompareLimit: 50,

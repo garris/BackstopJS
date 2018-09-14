@@ -820,12 +820,12 @@ optional parameters
 
 ### Modifying output settings of image-diffs
 
-By specifying `resembleOutputOptions` in your backstop.json file you can modify the image-diffs transparency, errorcolor, etc. (See [Resemble.js outputSettings](https://github.com/Huddle/Resemble.js) for the full list.)
+By specifying `resembleOptions` in your backstop.json file you can modify the image-diffs transparency, errorcolor, etc. (See [Resemble.js outputSettings](https://github.com/Huddle/Resemble.js) for the full list.)
 
 Instead of calling resemble`s ignoreAntialiasing(), you may set it as a property in the config. (See [example](examples/simpleReactApp/backstop.json))
 
 ```json
-"resembleOutputOptions": {
+"resembleOptions": {
   "errorColor": {
     "red": 255,
     "green": 0,

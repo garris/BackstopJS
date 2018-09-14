@@ -26,7 +26,7 @@ const expectedConfig = {
   compareReportURL: 'backstop_data/html_report/index.html',
   defaultMisMatchThreshold: 0.1,
   debug: false,
-  resembleOutputOptions: undefined
+  resembleOptions: undefined
 };
 
 describe('make config', function () {

@@ -13,16 +13,27 @@ function extendConfig (config, userConfig) {
   captureConfigPaths(config);
   casper(config, userConfig);
   engine(config, userConfig);
+  resembleOptions(config, userConfig);
 
   config.id = userConfig.id;
   config.engine = userConfig.engine || null;
   config.report = userConfig.report || ['browser'];
   config.defaultMisMatchThreshold = 0.1;
   config.debug = userConfig.debug || false;
-  config.resembleOutputOptions = userConfig.resembleOutputOptions;
   config.asyncCompareLimit = userConfig.asyncCompareLimit;
   config.backstopVersion = version;
   return config;
+}
+
+function resembleOptions (config, userConfig) {
+  userConfig.resembleOptions = userConfig.resembleOptions || {};
+  config.resembleOptions = Object.assign({
+    ignore: 'nothing',
+    output: Object.assign({
+      largeImageThreshold: 0,
+      transparency: 0.3
+    }, userConfig.resembleOptions.output)
+  }, userConfig.resembleOptions);
 }
 
 function bitmapPaths (config, userConfig) {
