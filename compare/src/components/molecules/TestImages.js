@@ -14,9 +14,10 @@ const ImagesWrapper = styled.div`
 class TestImages extends React.Component {
   constructor(props) {
     super(props);
+    this.getImages = this.getImages.bind(this);
 
     this.state = {
-      images: []
+      images: this.getImages()
     };
   }
 
@@ -26,29 +27,27 @@ class TestImages extends React.Component {
     openModal(this.props.info);
   }
 
-  render() {
-    let { reference, test } = this.props.info;
-    let { status, settings } = this.props;
+  getImages() {
+    const { reference, test } = this.props.info;
+    const { status, settings } = this.props;
 
-    this.setState({
-      images: [
-        {
-          id: 'refImage',
-          label: 'Reference',
-          src: reference,
-          visible: settings.refImage
-        },
-        {
-          id: 'testImage',
-          label: 'Test',
-          src: test,
-          visible: settings.testImage
-        }
-      ]
-    });
+    const images = [
+      {
+        id: 'refImage',
+        label: 'Reference',
+        src: reference,
+        visible: settings.refImage
+      },
+      {
+        id: 'testImage',
+        label: 'Test',
+        src: test,
+        visible: settings.testImage
+      }
+    ];
 
     if (status !== 'pass') {
-      this.state.images.push({
+      images.push({
         id: 'diffImage',
         label: 'Diff',
         src: this.props.info.diffImage,
@@ -56,6 +55,10 @@ class TestImages extends React.Component {
       });
     }
 
+    return images;
+  }
+
+  render() {
     return (
       <ImagesWrapper>
         {this.state.images.map((img, i) => (
