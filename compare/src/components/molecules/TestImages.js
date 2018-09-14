@@ -17,7 +17,7 @@ class TestImages extends React.Component {
     this.getImages = this.getImages.bind(this);
 
     this.state = {
-      images: this.getImages()
+      images: []
     };
   }
 
@@ -59,6 +59,7 @@ class TestImages extends React.Component {
   }
 
   render() {
+    this.state.images = this.getImages();
     return (
       <ImagesWrapper>
         {this.state.images.map((img, i) => (
