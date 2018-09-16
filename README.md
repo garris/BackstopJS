@@ -13,7 +13,7 @@ BackstopJS automates visual regression testing of your responsive web UI by comp
 	* reference, test, visual diff inspector
 	* cool scrubber thingy
 	
-![BakcstopJS browser report](http://garris.github.io/BackstopJS/assets/backstopjs_new_ui_.png)
+![BackstopJS browser report](http://garris.github.io/BackstopJS/assets/backstopjs_new_ui_.png)
 
 - Integrated Docker rendering -- to eliminate cross-platform rendering shenanigans
 - CLI reports
@@ -24,7 +24,7 @@ BackstopJS automates visual regression testing of your responsive web UI by comp
 - Run globally or locally as a standalone package app or `require('backstopjs')` right into your node app
 - Incredibly easy to use: just 3 commands go a long long way!
 
-![BakcstopJS cli report](http://garris.github.io/BackstopJS/assets/cli-report.png)
+![BackstopJS cli report](http://garris.github.io/BackstopJS/assets/cli-report.png)
 
 
 ## Install BackstopJS now
@@ -130,7 +130,7 @@ Pass a `--config=<configFilePathStr>` argument to test using a different config 
 
 Pass a `--filter=<scenarioLabelRegex>` argument to just run scenarios matching your scenario label.
 
-Pass a `--docker` flag to render your test in a Docker container -- this will help with consistency if you are attempting to compare references across multiple enviornments.
+Pass a `--docker` flag to render your test in a Docker container -- this will help with consistency if you are attempting to compare references across multiple environments.
 
 ### Approving changes
 
@@ -624,11 +624,11 @@ For more info, see the [Chromy script documentation](https://github.com/OnetapIn
 
 
 ### Using Docker for testing across different environments
-We've found that different enviornments can render the same webpage in slightly different ways -- in particular with text. E.G. see the text in this example rendering slightly differently between Linux and Mac...
+We've found that different environments can render the same webpage in slightly different ways -- in particular with text. E.G. see the text in this example rendering slightly differently between Linux and Mac...
 
 ![BakcstopJS OS rendering differences](http://garris.github.io/BackstopJS/assets/osRenderDifference.png)
 
-You can make this issue go away by rendering in a BackstopJS Docker container.  Lucky for you we've made it incredbily easy to do.  
+You can make this issue go away by rendering in a BackstopJS Docker container.  Lucky for you we've made it incredibly easy to do.  
 
 First, go ahead and install docker on your machine from the [Docker Downloads Page](https://store.docker.com/search?type=edition&offering=community&architecture=amd64).
 
