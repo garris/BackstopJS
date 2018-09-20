@@ -416,32 +416,28 @@ at the root of your config or in your scenario...
 Inside `filename.js`, structure it like this:
 
 ```js
-// onBefore example
-module.exports = function(casper, scenario, vp) {
-  // scenario is the current scenario object being run from your backstop config
-  // vp is the current viewport object being run from your backstop config
+// onBefore example (puppeteer engine)
+module.exports = async (page, scenario, vp) => {
+  await require('./loadCookies')(page, scenario);
 
-  // Example: setting cookies
-  casper.echo("Setting cookies");
-  casper.then(function(){
-    casper.page.addCookie({name: 'cookieName', value: 'cookieValue'});
-  });
-}
+  // Example: set user agent
+  await page.setUserAgent('some user agent string here');
 
-// onReady example
-module.exports = function(casper, scenario, vp) {
-  // Example: Adding script delays to allow for things like CSS transitions to complete.
-  casper.echo( 'Clicking button' );
-  casper.click( '.toggle' );
-  casper.wait( 250 );
+};
+
+
+// onReady example (puppeteer engine)
+module.exports = async (page, scenario, vp) => {
+  console.log('SCENARIO > ' + scenario.label);
+  await require('./clickAndHoverHelper')(page, scenario);
 
   // Example: changing behavior based on config values
   if (vp.label === 'phone') {
-    casper.echo( 'doing stuff for just phone viewport here' );
+    console.log( 'doing stuff for just phone viewport here' );
   }
 
-  // ...do other cool stuff here, see Casperjs.org for a full API and many ideas.
-}
+  // add more stuff here...
+};
 ```
 
 #### Setting the base path for custom onBefore and onReady scripts
