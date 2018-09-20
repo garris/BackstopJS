@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { openModal } from '../../actions';
 
 // styles & icons
-import { colors, fonts, shadows } from '../../styles';
+import { colors, fonts } from '../../styles';
 
 const Wrapper = styled.div`
   display: block;
@@ -38,10 +38,6 @@ const ButtonSD = styled.button`
 `;
 
 class ScrubberButton extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   onClick() {
     let { openModal } = this.props;
     openModal(this.props.info);

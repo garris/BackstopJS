@@ -3,8 +3,6 @@ import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { openModal } from '../../actions';
 
-import { colors, shadows } from '../../styles';
-
 // atoms
 import ImagePreview from '../atoms/ImagePreview';
 
@@ -16,6 +14,7 @@ const ImagesWrapper = styled.div`
 class TestImages extends React.Component {
   constructor(props) {
     super(props);
+    this.getImages = this.getImages.bind(this);
 
     this.state = {
       images: []
@@ -28,11 +27,11 @@ class TestImages extends React.Component {
     openModal(this.props.info);
   }
 
-  render() {
-    let { reference, test } = this.props.info;
-    let { status, settings } = this.props;
+  getImages() {
+    const { reference, test } = this.props.info;
+    const { status, settings } = this.props;
 
-    this.state.images = [
+    const images = [
       {
         id: 'refImage',
         label: 'Reference',
@@ -48,7 +47,7 @@ class TestImages extends React.Component {
     ];
 
     if (status !== 'pass') {
-      this.state.images.push({
+      images.push({
         id: 'diffImage',
         label: 'Diff',
         src: this.props.info.diffImage,
@@ -56,6 +55,11 @@ class TestImages extends React.Component {
       });
     }
 
+    return images;
+  }
+
+  render() {
+    this.state.images = this.getImages();
     return (
       <ImagesWrapper>
         {this.state.images.map((img, i) => (

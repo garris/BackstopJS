@@ -5,8 +5,6 @@ import { filterTests } from '../../actions';
 
 import ButtonFilter from '../atoms/ButtonFilter';
 
-import { colors, fonts } from '../../styles';
-
 const ButtonsWrapper = styled.div`
   display: flex;
   flex: 0 0 auto;
@@ -34,10 +32,6 @@ function ButtonsFilter(props) {
 }
 
 class FiltersSwitch extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     let tests = this.props.tests;
     let availableStatus = this.props.availableStatus;

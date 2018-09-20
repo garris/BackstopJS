@@ -5,18 +5,12 @@ import { findTests, filterTests } from '../../actions';
 
 import InputTextSearch from '../atoms/InputTextSearch';
 
-import { colors, fonts } from '../../styles';
-
 const InputWrapper = styled.div`
   flex: 1 1 auto;
   height: 100%;
 `;
 
 class TextSearch extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   onChange(event) {
     let value = event.target.value;
 

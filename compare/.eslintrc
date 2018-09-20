@@ -1,0 +1,9 @@
+{
+  "extends": ["eslint-config-semistandard", "plugin:react/recommended"],
+  "rules": {
+    "no-multi-str": 0,
+    "react/prop-types": 0,
+    "space-before-function-paren": [2, "never"],
+    "comma-dangle": 0
+  }
+}
