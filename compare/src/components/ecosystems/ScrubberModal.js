@@ -74,7 +74,7 @@ class ScrubberModal extends React.Component {
       test: testImage,
       diffImage
     } = this.props.scrubber.test;
-    const { visible, mode, position } = this.props.scrubber;
+    const { visible, mode, position, testImageType, scrubberModalMode } = this.props.scrubber;
     const {
       closeModal,
       showScrubberTestImage,
@@ -97,6 +97,8 @@ class ScrubberModal extends React.Component {
             <ButtonClose onClick={closeModal} />
           </ModalHeader>
           <ImageScrubber
+            scrubberModalMode={scrubberModalMode}
+            testImageType={testImageType}
             testImage={testImage}
             refImage={refImage}
             diffImage={diffImage}

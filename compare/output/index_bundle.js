@@ -27351,10 +27351,24 @@ function getPosFromImgId(imgId) {
   }
 }
 
+function getModeFromImgId(imgId) {
+  switch (imgId) {
+    case 'refImage':
+      return 'SHOW_SCRUBBER_REF_IMAGE';
+    case 'testImage':
+      return 'SHOW_SCRUBBER_TEST_IMAGE';
+    case 'diffImage':
+      return 'SHOW_SCRUBBER_DIFF_IMAGE';
+    default:
+      return 'SCRUB';
+  }
+}
+
 var scrubber = function scrubber() {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
   var action = arguments[1];
 
+  console.log('OPEN_SCRUBBER_MODAL>>', state, action);
   switch (action.type) {
     case 'OPEN_SCRUBBER_MODAL':
       var targetImgId = '';
@@ -27362,10 +27376,17 @@ var scrubber = function scrubber() {
         targetImgId = action.value.targetImg.id;
       } catch (err) {}
 
+      var scrubberModalMode = '';
+      try {
+        scrubberModalMode = action.value.targetImg.id;
+      } catch (err) {}
+
       return Object.assign({}, state, {
         position: getPosFromImgId(targetImgId),
         visible: true,
-        test: action.value
+        test: action.value,
+        testImageType: targetImgId,
+        scrubberModalMode: getModeFromImgId(targetImgId)
       });
 
     case 'CLOSE_SCRUBBER_MODAL':
@@ -27376,22 +27397,29 @@ var scrubber = function scrubber() {
 
     case 'SHOW_SCRUBBER_TEST_IMAGE':
       return Object.assign({}, state, {
-        position: getPosFromImgId('testImage')
+        position: getPosFromImgId('testImage'),
+        scrubberModalMode: action.type,
+        testImageType: 'testImage'
       });
 
     case 'SHOW_SCRUBBER_REF_IMAGE':
       return Object.assign({}, state, {
-        position: getPosFromImgId('refImage')
+        position: getPosFromImgId('refImage'),
+        scrubberModalMode: action.type
       });
 
     case 'SHOW_SCRUBBER_DIFF_IMAGE':
       return Object.assign({}, state, {
-        position: getPosFromImgId('diffImage')
+        position: getPosFromImgId('diffImage'),
+        scrubberModalMode: action.type,
+        testImageType: 'diffImage'
       });
 
     case 'SHOW_SCRUBBER':
+      console.log('WHERE DID THIS COME FROM???>>>');
       return Object.assign({}, state, {
-        position: getPosFromImgId()
+        position: getPosFromImgId(),
+        scrubberModalMode: 'SCRUB'
       });
 
     default:
@@ -31014,7 +31042,6 @@ var TestCard = function (_React$Component) {
         { id: this.props.id, status: status },
         !onlyText && _react2.default.createElement(_NavButtons2.default, { currentId: this.props.numId, lastId: this.props.lastId }),
         _react2.default.createElement(_TextDetails2.default, { info: info }),
-        _react2.default.createElement(_ScrubberButton2.default, { info: info, onlyText: onlyText }),
         _react2.default.createElement(_TestImages2.default, { info: info, status: status }),
         _react2.default.createElement(_ErrorMessages2.default, { info: info, status: status })
       );
@@ -32493,6 +32520,7 @@ var ScrubberModal = function (_React$Component) {
   _createClass(ScrubberModal, [{
     key: 'render',
     value: function render() {
+      console.log('scrubberModal', this.props);
       var _props$scrubber$test = this.props.scrubber.test,
           refImage = _props$scrubber$test.reference,
           testImage = _props$scrubber$test.test,
@@ -32500,7 +32528,9 @@ var ScrubberModal = function (_React$Component) {
       var _props$scrubber = this.props.scrubber,
           visible = _props$scrubber.visible,
           mode = _props$scrubber.mode,
-          position = _props$scrubber.position;
+          position = _props$scrubber.position,
+          testImageType = _props$scrubber.testImageType,
+          scrubberModalMode = _props$scrubber.scrubberModalMode;
       var _props = this.props,
           closeModal = _props.closeModal,
           showScrubberTestImage = _props.showScrubberTestImage,
@@ -32528,6 +32558,8 @@ var ScrubberModal = function (_React$Component) {
             _react2.default.createElement(ButtonClose, { onClick: closeModal })
           ),
           _react2.default.createElement(_ImageScrubber2.default, {
+            scrubberModalMode: scrubberModalMode,
+            testImageType: testImageType,
             testImage: testImage,
             refImage: refImage,
             diffImage: diffImage,
@@ -33679,7 +33711,10 @@ var ImageScrubber = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
+      console.log('ImageScrubber PROPS>>>', this.props);
       var _props = this.props,
+          scrubberModalMode = _props.scrubberModalMode,
+          testImageType = _props.testImageType,
           position = _props.position,
           refImage = _props.refImage,
           testImage = _props.testImage,
@@ -33692,7 +33727,7 @@ var ImageScrubber = function (_React$Component) {
 
 
       var dontUseScrubberView = this.state.dontUseScrubberView || !showButtons;
-
+      console.log('scrubberModalMode>>>>', scrubberModalMode);
       return _react2.default.createElement(
         Wrapper,
         null,
@@ -33705,40 +33740,32 @@ var ImageScrubber = function (_React$Component) {
             _react2.default.createElement(
               ScrubberViewBtn,
               {
-                selected: position === 100,
-                onClick: function onClick() {
-                  showScrubberRefImage();
-                }
+                selected: scrubberModalMode === 'SHOW_SCRUBBER_REF_IMAGE',
+                onClick: showScrubberRefImage
               },
               'REFERENCE'
             ),
             _react2.default.createElement(
               ScrubberViewBtn,
               {
-                selected: position === 0,
-                onClick: function onClick() {
-                  showScrubberTestImage();
-                }
+                selected: scrubberModalMode === 'SHOW_SCRUBBER_TEST_IMAGE',
+                onClick: showScrubberTestImage
               },
               'TEST'
             ),
             _react2.default.createElement(
               ScrubberViewBtn,
               {
-                selected: position === -1,
-                onClick: function onClick() {
-                  showScrubberDiffImage();
-                }
+                selected: scrubberModalMode === 'SHOW_SCRUBBER_DIFF_IMAGE',
+                onClick: showScrubberDiffImage
               },
               'DIFF'
             ),
             _react2.default.createElement(
               ScrubberViewBtn,
               {
-                selected: position !== 100 && position !== 0 && position !== -1,
-                onClick: function onClick() {
-                  showScrubber();
-                }
+                selected: scrubberModalMode === 'SCRUB',
+                onClick: showScrubber
               },
               'SCRUBBER'
             )
@@ -33781,7 +33808,7 @@ var ImageScrubber = function (_React$Component) {
               src: refImage,
               onError: this.handleLoadingError
             }),
-            _react2.default.createElement('img', { className: 'testImage', src: position === -1 ? diffImage : testImage }),
+            _react2.default.createElement('img', { className: 'testImage', src: testImageType === 'testImage' ? testImage : diffImage }),
             _react2.default.createElement(SliderBar, { className: 'slider' })
           )
         )
@@ -33792,6 +33819,13 @@ var ImageScrubber = function (_React$Component) {
   return ImageScrubber;
 }(_react2.default.Component);
 
+exports.default = ImageScrubber;
+
+
+function getDiverged(arg) {
+  console.log('getDiverged>>', arg);
+}
+
 // const mapStateToProps = state => {
 //   console.log('map state>>>',state)
 //   return {
@@ -33800,9 +33834,6 @@ var ImageScrubber = function (_React$Component) {
 // };
 
 // const ImageScrubberContainer = connect(mapStateToProps)(ImageScrubber);
-
-
-exports.default = ImageScrubber;
 
 /***/ }),
 /* 295 */

@@ -79,7 +79,10 @@ export default class ImageScrubber extends React.Component {
   }
 
   render() {
+console.log('ImageScrubber PROPS>>>', this.props)
     const {
+      scrubberModalMode,
+      testImageType,
       position,
       refImage,
       testImage,
@@ -92,41 +95,33 @@ export default class ImageScrubber extends React.Component {
     } = this.props;
 
     const dontUseScrubberView = this.state.dontUseScrubberView || !showButtons;
-
+console.log('scrubberModalMode>>>>', scrubberModalMode)
     return (
       <Wrapper>
         <WrapTitle>
           {showButtons && (
             <div>
               <ScrubberViewBtn
-                selected={position === 100}
-                onClick={() => {
-                  showScrubberRefImage();
-                }}
+                selected={scrubberModalMode === 'SHOW_SCRUBBER_REF_IMAGE'}
+                onClick={showScrubberRefImage}
               >
                 REFERENCE
               </ScrubberViewBtn>
               <ScrubberViewBtn
-                selected={position === 0}
-                onClick={() => {
-                  showScrubberTestImage();
-                }}
+                selected={scrubberModalMode === 'SHOW_SCRUBBER_TEST_IMAGE'}
+                onClick={showScrubberTestImage}
               >
                 TEST
               </ScrubberViewBtn>
               <ScrubberViewBtn
-                selected={position === -1}
-                onClick={() => {
-                  showScrubberDiffImage();
-                }}
+                selected={scrubberModalMode === 'SHOW_SCRUBBER_DIFF_IMAGE'}
+                onClick={showScrubberDiffImage}
               >
                 DIFF
               </ScrubberViewBtn>
               <ScrubberViewBtn
-                selected={position !== 100 && position !== 0 && position !== -1}
-                onClick={() => {
-                  showScrubber();
-                }}
+                selected={scrubberModalMode === 'SCRUB'}
+                onClick={showScrubber}
               >
                 SCRUBBER
               </ScrubberViewBtn>
@@ -166,7 +161,7 @@ export default class ImageScrubber extends React.Component {
               src={refImage}
               onError={this.handleLoadingError}
             />
-            <img className="testImage" src={position === -1 ? diffImage : testImage} />
+            <img className="testImage" src={testImageType === 'testImage' ? testImage : diffImage} />
             <SliderBar className="slider" />
           </TwentyTwenty>
         </div>
@@ -174,6 +169,12 @@ export default class ImageScrubber extends React.Component {
     );
   }
 }
+
+
+function getDiverged(arg) {
+  console.log('getDiverged>>', arg)
+}
+
 
 // const mapStateToProps = state => {
 //   console.log('map state>>>',state)

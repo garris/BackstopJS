@@ -17,7 +17,6 @@
   "scenarios": [
     {
       "label": "comparePage",
-      "cookiePath": "backstop_data/engine_scripts/cookies.json",
       "url": "http://127.0.0.1:3000/",
       "referenceUrl": "",
       "readyEvent": "",
