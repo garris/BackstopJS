@@ -7,6 +7,7 @@ import {
   showScrubberTestImage,
   showScrubberRefImage,
   showScrubberDiffImage,
+  showScrubberDivergedImage,
   showScrubber
 } from '../../actions';
 
@@ -80,6 +81,7 @@ class ScrubberModal extends React.Component {
       showScrubberTestImage,
       showScrubberRefImage,
       showScrubberDiffImage,
+      showScrubberDivergedImage,
       showScrubber
     } = this.props;
 
@@ -107,6 +109,7 @@ class ScrubberModal extends React.Component {
             showScrubberTestImage={showScrubberTestImage}
             showScrubberRefImage={showScrubberRefImage}
             showScrubberDiffImage={showScrubberDiffImage}
+            showScrubberDivergedImage={showScrubberDivergedImage}
             showScrubber={showScrubber}
           />
         </Modal>
@@ -134,6 +137,9 @@ const mapDispatchToProps = dispatch => {
     },
     showScrubberDiffImage: val => {
       dispatch(showScrubberDiffImage(val));
+    },
+    showScrubberDivergedImage: val => {
+      dispatch(showScrubberDivergedImage(val));
     },
     showScrubber: val => {
       dispatch(showScrubber(val));

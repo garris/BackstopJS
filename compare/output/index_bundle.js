@@ -4837,6 +4837,13 @@ var showScrubberDiffImage = exports.showScrubberDiffImage = function showScrubbe
   };
 };
 
+var showScrubberDivergedImage = exports.showScrubberDivergedImage = function showScrubberDivergedImage(value) {
+  return {
+    type: 'SHOW_SCRUBBER_DIVERGED_IMAGE',
+    value: value
+  };
+};
+
 var showScrubber = exports.showScrubber = function showScrubber(value) {
   return {
     type: 'SHOW_SCRUBBER',
@@ -27368,7 +27375,6 @@ var scrubber = function scrubber() {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
   var action = arguments[1];
 
-  console.log('OPEN_SCRUBBER_MODAL>>', state, action);
   switch (action.type) {
     case 'OPEN_SCRUBBER_MODAL':
       var targetImgId = '';
@@ -27415,8 +27421,14 @@ var scrubber = function scrubber() {
         testImageType: 'diffImage'
       });
 
+    case 'SHOW_SCRUBBER_DIVERGED_IMAGE':
+      return Object.assign({}, state, {
+        position: getPosFromImgId('diffImage'),
+        scrubberModalMode: action.type,
+        testImageType: 'diffImage'
+      });
+
     case 'SHOW_SCRUBBER':
-      console.log('WHERE DID THIS COME FROM???>>>');
       return Object.assign({}, state, {
         position: getPosFromImgId(),
         scrubberModalMode: 'SCRUB'
@@ -32520,7 +32532,6 @@ var ScrubberModal = function (_React$Component) {
   _createClass(ScrubberModal, [{
     key: 'render',
     value: function render() {
-      console.log('scrubberModal', this.props);
       var _props$scrubber$test = this.props.scrubber.test,
           refImage = _props$scrubber$test.reference,
           testImage = _props$scrubber$test.test,
@@ -32536,6 +32547,7 @@ var ScrubberModal = function (_React$Component) {
           showScrubberTestImage = _props.showScrubberTestImage,
           showScrubberRefImage = _props.showScrubberRefImage,
           showScrubberDiffImage = _props.showScrubberDiffImage,
+          showScrubberDivergedImage = _props.showScrubberDivergedImage,
           showScrubber = _props.showScrubber;
 
 
@@ -32568,6 +32580,7 @@ var ScrubberModal = function (_React$Component) {
             showScrubberTestImage: showScrubberTestImage,
             showScrubberRefImage: showScrubberRefImage,
             showScrubberDiffImage: showScrubberDiffImage,
+            showScrubberDivergedImage: showScrubberDivergedImage,
             showScrubber: showScrubber
           })
         )
@@ -32597,6 +32610,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     },
     showScrubberDiffImage: function showScrubberDiffImage(val) {
       dispatch((0, _actions.showScrubberDiffImage)(val));
+    },
+    showScrubberDivergedImage: function showScrubberDivergedImage(val) {
+      dispatch((0, _actions.showScrubberDivergedImage)(val));
     },
     showScrubber: function showScrubber(val) {
       dispatch((0, _actions.showScrubber)(val));
@@ -33723,11 +33739,16 @@ var ImageScrubber = function (_React$Component) {
           showScrubberTestImage = _props.showScrubberTestImage,
           showScrubberRefImage = _props.showScrubberRefImage,
           showScrubberDiffImage = _props.showScrubberDiffImage,
+          showScrubberDivergedImage = _props.showScrubberDivergedImage,
           showScrubber = _props.showScrubber;
 
 
+      function getDiverged(arg) {
+        showScrubberDivergedImage();
+        console.log('getDiverged>>', arg);
+      }
+
       var dontUseScrubberView = this.state.dontUseScrubberView || !showButtons;
-      console.log('scrubberModalMode>>>>', scrubberModalMode);
       return _react2.default.createElement(
         Wrapper,
         null,
@@ -33760,6 +33781,14 @@ var ImageScrubber = function (_React$Component) {
                 onClick: showScrubberDiffImage
               },
               'DIFF'
+            ),
+            _react2.default.createElement(
+              ScrubberViewBtn,
+              {
+                selected: scrubberModalMode === 'SHOW_SCRUBBER_DIVERGED_IMAGE',
+                onClick: getDiverged
+              },
+              'DIVERGED'
             ),
             _react2.default.createElement(
               ScrubberViewBtn,
@@ -33819,13 +33848,6 @@ var ImageScrubber = function (_React$Component) {
   return ImageScrubber;
 }(_react2.default.Component);
 
-exports.default = ImageScrubber;
-
-
-function getDiverged(arg) {
-  console.log('getDiverged>>', arg);
-}
-
 // const mapStateToProps = state => {
 //   console.log('map state>>>',state)
 //   return {
@@ -33834,6 +33856,9 @@ function getDiverged(arg) {
 // };
 
 // const ImageScrubberContainer = connect(mapStateToProps)(ImageScrubber);
+
+
+exports.default = ImageScrubber;
 
 /***/ }),
 /* 295 */

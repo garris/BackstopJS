@@ -71,8 +71,14 @@ const scrubber = (state = {}, action) => {
         testImageType: 'diffImage'
       });
 
+    case 'SHOW_SCRUBBER_DIVERGED_IMAGE':
+      return Object.assign({}, state, {
+        position: getPosFromImgId('diffImage'),
+        scrubberModalMode: action.type,
+        testImageType: 'diffImage'
+      });
+
     case 'SHOW_SCRUBBER':
-console.log('WHERE DID THIS COME FROM???>>>')
       return Object.assign({}, state, {
         position: getPosFromImgId(),
         scrubberModalMode: 'SCRUB'

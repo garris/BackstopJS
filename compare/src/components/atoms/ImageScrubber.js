@@ -91,11 +91,16 @@ console.log('ImageScrubber PROPS>>>', this.props)
       showScrubberTestImage,
       showScrubberRefImage,
       showScrubberDiffImage,
+      showScrubberDivergedImage,
       showScrubber
     } = this.props;
 
+    function getDiverged(arg) {
+      showScrubberDivergedImage();
+      console.log('getDiverged>>', arg)
+    }
+
     const dontUseScrubberView = this.state.dontUseScrubberView || !showButtons;
-console.log('scrubberModalMode>>>>', scrubberModalMode)
     return (
       <Wrapper>
         <WrapTitle>
@@ -118,6 +123,12 @@ console.log('scrubberModalMode>>>>', scrubberModalMode)
                 onClick={showScrubberDiffImage}
               >
                 DIFF
+              </ScrubberViewBtn>
+              <ScrubberViewBtn
+                selected={scrubberModalMode === 'SHOW_SCRUBBER_DIVERGED_IMAGE'}
+                onClick={getDiverged}
+              >
+                DIVERGED
               </ScrubberViewBtn>
               <ScrubberViewBtn
                 selected={scrubberModalMode === 'SCRUB'}
@@ -171,9 +182,6 @@ console.log('scrubberModalMode>>>>', scrubberModalMode)
 }
 
 
-function getDiverged(arg) {
-  console.log('getDiverged>>', arg)
-}
 
 
 // const mapStateToProps = state => {
