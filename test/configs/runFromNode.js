@@ -5,5 +5,8 @@ const backstop = require('../../../backstopjs');
 // NOTE: passing config file name is supported -- passing actual config data is not supported.
 backstop('test', {
 	docker: true, 
-	config: 'backstop.json'
-});
+	config: 'backstop_alt'
+}).then(
+	() => console.log('nothing new'),
+	() => console.log('changes found')
+);
