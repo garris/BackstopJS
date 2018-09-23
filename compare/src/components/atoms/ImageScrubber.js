@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 import TwentyTwenty from 'backstop-twentytwenty';
 import { colors, fonts, shadows } from '../../styles';
+import diverged from 'diverged';
 
 const BASE64_PNG_STUB =
   'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
@@ -97,7 +98,25 @@ console.log('ImageScrubber PROPS>>>', this.props)
 
     function getDiverged(arg) {
       showScrubberDivergedImage();
-      console.log('getDiverged>>', arg)
+      const refImg = document.images.scrubberRefImage;
+      const testImg = document.images.isolatedTestImage;
+
+      const h = refImg.height;
+      const w = refImg.width;
+      const refCtx = imageToCanvasContext(refImg);
+      const testCtx = imageToCanvasContext(testImg);
+      
+      console.log('starting diverged>>', new Date())
+      const divergedImgData = diverged(getImgDataDataFromContext(refCtx), getImgDataDataFromContext(testCtx), h, w);
+
+      let clampedImgData = getEmptyImgData(h, w)
+      for (var i = divergedImgData.length - 1; i >= 0; i--) {
+          clampedImgData.data[i] = divergedImgData[i];
+      }
+      var lcsDiffResult = imageToCanvasContext(null, w, h);
+      lcsDiffResult.putImageData(clampedImgData, 0, 0);
+
+      document.images.scrubberTestImage.src = lcsDiffResult.canvas.toDataURL("image/png");
     }
 
     const dontUseScrubberView = this.state.dontUseScrubberView || !showButtons;
@@ -140,6 +159,7 @@ console.log('ImageScrubber PROPS>>>', this.props)
           )}
         </WrapTitle>
         <img
+          id="isolatedTestImage"
           className="testImage"
           src={testImage}
           style={{
@@ -168,11 +188,15 @@ console.log('ImageScrubber PROPS>>>', this.props)
             newPosition={position}
           >
             <img
+              id="scrubberRefImage"
               className="refImage"
               src={refImage}
               onError={this.handleLoadingError}
             />
-            <img className="testImage" src={testImageType === 'testImage' ? testImage : diffImage} />
+            <img
+              id="scrubberTestImage" 
+              className="testImage" 
+            />
             <SliderBar className="slider" />
           </TwentyTwenty>
         </div>
@@ -181,14 +205,31 @@ console.log('ImageScrubber PROPS>>>', this.props)
   }
 }
 
+/**
+ * ========= DIVERGED HELPERS ========
+ */
+function getImgDataDataFromContext(context) {
+    return context.getImageData(0, 0, context.canvas.width, context.canvas.height).data;
+}
+
+function getEmptyImgData(h, w) {
+    var o = imageToCanvasContext(null, h, w);
+    return o.createImageData(w, h);
+}
+
+function imageToCanvasContext(_img, w, h) {
+    let img = _img;
+    if (!_img) {
+        img = { width: w, height: h };
+    }
+    const canvas = document.createElement("canvas");
+    canvas.width = img.width;
+    canvas.height = img.height;
+    const context = canvas.getContext("2d");
+    if (_img) {
+        context.drawImage(img, 0, 0);
+    }
+    return context;
+}
 
 
-
-// const mapStateToProps = state => {
-//   console.log('map state>>>',state)
-//   return {
-//     test_: state
-//   };
-// };
-
-// const ImageScrubberContainer = connect(mapStateToProps)(ImageScrubber);

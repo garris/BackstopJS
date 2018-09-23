@@ -1,13 +1,13 @@
 function getPosFromImgId (imgId) {
   switch (imgId) {
     case 'refImage':
-      return 100;
+      return 105; //just passed the right border
     case 'testImage':
-      return 0;
+      return -1; //just passed the left border
     case 'diffImage':
-      return -1;
+      return -1; //just passed the left border
     default:
-      return 50;
+      return 50; //in the middle
   }
 }
 
