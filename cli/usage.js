@@ -6,6 +6,7 @@ var commandsDescription = {
   approve: 'Promotes all test bitmaps from last test run to reference bitmaps.',
   reference: 'Creates new reference screenshots. Deletes all existing reference files.',
   init: 'Generate BackstopJS boilerplate files in your CWD. NOTE: Overwrites existing config files!',
+  remote: 'Launch BackstopJS remote service.',
   openReport: 'View the last test report in your browser.'
 };
 
