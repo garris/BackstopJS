@@ -33768,7 +33768,6 @@ var ImageScrubber = function (_React$Component) {
         lcsDiffResult.putImageData(clampedImgData, 0, 0);
 
         document.images.scrubberTestImage.src = lcsDiffResult.canvas.toDataURL("image/png");
-        // console.log(divergedImgData)
       }
 
       var dontUseScrubberView = this.state.dontUseScrubberView || !showButtons;
@@ -33864,7 +33863,8 @@ var ImageScrubber = function (_React$Component) {
             }),
             _react2.default.createElement('img', {
               id: 'scrubberTestImage',
-              className: 'testImage'
+              className: 'testImage',
+              src: testImageType === 'testImage' ? testImage : diffImage
             }),
             _react2.default.createElement(SliderBar, { className: 'slider' })
           )
@@ -33876,19 +33876,10 @@ var ImageScrubber = function (_React$Component) {
   return ImageScrubber;
 }(_react2.default.Component);
 
-// const mapStateToProps = state => {
-//   console.log('map state>>>',state)
-//   return {
-//     test_: state
-//   };
-// };
-
-// const ImageScrubberContainer = connect(mapStateToProps)(ImageScrubber);
-
-
 /**
  * ========= DIVERGED HELPERS ========
  */
+
 
 exports.default = ImageScrubber;
 function getImgDataDataFromContext(context) {

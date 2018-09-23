@@ -196,6 +196,7 @@ console.log('ImageScrubber PROPS>>>', this.props)
             <img
               id="scrubberTestImage" 
               className="testImage" 
+              src={testImageType === 'testImage' ? testImage : diffImage}
             />
             <SliderBar className="slider" />
           </TwentyTwenty>
