@@ -7,6 +7,7 @@ import {
   showScrubberTestImage,
   showScrubberRefImage,
   showScrubberDiffImage,
+  showScrubberDivergedImage,
   showScrubber
 } from '../../actions';
 
@@ -64,22 +65,30 @@ const customStyles = {
 };
 
 class ScrubberModal extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
   }
 
-  render() {
+  render () {
     const {
       reference: refImage,
       test: testImage,
-      diffImage
+      diffImage,
+      divergedImage
     } = this.props.scrubber.test;
-    const { visible, mode, position } = this.props.scrubber;
+    const {
+      visible,
+      mode,
+      position,
+      testImageType,
+      scrubberModalMode
+    } = this.props.scrubber;
     const {
       closeModal,
       showScrubberTestImage,
       showScrubberRefImage,
       showScrubberDiffImage,
+      showScrubberDivergedImage,
       showScrubber
     } = this.props;
 
@@ -97,14 +106,18 @@ class ScrubberModal extends React.Component {
             <ButtonClose onClick={closeModal} />
           </ModalHeader>
           <ImageScrubber
+            scrubberModalMode={scrubberModalMode}
+            testImageType={testImageType}
             testImage={testImage}
             refImage={refImage}
             diffImage={diffImage}
+            divergedImage={divergedImage}
             position={position}
             showButtons={diffImage && diffImage.length > 0}
             showScrubberTestImage={showScrubberTestImage}
             showScrubberRefImage={showScrubberRefImage}
             showScrubberDiffImage={showScrubberDiffImage}
+            showScrubberDivergedImage={showScrubberDivergedImage}
             showScrubber={showScrubber}
           />
         </Modal>
@@ -132,6 +145,9 @@ const mapDispatchToProps = dispatch => {
     },
     showScrubberDiffImage: val => {
       dispatch(showScrubberDiffImage(val));
+    },
+    showScrubberDivergedImage: val => {
+      dispatch(showScrubberDivergedImage(val));
     },
     showScrubber: val => {
       dispatch(showScrubber(val));

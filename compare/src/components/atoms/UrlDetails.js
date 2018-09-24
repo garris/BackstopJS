@@ -24,7 +24,7 @@ const Link = styled.a`
 `;
 
 export default class DiffDetails extends React.Component {
-  render() {
+  render () {
     const { url, referenceUrl } = this.props;
     return (
       <span>

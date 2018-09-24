@@ -38,7 +38,7 @@ const CardWrapper = styled.div`
 `;
 
 export default class TestCard extends React.Component {
-  render() {
+  render () {
     let { pair: info, status } = this.props.test;
     let onlyText = this.props.onlyText;
 
@@ -48,7 +48,6 @@ export default class TestCard extends React.Component {
           <NavButtons currentId={this.props.numId} lastId={this.props.lastId} />
         )}
         <TextDetails info={info} />
-        <ScrubberButton info={info} onlyText={onlyText} />
         <TestImages info={info} status={status} />
         <ErrorMessages info={info} status={status} />
       </CardWrapper>

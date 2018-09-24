@@ -6,13 +6,16 @@ var commandsDescription = {
   approve: 'Promotes all test bitmaps from last test run to reference bitmaps.',
   reference: 'Creates new reference screenshots. Deletes all existing reference files.',
   init: 'Generate BackstopJS boilerplate files in your CWD. NOTE: Overwrites existing config files!',
+  remote: 'Launch BackstopJS remote service.',
   openReport: 'View the last test report in your browser.'
 };
 
 var optionsDescription = {
+  '--config': 'Path to config file name',
+  '--filter': 'A RegEx string used to filter by scenario labels when running "test" or "approve" commands',
   '-h, --help': 'Display usage',
   '-v, --version': 'Display version',
-  '-i': 'incremental reference generation'
+  '-i': 'Prevent deletion of non-matching reference files when running "reference" command (newer matching reference files are still overwritten)'
 };
 
 function makeDescription (descriptions) {

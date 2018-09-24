@@ -17,7 +17,7 @@ const SettingsWrapper = styled.div`
 `;
 
 class SettingsPanel extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
 
     this.state = {
@@ -25,13 +25,13 @@ class SettingsPanel extends React.Component {
     };
   }
 
-  onButtonClick() {
+  onButtonClick () {
     this.setState({
       popup: !this.state.popup
     });
   }
 
-  render() {
+  render () {
     const popupVisible = this.state.popup;
 
     return (

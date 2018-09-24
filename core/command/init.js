@@ -1,13 +1,12 @@
 var fs = require('../util/fs');
-var logger = require('../util/logger')('genConfig');
+var logger = require('../util/logger')('init');
 
 /**
  * Copies a boilerplate config file to the current config file location.
  */
 module.exports = {
-  execute: function genConfig (config) {
+  execute: function init (config) {
     var promises = [];
-
     if (config.engine_scripts) {
       logger.log("Copying '" + config.engine_scripts_default + "' to '" + config.engine_scripts + "'");
       promises.push(fs.copy(config.engine_scripts_default, config.engine_scripts));
