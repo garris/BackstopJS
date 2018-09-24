@@ -73,7 +73,8 @@ class ScrubberModal extends React.Component {
     const {
       reference: refImage,
       test: testImage,
-      diffImage
+      diffImage,
+      divergedImage
     } = this.props.scrubber.test;
     const { visible, mode, position, testImageType, scrubberModalMode } = this.props.scrubber;
     const {
@@ -104,6 +105,7 @@ class ScrubberModal extends React.Component {
             testImage={testImage}
             refImage={refImage}
             diffImage={diffImage}
+            divergedImage={divergedImage}
             position={position}
             showButtons={diffImage && diffImage.length > 0}
             showScrubberTestImage={showScrubberTestImage}

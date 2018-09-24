@@ -75,7 +75,8 @@ const scrubber = (state = {}, action) => {
       return Object.assign({}, state, {
         position: getPosFromImgId('diffImage'),
         scrubberModalMode: action.type,
-        testImageType: 'diffImage'
+        testImageType: 'divergedImage',
+        test: Object.assign({}, state.test, {divergedImage: action.value})
       });
 
     case 'SHOW_SCRUBBER':

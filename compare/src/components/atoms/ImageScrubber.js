@@ -88,6 +88,7 @@ console.log('ImageScrubber PROPS>>>', this.props)
       refImage,
       testImage,
       diffImage,
+      divergedImage,
       showButtons,
       showScrubberTestImage,
       showScrubberRefImage,
@@ -96,8 +97,14 @@ console.log('ImageScrubber PROPS>>>', this.props)
       showScrubber
     } = this.props;
 
+    const scrubberTestImageSlug = this.props[testImageType];
+
     function getDiverged(arg) {
-      showScrubberDivergedImage();
+      if (divergedImage) {
+        showScrubberDivergedImage(divergedImage);
+        return;
+      }
+
       const refImg = document.images.scrubberRefImage;
       const testImg = document.images.isolatedTestImage;
 
@@ -116,7 +123,8 @@ console.log('ImageScrubber PROPS>>>', this.props)
       var lcsDiffResult = imageToCanvasContext(null, w, h);
       lcsDiffResult.putImageData(clampedImgData, 0, 0);
 
-      document.images.scrubberTestImage.src = lcsDiffResult.canvas.toDataURL("image/png");
+      const divergedImageResult = lcsDiffResult.canvas.toDataURL("image/png");
+      showScrubberDivergedImage(divergedImageResult);
     }
 
     const dontUseScrubberView = this.state.dontUseScrubberView || !showButtons;
@@ -196,7 +204,7 @@ console.log('ImageScrubber PROPS>>>', this.props)
             <img
               id="scrubberTestImage" 
               className="testImage" 
-              src={testImageType === 'testImage' ? testImage : diffImage}
+              src={scrubberTestImageSlug}
             />
             <SliderBar className="slider" />
           </TwentyTwenty>

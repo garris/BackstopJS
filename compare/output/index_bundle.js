@@ -27425,7 +27425,8 @@ var scrubber = function scrubber() {
       return Object.assign({}, state, {
         position: getPosFromImgId('diffImage'),
         scrubberModalMode: action.type,
-        testImageType: 'diffImage'
+        testImageType: 'divergedImage',
+        test: Object.assign({}, state.test, { divergedImage: action.value })
       });
 
     case 'SHOW_SCRUBBER':
@@ -32535,7 +32536,8 @@ var ScrubberModal = function (_React$Component) {
       var _props$scrubber$test = this.props.scrubber.test,
           refImage = _props$scrubber$test.reference,
           testImage = _props$scrubber$test.test,
-          diffImage = _props$scrubber$test.diffImage;
+          diffImage = _props$scrubber$test.diffImage,
+          divergedImage = _props$scrubber$test.divergedImage;
       var _props$scrubber = this.props.scrubber,
           visible = _props$scrubber.visible,
           mode = _props$scrubber.mode,
@@ -32575,6 +32577,7 @@ var ScrubberModal = function (_React$Component) {
             testImage: testImage,
             refImage: refImage,
             diffImage: diffImage,
+            divergedImage: divergedImage,
             position: position,
             showButtons: diffImage && diffImage.length > 0,
             showScrubberTestImage: showScrubberTestImage,
@@ -33739,6 +33742,7 @@ var ImageScrubber = function (_React$Component) {
           refImage = _props.refImage,
           testImage = _props.testImage,
           diffImage = _props.diffImage,
+          divergedImage = _props.divergedImage,
           showButtons = _props.showButtons,
           showScrubberTestImage = _props.showScrubberTestImage,
           showScrubberRefImage = _props.showScrubberRefImage,
@@ -33747,8 +33751,14 @@ var ImageScrubber = function (_React$Component) {
           showScrubber = _props.showScrubber;
 
 
+      var scrubberTestImageSlug = this.props[testImageType];
+
       function getDiverged(arg) {
-        showScrubberDivergedImage();
+        if (divergedImage) {
+          showScrubberDivergedImage(divergedImage);
+          return;
+        }
+
         var refImg = document.images.scrubberRefImage;
         var testImg = document.images.isolatedTestImage;
 
@@ -33767,7 +33777,8 @@ var ImageScrubber = function (_React$Component) {
         var lcsDiffResult = imageToCanvasContext(null, w, h);
         lcsDiffResult.putImageData(clampedImgData, 0, 0);
 
-        document.images.scrubberTestImage.src = lcsDiffResult.canvas.toDataURL("image/png");
+        var divergedImageResult = lcsDiffResult.canvas.toDataURL("image/png");
+        showScrubberDivergedImage(divergedImageResult);
       }
 
       var dontUseScrubberView = this.state.dontUseScrubberView || !showButtons;
@@ -33864,7 +33875,7 @@ var ImageScrubber = function (_React$Component) {
             _react2.default.createElement('img', {
               id: 'scrubberTestImage',
               className: 'testImage',
-              src: testImageType === 'testImage' ? testImage : diffImage
+              src: scrubberTestImageSlug
             }),
             _react2.default.createElement(SliderBar, { className: 'slider' })
           )
