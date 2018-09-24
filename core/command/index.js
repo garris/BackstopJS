@@ -12,8 +12,7 @@ var logger = require('../util/logger')('COMMAND');
 
 /* Each and every command defined, including commands used in before/after */
 var commandNames = [
-  'init',
-  'remote',
+  'genConfig',
   'openReport',
   'reference',
   'report',
@@ -23,8 +22,7 @@ var commandNames = [
 
 /* Commands that are only exposed to higher levels */
 var exposedCommandNames = [
-  'init',
-  'remote',
+  'genConfig',
   'reference',
   'test',
   'openReport',

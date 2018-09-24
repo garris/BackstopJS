@@ -30,6 +30,12 @@ if (argsOptions.v || argsOptions.version) {
 
 var commandName = argsOptions['_'][0];
 
+if (/^init$/i.test(commandName)) {
+  commandName = 'genConfig';
+}
+
+// TODO: need command for:  `pkill -f "(chrome)?(--headless)"`
+
 if (!commandName) {
   console.log(usage);
   process.exit();

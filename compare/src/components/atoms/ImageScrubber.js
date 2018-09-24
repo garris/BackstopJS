@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 import TwentyTwenty from 'backstop-twentytwenty';
 import { colors, fonts, shadows } from '../../styles';
-import diverged from 'diverged';
 
 const BASE64_PNG_STUB =
   'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
@@ -80,90 +79,54 @@ export default class ImageScrubber extends React.Component {
   }
 
   render() {
-console.log('ImageScrubber PROPS>>>', this.props)
     const {
-      scrubberModalMode,
-      testImageType,
       position,
       refImage,
       testImage,
       diffImage,
-      divergedImage,
       showButtons,
       showScrubberTestImage,
       showScrubberRefImage,
       showScrubberDiffImage,
-      showScrubberDivergedImage,
       showScrubber
     } = this.props;
 
-    const scrubberTestImageSlug = this.props[testImageType];
-
-    function getDiverged(arg) {
-      if (divergedImage) {
-        showScrubberDivergedImage(divergedImage);
-        return;
-      }
-
-      const refImg = document.images.scrubberRefImage;
-      const testImg = document.images.isolatedTestImage;
-
-      const h = refImg.height;
-      const w = refImg.width;
-      const refCtx = imageToCanvasContext(refImg);
-      const testCtx = imageToCanvasContext(testImg);
-      
-      console.log('starting diverged>>', new Date())
-      const divergedImgData = diverged(getImgDataDataFromContext(refCtx), getImgDataDataFromContext(testCtx), h, w);
-
-      let clampedImgData = getEmptyImgData(h, w)
-      for (var i = divergedImgData.length - 1; i >= 0; i--) {
-          clampedImgData.data[i] = divergedImgData[i];
-      }
-      var lcsDiffResult = imageToCanvasContext(null, w, h);
-      lcsDiffResult.putImageData(clampedImgData, 0, 0);
-
-      const divergedImageResult = lcsDiffResult.canvas.toDataURL("image/png");
-      showScrubberDivergedImage(divergedImageResult);
-    }
-
     const dontUseScrubberView = this.state.dontUseScrubberView || !showButtons;
+
     return (
       <Wrapper>
         <WrapTitle>
           {showButtons && (
             <div>
               <ScrubberViewBtn
-                selected={scrubberModalMode === 'SHOW_SCRUBBER_REF_IMAGE'}
-                onClick={showScrubberRefImage}
+                selected={position === 100}
+                onClick={() => {
+                  showScrubberRefImage();
+                }}
               >
                 REFERENCE
               </ScrubberViewBtn>
-              
               <ScrubberViewBtn
-                selected={scrubberModalMode === 'SHOW_SCRUBBER_TEST_IMAGE'}
-                onClick={showScrubberTestImage}
+                selected={position === 0}
+                onClick={() => {
+                  showScrubberTestImage();
+                }}
               >
                 TEST
               </ScrubberViewBtn>
-
               <ScrubberViewBtn
-                selected={scrubberModalMode === 'SHOW_SCRUBBER_DIFF_IMAGE'}
-                onClick={showScrubberDiffImage}
+                selected={position === -1}
+                onClick={() => {
+                  showScrubberDiffImage();
+                }}
               >
                 DIFF
               </ScrubberViewBtn>
-
-{/*              <ScrubberViewBtn
-                selected={scrubberModalMode === 'SHOW_SCRUBBER_DIVERGED_IMAGE'}
-                onClick={getDiverged}
-              >
-                DIVERGED
-              </ScrubberViewBtn>*/}
-
               <ScrubberViewBtn
-                selected={scrubberModalMode === 'SCRUB'}
-                onClick={showScrubber}
+                selected={position !== 100 && position !== 0 && position !== -1}
+                onClick={() => {
+                  showScrubber();
+                }}
               >
                 SCRUBBER
               </ScrubberViewBtn>
@@ -171,7 +134,6 @@ console.log('ImageScrubber PROPS>>>', this.props)
           )}
         </WrapTitle>
         <img
-          id="isolatedTestImage"
           className="testImage"
           src={testImage}
           style={{
@@ -200,16 +162,11 @@ console.log('ImageScrubber PROPS>>>', this.props)
             newPosition={position}
           >
             <img
-              id="scrubberRefImage"
               className="refImage"
               src={refImage}
               onError={this.handleLoadingError}
             />
-            <img
-              id="scrubberTestImage" 
-              className="testImage" 
-              src={scrubberTestImageSlug}
-            />
+            <img className="testImage" src={position === -1 ? diffImage : testImage} />
             <SliderBar className="slider" />
           </TwentyTwenty>
         </div>
@@ -218,31 +175,11 @@ console.log('ImageScrubber PROPS>>>', this.props)
   }
 }
 
-/**
- * ========= DIVERGED HELPERS ========
- */
-function getImgDataDataFromContext(context) {
-    return context.getImageData(0, 0, context.canvas.width, context.canvas.height).data;
-}
+// const mapStateToProps = state => {
+//   console.log('map state>>>',state)
+//   return {
+//     test_: state
+//   };
+// };
 
-function getEmptyImgData(h, w) {
-    var o = imageToCanvasContext(null, h, w);
-    return o.createImageData(w, h);
-}
-
-function imageToCanvasContext(_img, w, h) {
-    let img = _img;
-    if (!_img) {
-        img = { width: w, height: h };
-    }
-    const canvas = document.createElement("canvas");
-    canvas.width = img.width;
-    canvas.height = img.height;
-    const context = canvas.getContext("2d");
-    if (_img) {
-        context.drawImage(img, 0, 0);
-    }
-    return context;
-}
-
-
+// const ImageScrubberContainer = connect(mapStateToProps)(ImageScrubber);
