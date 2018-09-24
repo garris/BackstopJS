@@ -38,7 +38,7 @@ const CardWrapper = styled.div`
 `;
 
 export default class TestCard extends React.Component {
-  render() {
+  render () {
     let { pair: info, status } = this.props.test;
     let onlyText = this.props.onlyText;
 

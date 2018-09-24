@@ -48,7 +48,7 @@ const Button = styled.button`
 `;
 
 export default class ButtonSettings extends React.Component {
-  render() {
+  render () {
     let isActive = this.props.active ? 'active' : '';
 
     return (

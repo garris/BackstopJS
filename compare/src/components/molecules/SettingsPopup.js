@@ -38,7 +38,7 @@ const PopupWrapper = styled.div`
 `;
 
 class SettingsPopup extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
 
     this.state = {
@@ -46,7 +46,7 @@ class SettingsPopup extends React.Component {
     };
   }
 
-  toggleAll(val) {
+  toggleAll (val) {
     this.setState({
       hideAll: !val
     });
@@ -54,7 +54,7 @@ class SettingsPopup extends React.Component {
     this.props.toggleAll(val);
   }
 
-  onToggle(id, val) {
+  onToggle (id, val) {
     if (!val) {
       this.setState({
         hideAll: false
@@ -64,7 +64,7 @@ class SettingsPopup extends React.Component {
     this.props.onToggle(id);
   }
 
-  render() {
+  render () {
     let { onToggle, settings } = this.props;
 
     return (

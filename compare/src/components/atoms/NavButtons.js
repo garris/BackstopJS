@@ -35,24 +35,24 @@ const ButtonNav = styled.div`
 `;
 
 export default class NavButtons extends React.Component {
-  nextTest() {
+  nextTest () {
     let dest = `#test${this.props.currentId + 1}`;
     this.jumpTo(dest);
   }
 
-  prevTest() {
+  prevTest () {
     let dest = `#test${this.props.currentId - 1}`;
     this.jumpTo(dest);
   }
 
-  jumpTo(dest) {
+  jumpTo (dest) {
     jump(dest, {
       duration: 0,
       offset: -100
     });
   }
 
-  render() {
+  render () {
     let { currentId, lastId } = this.props;
 
     return (

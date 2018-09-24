@@ -17,7 +17,7 @@ const HeaderWrapper = styled.section`
 `;
 
 export default class Header extends React.Component {
-  render() {
+  render () {
     return (
       <HeaderWrapper className="header">
         <Topbar />

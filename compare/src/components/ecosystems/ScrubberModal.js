@@ -65,18 +65,24 @@ const customStyles = {
 };
 
 class ScrubberModal extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
   }
 
-  render() {
+  render () {
     const {
       reference: refImage,
       test: testImage,
       diffImage,
       divergedImage
     } = this.props.scrubber.test;
-    const { visible, mode, position, testImageType, scrubberModalMode } = this.props.scrubber;
+    const {
+      visible,
+      mode,
+      position,
+      testImageType,
+      scrubberModalMode
+    } = this.props.scrubber;
     const {
       closeModal,
       showScrubberTestImage,

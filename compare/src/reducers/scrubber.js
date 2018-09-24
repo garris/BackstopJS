@@ -1,13 +1,13 @@
 function getPosFromImgId (imgId) {
   switch (imgId) {
     case 'refImage':
-      return 105; //just passed the right border
+      return 105; // just passed the right border
     case 'testImage':
-      return -1; //just passed the left border
+      return -1; // just passed the left border
     case 'diffImage':
-      return -1; //just passed the left border
+      return -1; // just passed the left border
     default:
-      return 50; //in the middle
+      return 50; // in the middle
   }
 }
 
@@ -18,9 +18,9 @@ function getModeFromImgId (imgId) {
     case 'testImage':
       return 'SHOW_SCRUBBER_TEST_IMAGE';
     case 'diffImage':
-      return 'SHOW_SCRUBBER_DIFF_IMAGE'
+      return 'SHOW_SCRUBBER_DIFF_IMAGE';
     default:
-      return 'SCRUB'
+      return 'SCRUB';
   }
 }
 
@@ -76,7 +76,7 @@ const scrubber = (state = {}, action) => {
         position: getPosFromImgId('diffImage'),
         scrubberModalMode: action.type,
         testImageType: 'divergedImage',
-        test: Object.assign({}, state.test, {divergedImage: action.value})
+        test: Object.assign({}, state.test, { divergedImage: action.value })
       });
 
     case 'SHOW_SCRUBBER':

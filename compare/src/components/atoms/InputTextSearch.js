@@ -36,7 +36,7 @@ const Input = styled.input`
 `;
 
 export default class ButtonFilter extends React.Component {
-  render() {
+  render () {
     return (
       <Input
         placeholder="Filter tests with search..."

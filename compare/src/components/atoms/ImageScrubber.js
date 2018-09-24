@@ -64,7 +64,7 @@ const SliderBar = styled.div`
 `;
 
 export default class ImageScrubber extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = {
       dontUseScrubberView: false
@@ -73,14 +73,14 @@ export default class ImageScrubber extends React.Component {
     this.handleLoadingError = this.handleLoadingError.bind(this);
   }
 
-  handleLoadingError() {
+  handleLoadingError () {
     this.setState({
       dontUseScrubberView: true
     });
   }
 
-  render() {
-console.log('ImageScrubber PROPS>>>', this.props)
+  render () {
+    console.log('ImageScrubber PROPS>>>', this.props);
     const {
       scrubberModalMode,
       testImageType,
@@ -99,7 +99,7 @@ console.log('ImageScrubber PROPS>>>', this.props)
 
     const scrubberTestImageSlug = this.props[testImageType];
 
-    function getDiverged(arg) {
+    function getDiverged (arg) {
       if (divergedImage) {
         showScrubberDivergedImage(divergedImage);
         return;
@@ -112,18 +112,23 @@ console.log('ImageScrubber PROPS>>>', this.props)
       const w = refImg.width;
       const refCtx = imageToCanvasContext(refImg);
       const testCtx = imageToCanvasContext(testImg);
-      
-      console.log('starting diverged>>', new Date())
-      const divergedImgData = diverged(getImgDataDataFromContext(refCtx), getImgDataDataFromContext(testCtx), h, w);
 
-      let clampedImgData = getEmptyImgData(h, w)
+      console.log('starting diverged>>', new Date());
+      const divergedImgData = diverged(
+        getImgDataDataFromContext(refCtx),
+        getImgDataDataFromContext(testCtx),
+        h,
+        w
+      );
+
+      let clampedImgData = getEmptyImgData(h, w);
       for (var i = divergedImgData.length - 1; i >= 0; i--) {
-          clampedImgData.data[i] = divergedImgData[i];
+        clampedImgData.data[i] = divergedImgData[i];
       }
       var lcsDiffResult = imageToCanvasContext(null, w, h);
       lcsDiffResult.putImageData(clampedImgData, 0, 0);
 
-      const divergedImageResult = lcsDiffResult.canvas.toDataURL("image/png");
+      const divergedImageResult = lcsDiffResult.canvas.toDataURL('image/png');
       showScrubberDivergedImage(divergedImageResult);
     }
 
@@ -139,7 +144,7 @@ console.log('ImageScrubber PROPS>>>', this.props)
               >
                 REFERENCE
               </ScrubberViewBtn>
-              
+
               <ScrubberViewBtn
                 selected={scrubberModalMode === 'SHOW_SCRUBBER_TEST_IMAGE'}
                 onClick={showScrubberTestImage}
@@ -154,12 +159,12 @@ console.log('ImageScrubber PROPS>>>', this.props)
                 DIFF
               </ScrubberViewBtn>
 
-{/*              <ScrubberViewBtn
+              {/*              <ScrubberViewBtn
                 selected={scrubberModalMode === 'SHOW_SCRUBBER_DIVERGED_IMAGE'}
                 onClick={getDiverged}
               >
                 DIVERGED
-              </ScrubberViewBtn>*/}
+              </ScrubberViewBtn> */}
 
               <ScrubberViewBtn
                 selected={scrubberModalMode === 'SCRUB'}
@@ -206,8 +211,8 @@ console.log('ImageScrubber PROPS>>>', this.props)
               onError={this.handleLoadingError}
             />
             <img
-              id="scrubberTestImage" 
-              className="testImage" 
+              id="scrubberTestImage"
+              className="testImage"
               src={scrubberTestImageSlug}
             />
             <SliderBar className="slider" />
@@ -221,28 +226,27 @@ console.log('ImageScrubber PROPS>>>', this.props)
 /**
  * ========= DIVERGED HELPERS ========
  */
-function getImgDataDataFromContext(context) {
-    return context.getImageData(0, 0, context.canvas.width, context.canvas.height).data;
+function getImgDataDataFromContext (context) {
+  return context.getImageData(0, 0, context.canvas.width, context.canvas.height)
+    .data;
 }
 
-function getEmptyImgData(h, w) {
-    var o = imageToCanvasContext(null, h, w);
-    return o.createImageData(w, h);
+function getEmptyImgData (h, w) {
+  var o = imageToCanvasContext(null, h, w);
+  return o.createImageData(w, h);
 }
 
-function imageToCanvasContext(_img, w, h) {
-    let img = _img;
-    if (!_img) {
-        img = { width: w, height: h };
-    }
-    const canvas = document.createElement("canvas");
-    canvas.width = img.width;
-    canvas.height = img.height;
-    const context = canvas.getContext("2d");
-    if (_img) {
-        context.drawImage(img, 0, 0);
-    }
-    return context;
+function imageToCanvasContext (_img, w, h) {
+  let img = _img;
+  if (!_img) {
+    img = { width: w, height: h };
+  }
+  const canvas = document.createElement('canvas');
+  canvas.width = img.width;
+  canvas.height = img.height;
+  const context = canvas.getContext('2d');
+  if (_img) {
+    context.drawImage(img, 0, 0);
+  }
+  return context;
 }
-
-

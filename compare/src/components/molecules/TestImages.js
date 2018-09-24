@@ -14,7 +14,7 @@ const ImagesWrapper = styled.div`
 `;
 
 class TestImages extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
 
     this.state = {
@@ -22,13 +22,13 @@ class TestImages extends React.Component {
     };
   }
 
-  onImageClick(img) {
+  onImageClick (img) {
     let { openModal } = this.props;
     this.props.info.targetImg = img;
     openModal(this.props.info);
   }
 
-  render() {
+  render () {
     let { reference, test } = this.props.info;
     let { status, settings } = this.props;
 
