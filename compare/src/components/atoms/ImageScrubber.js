@@ -139,24 +139,28 @@ console.log('ImageScrubber PROPS>>>', this.props)
               >
                 REFERENCE
               </ScrubberViewBtn>
+              
               <ScrubberViewBtn
                 selected={scrubberModalMode === 'SHOW_SCRUBBER_TEST_IMAGE'}
                 onClick={showScrubberTestImage}
               >
                 TEST
               </ScrubberViewBtn>
+
               <ScrubberViewBtn
                 selected={scrubberModalMode === 'SHOW_SCRUBBER_DIFF_IMAGE'}
                 onClick={showScrubberDiffImage}
               >
                 DIFF
               </ScrubberViewBtn>
-              <ScrubberViewBtn
+
+{/*              <ScrubberViewBtn
                 selected={scrubberModalMode === 'SHOW_SCRUBBER_DIVERGED_IMAGE'}
                 onClick={getDiverged}
               >
                 DIVERGED
-              </ScrubberViewBtn>
+              </ScrubberViewBtn>*/}
+
               <ScrubberViewBtn
                 selected={scrubberModalMode === 'SCRUB'}
                 onClick={showScrubber}

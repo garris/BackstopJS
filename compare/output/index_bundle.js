@@ -33818,14 +33818,6 @@ var ImageScrubber = function (_React$Component) {
             _react2.default.createElement(
               ScrubberViewBtn,
               {
-                selected: scrubberModalMode === 'SHOW_SCRUBBER_DIVERGED_IMAGE',
-                onClick: getDiverged
-              },
-              'DIVERGED'
-            ),
-            _react2.default.createElement(
-              ScrubberViewBtn,
-              {
                 selected: scrubberModalMode === 'SCRUB',
                 onClick: showScrubber
               },
