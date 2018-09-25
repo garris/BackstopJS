@@ -13,11 +13,11 @@ const InputWrapper = styled.div`
 `;
 
 class TextSearch extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
   }
 
-  onChange(event) {
+  onChange (event) {
     let value = event.target.value;
 
     if (value.length > 0) {
@@ -27,7 +27,7 @@ class TextSearch extends React.Component {
     }
   }
 
-  render() {
+  render () {
     return (
       <InputWrapper>
         <InputTextSearch onChange={this.onChange.bind(this)} />

@@ -1,3 +1,8 @@
 #!/bin/bash
+BACKSTOPJS_VERSION=$(grep -Po '(?<="version": ")[^"]*' $(dirname "$0")/../../package.json)
+
+docker tag $IMAGE_NAME $DOCKER_REPO:$BACKSTOPJS_VERSION
+docker push $DOCKER_REPO:$BACKSTOPJS_VERSION
+
 docker tag $IMAGE_NAME $DOCKER_REPO:latest
 docker push $DOCKER_REPO:latest

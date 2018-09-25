@@ -219,6 +219,15 @@ module.exports = {
     html_report: 'backstop_data/html_report',
     ci_report: 'backstop_data/ci_report'
   },
+  resembleOptions: {
+    output: {
+      errorColor: {
+        red: 156,
+        green: 54,
+        blue: 0
+      }
+    }
+  },
   report: ['browser'],
   engine: ENGINE,
   engineOptions: {

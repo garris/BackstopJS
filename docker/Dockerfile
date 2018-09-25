@@ -1,4 +1,4 @@
-FROM node:8.5.0
+FROM node:8.12.0
 
 ARG BACKSTOPJS_VERSION
 

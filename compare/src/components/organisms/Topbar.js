@@ -26,7 +26,7 @@ const Separator = styled.div`
 `;
 
 export default class Topbar extends React.Component {
-  render() {
+  render () {
     return (
       <TopbarWrapper>
         <SuiteNameContainer />

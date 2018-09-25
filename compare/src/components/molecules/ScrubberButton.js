@@ -31,23 +31,23 @@ const ButtonSD = styled.button`
   &:hover {
     cursor: pointer;
   }
-  
+
   @media print {
     display: none;
   }
 `;
 
 class ScrubberButton extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
   }
 
-  onClick() {
+  onClick () {
     let { openModal } = this.props;
     openModal(this.props.info);
   }
 
-  render() {
+  render () {
     return (
       <Wrapper>
         <ButtonSD

@@ -1,3 +1,5 @@
+const version = require('../../package').version;
+
 module.exports.shouldRunDocker = (config) => config.args.docker;
 
 module.exports.runDocker = (config, backstopCommand) => {
@@ -6,18 +8,18 @@ module.exports.runDocker = (config, backstopCommand) => {
                   .slice(3)
                   .join('" "') // in case of spaces in a command
                   .replace(/--docker/, '--moby');
-    
-    // Calling BackstopJS from node will add a config.args to the config object.
+
+    // When calling BackstopJS from node config props will be overridden by the passed config object. e.g. backstop('test', {thisProp:'will be passed to config.args'})
     // NOTE: passing config file name is supported -- passing actual config data is not supported.
     let configArgs = '';
-    if (config.args) {    
+    if (config.args && !config.args._) {
       for (var prop in config.args) {
-        configArgs += ` "--${prop}=${config.args[prop]}"`
+        configArgs += ` "--${prop}=${config.args[prop]}"`;
       }
       configArgs = configArgs.replace(/--docker/, '--moby');
     }
 
-    const DOCKER_COMMAND = `docker run --rm -it --mount type=bind,source="${process.cwd()}",target=/src backstopjs/backstopjs ${backstopCommand}${configArgs} "${passAlongArgs}"`;
+    const DOCKER_COMMAND = `docker run --rm -it --mount type=bind,source="${process.cwd()}",target=/src backstopjs/backstopjs:${version} ${backstopCommand}${configArgs} "${passAlongArgs}"`;
     const { spawn } = require('child_process');
     console.log('Delegating command to Docker...', DOCKER_COMMAND);
 

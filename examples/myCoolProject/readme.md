@@ -1,7 +1,7 @@
 
 ### My Cool Project
 
-do `backstop genConfig`  then replace scenario with...
+do `backstop init`  then replace scenario with...
 
 ```
     {

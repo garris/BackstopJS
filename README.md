@@ -13,7 +13,7 @@ BackstopJS automates visual regression testing of your responsive web UI by comp
 	* reference, test, visual diff inspector
 	* cool scrubber thingy
 	
-![BakcstopJS browser report](http://garris.github.io/BackstopJS/assets/backstopjs_new_ui_.png)
+![BackstopJS browser report](http://garris.github.io/BackstopJS/assets/backstopjs_new_ui_.png)
 
 - Integrated Docker rendering -- to eliminate cross-platform rendering shenanigans
 - CLI reports
@@ -24,7 +24,7 @@ BackstopJS automates visual regression testing of your responsive web UI by comp
 - Run globally or locally as a standalone package app or `require('backstopjs')` right into your node app
 - Incredibly easy to use: just 3 commands go a long long way!
 
-![BakcstopJS cli report](http://garris.github.io/BackstopJS/assets/cli-report.png)
+![BackstopJS cli report](http://garris.github.io/BackstopJS/assets/cli-report.png)
 
 
 ## Install BackstopJS now
@@ -130,7 +130,7 @@ Pass a `--config=<configFilePathStr>` argument to test using a different config 
 
 Pass a `--filter=<scenarioLabelRegex>` argument to just run scenarios matching your scenario label.
 
-Pass a `--docker` flag to render your test in a Docker container -- this will help with consistency if you are attempting to compare references across multiple enviornments.
+Pass a `--docker` flag to render your test in a Docker container -- this will help with consistency if you are attempting to compare references across multiple environments.
 
 ### Approving changes
 
@@ -416,32 +416,28 @@ at the root of your config or in your scenario...
 Inside `filename.js`, structure it like this:
 
 ```js
-// onBefore example
-module.exports = function(casper, scenario, vp) {
-  // scenario is the current scenario object being run from your backstop config
-  // vp is the current viewport object being run from your backstop config
+// onBefore example (puppeteer engine)
+module.exports = async (page, scenario, vp) => {
+  await require('./loadCookies')(page, scenario);
 
-  // Example: setting cookies
-  casper.echo("Setting cookies");
-  casper.then(function(){
-    casper.page.addCookie({name: 'cookieName', value: 'cookieValue'});
-  });
-}
+  // Example: set user agent
+  await page.setUserAgent('some user agent string here');
 
-// onReady example
-module.exports = function(casper, scenario, vp) {
-  // Example: Adding script delays to allow for things like CSS transitions to complete.
-  casper.echo( 'Clicking button' );
-  casper.click( '.toggle' );
-  casper.wait( 250 );
+};
+
+
+// onReady example (puppeteer engine)
+module.exports = async (page, scenario, vp) => {
+  console.log('SCENARIO > ' + scenario.label);
+  await require('./clickAndHoverHelper')(page, scenario);
 
   // Example: changing behavior based on config values
   if (vp.label === 'phone') {
-    casper.echo( 'doing stuff for just phone viewport here' );
+    console.log( 'doing stuff for just phone viewport here' );
   }
 
-  // ...do other cool stuff here, see Casperjs.org for a full API and many ideas.
-}
+  // add more stuff here...
+};
 ```
 
 #### Setting the base path for custom onBefore and onReady scripts
@@ -624,11 +620,11 @@ For more info, see the [Chromy script documentation](https://github.com/OnetapIn
 
 
 ### Using Docker for testing across different environments
-We've found that different enviornments can render the same webpage in slightly different ways -- in particular with text. E.G. see the text in this example rendering slightly differently between Linux and Mac...
+We've found that different environments can render the same webpage in slightly different ways -- in particular with text. E.G. see the text in this example rendering slightly differently between Linux and Mac...
 
 ![BakcstopJS OS rendering differences](http://garris.github.io/BackstopJS/assets/osRenderDifference.png)
 
-You can make this issue go away by rendering in a BackstopJS Docker container.  Lucky for you we've made it incredbily easy to do.  
+You can make this issue go away by rendering in a BackstopJS Docker container.  Lucky for you we've made it incredibly easy to do.  
 
 First, go ahead and install docker on your machine from the [Docker Downloads Page](https://store.docker.com/search?type=edition&offering=community&architecture=amd64).
 
@@ -900,7 +896,12 @@ Here's some suggestions if you want to work on the HTML report locally...
 ### SANITY TEST: Does Backstop work in my environment?
 Run the following command from your Desktop, home or project directory to check that Backstop will install and run in your environment. _Please make sure you have node version 8 or above. Windows users: Powershell is recommended._
 ```
-mkdir backstopSanityTest; cd backstopSanityTest; npm install backstopjs; node ./node_modules/backstopjs/cli/index.js test --config=node_modules/backstopjs/test/configs/backstop
+mkdir backstopSanityTest; cd backstopSanityTest; npm install backstopjs; node ./node_modules/backstopjs/cli/ init; node ./node_modules/backstopjs/cli/ test
+
+```
+Here is a sanity test which also uses docker...
+```
+mkdir backstopSanityTest; cd backstopSanityTest; npm install backstopjs; node ./node_modules/backstopjs/cli/ init; node ./node_modules/backstopjs/cli/ test --docker
 ```
 
 ### SMOKE TEST: Are backstop features working ok?

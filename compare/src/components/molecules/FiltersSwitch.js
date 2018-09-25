@@ -13,7 +13,7 @@ const ButtonsWrapper = styled.div`
   height: 100%;
 `;
 
-function ButtonsFilter(props) {
+function ButtonsFilter (props) {
   const availableStatus = props.availableStatus;
 
   const ListButton = availableStatus.map(status => (
@@ -34,11 +34,11 @@ function ButtonsFilter(props) {
 }
 
 class FiltersSwitch extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
   }
 
-  render() {
+  render () {
     let tests = this.props.tests;
     let availableStatus = this.props.availableStatus;
 
