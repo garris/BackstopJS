@@ -44,16 +44,16 @@ const visibilitySensorProps = {
 };
 
 class ImagePreview extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.state = {
-      isVisible: false,
+      isVisible: false
     };
     this.onLoadError = this.onLoadError.bind(this);
     this.onChange = this.onChange.bind(this);
   }
 
-  onChange(isVisible) {
+  onChange (isVisible) {
     if (isVisible && !this.state.isVisible) {
       console.log('setting state to visible');
       this.setState({
@@ -62,13 +62,13 @@ class ImagePreview extends React.Component {
     }
   }
 
-  onLoadError() {
+  onLoadError () {
     this.setState({
       imgLoadError: true
     });
   }
 
-  render() {
+  render () {
     let { hidden, settings, label, src } = this.props;
     if (!src || src === '../..' || this.state.imgLoadError) {
       src = BASE64_PNG_STUB;
@@ -81,7 +81,9 @@ class ImagePreview extends React.Component {
         </Wrapper>
       );
     }
-    return <VisibilitySensor {...visibilitySensorProps} onChange={this.onChange} />;
+    return (
+      <VisibilitySensor {...visibilitySensorProps} onChange={this.onChange} />
+    );
   }
 }
 

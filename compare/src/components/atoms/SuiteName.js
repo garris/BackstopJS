@@ -13,7 +13,7 @@ const SuiteNameTitle = styled.h1`
 `;
 
 class SuiteName extends React.Component {
-  render() {
+  render () {
     return <SuiteNameTitle>{this.props.suiteName} Report</SuiteNameTitle>;
   }
 }

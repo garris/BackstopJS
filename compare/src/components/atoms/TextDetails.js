@@ -39,7 +39,7 @@ const DetailsPanel = styled.div`
 `;
 
 class TextDetails extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
 
     this.state = {
@@ -50,7 +50,7 @@ class TextDetails extends React.Component {
     this.hidePanel = this.hidePanel.bind(this);
   }
 
-  showPanel() {
+  showPanel () {
     const { settings } = this.props;
     if (!settings.textInfo) {
       this.setState({
@@ -59,13 +59,13 @@ class TextDetails extends React.Component {
     }
   }
 
-  hidePanel() {
+  hidePanel () {
     this.setState({
       showPanel: false
     });
   }
 
-  render() {
+  render () {
     const {
       label,
       fileName,
