@@ -4,10 +4,13 @@ module.exports.shouldRunDocker = (config) => config.args.docker;
 
 module.exports.runDocker = (config, backstopCommand) => {
   if (config.args.docker) {
-    const passAlongArgs = process.argv
-                  .slice(3)
-                  .join('" "') // in case of spaces in a command
-                  .replace(/--docker/, '--moby');
+    // 0th element is node, 1st is backstop, 2nd may be command or an option like --config
+    const args = process.argv.slice(2);
+    args.splice(args.indexOf(backstopCommand), 1);
+
+    const passAlongArgs = args
+      .join('" "') // in case of spaces in a command
+      .replace(/--docker/, '--moby');
 
     // When calling BackstopJS from node config props will be overridden by the passed config object. e.g. backstop('test', {thisProp:'will be passed to config.args'})
     // NOTE: passing config file name is supported -- passing actual config data is not supported.
