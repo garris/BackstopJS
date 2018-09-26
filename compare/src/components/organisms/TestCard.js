@@ -10,7 +10,6 @@ import NavButtons from '../atoms/NavButtons';
 
 // molecules
 import TestImages from '../molecules/TestImages';
-import ScrubberButton from '../molecules/ScrubberButton';
 
 const CardWrapper = styled.div`
   position: relative;

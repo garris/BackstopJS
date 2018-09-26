@@ -32,11 +32,6 @@ const scrubber = (state = {}, action) => {
         targetImgId = action.value.targetImg.id;
       } catch (err) {}
 
-      let scrubberModalMode = '';
-      try {
-        scrubberModalMode = action.value.targetImg.id;
-      } catch (err) {}
-
       return Object.assign({}, state, {
         position: getPosFromImgId(targetImgId),
         visible: true,

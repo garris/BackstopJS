@@ -3,8 +3,6 @@ import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { openModal } from '../../actions';
 
-import { colors, shadows } from '../../styles';
-
 // atoms
 import ImagePreview from '../atoms/ImagePreview';
 

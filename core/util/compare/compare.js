@@ -23,7 +23,7 @@ function compare (data) {
         return sendMessage(pair);
       });
     });
-};
+}
 
 function sendMessage (data) {
   process.send(data);

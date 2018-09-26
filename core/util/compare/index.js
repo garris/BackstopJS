@@ -61,10 +61,10 @@ function compareImages (referencePath, testPath, pair, resembleOutputSettings, T
   return new Promise(function (resolve, reject) {
     var worker = cp.fork(require.resolve('./compare'));
     worker.send({
-      referencePath          : referencePath,
-      testPath               : testPath,
-      resembleOutputSettings : resembleOutputSettings,
-      pair                   : pair
+      referencePath: referencePath,
+      testPath: testPath,
+      resembleOutputSettings: resembleOutputSettings,
+      pair: pair
     });
 
     worker.on('message', function (data) {
@@ -72,7 +72,7 @@ function compareImages (referencePath, testPath, pair, resembleOutputSettings, T
       Test.status = data.status;
       pair.diff = data.diff;
 
-      if (data.status == 'fail') {
+      if (data.status === 'fail') {
         pair.diffImage = data.diffImage;
         logger.error('ERROR { requireSameDimensions: ' + (data.requireSameDimensions ? 'true' : 'false') + ', size: ' + (data.isSameDimensions ? 'ok' : 'isDifferent') + ', content: ' + data.diff.misMatchPercentage + '%, threshold: ' + pair.misMatchThreshold + '% }: ' + pair.label + ' ' + pair.fileName);
       } else {

@@ -9,8 +9,6 @@ import ButtonSettings from '../atoms/ButtonSettings';
 // molecules
 import SettingsPopup from './SettingsPopup';
 
-import { colors, fonts } from '../../styles';
-
 const SettingsWrapper = styled.div`
   flex: 0 0 auto;
   height: 100%;
