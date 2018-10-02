@@ -17,7 +17,7 @@
     "test": "node ./cli/index.js test",
     "openReport": "node ./cli/index.js openReport",
     "echo": "node ./cli/index.js echo",
-    "unit-test": "mocha --reporter spec --recursive test/cli",
+    "unit-test": "mocha --reporter spec --recursive 'test/**/*_spec.js'",
     "precommit": "lint-staged",
     "build-compare": "webpack --config ./compare/webpack.config.js",
     "dev-compare": "webpack-dev-server --content-base ./compare/output --config ./compare/webpack.config.js",
