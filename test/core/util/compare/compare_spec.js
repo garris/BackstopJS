@@ -1,6 +1,5 @@
 const mockery = require('mockery');
 const sinon = require('sinon');
-const assert = require('assert');
 
 describe('compare', function () {
   var compare;

@@ -1,12 +1,8 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import styled from 'styled-components';
 import TwentyTwenty from 'backstop-twentytwenty';
 import { colors, fonts, shadows } from '../../styles';
 import diverged from 'diverged';
-
-const BASE64_PNG_STUB =
-  'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
 
 const ScrubberViewBtn = styled.button`
   margin: 1em;
@@ -99,7 +95,7 @@ export default class ImageScrubber extends React.Component {
 
     const scrubberTestImageSlug = this.props[testImageType];
 
-    function getDiverged (arg) {
+    function getDiverged (arg) { // eslint-disable-line
       if (divergedImage) {
         showScrubberDivergedImage(divergedImage);
         return;

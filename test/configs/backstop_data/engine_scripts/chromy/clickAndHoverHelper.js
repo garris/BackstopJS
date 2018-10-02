@@ -27,7 +27,7 @@ module.exports = function (chromy, scenario) {
     chromy
       .wait(scrollToSelector)
       .evaluate(`window._scrollToSelector = '${scrollToSelector}'`)
-      .evaluate(function() {
+      .evaluate(function () {
         document.querySelector(window._scrollToSelector).scrollIntoView();
       });
   }

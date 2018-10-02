@@ -17,6 +17,6 @@ describe('cli', function () {
       done();
       return Promise.resolve();
     });
-    require('../../cli/index')
+    require('../../cli/index');
   });
 });
