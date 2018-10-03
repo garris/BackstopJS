@@ -35,7 +35,7 @@ describe('compare', function () {
 
     return compare('img1.png', 'img2.png', 0, {});
   });
-  
+
   it.skip('should reject if compare-hashes and compare-resemble fail', function (cb) {
     compareHashes.returns(Promise.reject());
     compareResemble.returns(Promise.reject());
