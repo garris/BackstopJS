@@ -43,15 +43,10 @@ function loadProjectConfig (command, options, config) {
       }
       userConfig = options.config;
     } else if (config.backstopConfigFileName) {
-      try {
-        // Remove from cache config content
-        +delete require.cache[require.resolve(config.backstopConfigFileName)];
-        console.log('Loading config: ', config.backstopConfigFileName, '\n');
-        userConfig = require(config.backstopConfigFileName);
-      } catch (e) {
-        console.error('Error ' + e);
-        process.exit(1);
-      }
+      // Remove from cache config content
+      delete require.cache[require.resolve(config.backstopConfigFileName)];
+      console.log('Loading config: ', config.backstopConfigFileName, '\n');
+      userConfig = require(config.backstopConfigFileName);
     }
   }
 
