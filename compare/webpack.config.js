@@ -8,8 +8,7 @@ module.exports = {
   },
   module: {
     rules: [
-      { test: /\.js$/, loader: 'babel-loader', exclude: /node_modules/ },
-      { test: /\.jsx$/, loader: 'babel-loader', exclude: /node_modules/ },
+      { test: /\.(js|jsx)$/, loader: 'babel-loader', exclude: /node_modules/ },
       { test: /\.(png|jpg|gif)$/, loader: 'url-loader', options: { limit: 8192 } }
     ]
   }
