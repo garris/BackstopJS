@@ -140,10 +140,10 @@ function delegateScenarios (config) {
       scenarioViews.forEach((scenarioView, i) => {
         scenarioView.assignedPort = freeports[i];
       });
-      return pMap(scenarioViews, runChromy, {concurrency: asyncCaptureLimit});
+      return pMap(scenarioViews, runChromy, { concurrency: asyncCaptureLimit });
     });
   } else if (config.engine.startsWith('puppet')) {
-    return pMap(scenarioViews, runPuppet, {concurrency: asyncCaptureLimit});
+    return pMap(scenarioViews, runPuppet, { concurrency: asyncCaptureLimit });
   } else {
     logger.error('Engine not known to Backstop!');
   }

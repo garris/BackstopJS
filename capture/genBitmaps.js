@@ -33,7 +33,7 @@ if (!config.paths) {
   config.paths = {};
 }
 
-var outputFormat = '.' + (config.outputFormat && config.outputFormat.match(/jpg|jpeg/) || 'png');
+var outputFormat = '.' + ((config.outputFormat && config.outputFormat.match(/jpg|jpeg/)) || 'png');
 var bitmapsReferencePath = config.paths.bitmaps_reference || 'bitmaps_reference';
 var bitmapsTestPath = config.paths.bitmaps_test || 'bitmaps_test';
 var casperScriptsPath = config.paths.engine_scripts || config.paths.casper_scripts || null;
@@ -43,7 +43,7 @@ var scenarios = config.scenarios || config.grabConfigs;
 var configId = config.id || genHash(config.backstopConfigFileName);
 var fileNameTemplate = config.fileNameTemplate || '{configId}_{scenarioLabel}_{selectorIndex}_{selectorLabel}_{viewportIndex}_{viewportLabel}';
 
-var compareConfig = {testPairs: []};
+var compareConfig = { testPairs: [] };
 
 var casper = require('casper').create({
   logLevel: config.debug ? 'debug' : 'info',
@@ -365,7 +365,7 @@ casper.run(function () {
 });
 
 function complete () {
-  var compareConfigJSON = {compareConfig: compareConfig};
+  var compareConfigJSON = { compareConfig: compareConfig };
   fs.write(comparePairsFileName, JSON.stringify(compareConfigJSON, null, 2), 'w');
   console.log('Comparison config file updated.');
 }
@@ -422,5 +422,5 @@ function genHash (str) {
 }
 
 function makeSafe (str) {
-  return str && str.replace(/[ /]/g, '_') || '';
+  return (str && str.replace(/[ /]/g, '_')) || '';
 }

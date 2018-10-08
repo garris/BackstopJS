@@ -25,8 +25,7 @@ const CardWrapper = styled.div`
     display: block;
     width: 8px;
     height: 100%;
-    background-color: ${props =>
-      props.status === 'pass' ? colors.green : colors.red};
+    background-color: ${props => props.status === 'pass' ? colors.green : colors.red};
     position: absolute;
     top: 0;
     left: 0;

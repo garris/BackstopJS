@@ -14,13 +14,13 @@ module.exports = {
       fs.readdir(config.bitmaps_test, (err, list) => {
         if (err) {
           console.log(err.stack);
-          reject();
+          reject(err);
         }
         var src = path.join(config.bitmaps_test, list[list.length - 1]);
         return fs.readdir(src, (err, files) => {
           if (err) {
             console.log(err.stack);
-            reject();
+            reject(err);
           }
           console.log('The following files will be promoted to reference...');
 

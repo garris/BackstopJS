@@ -91,7 +91,7 @@ module.exports = function (config) {
   var asyncCompareLimit = config.asyncCompareLimit || ASYNC_COMPARE_LIMIT;
   report.id = config.id;
 
-  return map(compareConfig.testPairs, pair => comparePair(pair, report, config, compareConfig), {concurrency: asyncCompareLimit})
+  return map(compareConfig.testPairs, pair => comparePair(pair, report, config, compareConfig), { concurrency: asyncCompareLimit })
     .then(
       () => report,
       e => logger.error('The comparison failed with error: ' + e)
