@@ -59,6 +59,6 @@ describe('make config', function () {
     assert(actualConfig.captureConfigFileName);
     delete actualConfig.captureConfigFileName;
 
-    assert.deepStrictEqual(actualConfig, expectedConfig);
+    assert.deepEqual(actualConfig, expectedConfig);
   });
 });
