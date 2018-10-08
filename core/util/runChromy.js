@@ -226,15 +226,15 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   if (scenario.hasOwnProperty('removeSelectors')) {
     scenario.removeSelectors.forEach(function (selector) {
       chromy
-      .evaluate(`window._backstopSelector = '${selector}'`)
-      .evaluate(
-        () => {
-          Array.prototype.forEach.call(document.querySelectorAll(window._backstopSelector), function (s, j) {
-            s.style.display = 'none';
-            s.classList.add('__86d');
-          });
-        }
-      );
+        .evaluate(`window._backstopSelector = '${selector}'`)
+        .evaluate(
+          () => {
+            Array.prototype.forEach.call(document.querySelectorAll(window._backstopSelector), function (s, j) {
+              s.style.display = 'none';
+              s.classList.add('__86d');
+            });
+          }
+        );
     });
   }
 
@@ -263,14 +263,14 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   if (scenario.hasOwnProperty('hideSelectors')) {
     scenario.hideSelectors.forEach(function (selector) {
       chromy
-      .evaluate(`window._backstopSelector = '${selector}'`)
-      .evaluate(
-        () => {
-          Array.prototype.forEach.call(document.querySelectorAll(window._backstopSelector), function (s, j) {
-            s.style.visibility = 'hidden';
-          });
-        }
-      );
+        .evaluate(`window._backstopSelector = '${selector}'`)
+        .evaluate(
+          () => {
+            Array.prototype.forEach.call(document.querySelectorAll(window._backstopSelector), function (s, j) {
+              s.style.visibility = 'hidden';
+            });
+          }
+        );
     });
   }
   // CREATE SCREEN SHOTS AND TEST COMPARE CONFIGURATION (CONFIG FILE WILL BE SAVED WHEN THIS PROCESS RETURNS)
@@ -339,9 +339,9 @@ function delegateSelectors (chromy, scenario, viewport, variantOrScenarioLabelSa
   const configId = config.id || engineTools.genHash(config.backstopConfigFileName);
   const bitmapsTestPath = config.paths.bitmaps_test || DEFAULT_BITMAPS_TEST_DIR;
   const bitmapsReferencePath = config.paths.bitmaps_reference || DEFAULT_BITMAPS_REFERENCE_DIR;
-  const outputFileFormatSuffix = '.' + (config.outputFormat && config.outputFormat.match(/jpg|jpeg/) || 'png');
+  const outputFileFormatSuffix = '.' + ((config.outputFormat && config.outputFormat.match(/jpg|jpeg/)) || 'png');
 
-  let compareConfig = {testPairs: []};
+  let compareConfig = { testPairs: [] };
   let captureDocument = false;
   let captureViewport = false;
   let captureList = [];
@@ -508,4 +508,3 @@ function captureScreenshot (chromy, filePath_, selector, selectorMap, config, se
 //   }
 //   return string.replace(/'/g, '\\\'')
 // }
-
