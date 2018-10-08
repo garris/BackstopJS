@@ -5,8 +5,8 @@ module.exports = function (casper, scenario) {
   var cookiePath = scenario.cookiePath;
 
   // READ COOKIES FROM FILE IF EXISTS
-  if (fs.exists(cookiePath)) {
-    cookies = JSON.parse(fs.read(cookiePath));
+  if (fs.existsSync(cookiePath)) {
+    cookies = JSON.parse(fs.readFileSync(cookiePath));
   }
 
   casper.page.cookies = cookies;
