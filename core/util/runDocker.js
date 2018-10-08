@@ -27,7 +27,7 @@ module.exports.runDocker = (config, backstopCommand) => {
     console.log('Delegating command to Docker...', DOCKER_COMMAND);
 
     return new Promise((resolve, reject) => {
-      const dockerProcess = spawn(DOCKER_COMMAND, {stdio: 'inherit', shell: true});
+      const dockerProcess = spawn(DOCKER_COMMAND, { stdio: 'inherit', shell: true });
       dockerProcess.on('error', err => reject(err));
       dockerProcess.on('exit', function (code, signal) {
         if (code === 0) {

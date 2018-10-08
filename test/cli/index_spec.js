@@ -3,7 +3,7 @@ var assert = require('assert');
 
 describe('cli', function () {
   before(function () {
-    mockery.enable({warnOnUnregistered: false});
+    mockery.enable({ warnOnUnregistered: false });
   });
 
   after(function () {
@@ -13,7 +13,7 @@ describe('cli', function () {
   it('should call the runner without custom options correctly', function (done) {
     process.argv = ['node', 'backstop', 'test'];
     mockery.registerMock('../core/runner', function (command, options) {
-      assert.equal(command, 'test');
+      assert.strictEqual(command, 'test');
       done();
       return Promise.resolve();
     });
