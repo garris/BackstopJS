@@ -54,7 +54,6 @@
     "eslint-plugin-react": "^7.11.1",
     "eslint-plugin-standard": "^4.0.0",
     "file-loader": "^2.0.0",
-    "gulp": "^3.9.1",
     "lint-staged": "^4.3.0",
     "mocha": "^5.2.0",
     "mockery": "^1.4.0",
