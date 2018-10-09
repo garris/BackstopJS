@@ -219,7 +219,11 @@ module.exports = {
     html_report: 'backstop_data/html_report',
     ci_report: 'backstop_data/ci_report'
   },
-  report: ['browser'],
+  report: ['CI'],
+  ci: {
+    format: 'junit',
+    testSuiteName: 'backstopJS'
+  },
   engine: ENGINE,
   engineOptions: {
     args: ['--no-sandbox']

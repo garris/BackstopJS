@@ -81,7 +81,7 @@
     "diverged": "^0.1.2",
     "fs-extra": "^0.30.0",
     "jump.js": "^1.0.2",
-    "junitwriter": "~0.3.1",
+    "junit-report-builder": "^1.3.1",
     "lodash": "^4.17.11",
     "minimist": "^1.2.0",
     "node-resemble-js": "^0.2.0",
