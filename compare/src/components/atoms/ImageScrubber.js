@@ -30,10 +30,20 @@ const ScrubberViewBtn = styled.button`
   }
 
   &.loadingDiverged {
-    animation: blink normal 1200ms infinite ease-in-out; 
+    animation: blink normal 1200ms infinite ease-in-out;
+    background-color: green;
   }
-  @keyframes blink {0%{opacity:1;} 50%{opacity:0.75;} 100%{opacity:1;}}
-
+  @keyframes blink {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.75;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
 `;
 
 const Wrapper = styled.div`
@@ -112,14 +122,20 @@ export default class ImageScrubber extends React.Component {
       return /remote/.test(location.search);
     }
 
-    // TODO: halp. i don't haz context
+    // TODO: halp. i don't haz context.
     const that = this;
-    // TODO: concurrency?
+
     function divergedWorker () {
+      if (that.state.isLoading) {
+        console.error('Diverged process is already running. Please hang on.');
+        return;
+      }
+
       if (divergedImage) {
         showScrubberDivergedImage(divergedImage);
         return;
       }
+      
       showScrubberDivergedImage('');
       that.loadingDiverge(true);
 
@@ -129,23 +145,32 @@ export default class ImageScrubber extends React.Component {
       const w = refImg.width;
 
       const worker = new Worker('divergedWorker.js');
-      worker.addEventListener('close', (e) => {
-        console.log('Diverged is cleaned up.', e);
-      });
 
-      worker.addEventListener('message', function (result) {
-        const divergedImgData = result.data;
-        let clampedImgData = getEmptyImgData(h, w);
-        for (let i = divergedImgData.length - 1; i >= 0; i--) {
-          clampedImgData.data[i] = divergedImgData[i];
-        }
-        const lcsDiffResult = imageToCanvasContext(null, h, w);
-        lcsDiffResult.putImageData(clampedImgData, 0, 0);
+      worker.addEventListener(
+        'message',
+        function (result) {
+          const divergedImgData = result.data;
+          let clampedImgData = getEmptyImgData(h, w);
+          for (let i = divergedImgData.length - 1; i >= 0; i--) {
+            clampedImgData.data[i] = divergedImgData[i];
+          }
+          const lcsDiffResult = imageToCanvasContext(null, h, w);
+          lcsDiffResult.putImageData(clampedImgData, 0, 0);
 
-        const divergedImageResult = lcsDiffResult.canvas.toDataURL('image/png');
-        showScrubberDivergedImage(divergedImageResult);
+          const divergedImageResult = lcsDiffResult.canvas.toDataURL(
+            'image/png'
+          );
+          showScrubberDivergedImage(divergedImageResult);
+          that.loadingDiverge(false);
+        },
+        false
+      );
+
+      worker.addEventListener('error', function (error) {
+        showScrubberDivergedImage('');
         that.loadingDiverge(false);
-      }, false);
+        console.error(error);
+      });
 
       worker.postMessage({
         divergedInput: [
@@ -156,36 +181,6 @@ export default class ImageScrubber extends React.Component {
         ]
       });
     }
-
-    // function getDiverged () {
-    //   if (divergedImage) {
-    //     showScrubberDivergedImage(divergedImage);
-    //     return;
-    //   }
-
-    //   const refImg = document.images.isolatedRefImage;
-    //   const testImg = document.images.isolatedTestImage;
-    //   const h = refImg.height;
-    //   const w = refImg.width;
-
-    //   console.log('starting diverged>>', new Date().getTime());
-    //   const divergedImgData = diverged(
-    //     getImgDataDataFromContext(imageToCanvasContext(refImg)),
-    //     getImgDataDataFromContext(imageToCanvasContext(testImg)),
-    //     h,
-    //     w
-    //   );
-
-    //   let clampedImgData = getEmptyImgData(h, w);
-    //   for (var i = divergedImgData.length - 1; i >= 0; i--) {
-    //     clampedImgData.data[i] = divergedImgData[i];
-    //   }
-    //   var lcsDiffResult = imageToCanvasContext(null, h, w);
-    //   lcsDiffResult.putImageData(clampedImgData, 0, 0);
-
-    //   const divergedImageResult = lcsDiffResult.canvas.toDataURL('image/png');
-    //   showScrubberDivergedImage(divergedImageResult);
-    // }
 
     const dontUseScrubberView = this.state.dontUseScrubberView || !showButtons;
     return (
