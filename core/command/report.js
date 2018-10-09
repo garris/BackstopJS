@@ -58,8 +58,9 @@ function writeBrowserReport (config, reporter) {
 function writeJunitReport (config, reporter) {
   logger.log('Writing jUnit Report');
 
-  var junitWriter = new (require('junitwriter'))();
-  var testSuite = junitWriter.addTestsuite(reporter.testSuite);
+  var builder = require('junit-report-builder');
+  var suite = builder.testSuite()
+    .name(reporter.testSuite);
 
   for (var i in reporter.tests) {
     if (!reporter.tests.hasOwnProperty(i)) {
@@ -67,12 +68,14 @@ function writeJunitReport (config, reporter) {
     }
 
     var test = reporter.tests[i];
-    var testCase = testSuite.addTestcase(' ›› ' + test.pair.label, test.pair.selector);
+    var testCase = suite.testCase()
+      .className(test.pair.selector)
+      .name(' ›› ' + test.pair.label);
 
     if (!test.passed()) {
       var error = 'Design deviation ›› ' + test.pair.label + ' (' + test.pair.selector + ') component';
-      testCase.addError(error, 'CSS component');
-      testCase.addFailure(error, 'CSS component');
+      testCase.failure(error);
+      testCase.error(error);
     }
   }
 
@@ -80,15 +83,15 @@ function writeJunitReport (config, reporter) {
     var testReportFilename = config.testReportFileName || config.ciReport.testReportFileName;
     testReportFilename = testReportFilename.replace(/\.xml$/, '') + '.xml';
     var destination = path.join(config.ci_report, testReportFilename);
-    junitWriter.save(destination, function (err) {
-      if (err) {
-        return reject(err);
-      }
 
+    try {
+      builder.writeTo(destination);
       logger.success('jUnit report written to: ' + destination);
 
       resolve();
-    });
+    } catch (e) {
+      return reject(e);
+    }
   });
 }
 
