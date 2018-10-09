@@ -225,7 +225,9 @@ export default class ImageScrubber extends React.Component {
                 selected={scrubberModalMode === 'SHOW_SCRUBBER_DIVERGED_IMAGE'}
                 onClick={divergedWorker}
                 className={this.state.isLoading ? 'loadingDiverged' : ''}
-                style={{display: showDivergedOption() ? '' : 'none'}}
+                style={{
+                  display: showDivergedOption() ? '' : 'none'
+                }}
               >
                 {this.state.isLoading ? 'DIVERGING!' : 'DIVERGED'}
               </ScrubberViewBtn>
