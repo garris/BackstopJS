@@ -6,7 +6,7 @@
     "backstop": "./cli/index.js"
   },
   "scripts": {
-    "lint": "eslint '*.js' 'compare/*.js' 'compare/src/**/*.js' 'core/**/*.js' 'cli/**/*.js' 'capture/**/*.js' 'test/**/*.js'",
+    "lint": "eslint 'compare/*.js' 'compare/src/**/*.js' 'core/**/*.js' 'cli/**/*.js' 'capture/**/*.js' 'test/**/*.js'",
     "format": "prettier-eslint --write \"compare/src/**/*.js\"",
     "genConfig": "node ./cli/index.js genConfig",
     "init": "node ./cli/index.js init",
@@ -54,7 +54,6 @@
     "eslint-plugin-react": "^7.11.1",
     "eslint-plugin-standard": "^4.0.0",
     "file-loader": "^2.0.0",
-    "gulp": "^3.9.1",
     "lint-staged": "^4.3.0",
     "mocha": "^5.2.0",
     "mockery": "^1.4.0",
