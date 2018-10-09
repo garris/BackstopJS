@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import TwentyTwenty from 'backstop-twentytwenty';
 import { colors, fonts, shadows } from '../../styles';
-import diverged from 'diverged';
 
 const ScrubberViewBtn = styled.button`
   margin: 1em;
@@ -19,7 +18,7 @@ const ScrubberViewBtn = styled.button`
   border: none;
   box-shadow: ${props => (props.selected ? 'none' : shadows.shadow01)};
 
-  transition: all 0.3s ease-in-out;
+  transition: all 100ms ease-in-out;
 
   &:focus {
     outline: none;
@@ -29,6 +28,12 @@ const ScrubberViewBtn = styled.button`
     cursor: pointer;
     box-shadow: ${props => (!props.selected ? shadows.shadow02 : '')};
   }
+
+  &.loadingDiverged {
+    animation: blink normal 1200ms infinite ease-in-out; 
+  }
+  @keyframes blink {0%{opacity:1;} 50%{opacity:0.75;} 100%{opacity:1;}}
+
 `;
 
 const Wrapper = styled.div`
@@ -63,10 +68,12 @@ export default class ImageScrubber extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
-      dontUseScrubberView: false
+      dontUseScrubberView: false,
+      isLoading: false
     };
 
     this.handleLoadingError = this.handleLoadingError.bind(this);
+    this.loadingDiverge = this.loadingDiverge.bind(this);
   }
 
   handleLoadingError () {
@@ -75,8 +82,13 @@ export default class ImageScrubber extends React.Component {
     });
   }
 
+  loadingDiverge (torf) {
+    this.setState({
+      isLoading: !!torf
+    });
+  }
+
   render () {
-    console.log('ImageScrubber PROPS>>>', this.props);
     const {
       scrubberModalMode,
       testImageType,
@@ -95,38 +107,85 @@ export default class ImageScrubber extends React.Component {
 
     const scrubberTestImageSlug = this.props[testImageType];
 
-    function getDiverged (arg) { // eslint-disable-line
+    // only show the diverged option if the report comes from web server
+    function showDivergedOption () {
+      return /remote/.test(location.search);
+    }
+
+    // TODO: halp. i don't haz context
+    const that = this;
+    // TODO: concurrency?
+    function divergedWorker () {
       if (divergedImage) {
         showScrubberDivergedImage(divergedImage);
         return;
       }
+      showScrubberDivergedImage('');
+      that.loadingDiverge(true);
 
-      const refImg = document.images.scrubberRefImage;
+      const refImg = document.images.isolatedRefImage;
       const testImg = document.images.isolatedTestImage;
-
       const h = refImg.height;
       const w = refImg.width;
-      const refCtx = imageToCanvasContext(refImg);
-      const testCtx = imageToCanvasContext(testImg);
 
-      console.log('starting diverged>>', new Date());
-      const divergedImgData = diverged(
-        getImgDataDataFromContext(refCtx),
-        getImgDataDataFromContext(testCtx),
-        h,
-        w
-      );
+      const worker = new Worker('divergedWorker.js');
+      worker.addEventListener('close', (e) => {
+        console.log('Diverged is cleaned up.', e);
+      });
 
-      let clampedImgData = getEmptyImgData(h, w);
-      for (var i = divergedImgData.length - 1; i >= 0; i--) {
-        clampedImgData.data[i] = divergedImgData[i];
-      }
-      var lcsDiffResult = imageToCanvasContext(null, w, h);
-      lcsDiffResult.putImageData(clampedImgData, 0, 0);
+      worker.addEventListener('message', function (result) {
+        const divergedImgData = result.data;
+        let clampedImgData = getEmptyImgData(h, w);
+        for (let i = divergedImgData.length - 1; i >= 0; i--) {
+          clampedImgData.data[i] = divergedImgData[i];
+        }
+        const lcsDiffResult = imageToCanvasContext(null, h, w);
+        lcsDiffResult.putImageData(clampedImgData, 0, 0);
 
-      const divergedImageResult = lcsDiffResult.canvas.toDataURL('image/png');
-      showScrubberDivergedImage(divergedImageResult);
+        const divergedImageResult = lcsDiffResult.canvas.toDataURL('image/png');
+        showScrubberDivergedImage(divergedImageResult);
+        that.loadingDiverge(false);
+      }, false);
+
+      worker.postMessage({
+        divergedInput: [
+          getImgDataDataFromContext(imageToCanvasContext(refImg)),
+          getImgDataDataFromContext(imageToCanvasContext(testImg)),
+          h,
+          w
+        ]
+      });
     }
+
+    // function getDiverged () {
+    //   if (divergedImage) {
+    //     showScrubberDivergedImage(divergedImage);
+    //     return;
+    //   }
+
+    //   const refImg = document.images.isolatedRefImage;
+    //   const testImg = document.images.isolatedTestImage;
+    //   const h = refImg.height;
+    //   const w = refImg.width;
+
+    //   console.log('starting diverged>>', new Date().getTime());
+    //   const divergedImgData = diverged(
+    //     getImgDataDataFromContext(imageToCanvasContext(refImg)),
+    //     getImgDataDataFromContext(imageToCanvasContext(testImg)),
+    //     h,
+    //     w
+    //   );
+
+    //   let clampedImgData = getEmptyImgData(h, w);
+    //   for (var i = divergedImgData.length - 1; i >= 0; i--) {
+    //     clampedImgData.data[i] = divergedImgData[i];
+    //   }
+    //   var lcsDiffResult = imageToCanvasContext(null, h, w);
+    //   lcsDiffResult.putImageData(clampedImgData, 0, 0);
+
+    //   const divergedImageResult = lcsDiffResult.canvas.toDataURL('image/png');
+    //   showScrubberDivergedImage(divergedImageResult);
+    // }
 
     const dontUseScrubberView = this.state.dontUseScrubberView || !showButtons;
     return (
@@ -155,22 +214,31 @@ export default class ImageScrubber extends React.Component {
                 DIFF
               </ScrubberViewBtn>
 
-              {/*              <ScrubberViewBtn
-                selected={scrubberModalMode === 'SHOW_SCRUBBER_DIVERGED_IMAGE'}
-                onClick={getDiverged}
-              >
-                DIVERGED
-              </ScrubberViewBtn> */}
-
               <ScrubberViewBtn
                 selected={scrubberModalMode === 'SCRUB'}
                 onClick={showScrubber}
               >
                 SCRUBBER
               </ScrubberViewBtn>
+
+              <ScrubberViewBtn
+                selected={scrubberModalMode === 'SHOW_SCRUBBER_DIVERGED_IMAGE'}
+                onClick={divergedWorker}
+                className={this.state.isLoading ? 'loadingDiverged' : ''}
+                style={{display: showDivergedOption() ? '' : 'none'}}
+              >
+                {this.state.isLoading ? 'DIVERGING!' : 'DIVERGED'}
+              </ScrubberViewBtn>
             </div>
           )}
         </WrapTitle>
+        <img
+          id="isolatedRefImage"
+          src={refImage}
+          style={{
+            display: 'none'
+          }}
+        />
         <img
           id="isolatedTestImage"
           className="testImage"
@@ -232,10 +300,10 @@ function getEmptyImgData (h, w) {
   return o.createImageData(w, h);
 }
 
-function imageToCanvasContext (_img, w, h) {
+function imageToCanvasContext (_img, h, w) {
   let img = _img;
   if (!_img) {
-    img = { width: w, height: h };
+    img = { height: h, width: w };
   }
   const canvas = document.createElement('canvas');
   canvas.width = img.width;
