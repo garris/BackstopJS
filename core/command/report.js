@@ -92,15 +92,6 @@ function writeJunitReport (config, reporter) {
     } catch (e) {
       return reject(e);
     }
-    // builder.writeTo(destination, function (err) {
-    //   if (err) {
-    //     return reject(err);
-    //   }
-    //
-    //   logger.success('jUnit report written to: ' + destination);
-    //
-    //   resolve();
-    // });
   });
 }
 
