@@ -135,7 +135,7 @@ export default class ImageScrubber extends React.Component {
         showScrubberDivergedImage(divergedImage);
         return;
       }
-      
+
       showScrubberDivergedImage('');
       that.loadingDiverge(true);
 
