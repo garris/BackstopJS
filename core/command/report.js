@@ -59,8 +59,8 @@ function writeJunitReport (config, reporter) {
   logger.log('Writing jUnit Report');
 
   var builder = require('junit-report-builder');
-  var suite = builder.testSuite().name(reporter.testSuite);
-  // var testSuite = junitWriter.addTestsuite(reporter.testSuite);
+  var suite = builder.testSuite()
+    .name(reporter.testSuite);
 
   for (var i in reporter.tests) {
     if (!reporter.tests.hasOwnProperty(i)) {
@@ -71,12 +71,9 @@ function writeJunitReport (config, reporter) {
     var testCase = suite.testCase()
       .className(test.pair.selector)
       .name(' ›› ' + test.pair.label);
-    // var testCase = testSuite.addTestcase(' ›› ' + test.pair.label, test.pair.selector);
 
     if (!test.passed()) {
       var error = 'Design deviation ›› ' + test.pair.label + ' (' + test.pair.selector + ') component';
-      // testCase.addError(error, 'CSS component');
-      // testCase.addFailure(error, 'CSS component');
       testCase.failure(error);
       testCase.error(error);
     }
