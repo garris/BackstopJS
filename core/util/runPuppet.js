@@ -362,9 +362,9 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
       if (el) {
         const box = await el.boundingBox();
         if (box) {
-          await el.screenshot({
-            path: path
-          });
+          var type = config.puppeteerOffscreenCaptureFix ? page : el;
+          var params = config.puppeteerOffscreenCaptureFix ? { path: path, clip: box } : { path: path };
+          await type.screenshot(params);
         } else {
           console.log(chalk.yellow(`Element not visible for capturing: ${s}`));
           return fs.copy(config.env.backstop + HIDDEN_SELECTOR_PATH, path);
