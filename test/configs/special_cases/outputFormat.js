@@ -13,7 +13,7 @@ module.exports = {
     {
       label: 'Simple',
       url: '../../../index.html'
-    },
+    }
   ],
   paths: {
     bitmaps_reference: '../backstop_data/bitmaps_reference',
@@ -24,5 +24,5 @@ module.exports = {
   },
   outputFormat: 'jpg',
   report: ['browser'],
-  engine: ENGINE,
+  engine: ENGINE
 };
