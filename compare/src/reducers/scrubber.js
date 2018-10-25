@@ -1,11 +1,11 @@
 function getPosFromImgId (imgId) {
   switch (imgId) {
     case 'refImage':
-      return 105; // just passed the right border
+      return 100; // just passed the right border
     case 'testImage':
-      return -1; // just passed the left border
+      return 0; // just passed the left border
     case 'diffImage':
-      return -1; // just passed the left border
+      return 0; // just passed the left border
     default:
       return 50; // in the middle
   }
@@ -30,11 +30,6 @@ const scrubber = (state = {}, action) => {
       let targetImgId = '';
       try {
         targetImgId = action.value.targetImg.id;
-      } catch (err) {}
-
-      let scrubberModalMode = '';
-      try {
-        scrubberModalMode = action.value.targetImg.id;
       } catch (err) {}
 
       return Object.assign({}, state, {

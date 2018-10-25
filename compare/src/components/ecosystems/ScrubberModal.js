@@ -12,12 +12,10 @@ import {
 } from '../../actions';
 
 // styles & icons
-import { colors, fonts, shadows } from '../../styles';
 import iconClose from '../../assets/icons/close.png';
 
 // atoms
 import Logo from '../atoms/Logo';
-import TextDetails from '../atoms/TextDetails';
 import ImageScrubber from '../atoms/ImageScrubber';
 
 const Wrapper = styled.div`
@@ -65,10 +63,6 @@ const customStyles = {
 };
 
 class ScrubberModal extends React.Component {
-  constructor (props) {
-    super(props);
-  }
-
   render () {
     const {
       reference: refImage,
@@ -78,7 +72,6 @@ class ScrubberModal extends React.Component {
     } = this.props.scrubber.test;
     const {
       visible,
-      mode,
       position,
       testImageType,
       scrubberModalMode

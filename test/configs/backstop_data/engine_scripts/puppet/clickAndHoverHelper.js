@@ -3,14 +3,14 @@ module.exports = async (page, scenario) => {
   var clickSelector = scenario.clickSelectors || scenario.clickSelector;
   var scrollToSelector = scenario.scrollToSelector;
   var postInteractionWait = scenario.postInteractionWait; // selector [str] | ms [int]
- 
+
   if (hoverSelector) {
-    await page.waitFor(hoverSelector)
+    await page.waitFor(hoverSelector);
     await page.hover(hoverSelector);
   }
 
   if (clickSelector) {
-    await page.waitFor(clickSelector)
+    await page.waitFor(clickSelector);
     await page.click(clickSelector);
   }
 

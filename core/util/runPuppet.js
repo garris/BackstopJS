@@ -30,7 +30,7 @@ module.exports = function (args) {
   config._bitmapsTestPath = config.paths.bitmaps_test || DEFAULT_BITMAPS_TEST_DIR;
   config._bitmapsReferencePath = config.paths.bitmaps_reference || DEFAULT_BITMAPS_REFERENCE_DIR;
   config._fileNameTemplate = config.fileNameTemplate || DEFAULT_FILENAME_TEMPLATE;
-  config._outputFileFormatSuffix = '.' + (config.outputFormat && config.outputFormat.match(/jpg|jpeg/) || 'png');
+  config._outputFileFormatSuffix = '.' + ((config.outputFormat && config.outputFormat.match(/jpg|jpeg/)) || 'png');
   config._configId = config.id || engineTools.genHash(config.backstopConfigFileName);
 
   return processScenarioView(scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, config);
@@ -63,7 +63,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
   const browser = await puppeteer.launch(puppeteerArgs);
   const page = await browser.newPage();
 
-  page.setViewport({width: VP_W, height: VP_H});
+  page.setViewport({ width: VP_W, height: VP_H });
   page.setDefaultNavigationTimeout(engineTools.getEngineOption(config, 'waitTimeout', TEST_TIMEOUT));
 
   if (isReference) {
@@ -274,7 +274,7 @@ async function delegateSelectors (
   selectors,
   selectorMap
 ) {
-  let compareConfig = {testPairs: []};
+  let compareConfig = { testPairs: [] };
   let captureDocument = false;
   let captureViewport = false;
   let captureList = [];
@@ -362,9 +362,9 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
       if (el) {
         const box = await el.boundingBox();
         if (box) {
-          await el.screenshot({
-            path: path
-          });
+          var type = config.puppeteerOffscreenCaptureFix ? page : el;
+          var params = config.puppeteerOffscreenCaptureFix ? { path: path, clip: box } : { path: path };
+          await type.screenshot(params);
         } else {
           console.log(chalk.yellow(`Element not visible for capturing: ${s}`));
           return fs.copy(config.env.backstop + HIDDEN_SELECTOR_PATH, path);

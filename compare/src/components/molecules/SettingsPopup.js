@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { updateSettings, toggleAllImages, toggleTextInfo } from '../../actions';
 
-import { colors, fonts, shadows } from '../../styles';
+import { colors, shadows } from '../../styles';
 
 import SettingOption from '../atoms/SettingOption';
 
@@ -65,7 +65,7 @@ class SettingsPopup extends React.Component {
   }
 
   render () {
-    let { onToggle, settings } = this.props;
+    let { settings } = this.props;
 
     return (
       <PopupWrapper>
