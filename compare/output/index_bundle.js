@@ -33625,16 +33625,18 @@ var ImageScrubber = function (_React$Component) {
 
       // TODO: halp. i don't haz context.
       var that = this;
-      // TODO: concurrency?
+
       function divergedWorker() {
         if (that.state.isLoading) {
           console.error('Diverged process is already running. Please hang on.');
           return;
         }
+
         if (divergedImage) {
           showScrubberDivergedImage(divergedImage);
           return;
         }
+
         showScrubberDivergedImage('');
         that.loadingDiverge(true);
 
