@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+  <script type="text/javascript">
+    var img = document.createElement('img');
+
+    var color = document.location.search.replace('?', '') || 'white';
+    img.setAttribute('src', (color + '.png'));
+
+    document.body.appendChild(img);
+  </script>
+</body>
+</html>
