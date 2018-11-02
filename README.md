@@ -839,7 +839,7 @@ For most users, it can be helpful to keep a record of reference files over the l
 For many users, adding these lines to your `.gitignore` or `.git/info/exclude` files will pare down your backstop files in a sensible way.  
 ```
 backstop_data/html_report/
-backstop_data/bitmaps_test/
+bitmaps_test/
 ```
 _Of course you can alternatively change your default config to save these files somewhere else out of the source control scope -- thats cool too._
 
