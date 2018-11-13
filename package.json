@@ -57,6 +57,7 @@
     "lint-staged": "^4.3.0",
     "mocha": "^5.2.0",
     "mockery": "^1.4.0",
+    "node-static": "^0.7.11",
     "prettier": "^1.14.3",
     "prettier-eslint-cli": "^4.7.1",
     "react": "^15.6.1",
