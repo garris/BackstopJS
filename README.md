@@ -163,6 +163,7 @@ delay                    // Wait for x milliseconds
 hideSelectors            // Array of selectors set to visibility: hidden
 removeSelectors          // Array of selectors set to display: none
 onReadyScript            // After the above conditions are met -- use this script to modify UI state prior to screen shots e.g. hovers, clicks etc.
+keyPressSelectors        // Takes array of selectors and texts -- simulates multiple sequential keypress interactions.
 hoverSelector            // Move the pointer over the specified DOM element prior to screen shot. 
 hoverSelectors           // *Puppeteer only* takes array of selectors -- simulates multiple sequential hover interactions.
 clickSelector            // Click the specified DOM element prior to screen shot.
