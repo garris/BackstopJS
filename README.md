@@ -193,6 +193,27 @@ clickSelectors: [".my-hamburger-menu",".my-hamburger-item"],
 hoverSelectors: [".my-nav-menu-item",".my-nav-menu-dropdown-item"],
 ```
 
+### Key Press interactions
+BackstopJS ships with an onReady script that allows user to key press on selectors...
+NOTE: Supports Chromy and Puppeteer and takes arrays of selectors and key press values.
+
+```json
+scenarios: [
+  {
+    "keyPressSelectors": [
+      {
+        "selector": "#email",
+        "keyPress": "marcdacz@backstopjs.com"
+      },
+      {
+        "selector": "#password",
+        "keyPress": "1234" // please don't use 1234 passwords
+      }
+    ]
+  }
+]
+```
+
 ### Setting cookies
 BackstopJS ships with an onBefore script that makes it easy to import cookie files…
 ```
