@@ -137,8 +137,16 @@ module.exports = {
       url: 'https://garris.github.io/BackstopJS/',
       referenceUrl: 'https://garris.github.io/BackstopJS/?cookie',
       selectors: ['.moneyshot'],
-      misMatchThreshold: 5.0,
+      misMatchThreshold: 3.0,
       requireSameDimensions: false
+    },
+    {
+      label: 'misMatchThreshold_realNumberDifference',
+      url: 'https://garris.github.io/BackstopJS/',
+      referenceUrl: 'https://garris.github.io/BackstopJS/?cookie',
+      selectors: ['.moneyshot'],
+      misMatchThreshold: 0.01,
+      requireSameDimensions: true
     },
     {
       label: 'scenarioSpecificViewports',
