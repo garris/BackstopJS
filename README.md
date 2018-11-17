@@ -207,7 +207,7 @@ scenarios: [
       },
       {
         "selector": "#password",
-        "keyPress": "1234" // please don't use 1234 passwords
+        "keyPress": "1234"
       }
     ]
   }
