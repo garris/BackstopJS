@@ -218,6 +218,28 @@ module.exports = {
           height: 1366
         }
       ]
+    },
+    {
+      label: 'keyPressSelector',
+      url: '../../examples/featureTests/index.html',
+      keyPressSelectors: [
+        {
+          selector: 'input[placeholder="Email"]',
+          keyPress: 'marcdacz@backstopjs.com'
+        },
+        {
+          selector: 'input[placeholder="Password"]',
+          keyPress: '1234'
+        }
+      ],
+      selectors: ['div[id=navbar]'],
+      viewports: [
+        {
+          label: 'Desktop',
+          width: 1920,
+          height: 1080
+        }
+      ]
     }
   ],
   paths: {
