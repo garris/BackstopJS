@@ -1,20 +1,15 @@
-const Chromy = require('chromy');
 var cloneDeep = require('lodash/cloneDeep');
 var path = require('path');
 var fs = require('./fs');
 var each = require('./each');
 var pMap = require('p-map');
 
-var runCasper = require('./runCasper');
-var runChromy = require('./runChromy');
 var runPuppet = require('./runPuppet');
 
 const ensureDirectoryPath = require('./ensureDirectoryPath');
 var logger = require('./logger')('createBitmaps');
 
 var CONCURRENCY_DEFAULT = 10;
-const CHROMY_STARTING_PORT_NUMBER = 9222;
-var GENERATE_BITMAPS_SCRIPT = 'capture/genBitmaps.js';
 
 function regexTest (string, search) {
   var re = new RegExp(search);
@@ -132,17 +127,7 @@ function delegateScenarios (config) {
 
   const asyncCaptureLimit = config.asyncCaptureLimit === 0 ? 1 : config.asyncCaptureLimit || CONCURRENCY_DEFAULT;
 
-  if (/chrom./i.test(config.engine)) {
-    const PORT = (config.startingPort || CHROMY_STARTING_PORT_NUMBER);
-    var getFreePorts = require('./getFreePorts');
-    return getFreePorts(PORT, scenarioViews.length).then(freeports => {
-      console.log('These ports will be used:', JSON.stringify(freeports));
-      scenarioViews.forEach((scenarioView, i) => {
-        scenarioView.assignedPort = freeports[i];
-      });
-      return pMap(scenarioViews, runChromy, { concurrency: asyncCaptureLimit });
-    });
-  } else if (config.engine.startsWith('puppet')) {
+  if (config.engine.startsWith('puppet')) {
     return pMap(scenarioViews, runPuppet, { concurrency: asyncCaptureLimit });
   } else {
     logger.error('Engine not known to Backstop!');
@@ -192,7 +177,7 @@ function flatMapTestPairs (rawTestPairs) {
 }
 
 module.exports = function (config, isReference) {
-  if (/chrom./i.test(config.engine) || /puppet/i.test(config.engine)) {
+  if (/puppet/i.test(config.engine)) {
     const promise = delegateScenarios(decorateConfigForCapture(config, isReference))
       .then(rawTestPairs => {
         const result = {
@@ -203,29 +188,6 @@ module.exports = function (config, isReference) {
         return writeCompareConfigFile(config.tempCompareConfigFileName, result);
       });
 
-    if (/chrom./i.test(config.engine)) {
-      promise.then(() => Chromy.cleanup());
-    }
-
     return promise;
   }
-
-  return writeReferenceCreateConfig(config, isReference).then(function () {
-    var tests = [path.join(config.backstop, GENERATE_BITMAPS_SCRIPT)];
-    var casperChild = runCasper(config, tests);
-    return new Promise(function (resolve, reject) {
-      casperChild.on('close', function (code) {
-        var success = code === 0; // Will be 1 in the event of failure
-        var result = (success) ? 'Bitmap file generation completed.' : 'Testing script failed with code: ' + code;
-        console.log('\n' + result);
-        // exit if there was some kind of failure in the casperChild process
-        if (code !== 0) {
-          console.log('\nAn unexpected error occurred. You may want to try setting the debug option to `true` in your config file.');
-          reject(new Error('An unexpected error occurred. You may want to try setting the debug option to `true` in your config file.'));
-          return;
-        }
-        resolve();
-      });
-    });
-  });
 };

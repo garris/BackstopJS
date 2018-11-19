@@ -1,4 +1,3 @@
-
 module.exports = function promisify (func) {
   return function () {
     var args = (arguments.length === 1 ? [arguments[0]] : Array.apply(null, arguments));
