@@ -22,6 +22,8 @@ function extendConfig (config, userConfig) {
   config.resembleOutputOptions = userConfig.resembleOutputOptions;
   config.asyncCompareLimit = userConfig.asyncCompareLimit;
   config.backstopVersion = version;
+  config.dockerImage = userConfig.dockerImage || `backstopjs/backstopjs:${version}`;
+  config.dockerRunExtraArgs = userConfig.dockerRunExtraArgs || null;
   return config;
 }
 

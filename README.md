@@ -622,7 +622,7 @@ For more info, see the [Chromy script documentation](https://github.com/OnetapIn
 ### Using Docker for testing across different environments
 We've found that different environments can render the same webpage in slightly different ways -- in particular with text. E.G. see the text in this example rendering slightly differently between Linux and Mac...
 
-![BakcstopJS OS rendering differences](http://garris.github.io/BackstopJS/assets/osRenderDifference.png)
+![BackstopJS OS rendering differences](http://garris.github.io/BackstopJS/assets/osRenderDifference.png)
 
 You can make this issue go away by rendering in a BackstopJS Docker container.  Lucky for you we've made it incredibly easy to do.  
 
@@ -670,6 +670,20 @@ then you need to add this to the root of your config...
 "url": "https://host.docker.internal/?someCoolAppParameter=true"
 ```
 
+
+#### Advanced options
+
+By default BackstopJS uses the docker image `backstopjs/backstopjs:<version>`. If you need another docker image for any reason, you can use the `dockerImage` configuration option:
+
+```json
+"dockerImage": "you/your-docker-image"
+```
+
+If you need to pass any extra arguments to the `docker run` command, use the `dockerRunExtraArgs` option:
+
+```json
+"dockerRunExtraArgs": "--shm-size=2gb"
+```
 
 ### Integration options (local install)
 
