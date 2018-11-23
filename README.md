@@ -17,8 +17,8 @@ BackstopJS automates visual regression testing of your responsive web UI by comp
 
 - Integrated Docker rendering -- to eliminate cross-platform rendering shenanigans
 - CLI reports
-- Render tests with **Chrome Headless**, **Phantom** and **Slimer**
-- Simulate user interactions with **Puppeteer**, **ChromyJS** and **CasperJS** scripts
+- Render tests with **Chrome Headless**
+- Simulate user interactions with **Puppeteer** and **ChromyJS** scripts
 - JUnit reports
 - Plays nice with CI and source control
 - Run globally or locally as a standalone package app or `require('backstopjs')` right into your node app
@@ -411,7 +411,7 @@ You can create reference files (without previewing) by using the command `backst
 
 ### Running custom scripts
 
-Simulate user actions (click, scroll, hover, wait, etc.) or states (cookie values) by running your own Casper.js script on ready. For each scenario, the custom .js file you specify is imported and run when the BackstopJS ready events are fulfilled.
+Simulate user actions (click, scroll, hover, wait, etc.) or states (cookie values) by running your own script on ready. For each scenario, the custom .js file you specify is imported and run when the BackstopJS ready events are fulfilled.
 
 From your project root, place your scripts in...
 
@@ -465,8 +465,6 @@ module.exports = async (page, scenario, vp) => {
 #### Setting the base path for custom onBefore and onReady scripts
 
 By default the base path is a folder called `engine_scripts` inside your BackstopJS installation directory. You can override this by setting the `paths.scripts` property in your `backstop.json` file to point to somewhere in your project directory (recommended).
-
-_**NOTE:** SlimerJS currently requires an absolute path -- so be sure to include the full path when using the `"engine": "slimer"` configuration option._
 
 ```json
 "paths": {
@@ -538,7 +536,7 @@ By default, BackstopJS saves generated resources into the `backstop_data` direct
 ```
 
 ### Changing the rendering engine
-BackstopJS supports using Chrome-Headless, PhantomJS or SlimerJS for web app rendering. Chrome-headless (via Puppeteer) is currently the default value and will be installed by default.
+Puppeteer is currently the default value and will be installed by default. You could choose to use Chromy as well.
 
 #### Chrome-Headless (The latest webkit library)
 To use chrome headless you have two options for scripting engines, the default _puppeteer_ (https://github.com/GoogleChrome/puppeteer) or the very cool _chromy.js_ (https://github.com/OnetapInc/chromy) library.
@@ -551,25 +549,6 @@ or
 
 ```json
 "engine": "chromy"
-```
-
-#### Slimer (Gecko/Mozilla rendering)
-To run in Slimer, be sure to have SlimerJS installed. From your root directory run...
-
-```sh
-$ npm install -g slimerjs
-```
-
-Then, in your `backstop.json` config file, update the engine property to...
-
-```json
-"engine": "slimerjs"
-```
-
-#### To run phantom it's...
-
-```json
-"engine": "casper"
 ```
 
 ### Setting Puppeteer option flags
@@ -591,18 +570,6 @@ You can add more settings (or override the defaults) with the engineOptions prop
 
 More info here: [Puppeteer on github](https://github.com/GoogleChrome/puppeteer).
 
-
-### Setting Casper command-line flags
-See casperjs documentation for more info on instance options.  An example config below...
-
-```json
-"casperFlags": [
-  "--engine=slimerjs",
-  "--proxy-type=http",
-  "--proxy=proxyIp:port",
-  "--proxy-auth=user:pass"
-]
-```
 
 ### Setting Chromy option flags
 Chromy enables a lot of behavior via constructor options.  See Chromy documentation for more info.
@@ -999,11 +966,6 @@ Filename formats have changed.  To use the 1.x (compatible) file format, use the
 }
 ```
 
-### Windows users...
-
-PhantomJS needs Python -- please make sure you have Python installed...
-_see https://github.com/garris/BackstopJS/issues/185_
-
 
 ---
 
@@ -1056,10 +1018,7 @@ _see https://github.com/garris/BackstopJS/issues/185_
     - [Setting the bitmap and script directory paths](#setting-the-bitmap-and-script-directory-paths)
     - [Changing the rendering engine](#changing-the-rendering-engine)
       - [Chrome-Headless (The latest webkit library)](#chrome-headless-the-latest-webkit-library)
-      - [Slimer (Gecko/Mozilla rendering)](#slimer-geckomozilla-rendering)
-      - [To run phantom it's...](#to-run-phantom-its)
     - [Setting Puppeteer option flags](#setting-puppeteer-option-flags)
-    - [Setting Casper command-line flags](#setting-casper-command-line-flags)
     - [Setting Chromy option flags](#setting-chromy-option-flags)
     - [Using Chromy static functions](#using-chromy-static-functions)
     - [Using Docker for testing across different environments](#using-docker-for-testing-across-different-environments)

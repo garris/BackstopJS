@@ -7,12 +7,6 @@ describe('findExecutable_spec.js', function () {
     mockery.enable({ useCleanCache: true });
   });
 
-  it('should resolve the path to phantomjs-prebuilt correctly', function () {
-    mockery.registerMock('phantomjs-prebuilt', { path: 'path-to-phantomjs' });
-    var pathToPhantomjs = findExecutable('phantomjs-prebuilt');
-    assert.strictEqual(pathToPhantomjs, 'path-to-phantomjs');
-  });
-
   it('should print a meaningful error the executable cannot be found', function () {
     assert.throws(function () {
       findExecutable('no-installed-module', 'invalid-bin');

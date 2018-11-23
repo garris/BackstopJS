@@ -51,7 +51,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
     viewport.label = viewport.name || '';
   }
 
-  const engineScriptsPath = config.env.engine_scripts || config.env.casper_scripts || config.env.engine_scripts_default;
+  const engineScriptsPath = config.env.engine_scripts || config.env.engine_scripts_default;
   const isReference = config.isReference;
   /**
    *  =============

@@ -8,9 +8,6 @@ Features:
 
 - [BackstopJS 3.x](https://github.com/garris/BackstopJS)
 - [Chrome-headless](https://www.google.com/chrome/browser/canary.html)
-- [CasperJS](http://casperjs.org/)
-- [PhantomJS](http://phantomjs.org/)
-- [SlimerJS](https://slimerjs.org/) (with Firefox ESR)
 
 
 ## Versions
@@ -58,22 +55,12 @@ docker run --rm -v $(pwd):/src backstopjs/backstopjs test
 
 By default BackstopJS is using Headless Chrome to take screenshots.
 
-You can also use PhantomJS or SlimerJS/Firefox by setting `"engine": "phantomjs"` or `"engine": "slimerjs"` respectively 
-in `backstop.json`.
-
-Chrome, PhantomJS, SlimerJS and Firefox ESR (extended support release) are pre-installed in the container.
+Chrome is pre-installed in the container.
 
 
 ## Limitations
 
 `backstop openReport` is not (yet) supported.
-
-When running SlimerJS, the user you are running the container as must have a home directory in order for Slimer 
-to start properly. You can work around this by setting the `HOME` variable:
-
-```
-docker run --rm --user 1000 -e HOME=/tmp/home backstopjs/backstopjs test
-```
 
 
 ## Debugging
