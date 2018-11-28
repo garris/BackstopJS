@@ -118,11 +118,11 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     }
     await page.goto(translateUrl(url));
 
-		//  --- LOCAL STORAGE SCRIPT ---
+    //  --- LOCAL STORAGE SCRIPT ---
     if (scenario.localStorageData || config.localStorageData) {
-      var localStorageData = scenario.localStorageData || config.localStorageData
+      var localStorageData = scenario.localStorageData || config.localStorageData;
       var localStorageScript = path.resolve(engineScriptsPath, 'puppet/loadLocalStorage.js');
-      
+
       if (fs.existsSync(localStorageScript)) {
         await require(localStorageScript)(page, scenario, localStorageData);
         await page.reload();
@@ -130,7 +130,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
         console.warn('WARNING: script not found: ' + localStorageScript);
       }
     }
-    
+
     await injectBackstopTools(page);
 
     //  --- WAIT FOR READY EVENT ---
