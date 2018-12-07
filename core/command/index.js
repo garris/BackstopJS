@@ -12,7 +12,8 @@ var logger = require('../util/logger')('COMMAND');
 
 /* Each and every command defined, including commands used in before/after */
 var commandNames = [
-  'genConfig',
+  'init',
+  'remote',
   'openReport',
   'reference',
   'report',
@@ -22,7 +23,8 @@ var commandNames = [
 
 /* Commands that are only exposed to higher levels */
 var exposedCommandNames = [
-  'genConfig',
+  'init',
+  'remote',
   'reference',
   'test',
   'openReport',
@@ -47,7 +49,7 @@ var commands = commandNames
       name: command.name,
       execute: function execute (config) {
         config.perf[command.name] = { started: new Date() };
-        logger.info('Executing core for `' + command.name + '`');
+        logger.info('Executing core for "' + command.name + '"');
 
         var promise = command.commandDefinition.execute(config);
 
@@ -61,7 +63,7 @@ var commands = commandNames
         // won't be able to catch it a second time
         promise.catch(function (error) {
           var perf = (new Date() - config.perf[command.name].started) / 1000;
-          logger.error('Command `' + command.name + '` ended with an error after [' + perf + 's]');
+          logger.error('Command "' + command.name + '" ended with an error after [' + perf + 's]');
           logger.error(error);
         });
 
@@ -70,7 +72,7 @@ var commands = commandNames
             return;
           }
           var perf = (new Date() - config.perf[command.name].started) / 1000;
-          logger.success('Command `' + command.name + '` successfully executed in [' + perf + 's]');
+          logger.success('Command "' + command.name + '" successfully executed in [' + perf + 's]');
           return result;
         });
       }
@@ -95,7 +97,7 @@ function execute (commandName, config) {
     if (commandName.charAt(0) === '_' && commands.hasOwnProperty(commandName.substring(1))) {
       commandName = commandName.substring(1);
     } else {
-      throw new Error('The command `' + commandName + '` is not exposed publicly.');
+      throw new Error('The command "' + commandName + '" is not exposed publicly.');
     }
   }
 

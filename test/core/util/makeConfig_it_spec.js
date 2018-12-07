@@ -1,29 +1,43 @@
-var assert = require('assert');
-var makeConfig = require('../../../core/util/makeConfig');
+const assert = require('assert');
+const path = require('path');
+
+process.chdir(__dirname);
+
+const makeConfig = require('../../../core/util/makeConfig');
+const { version } = require('../../../package');
+const configFile = require('./backstop');
+
+// root of backstop dir, not related to cwd
+const backstopDir = path.resolve(__dirname, '../../..');
 
 const expectedConfig = {
   args: {},
-  backstop: process.cwd() + '',
-  bitmaps_reference: 'backstop_data/bitmaps_reference',
-  bitmaps_test: 'backstop_data/bitmaps_test',
-  ci_report: 'backstop_data/ci_report',
-  html_report: 'backstop_data/html_report',
+  asyncCompareLimit: undefined,
+  backstop: backstopDir,
+  backstopVersion: version,
+  bitmaps_reference: path.resolve('backstop_data/bitmaps_reference'),
+  bitmaps_test: path.resolve('backstop_data/bitmaps_test'),
+  ci_report: path.resolve('backstop_data/ci_report'),
+  html_report: path.resolve('backstop_data/html_report'),
   openReport: true,
-  comparePath: process.cwd() + '/compare',
-  captureConfigFileName: process.cwd() + '/capture/config.json',
-  captureConfigFileNameDefault: process.cwd() + '/capture/config.default.json',
-  casper_scripts: 'backstop_data/casper_scripts',
-  casper_scripts_default: process.cwd() + '/capture/casper_scripts',
-  casperFlags: [],
-  engine: 'phantomjs',
+  comparePath: path.resolve(backstopDir, 'compare/output'),
+  captureConfigFileNameDefault: path.resolve(backstopDir, 'capture/config.default.json'),
+  casper_scripts: path.resolve('backstop_data/casper_scripts'),
+  casper_scripts_default: path.resolve(backstopDir, 'capture/casper_scripts'),
+  casperFlags: null,
+  engine: null,
+  engine_scripts: path.resolve('backstop_data/engine_scripts'),
+  engine_scripts_default: path.resolve(backstopDir, 'capture/engine_scripts'),
+  perf: {},
+  id: configFile.id,
   report: ['browser'],
   ciReport: {
     format: 'junit',
     testReportFileName: 'xunit',
     testSuiteName: 'BackstopJS'
   },
-  compareConfigFileName: 'backstop_data/html_report/config.js',
-  compareReportURL: 'backstop_data/html_report/index.html',
+  compareConfigFileName: path.resolve('backstop_data/html_report/config.js'),
+  compareReportURL: path.resolve('backstop_data/html_report/index.html'),
   defaultMisMatchThreshold: 0.1,
   debug: false,
   resembleOutputOptions: undefined
@@ -31,10 +45,20 @@ const expectedConfig = {
 
 describe('make config', function () {
   it('should return the default config correctly', function () {
-    var actualConfig = makeConfig('test');
+    const actualConfig = makeConfig('test');
+
+    assert(actualConfig.tempCompareConfigFileName);
     delete actualConfig.tempCompareConfigFileName;
+
+    assert(actualConfig.backstopConfigFileName);
     delete actualConfig.backstopConfigFileName;
+
+    assert(actualConfig.projectPath);
     delete actualConfig.projectPath;
-    assert.deepEqual(actualConfig, expectedConfig);
+
+    assert(actualConfig.captureConfigFileName);
+    delete actualConfig.captureConfigFileName;
+
+    assert.deepStrictEqual(actualConfig, expectedConfig);
   });
 });

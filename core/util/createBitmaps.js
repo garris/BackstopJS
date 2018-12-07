@@ -7,10 +7,13 @@ var pMap = require('p-map');
 
 var runCasper = require('./runCasper');
 var runChromy = require('./runChromy');
+var runPuppet = require('./runPuppet');
+
 const ensureDirectoryPath = require('./ensureDirectoryPath');
 var logger = require('./logger')('createBitmaps');
 
 var CONCURRENCY_DEFAULT = 10;
+const CHROMY_STARTING_PORT_NUMBER = 9222;
 var GENERATE_BITMAPS_SCRIPT = 'capture/genBitmaps.js';
 
 function regexTest (string, search) {
@@ -78,24 +81,25 @@ function writeReferenceCreateConfig (config, isReference) {
   return fs.writeFile(config.captureConfigFileName, JSON.stringify(decorateConfigForCapture(config, isReference)));
 }
 
-function delegateScenarios (config) {
-  var screenshotNow = new Date();
-  var screenshotDateTime = screenshotNow.getFullYear() + pad(screenshotNow.getMonth() + 1) + pad(screenshotNow.getDate()) + '-' + pad(screenshotNow.getHours()) + pad(screenshotNow.getMinutes()) + pad(screenshotNow.getSeconds());
+function saveViewportIndexes (viewport, index) {
+  viewport.vIndex = index;
+}
 
+function delegateScenarios (config) {
   // TODO: start chromy here?  Or later?  maybe later because maybe changing resolutions doesn't work after starting?
   // casper.start();
 
   var scenarios = [];
   var scenarioViews = [];
 
-  config.viewports.forEach(function (o, i) {
-    o.vIndex = i;
-  });
+  config.viewports.forEach(saveViewportIndexes);
 
   // casper.each(scenarios, function (casper, scenario, i) {
   config.scenarios.forEach(function (scenario, i) {
     // var scenarioLabelSafe = makeSafe(scenario.label);
     scenario.sIndex = i;
+    scenario.selectors = scenario.selectors || [];
+    scenario.viewports && scenario.viewports.forEach(saveViewportIndexes);
     scenarios.push(scenario);
 
     if (!config.isReference && scenario.hasOwnProperty('variants')) {
@@ -110,7 +114,13 @@ function delegateScenarios (config) {
 
   var scenarioViewId = 0;
   scenarios.forEach(function (scenario) {
-    config.viewports.forEach(function (viewport) {
+    var desiredViewportsForScenario = config.viewports;
+
+    if (scenario.viewports && scenario.viewports.length > 0) {
+      desiredViewportsForScenario = scenario.viewports;
+    }
+
+    desiredViewportsForScenario.forEach(function (viewport) {
       scenarioViews.push({
         scenario: scenario,
         viewport: viewport,
@@ -120,9 +130,23 @@ function delegateScenarios (config) {
     });
   });
 
-  var asyncCaptureLimit = config.asyncCaptureLimit === 0 ? 1 : config.asyncCaptureLimit || CONCURRENCY_DEFAULT;
+  const asyncCaptureLimit = config.asyncCaptureLimit === 0 ? 1 : config.asyncCaptureLimit || CONCURRENCY_DEFAULT;
 
-  return pMap(scenarioViews, runChromy, {concurrency: asyncCaptureLimit});
+  if (/chrom./i.test(config.engine)) {
+    const PORT = (config.startingPort || CHROMY_STARTING_PORT_NUMBER);
+    var getFreePorts = require('./getFreePorts');
+    return getFreePorts(PORT, scenarioViews.length).then(freeports => {
+      console.log('These ports will be used:', JSON.stringify(freeports));
+      scenarioViews.forEach((scenarioView, i) => {
+        scenarioView.assignedPort = freeports[i];
+      });
+      return pMap(scenarioViews, runChromy, { concurrency: asyncCaptureLimit });
+    });
+  } else if (config.engine.startsWith('puppet')) {
+    return pMap(scenarioViews, runPuppet, { concurrency: asyncCaptureLimit });
+  } else {
+    logger.error('Engine not known to Backstop!');
+  }
 }
 
 function pad (number) {
@@ -144,6 +168,14 @@ function flatMapTestPairs (rawTestPairs) {
     var testPairs = result.testPairs;
     if (!testPairs) {
       testPairs = {
+        diff: {
+          isSameDimensions: '',
+          dimensionDifference: {
+            width: '',
+            height: ''
+          },
+          misMatchPercentage: ''
+        },
         reference: '',
         test: '',
         selector: '',
@@ -160,8 +192,8 @@ function flatMapTestPairs (rawTestPairs) {
 }
 
 module.exports = function (config, isReference) {
-  if (/chrom./i.test(config.engine)) {
-    return delegateScenarios(decorateConfigForCapture(config, isReference))
+  if (/chrom./i.test(config.engine) || /puppet/i.test(config.engine)) {
+    const promise = delegateScenarios(decorateConfigForCapture(config, isReference))
       .then(rawTestPairs => {
         const result = {
           compareConfig: {
@@ -169,9 +201,13 @@ module.exports = function (config, isReference) {
           }
         };
         return writeCompareConfigFile(config.tempCompareConfigFileName, result);
-      })
-      // Make sure that all Chromy instances are cleaned up.
-      .then(() => Chromy.cleanup());
+      });
+
+    if (/chrom./i.test(config.engine)) {
+      promise.then(() => Chromy.cleanup());
+    }
+
+    return promise;
   }
 
   return writeReferenceCreateConfig(config, isReference).then(function () {

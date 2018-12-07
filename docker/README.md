@@ -26,6 +26,9 @@ Working directory is expected to be mounted at `/src` in the container.
 ```
 $ docker run --rm -v $(pwd):/src backstopjs/backstopjs --version
 BackstopJS v3.x.x
+
+# On Windows use:
+$(pwd -W)
 ```
 
 You can also add a shell alias (in `.bashrc`, `.zshrc`, etc.) for convenience.
@@ -80,3 +83,7 @@ The following command will start a bash session in the container.
 ```
 docker run --rm -v $(pwd):/src -it --entrypoint=bash backstopjs/backstopjs
 ```
+
+
+## Jenkins Guide
+You could get a Jenkins Guide here: [Jenkins Guide](../examples/Jenkins)

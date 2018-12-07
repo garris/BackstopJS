@@ -14,6 +14,7 @@ function extendConfig (config, userConfig) {
   casper(config, userConfig);
   engine(config, userConfig);
 
+  config.id = userConfig.id;
   config.engine = userConfig.engine || null;
   config.report = userConfig.report || ['browser'];
   config.defaultMisMatchThreshold = 0.1;
@@ -66,8 +67,8 @@ function htmlReport (config, userConfig) {
 }
 
 function comparePaths (config) {
-  config.comparePath = path.join(config.backstop, 'compare');
-  config.tempCompareConfigFileName = temp.path({suffix: '.json'});
+  config.comparePath = path.join(config.backstop, 'compare/output');
+  config.tempCompareConfigFileName = temp.path({ suffix: '.json' });
 }
 
 function captureConfigPaths (config) {

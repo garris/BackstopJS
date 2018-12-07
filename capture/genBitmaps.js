@@ -24,9 +24,8 @@ if (args.length !== 1) {
 
 var scriptName = fs.absolute(require('system').args[3]);
 var __dirname = scriptName.substring(0, scriptName.lastIndexOf('/'));
-
-var selectorNotFoundPath = __dirname + '/resources/selectorNotFound_noun_164558_cc.png';
-var hiddenSelectorPath = __dirname + '/resources/hiddenSelector_noun_63405.png';
+var selectorNotFoundPath = __dirname + '/resources/notFound.png';
+var hiddenSelectorPath = __dirname + '/resources/notVisible.png';
 var genConfigPath = captureConfigFileName; // TODO :: find a way to use that directly from the main configuration
 
 var config = require(genConfigPath);
@@ -34,7 +33,7 @@ if (!config.paths) {
   config.paths = {};
 }
 
-var outputFormat = '.' + (config.outputFormat && config.outputFormat.match(/jpg|jpeg/) || 'png');
+var outputFormat = '.' + ((config.outputFormat && config.outputFormat.match(/jpg|jpeg/)) || 'png');
 var bitmapsReferencePath = config.paths.bitmaps_reference || 'bitmaps_reference';
 var bitmapsTestPath = config.paths.bitmaps_test || 'bitmaps_test';
 var casperScriptsPath = config.paths.engine_scripts || config.paths.casper_scripts || null;
@@ -44,7 +43,7 @@ var scenarios = config.scenarios || config.grabConfigs;
 var configId = config.id || genHash(config.backstopConfigFileName);
 var fileNameTemplate = config.fileNameTemplate || '{configId}_{scenarioLabel}_{selectorIndex}_{selectorLabel}_{viewportIndex}_{viewportLabel}';
 
-var compareConfig = {testPairs: []};
+var compareConfig = { testPairs: [] };
 
 var casper = require('casper').create({
   logLevel: config.debug ? 'debug' : 'info',
@@ -82,15 +81,20 @@ function capturePageSelectors (scenarios, viewports, bitmapsReferencePath, bitma
   casper.start();
 
   casper.each(scenarios, function (casper, scenario, i) {
+    var viewportsForScenario = viewports;
     var scenarioLabelSafe = makeSafe(scenario.label);
     scenario.sIndex = i;
 
-    processScenario(casper, scenario, scenarioLabelSafe, scenarioLabelSafe, viewports, bitmapsReferencePath, bitmapsTestPath, screenshotDateTime);
+    if (scenario.viewports && scenario.viewports.length > 0) {
+      viewportsForScenario = scenario.viewports;
+    }
+
+    processScenario(casper, scenario, scenarioLabelSafe, scenarioLabelSafe, viewportsForScenario, bitmapsReferencePath, bitmapsTestPath, screenshotDateTime);
 
     if (!isReference && scenario.hasOwnProperty('variants')) {
       scenario.variants.forEach(function (variant) {
         var variantLabelSafe = makeSafe(variant.label);
-        processScenario(casper, variant, variantLabelSafe, scenarioLabelSafe, viewports, bitmapsReferencePath, bitmapsTestPath, screenshotDateTime);
+        processScenario(casper, variant, variantLabelSafe, scenarioLabelSafe, viewportsForScenario, bitmapsReferencePath, bitmapsTestPath, screenshotDateTime);
       });
     }
   });// end casper.each scenario
@@ -284,14 +288,14 @@ function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabe
         captureScreenshot(casper, filePath, o, vp);
 
         if (!isReference) {
-            var requireSameDimensions;
-            if (scenario.requireSameDimensions !== undefined) {
-                requireSameDimensions = scenario.requireSameDimensions;
-            } else if (config.requireSameDimensions !== undefined) {
-                requireSameDimensions = config.requireSameDimensions;
-            } else {
-                requireSameDimensions = config.defaultRequireSameDimensions;
-            }
+          var requireSameDimensions;
+          if (scenario.requireSameDimensions !== undefined) {
+            requireSameDimensions = scenario.requireSameDimensions;
+          } else if (config.requireSameDimensions !== undefined) {
+            requireSameDimensions = config.requireSameDimensions;
+          } else {
+            requireSameDimensions = config.defaultRequireSameDimensions;
+          }
           compareConfig.testPairs.push({
             reference: referenceFilePath,
             test: testFilePath,
@@ -299,13 +303,24 @@ function processScenario (casper, scenario, scenarioOrVariantLabel, scenarioLabe
             fileName: fileName,
             label: scenario.label,
             requireSameDimensions: requireSameDimensions,
-            misMatchThreshold: getMisMatchThreshHold(scenario)
+            misMatchThreshold: getMisMatchThreshHold(scenario),
+            expect: getScenarioExpect(scenario),
+            viewportLabel: vp.label
           });
         }
         // casper.echo('remote capture to > '+filePath,'info');
       });// end topLevelModules.forEach
     });
   });// end casper.each viewports
+}
+
+function getScenarioExpect (scenario) {
+  var expect = 0;
+  if (scenario.selectorExpansion && scenario.selectors && scenario.selectors.length && scenario.expect) {
+    expect = scenario.expect;
+  }
+
+  return expect;
 }
 
 function getMisMatchThreshHold (scenario) {
@@ -350,7 +365,7 @@ casper.run(function () {
 });
 
 function complete () {
-  var compareConfigJSON = {compareConfig: compareConfig};
+  var compareConfigJSON = { compareConfig: compareConfig };
   fs.write(comparePairsFileName, JSON.stringify(compareConfigJSON, null, 2), 'w');
   console.log('Comparison config file updated.');
 }
@@ -407,5 +422,5 @@ function genHash (str) {
 }
 
 function makeSafe (str) {
-  return str && str.replace(/[ /]/g, '_') || '';
+  return (str && str.replace(/[ /]/g, '_')) || '';
 }

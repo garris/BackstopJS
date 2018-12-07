@@ -10,12 +10,12 @@ describe('compare-hashes', function () {
   it('should resolve if the same image is compared', function () {
     const expectedResult = {
       isSameDimensions: true,
-      dimensionDifference: {width: 0, height: 0},
+      dimensionDifference: { width: 0, height: 0 },
       misMatchPercentage: '0.00'
     };
 
     return compareHash(REF_IMG1, REF_IMG1)
-      .then(data => assert.deepEqual(data, expectedResult));
+      .then(data => assert.deepStrictEqual(data, expectedResult));
   });
   it('should reject if two images have the same content', function (cb) {
     compareHash(REF_IMG1, REF_IMG1_OPTIMIZED).catch(() => cb());
