@@ -174,6 +174,7 @@ selectors                // Array of selectors to capture. Defaults to document 
 selectorExpansion        // See Targeting elements in the next section for more info...
 misMatchThreshold        // Percentage of different pixels allowed to pass test
 requireSameDimensions    // If set to true -- any change in selector size will trigger a test failure.
+noWaitLoadEvent          // *Chromy only* If set to true -- don't wait for the load event before taking screenshots. Options "readyEvent", "readySelector", and "delay" still take effect.
 ```
 
 
