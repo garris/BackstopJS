@@ -192,7 +192,12 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   if (isReference && scenario.referenceUrl) {
     url = scenario.referenceUrl;
   }
-  chromy.goto(url);
+  var gotoOptions = scenario.gotoOptions || config.gotoOptions;
+  if (gotoOptions) {
+    chromy.goto(url, gotoOptions);
+  } else {
+    chromy.goto(url);
+  }
 
   injectBackstopTools(chromy);
 
