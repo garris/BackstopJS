@@ -195,7 +195,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   var noWaitLoadEvent = scenario.noWaitLoadEvent || config.noWaitLoadEvent;
   if (noWaitLoadEvent) {
     chromy.goto(url, {
-      waitLoadEvent: false,
+      waitLoadEvent: false
     });
   } else {
     chromy.goto(url);
