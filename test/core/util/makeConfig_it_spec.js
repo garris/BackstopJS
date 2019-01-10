@@ -44,7 +44,7 @@ const expectedConfig = {
 };
 
 describe('make config', function () {
-  it('should return the default config correctly', function () {
+  it.only('should return the default config correctly', function () {
     const actualConfig = makeConfig('test');
 
     assert(actualConfig.tempCompareConfigFileName);
@@ -58,6 +58,12 @@ describe('make config', function () {
 
     assert(actualConfig.captureConfigFileName);
     delete actualConfig.captureConfigFileName;
+
+    assert(actualConfig.json_report);
+    delete actualConfig.json_report;
+
+    assert(actualConfig.compareJsonFileName);
+    delete actualConfig.compareJsonFileName;
 
     assert.deepStrictEqual(actualConfig, expectedConfig);
   });
