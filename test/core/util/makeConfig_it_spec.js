@@ -44,7 +44,7 @@ const expectedConfig = {
 };
 
 describe('make config', function () {
-  it.only('should return the default config correctly', function () {
+  it('should return the default config correctly', function () {
     const actualConfig = makeConfig('test');
 
     assert(actualConfig.tempCompareConfigFileName);
