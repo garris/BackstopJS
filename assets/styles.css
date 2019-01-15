@@ -43,7 +43,6 @@ a:hover {
   transform: translateZ(200px);
 }
 .lemurInYourFace {
-  transition: transform 750ms ease, opacity 750ms ease, visibility 800ms ease;
   width: 50%;
   /*min-width: 270px;*/
   z-index: 1;
