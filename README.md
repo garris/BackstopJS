@@ -836,23 +836,25 @@ optional parameters
 `--i`                         incremental flag -- use if you don't want BackstopJS do first delete all files in your reference directory
 
 
-### Modifying output settings of image-diffs
+### Modifying settings of image-diffs
 
-By specifying `resembleOutputOptions` in your backstop.json file you can modify the image-diffs transparency, errorcolor, etc. (See [Resemble.js outputSettings](https://github.com/Huddle/Resemble.js) for the full list.)
-
-Instead of calling resemble`s ignoreAntialiasing(), you may set it as a property in the config. (See [example](examples/simpleReactApp/backstop.json))
+By specifying `resembleOptions` in your backstop.json file you can modify the image-diffs transparency, errorcolor, etc. (See [Resemble.js](https://github.com/HuddleEng/Resemble.js#nodejs) for the full list.)
 
 ```json
-"resembleOutputOptions": {
-  "errorColor": {
-    "red": 255,
-    "green": 0,
-    "blue": 255
+"output": {
+    "errorColor": {
+        "red": 255,
+        "green": 0,
+        "blue": 255
+    },
+    "errorType": "movement",
+    "transparency": 0.3,
+    "largeImageThreshold": 1200,
+    "useCrossOrigin": false,
+    "outputDiff": true
   },
-  "errorType": "movement",
-  "transparency": 0.3,
-  "ignoreAntialiasing": true
-}
+"scaleToSameSize": true,
+"ignore": "antialiasing"
 ```
 
 ### Git Integration

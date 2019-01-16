@@ -11,9 +11,6 @@ then Build...
 
 Then open index.html in your browser.
 
-**Note:** ignore antialiasing is used here. 
-See backstop.json: `"resembleOutputOptions": {"ignoreAntialiasing": true}`
-
 ---
 
 **A BackstopJS test configuration file has already been added to this project.**

@@ -42,8 +42,8 @@
   "casperFlags": [],
   "engine": "phantomjs",
   "report": ["browser"],
-  "resembleOutputOptions": {
-    "ignoreAntialiasing": true
+  "resembleOptions": {
+    "ignore": "antialiasing"
   },
   "debug": false
 }

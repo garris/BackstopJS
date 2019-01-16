@@ -1,19 +1,18 @@
-var resemble = require('node-resemble-js');
+var compareImages = require('resemblejs/compareImages');
+var fs = require('fs');
 
-module.exports = function (referencePath, testPath, misMatchThreshold, resembleOutputSettings, requireSameDimensions) {
-  return new Promise(function (resolve, reject) {
-    resemble.outputSettings(resembleOutputSettings || {});
-    var comparison = resemble(referencePath).compareTo(testPath);
+module.exports = function (referencePath, testPath, misMatchThreshold, resembleOptions, requireSameDimensions) {
+  return new Promise(async function (resolve, reject) {
+    const data = await compareImages(
+      fs.readFileSync(referencePath),
+      fs.readFileSync(testPath),
+      resembleOptions
+    );
 
-    if (resembleOutputSettings && resembleOutputSettings.ignoreAntialiasing) {
-      comparison.ignoreAntialiasing();
+    if ((requireSameDimensions === false || data.isSameDimensions === true) && data.misMatchPercentage <= misMatchThreshold) {
+      return resolve(data);
     }
 
-    comparison.onComplete(data => {
-      if ((requireSameDimensions === false || data.isSameDimensions === true) && data.misMatchPercentage <= misMatchThreshold) {
-        return resolve(data);
-      }
-      reject(data);
-    });
+    reject(data);
   });
 };

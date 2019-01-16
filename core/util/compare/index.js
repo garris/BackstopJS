@@ -53,17 +53,17 @@ function comparePair (pair, report, config, compareConfig) {
     }
   }
 
-  var resembleOutputSettings = config.resembleOutputOptions;
-  return compareImages(referencePath, testPath, pair, resembleOutputSettings, Test);
+  var resembleOptions = config.resembleOptions;
+  return compareImages(referencePath, testPath, pair, resembleOptions, Test);
 }
 
-function compareImages (referencePath, testPath, pair, resembleOutputSettings, Test) {
+function compareImages (referencePath, testPath, pair, resembleOptions, Test) {
   return new Promise(function (resolve, reject) {
     var worker = cp.fork(require.resolve('./compare'));
     worker.send({
       referencePath: referencePath,
       testPath: testPath,
-      resembleOutputSettings: resembleOutputSettings,
+      resembleOutputSettings: resembleOptions,
       pair: pair
     });
 

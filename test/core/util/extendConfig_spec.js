@@ -6,8 +6,8 @@ describe('computeConfig_spec', function () {
     var actualConfig = extendConfig({ projectPath: process.cwd(), backstop: process.cwd() }, { engine: 'slimerjs' });
     assert.strictEqual(actualConfig.engine, 'slimerjs');
   });
-  it('should override resembleOutputOptions from config file', function () {
-    var actualConfig = extendConfig({ projectPath: process.cwd(), backstop: process.cwd() }, { resembleOutputOptions: { transparency: 0.3 } });
-    assert.strictEqual(actualConfig.resembleOutputOptions.transparency, 0.3);
+  it('should override resembleOptions from config file', function () {
+    var actualConfig = extendConfig({ projectPath: process.cwd(), backstop: process.cwd() }, { resembleOptions: { ignore: 'less' } });
+    assert.strictEqual(actualConfig.resembleOptions.ignore, 'less');
   });
 });
