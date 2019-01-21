@@ -45,7 +45,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     viewport.label = viewport.name || '';
   }
 
-  const engineScriptsPath = config.env.engine_scripts || config.env.casper_scripts || config.env.engine_scripts_default;
+  const engineScriptsPath = config.env.engine_scripts || config.env.engine_scripts_default;
   const isReference = config.isReference;
 
   const VP_W = viewport.width || viewport.viewport.width;

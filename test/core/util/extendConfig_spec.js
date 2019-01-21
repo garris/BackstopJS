@@ -3,9 +3,10 @@ var extendConfig = require('../../../core/util/extendConfig');
 
 describe('computeConfig_spec', function () {
   it('should override engine from config file', function () {
-    var actualConfig = extendConfig({ projectPath: process.cwd(), backstop: process.cwd() }, { engine: 'slimerjs' });
-    assert.strictEqual(actualConfig.engine, 'slimerjs');
+    var actualConfig = extendConfig({ projectPath: process.cwd(), backstop: process.cwd() }, { engine: 'puppet' });
+    assert.strictEqual(actualConfig.engine, 'puppet');
   });
+
   it('should override resembleOutputOptions from config file', function () {
     var actualConfig = extendConfig({ projectPath: process.cwd(), backstop: process.cwd() }, { resembleOutputOptions: { transparency: 0.3 } });
     assert.strictEqual(actualConfig.resembleOutputOptions.transparency, 0.3);
