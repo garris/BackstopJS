@@ -137,7 +137,7 @@ module.exports = {
       url: 'https://garris.github.io/BackstopJS/',
       referenceUrl: 'https://garris.github.io/BackstopJS/?cookie',
       selectors: ['.moneyshot'],
-      misMatchThreshold: 3.0,
+      misMatchThreshold: 6.0,
       requireSameDimensions: false
     },
     {
@@ -236,8 +236,8 @@ module.exports = {
       viewports: [
         {
           label: 'Desktop',
-          width: 1920,
-          height: 1080
+          width: 800,
+          height: 300
         }
       ]
     }
