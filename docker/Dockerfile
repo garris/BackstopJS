@@ -22,6 +22,18 @@ RUN	apt-get -y update && \
 
 RUN apt-get install -y firefox-esr
 
+RUN apt-get -qqy update \
+  && apt-get -qqy --no-install-recommends install \
+    libfontconfig \
+    libfreetype6 \
+    xfonts-cyrillic \
+    xfonts-scalable \
+    fonts-liberation \
+    fonts-ipafont-gothic \
+    fonts-wqy-zenhei \
+  && rm -rf /var/lib/apt/lists/* \
+  && apt-get -qyy clean
+
 WORKDIR /src
 
 ENTRYPOINT ["backstop"]
