@@ -966,6 +966,13 @@ Filename formats have changed.  To use the 1.x (compatible) file format, use the
 }
 ```
 
+### puppeteerOffscreenCaptureFix config
+
+When using Puppeteer sometimes elements or hover effects will not properly display when there is multiple levels of page spacing. (I.E. Element has a `margin-top`, child of that element is a `selectors` and the hovered element is within that child element).
+
+You can use `puppeteerOffscreenCaptureFix` to make Puppeteer use `page.screenshot` with a bounding box of the element instead of using `el.screenshot`. 
+
+_Note: This issue can also occur if you have transitions or other delayed/dynamic content and is unrelated to this fix._
 
 ---
 
