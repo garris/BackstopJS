@@ -954,6 +954,10 @@ Sometimes bad permissions happen to good people. It's ok, this is a safe space. 
 
 Be sure to use a config `id` in your config file. See https://github.com/garris/BackstopJS/issues/291
 
+### There's no visible difference between "Reference" and "Test" screenshots
+
+You might run into an issue where your reference and test screenshots look seemingly identical but on further inspection have a 1px difference in height or width. To fix this, make sure your viewport is the same as the one you have setup in your configuration. Then, check whether the element you target has a height or width that is a comma-separated value (i.e. 804.25px). If so, you might have run into a rounding error. Adjusting your viewport so the element's width is a natural number will help with this.
+
 #### If you just upgraded to 2.x or 3.x
 
 Filename formats have changed.  To use the 1.x (compatible) file format, use the `fileNameTemplate` property like so...
