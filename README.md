@@ -485,6 +485,11 @@ Using the `report` property in your config to enable or disable browser includin
 "report": ["browser", "CI"]
 ```
 
+You can also specify a json report by specifying:
+```json
+"report": ["json"]
+```
+
 If you choose the CI-only reporting or even no reporting (CLI is always on) you can always enter the following command to see the latest test run report in the browser.
 
 ```sh
@@ -530,6 +535,7 @@ By default, BackstopJS saves generated resources into the `backstop_data` direct
     "bitmaps_test": "backstop_data/bitmaps_test",
     "engine_scripts": "backstop_data/engine_scripts",
     "html_report": "backstop_data/html_report",
+    "json_report": "backstop_data/json_report",
     "ci_report": "backstop_data/ci_report"
   }
   ...

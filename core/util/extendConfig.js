@@ -9,6 +9,7 @@ function extendConfig (config, userConfig) {
   bitmapPaths(config, userConfig);
   ci(config, userConfig);
   htmlReport(config, userConfig);
+  jsonReport(config, userConfig);
   comparePaths(config);
   captureConfigPaths(config);
   engine(config, userConfig);
@@ -63,6 +64,15 @@ function htmlReport (config, userConfig) {
 
   config.compareConfigFileName = path.join(config.html_report, 'config.js');
   config.compareReportURL = path.join(config.html_report, 'index.html');
+}
+
+function jsonReport (config, userConfig) {
+  config.json_report = path.join(config.projectPath, 'backstop_data', 'json_report');
+  if (userConfig.paths) {
+    config.json_report = userConfig.paths.json_report || config.json_report;
+  }
+
+  config.compareJsonFileName = path.join(config.json_report, 'jsonReport.json');
 }
 
 function comparePaths (config) {

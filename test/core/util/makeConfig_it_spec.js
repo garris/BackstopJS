@@ -56,6 +56,12 @@ describe('make config', function () {
     assert(actualConfig.captureConfigFileName);
     delete actualConfig.captureConfigFileName;
 
+    assert(actualConfig.json_report);
+    delete actualConfig.json_report;
+
+    assert(actualConfig.compareJsonFileName);
+    delete actualConfig.compareJsonFileName;
+
     assert.deepStrictEqual(actualConfig, expectedConfig);
   });
 });
