@@ -105,7 +105,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     if (onBeforeScript) {
       var beforeScriptPath = path.resolve(engineScriptsPath, onBeforeScript);
       if (fs.existsSync(beforeScriptPath)) {
-        await require(beforeScriptPath)(page, scenario, viewport, isReference, browser);
+        await require(beforeScriptPath)(page, scenario, viewport, isReference, browser, config);
       } else {
         console.warn('WARNING: script not found: ' + beforeScriptPath);
       }
