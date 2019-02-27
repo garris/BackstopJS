@@ -1,6 +1,7 @@
 var fs = require('../util/fs');
 var path = require('path');
 var map = require('p-map');
+const cleanupBitmapsTestDir = require('../util/cleanupBitmapsTestDir');
 
 var FAILED_DIFF_RE = /^failed_diff_/;
 var FILTER_DEFAULT = /\w+/;
@@ -38,7 +39,10 @@ module.exports = {
               }
             }
             return true;
-          }).then(resolve).catch(reject);
+          }).then(() => {
+            cleanupBitmapsTestDir(config)
+              .finally(resolve);
+          }).catch(reject);
         });
       });
     });

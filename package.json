@@ -12,6 +12,7 @@
     "init": "node ./cli/index.js init",
     "reference": "node ./cli/index.js reference",
     "test": "node ./cli/index.js test",
+    "approve": "node ./cli/index.js approve",
     "openReport": "node ./cli/index.js openReport",
     "echo": "node ./cli/index.js echo",
     "unit-test": "mocha --reporter spec --recursive 'test/**/*_spec.js'",
