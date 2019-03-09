@@ -558,11 +558,13 @@ or
 ```
 
 ### Setting Puppeteer option flags
-Backstop sets two defaults for Puppeteer:
+Backstop sets three defaults for Puppeteer:
 
 ```json
 ignoreHTTPSErrors: true,
-headless: <!!!config.debugWindow>
+headless: <!!!config.debugWindow>,
+remote: false
+
 ```
 
 You can add more settings (or override the defaults) with the engineOptions property. (properties are merged)
@@ -576,6 +578,51 @@ You can add more settings (or override the defaults) with the engineOptions prop
 
 More info here: [Puppeteer on github](https://github.com/GoogleChrome/puppeteer).
 
+#### Running Puppeteer on an already running Chrome instance
+```json
+"engineOptions": {
+  "remote": true,
+  "remoteOptions": {
+    // Note: This ignoreHTTPSErrors is separate from the one in engineOptions, and no default is set for it by BackstopJS.
+    "ignoreHTTPSErrors": false,
+    "browserWSEndpoint": "ws://myremotechrome:9222/devtools/browser/e6447a74-d83f-4f4e-a8e9-388b5216e0c2"
+  }
+}
+```
+
+For more available remoteOptions, check BrowserOptions and ConnectOptions from puppeteer.
+
+Notes for remote mode:
+- Anything outside of remoteOptions is ignored.
+- Chrome has to be launched separately, and BackstopJS has to be able to connect to it.
+  - Args, headless, etc. have to be set for chrome when launching chrome.
+
+
+#### Example setup with docker
+
+1. Start a dockerized chrome instance
+  1. E.g `docker run -d -p 9222:9222 --cap-add=SYS_ADMIN justinribeiro/chrome-headless`
+  2. Note the output, it's the docker container ID, e.g `8d203d9598f89028f98389f50a92aab33e18699e502f3813ab584ee654a8ca8a`
+2. Get the devtools web socket
+  1. Use `docker logs <container name or id>` (list these with `docker ps`)
+    1. E.g `docker logs 8d203d9598f89028f98389f50a92aab33e18699e502f3813ab584ee654a8ca8a`
+    2. E.g `docker logs loving_dijkstra`
+  2. Copy the web socket URL from the logs
+    1. E.g, if the logs say `DevTools listening on ws://0.0.0.0:9222/devtools/browser/e6447a74-d83f-4f4e-a8e9-388b5216e0c2`, then the URl is `ws://0.0.0.0:9222/devtools/browser/e6447a74-d83f-4f4e-a8e9-388b5216e0c2`
+3. Create a new or edit an existing BackstopJS config and add these:
+```json
+  "engineOptions": {
+    "remote": true,
+    "remoteOptions": {
+      "browserWSEndpoint": "ws://localhost:9222/devtools/browser/e6447a74-d83f-4f4e-a8e9-388b5216e0c2"
+    }
+  },
+```
+
+If everything went OK, now you should be able to use backstop commands as usual.
+Notes:
+- Since in this example chrome is running in a docker container, it won't see any files on your system, unless they are mounted to it. 
+  This means `url: path/to/index.html` scenarios won't work. But making these work is more of a docker topic, not a BackstopJS one.
 
 ### Setting Chromy option flags
 Chromy enables a lot of behavior via constructor options.  See Chromy documentation for more info.
@@ -908,6 +955,11 @@ Run this command if you have made changes to the BackstopJS codebase and you wan
 If you are using Chrome-Headless engine then you have the option of displaying the Chrome window as tests are running.  This can be helpful for visually monitoring your app state at the time of your test.  To enable use...
 ```json
 "debugWindow": true
+```
+
+Note, this does not work when using
+```json
+"remote": true
 ```
 
 For all engines there is also the `debug` setting.  This enables verbose console output.This will also output your source payload to the terminal so you can make sure to check that the server is sending what you expect. 😉
