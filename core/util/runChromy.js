@@ -250,7 +250,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   if (onReadyScript) {
     var readyScriptPath = path.resolve(engineScriptsPath, onReadyScript);
     if (fs.existsSync(readyScriptPath)) {
-      require(readyScriptPath)(chromy, scenario, viewport, isReference, Chromy);
+      require(readyScriptPath)(chromy, scenario, viewport, isReference, Chromy, config);
     } else {
       console.warn(PORT, 'WARNING: script not found: ' + readyScriptPath);
     }
