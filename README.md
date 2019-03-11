@@ -472,6 +472,18 @@ By default the base path is a folder called `engine_scripts` inside your Backsto
 }
 ```
 
+#### onBeforeScript/onReadyScript available variables
+
+onBefore(engine, scenario, viewport, isReference, Engine, config)
+
+```
+engine:      chromy or puppetter engine instance
+scenario:    currently running scenario config
+viewport:    viewport info
+isReference: whether scenario contains reference URL propery
+Engine:      Static class reference (Chromy or Puppeteer)
+config:      the whole config object
+```
 
 ### Reporting workflow tips
 
