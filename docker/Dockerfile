@@ -34,6 +34,12 @@ RUN apt-get -qqy update \
   && rm -rf /var/lib/apt/lists/* \
   && apt-get -qyy clean
 
+# install emoji font from debian testing distribution
+RUN apt-add-repository "deb http://deb.debian.org/debian testing main" \
+ && apt-get update -qq \
+ && apt-get install -yqq --no-install-recommends fonts-noto-color-emoji \
+ && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /src
 
 ENTRYPOINT ["backstop"]
