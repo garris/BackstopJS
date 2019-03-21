@@ -1,5 +1,4 @@
 const { spawn } = require('child_process');
-const version = require('../../package').version;
 
 module.exports.shouldRunDocker = (config) => config.args.docker;
 
@@ -23,7 +22,8 @@ module.exports.runDocker = (config, backstopCommand) => {
       configArgs = configArgs.replace(/--docker/, '--moby');
     }
 
-    const DOCKER_COMMAND = `docker run --rm -it --mount type=bind,source="${process.cwd()}",target=/src backstopjs/backstopjs:${version} ${backstopCommand}${configArgs} "${passAlongArgs}"`;
+    const dockerArgs = config.dockerRunExtraArgs ? ` ${config.dockerRunExtraArgs}` : '';
+    const DOCKER_COMMAND = `docker run --rm -it --mount type=bind,source="${process.cwd()}",target=/src${dockerArgs} ${config.dockerImage} ${backstopCommand}${configArgs} "${passAlongArgs}"`;
     console.log('Delegating command to Docker...', DOCKER_COMMAND);
 
     return new Promise((resolve, reject) => {
