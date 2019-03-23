@@ -45,7 +45,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     viewport.label = viewport.name || '';
   }
 
-  const engineScriptsPath = config.env.engine_scripts || config.env.casper_scripts || config.env.engine_scripts_default;
+  const engineScriptsPath = config.env.engine_scripts || config.env.engine_scripts_default;
   const isReference = config.isReference;
 
   const VP_W = viewport.width || viewport.viewport.width;
@@ -105,7 +105,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     if (onBeforeScript) {
       var beforeScriptPath = path.resolve(engineScriptsPath, onBeforeScript);
       if (fs.existsSync(beforeScriptPath)) {
-        await require(beforeScriptPath)(page, scenario, viewport, isReference, browser);
+        await require(beforeScriptPath)(page, scenario, viewport, isReference, browser, config);
       } else {
         console.warn('WARNING: script not found: ' + beforeScriptPath);
       }
@@ -164,7 +164,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     if (onReadyScript) {
       var readyScriptPath = path.resolve(engineScriptsPath, onReadyScript);
       if (fs.existsSync(readyScriptPath)) {
-        await require(readyScriptPath)(page, scenario, viewport, isReference, browser);
+        await require(readyScriptPath)(page, scenario, viewport, isReference, browser, config);
       } else {
         console.warn('WARNING: script not found: ' + readyScriptPath);
       }

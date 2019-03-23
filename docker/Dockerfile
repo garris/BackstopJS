@@ -3,9 +3,6 @@ FROM node:8.12.0
 ARG BACKSTOPJS_VERSION
 
 ENV \
-	PHANTOMJS_VERSION=2.1.7 \
-	CASPERJS_VERSION=1.1.4 \
-	SLIMERJS_VERSION=0.10.3 \
 	BACKSTOPJS_VERSION=$BACKSTOPJS_VERSION \
 	# Workaround to fix phantomjs-prebuilt installation errors
 	# See https://github.com/Medium/phantomjs/issues/707
@@ -15,9 +12,6 @@ ENV \
 RUN apt-get update && \
 	apt-get install -y git sudo software-properties-common python-software-properties
 
-RUN sudo npm install -g --unsafe-perm=true --allow-root phantomjs@${PHANTOMJS_VERSION}
-RUN sudo npm install -g --unsafe-perm=true --allow-root casperjs@${CASPERJS_VERSION}
-RUN sudo npm install -g --unsafe-perm=true --allow-root slimerjs@${SLIMERJS_VERSION}
 RUN sudo npm install -g --unsafe-perm=true --allow-root backstopjs@${BACKSTOPJS_VERSION}
 
 RUN wget https://dl-ssl.google.com/linux/linux_signing_key.pub && sudo apt-key add linux_signing_key.pub
@@ -27,6 +21,18 @@ RUN	apt-get -y update && \
 	apt-get -y install google-chrome-stable
 
 RUN apt-get install -y firefox-esr
+
+RUN apt-get -qqy update \
+  && apt-get -qqy --no-install-recommends install \
+    libfontconfig \
+    libfreetype6 \
+    xfonts-cyrillic \
+    xfonts-scalable \
+    fonts-liberation \
+    fonts-ipafont-gothic \
+    fonts-wqy-zenhei \
+  && rm -rf /var/lib/apt/lists/* \
+  && apt-get -qyy clean
 
 WORKDIR /src
 

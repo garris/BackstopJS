@@ -22,7 +22,7 @@ const IS_SAME_WORD = '';
 const OPACITY = '40'; // 0-255 range
 
 /**
- * Applies meyers-diff algorithm to imageData formatted arrays
+ * Applies Longest-Common-Subsequence-Diff algorithm to imageData formatted arrays
  * 
  * @param {Uint8ClampedArray} [reference] baseline image
  * @param {Uint8ClampedArray} [test] test image

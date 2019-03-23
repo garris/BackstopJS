@@ -137,7 +137,7 @@ module.exports = {
       url: 'https://garris.github.io/BackstopJS/',
       referenceUrl: 'https://garris.github.io/BackstopJS/?cookie',
       selectors: ['.moneyshot'],
-      misMatchThreshold: 3.0,
+      misMatchThreshold: 6.0,
       requireSameDimensions: false
     },
     {
@@ -218,6 +218,28 @@ module.exports = {
           height: 1366
         }
       ]
+    },
+    {
+      label: 'keyPressSelector',
+      url: '../../examples/featureTests/index.html',
+      keyPressSelectors: [
+        {
+          selector: 'input[placeholder="Email"]',
+          keyPress: 'marcdacz@backstopjs.com'
+        },
+        {
+          selector: 'input[placeholder="Password"]',
+          keyPress: '1234'
+        }
+      ],
+      selectors: ['div[id=navbar]'],
+      viewports: [
+        {
+          label: 'Desktop',
+          width: 800,
+          height: 300
+        }
+      ]
     }
   ],
   paths: {
@@ -227,7 +249,7 @@ module.exports = {
     html_report: 'backstop_data/html_report',
     ci_report: 'backstop_data/ci_report'
   },
-  report: ['browser'],
+  report: ['browser', 'json'],
   engine: ENGINE,
   engineOptions: {
     args: ['--no-sandbox']
