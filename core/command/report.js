@@ -1,5 +1,6 @@
 var path = require('path');
 var chalk = require('chalk');
+var cloneDeep = require('lodash/cloneDeep');
 
 var allSettled = require('../util/allSettled');
 var fs = require('../util/fs');
@@ -13,24 +14,30 @@ function writeReport (config, reporter) {
     promises.push(writeJunitReport(config, reporter));
   }
 
+  if (config.report && config.report.indexOf('json') > -1) {
+    promises.push(writeJsonReport(config, reporter));
+  }
+
   promises.push(writeBrowserReport(config, reporter));
 
   return allSettled(promises);
 }
 
 function writeBrowserReport (config, reporter) {
+  var browserReporter = cloneDeep(reporter);
   function toAbsolute (p) {
     return (path.isAbsolute(p)) ? p : path.join(config.projectPath, p);
   }
   logger.log('Writing browser report');
+
   return fs.copy(config.comparePath, toAbsolute(config.html_report)).then(function () {
     logger.log('Resources copied');
 
     // Fixing URLs in the configuration
     var report = toAbsolute(config.html_report);
-    for (var i in reporter.tests) {
-      if (reporter.tests.hasOwnProperty(i)) {
-        var pair = reporter.tests[i].pair;
+    for (var i in browserReporter.tests) {
+      if (browserReporter.tests.hasOwnProperty(i)) {
+        var pair = browserReporter.tests[i].pair;
         pair.reference = path.relative(report, toAbsolute(pair.reference));
         pair.test = path.relative(report, toAbsolute(pair.test));
 
@@ -40,7 +47,7 @@ function writeBrowserReport (config, reporter) {
       }
     }
 
-    var jsonp = 'report(' + JSON.stringify(reporter, null, 2) + ');';
+    var jsonp = 'report(' + JSON.stringify(browserReporter, null, 2) + ');';
     return fs.writeFile(toAbsolute(config.compareConfigFileName), jsonp).then(function () {
       logger.log('Copied configuration to: ' + toAbsolute(config.compareConfigFileName));
     }, function (err) {
@@ -92,6 +99,38 @@ function writeJunitReport (config, reporter) {
     } catch (e) {
       return reject(e);
     }
+  });
+}
+
+function writeJsonReport (config, reporter) {
+  var jsonReporter = cloneDeep(reporter);
+  function toAbsolute (p) {
+    return (path.isAbsolute(p)) ? p : path.join(config.projectPath, p);
+  }
+  logger.log('Writing json report');
+  return fs.ensureDir(toAbsolute(config.json_report)).then(function () {
+    logger.log('Resources copied');
+
+    // Fixing URLs in the configuration
+    var report = toAbsolute(config.json_report);
+    for (var i in jsonReporter.tests) {
+      if (jsonReporter.tests.hasOwnProperty(i)) {
+        var pair = jsonReporter.tests[i].pair;
+        pair.reference = path.relative(report, toAbsolute(pair.reference));
+        pair.test = path.relative(report, toAbsolute(pair.test));
+
+        if (pair.diffImage) {
+          pair.diffImage = path.relative(report, toAbsolute(pair.diffImage));
+        }
+      }
+    }
+
+    return fs.writeFile(toAbsolute(config.compareJsonFileName), JSON.stringify(jsonReporter.getReport(), null, 2)).then(function () {
+      logger.log('Wrote Json report to: ' + toAbsolute(config.compareJsonFileName));
+    }, function (err) {
+      logger.error('Failed writing Json report');
+      throw err;
+    });
   });
 }
 

@@ -175,7 +175,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   if (onBeforeScript) {
     var beforeScriptPath = path.resolve(engineScriptsPath, onBeforeScript);
     if (fs.existsSync(beforeScriptPath)) {
-      require(beforeScriptPath)(chromy, scenario, viewport, isReference, Chromy);
+      require(beforeScriptPath)(chromy, scenario, viewport, isReference, Chromy, config);
     } else {
       console.warn(PORT, ' WARNING: script not found: ' + beforeScriptPath);
     }
@@ -250,7 +250,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   if (onReadyScript) {
     var readyScriptPath = path.resolve(engineScriptsPath, onReadyScript);
     if (fs.existsSync(readyScriptPath)) {
-      require(readyScriptPath)(chromy, scenario, viewport, isReference, Chromy);
+      require(readyScriptPath)(chromy, scenario, viewport, isReference, Chromy, config);
     } else {
       console.warn(PORT, 'WARNING: script not found: ' + readyScriptPath);
     }

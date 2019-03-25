@@ -472,6 +472,18 @@ By default the base path is a folder called `engine_scripts` inside your Backsto
 }
 ```
 
+#### onBeforeScript/onReadyScript available variables
+
+onBefore(engine, scenario, viewport, isReference, Engine, config)
+
+```
+engine:      chromy or puppetter engine instance
+scenario:    currently running scenario config
+viewport:    viewport info
+isReference: whether scenario contains reference URL propery
+Engine:      Static class reference (Chromy or Puppeteer)
+config:      the whole config object
+```
 
 ### Reporting workflow tips
 
@@ -483,6 +495,11 @@ Using the `report` property in your config to enable or disable browser includin
 
 ```json
 "report": ["browser", "CI"]
+```
+
+You can also specify a json report by specifying:
+```json
+"report": ["json"]
 ```
 
 If you choose the CI-only reporting or even no reporting (CLI is always on) you can always enter the following command to see the latest test run report in the browser.
@@ -530,6 +547,7 @@ By default, BackstopJS saves generated resources into the `backstop_data` direct
     "bitmaps_test": "backstop_data/bitmaps_test",
     "engine_scripts": "backstop_data/engine_scripts",
     "html_report": "backstop_data/html_report",
+    "json_report": "backstop_data/json_report",
     "ci_report": "backstop_data/ci_report"
   }
   ...
@@ -634,6 +652,14 @@ backstop('test', {docker: true});
 ```
 
 The above flag will cause BackstopJS to hit your Docker local client, spin up the BackstopJS container at https://hub.docker.com/r/backstopjs/backstopjs/ and execute your test.
+
+If the default docker command or image does not work for you, you can customize the command to run BackstopJS with Docker by changing the `dockerCommandTemplate` config option. The default is:
+
+```
+"dockerCommandTemplate": "docker run --rm -it --mount type=bind,source=\"{cwd}\",target=/src backstopjs/backstopjs:{version} {backstopCommand} {args}"
+```
+
+*Tip: to run BackstopJS in Docker in an environment where the output is piped (e.g. CI server or an IDE's output window), remove the -t parameter (change the default to "docker run --rm -i --mount...)*
 
 #### Requirements for when you're using docker...
 **1) If you are using a config generated prior to version 3.5 and you get an error like this...**
@@ -970,6 +996,8 @@ Filename formats have changed.  To use the 1.x (compatible) file format, use the
 ---
 
 ## Tutorials, Extensions and more
+- A cool overview article by [Adrien Lemaire](https://www.linkedin.com/in/adrienlemaire) -- [Overview of BackstopJS, a tool to test a web application’s UI](https://medium.com/@Fandekasp/overview-of-backstopjs-a-tool-to-test-a-web-applications-ui-99234dc6c4f2)
+- Another by [Adrien Lemaire](https://www.linkedin.com/in/adrienlemaire) Check this if you are interested in Continuous Integration (CI)! [A journey in Continuous Integration Testing](https://medium.com/@Fandekasp/a-journey-in-continuous-integration-testing-e33ca79078f4)
 - [Angela Riggs](https://www.linkedin.com/in/angelariggs/detail/recent-activity/posts/) is a pioneer in the Visual Testing space and leader in cultivating a culture of quality for software teams.  Read about it [here](https://www.linkedin.com/pulse/visual-regression-testing-backstopjs-angela-riggs/) and [here](https://www.pnsqc.org/automated-visual-regression-testing-with-backstopjs/) and listen to her talk [here](https://www.linkedin.com/pulse/creating-culture-quality-angela-riggs/)
 - Check out [Marc Dacanay's](https://www.linkedin.com/in/marcdacanay/detail/recent-activity/posts/) BackstopJS articles -- he has a great intro as well as some great in-depth tips.
 - Here is a [cool project template for static sites](https://github.com/wlsf82/backstop-config) by Walmyr Filho [@wlsf82](https://github.com/wlsf82) https://twitter.com/walmyrlimaesilv
