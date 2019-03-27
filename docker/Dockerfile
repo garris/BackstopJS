@@ -4,11 +4,6 @@ ARG BACKSTOPJS_VERSION
 
 ENV BACKSTOPJS_VERSION=$BACKSTOPJS_VERSION
 
-
-# Base packages
-RUN apt-get update && \
-	apt-get install -y git sudo software-properties-common python-software-properties
-
 RUN sudo npm install -g --unsafe-perm=true --allow-root backstopjs@${BACKSTOPJS_VERSION}
 
 RUN apt-get -qqy update \
