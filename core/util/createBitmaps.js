@@ -132,7 +132,7 @@ function delegateScenarios (config) {
   } else if (config.engine.startsWith('puppet')) {
     return pMap(scenarioViews, runPuppet, { concurrency: asyncCaptureLimit });
   } else {
-    logger.error('Engine not known to Backstop!');
+    logger.error(`Engine "${typeof config.engine === 'string' && config.engine || 'undefined'}" not recognized! If you require PhantomJS or Slimer support please use backstopjs@3.8.8 or earlier.`);
   }
 }
 
