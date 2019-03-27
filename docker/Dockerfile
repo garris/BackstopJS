@@ -4,7 +4,7 @@ ARG BACKSTOPJS_VERSION
 
 ENV BACKSTOPJS_VERSION=$BACKSTOPJS_VERSION
 
-RUN sudo npm install -g --unsafe-perm=true --allow-root backstopjs@${BACKSTOPJS_VERSION}
+RUN npm install -g --unsafe-perm=true --allow-root backstopjs@${BACKSTOPJS_VERSION}
 
 RUN apt-get -qqy update \
   && apt-get -qqy --no-install-recommends install \
