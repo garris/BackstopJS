@@ -5,6 +5,9 @@
 
 BackstopJS automates visual regression testing of your responsive web UI by comparing DOM screenshots over time.
 
+## !! Notification board !!
+Due to some recent updates to the repo the latest version will produce the following error: ```Error: Failed to launch chrome!``` If you want to avoid that please use a previous stable version instead, such as v3.9.5. If you are using docker please use the (crtl/cmd + F) "dockerCommandTemplate" and specify a version.
+
 ## Version 3 Features
 
 - In-browser reporting UI with...
