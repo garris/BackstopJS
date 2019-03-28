@@ -1,5 +1,6 @@
 const ENGINE = 'puppet';
 const SCRIPT_PATH = 'puppet';
+const URL = 'https://garris.github.io/BackstopJS/index.html';
 
 module.exports = {
   id: `${ENGINE}_backstop_features`,
@@ -20,78 +21,78 @@ module.exports = {
   scenarios: [
     {
       label: 'Simple',
-      url: '../../index.html'
+      url: `${URL}`,
     },
     {
       label: 'pkra bug test',
-      url: '../../index.html',
+      url: `${URL}`,
       selectors: ['#pkratest', '.logoBlock']
     },
     {
       label: 'delay',
-      url: '../../index.html?delay',
+      url: `${URL}?delay`,
       delay: 5000,
       selectors: ['.moneyshot']
     },
     {
       label: 'readyEvent',
-      url: '../../index.html?delay',
+      url: `${URL}?delay`,
       readyEvent: '_the_lemur_is_ready_to_see_you',
       selectors: ['.moneyshot']
     },
     {
       label: 'readySelector',
-      url: '../../index.html?delay',
+      url: `${URL}?delay`,
       readySelector: '._the_lemur_is_ready_to_see_you',
       selectors: ['.moneyshot']
     },
     {
       label: 'noDelay',
-      url: '../../index.html?delay',
+      url: `${URL}?delay`,
       selectors: ['.moneyshot']
     },
     {
       label: 'expanded',
-      url: '../../index.html',
+      url: `${URL}`,
       selectors: ['p'],
       selectorExpansion: true
     },
     {
       label: 'notExpanded',
-      url: '../../index.html',
+      url: `${URL}`,
       selectors: ['p'],
       delay: 1000
     },
     {
       label: 'expect',
-      url: '../../index.html',
+      url: `${URL}`,
       selectors: ['p'],
       selectorExpansion: true,
       expect: 7
     },
     {
       label: 'magicSelectors',
-      url: '../../index.html',
+      url: `${URL}`,
       selectors: ['document', 'viewport']
     },
     {
       label: 'hideSelectors',
-      url: '../../index.html',
+      url: `${URL}`,
       hideSelectors: ['.logo-link', 'p']
     },
     {
       label: 'removeSelectors',
-      url: '../../index.html',
+      url: `${URL}`,
       removeSelectors: ['.logo-link', 'p']
     },
     {
       label: 'notFound',
-      url: '../../index.html',
+      url: `${URL}`,
       selectors: ['.monkey']
     },
     {
       label: 'notVisible',
-      url: '../../index.html',
+      url: `${URL}`,
       selectors: ['#noShow']
     },
     {
@@ -103,25 +104,25 @@ module.exports = {
     // {
     //   label: 'customReadyScript',
     //   onReadyScript: `${SCRIPT_PATH}/overrideCSS.js`,
-    //   url: '../../index.html',
+    //   url: `${URL}`,
     //   selectors: ['.moneyshot']
     // },
     // {
     //   label: 'redirect',
-    //   url: '../../index.html',
+    //   url: `${URL}`,
     //   onReadyScript: `${SCRIPT_PATH}/redirect.js`,
     //   selectors: ['.moneyshot']
     // },
     {
       label: 'hover',
-      url: '../../index.html?click',
+      url: `${URL}?click`,
       hoverSelector: '#theLemur',
       postInteractionWait: 1000,
       selectors: ['.moneyshot']
     },
     {
       label: 'click',
-      url: '../../index.html?click',
+      url: `${URL}?click`,
       clickSelector: '#theLemur',
       postInteractionWait: '._the_lemur_is_ready_to_see_you',
       selectors: ['.moneyshot']
@@ -150,7 +151,7 @@ module.exports = {
     },
     {
       label: 'scenarioSpecificViewports',
-      url: '../../index.html',
+      url: `${URL}`,
       selectors: ['document', 'viewport'],
       viewports: [
         {
@@ -162,12 +163,12 @@ module.exports = {
     },
     {
       label: 'scenarioSpecificViewports-withEmptyViewports',
-      url: '../../index.html',
+      url: `${URL}`,
       viewports: []
     },
     {
       label: 'scenarioSpecificViewports-withMultipleViewports',
-      url: '../../index.html',
+      url: `${URL}`,
       viewports: [
         {
           label: 'Pixel-2',
@@ -193,7 +194,7 @@ module.exports = {
     },
     {
       label: 'scenarioSpecificViewports-withExpandSelector',
-      url: '../../index.html',
+      url: `${URL}`,
       selectors: ['p'],
       selectorExpansion: true,
       viewports: [
