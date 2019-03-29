@@ -1,6 +1,6 @@
 const ENGINE = 'puppet';
 const SCRIPT_PATH = 'puppet';
-const URL = 'https://garris.github.io/BackstopJS/index.html';
+const URL = 'https://garris.github.io/BackstopJS';
 
 module.exports = {
   id: `${ENGINE}_backstop_features`,
@@ -21,121 +21,122 @@ module.exports = {
   scenarios: [
     {
       label: 'Simple',
-      url: `${URL}`,
+      url: `${URL}/index.html`,
     },
     {
       label: 'pkra bug test',
-      url: `${URL}`,
+      url: `${URL}/index.html`,
       selectors: ['#pkratest', '.logoBlock']
     },
     {
       label: 'delay',
-      url: `${URL}?delay`,
+      url: `${URL}/index.html?delay`,
       delay: 5000,
       selectors: ['.moneyshot']
     },
     {
       label: 'readyEvent',
-      url: `${URL}?delay`,
+      url: `${URL}/index.html?delay`,
       readyEvent: '_the_lemur_is_ready_to_see_you',
       selectors: ['.moneyshot']
     },
     {
       label: 'readySelector',
-      url: `${URL}?delay`,
+      url: `${URL}/index.html?delay`,
       readySelector: '._the_lemur_is_ready_to_see_you',
       selectors: ['.moneyshot']
     },
     {
       label: 'noDelay',
-      url: `${URL}?delay`,
+      url: `${URL}/index.html?delay`,
       selectors: ['.moneyshot']
     },
     {
       label: 'expanded',
-      url: `${URL}`,
+      url: `${URL}/index.html`,
       selectors: ['p'],
-      selectorExpansion: true
+      selectorExpansion: true,
+      delay: 1000
     },
     {
       label: 'notExpanded',
-      url: `${URL}`,
+      url: `${URL}/index.html`,
       selectors: ['p'],
       delay: 1000
     },
     {
       label: 'expect',
-      url: `${URL}`,
+      url: `${URL}/index.html`,
       selectors: ['p'],
       selectorExpansion: true,
       expect: 7
     },
     {
       label: 'magicSelectors',
-      url: `${URL}`,
+      url: `${URL}/index.html`,
       selectors: ['document', 'viewport']
     },
     {
       label: 'hideSelectors',
-      url: `${URL}`,
+      url: `${URL}/index.html`,
       hideSelectors: ['.logo-link', 'p']
     },
     {
       label: 'removeSelectors',
-      url: `${URL}`,
+      url: `${URL}/index.html`,
       removeSelectors: ['.logo-link', 'p']
     },
     {
       label: 'notFound',
-      url: `${URL}`,
+      url: `${URL}/index.html`,
       selectors: ['.monkey']
     },
     {
       label: 'notVisible',
-      url: `${URL}`,
+      url: `${URL}/index.html`,
       selectors: ['#noShow']
     },
     {
       label: 'cookies',
       cookiePath: 'backstop_data/cookies.json',
-      url: 'https://garris.github.io/BackstopJS/?cookie',
+      url: `${URL}/index.html?cookie`,
       selectors: ['.moneyshot']
     },
     // {
     //   label: 'customReadyScript',
     //   onReadyScript: `${SCRIPT_PATH}/overrideCSS.js`,
-    //   url: `${URL}`,
+    //   url: `${URL}/index.html`,
     //   selectors: ['.moneyshot']
     // },
     // {
     //   label: 'redirect',
-    //   url: `${URL}`,
+    //   url: `${URL}/index.html`,
     //   onReadyScript: `${SCRIPT_PATH}/redirect.js`,
     //   selectors: ['.moneyshot']
     // },
     {
       label: 'hover',
-      url: `${URL}?click`,
+      url: `${URL}/index.html?click`,
       hoverSelector: '#theLemur',
       postInteractionWait: 1000,
       selectors: ['.moneyshot']
     },
     {
       label: 'click',
-      url: `${URL}?click`,
+      url: `${URL}/index.html?click`,
       clickSelector: '#theLemur',
       postInteractionWait: '._the_lemur_is_ready_to_see_you',
       selectors: ['.moneyshot']
     },
     {
       label: 'scrollToSelector',
-      url: './special_cases/scrollToSelector.html',
+      url: `${URL}/test/configs/special_cases/scrollToSelector.html`,
       scrollToSelector: '.lemurFace',
       selectors: ['.lemurFace']
     },
     {
       label: 'misMatchThreshold_requireSameDimensions',
-      url: 'https://garris.github.io/BackstopJS/',
+      url: `${URL}/index.html`,
       referenceUrl: 'https://garris.github.io/BackstopJS/?cookie',
       selectors: ['.moneyshot'],
       misMatchThreshold: 6.0,
@@ -143,7 +144,7 @@ module.exports = {
     },
     {
       label: 'misMatchThreshold_realNumberDifference',
-      url: 'https://garris.github.io/BackstopJS/',
+      url: `${URL}/index.html`,
       referenceUrl: 'https://garris.github.io/BackstopJS/?cookie',
       selectors: ['.moneyshot'],
       misMatchThreshold: 0.01,
@@ -151,7 +152,7 @@ module.exports = {
     },
     {
       label: 'scenarioSpecificViewports',
-      url: `${URL}`,
+      url: `${URL}/index.html`,
       selectors: ['document', 'viewport'],
       viewports: [
         {
@@ -163,12 +164,12 @@ module.exports = {
     },
     {
       label: 'scenarioSpecificViewports-withEmptyViewports',
-      url: `${URL}`,
+      url: `${URL}/index.html`,
       viewports: []
     },
     {
       label: 'scenarioSpecificViewports-withMultipleViewports',
-      url: `${URL}`,
+      url: `${URL}/index.html`,
       viewports: [
         {
           label: 'Pixel-2',
@@ -194,7 +195,7 @@ module.exports = {
     },
     {
       label: 'scenarioSpecificViewports-withExpandSelector',
-      url: `${URL}`,
+      url: `${URL}/index.html`,
       selectors: ['p'],
       selectorExpansion: true,
       viewports: [
@@ -222,7 +223,7 @@ module.exports = {
     },
     {
       label: 'keyPressSelector',
-      url: '../../examples/featureTests/index.html',
+      url: `${URL}/examples/featureTests/index.html`,
       keyPressSelectors: [
         {
           selector: 'input[placeholder="Email"]',
