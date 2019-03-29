@@ -21,7 +21,7 @@ module.exports = {
   scenarios: [
     {
       label: 'Simple',
-      url: `${URL}/index.html`,
+      url: `${URL}/index.html`
     },
     {
       label: 'pkra bug test',
