@@ -6,10 +6,13 @@
 
 BackstopJS automates visual regression testing of your responsive web UI by comparing DOM screenshots over time.
 
-## Version 4 Features
+## !! Notification board !!
+VERSION 4 is in canary.  Try it out! `npm install backstopjs@canary -g`  Please note, this readme also includes version 4 features. Some features may not be available in version 3.
+
+## Backstop Features
 
 - In-browser reporting UI with...
-	* customizable layout
+	* layout settings for print and screen
 	* scenario display filtering
 	* reference, test, visual diff inspector
 	* cool scrubber thingy
