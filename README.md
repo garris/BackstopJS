@@ -36,6 +36,19 @@ VERSION 4 is in canary.  Try it out! `npm install backstopjs@canary -g`  Please 
 $ npm install -g backstopjs
 ```
 
+## Live support
+
+### Get help
+
+If you have an urgent problem, hire a mentor for a 1:1 live session on Git-Start:
+[![Get 1:1 live support for your issue.](https://git-start.com/assets/git-start-mentee-banner-medium.svg?sanitize=true)](https://git-start.com/help-request/create/garris%2Fbackstopjs)
+
+### Provide help
+
+Help others in paid 1:1 live sessions to get started.
+[![Give paid 1:1 live support.](https://git-start.com/assets/git-start-mentor-banner-medium.svg?sanitize=true)](https://git-start.com/help-request/overview/garris%2Fbackstopjs)
+
+
 ----
 
 ## Contents
