@@ -71,7 +71,6 @@ const WrapTitle = styled.div`
   z-index: 5;
   background: white;
   border-bottom: 1px solid #e4e4e4;
-
 `;
 
 const SliderBar = styled.div`

@@ -71,8 +71,9 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-const ScrubberButtonContainer = connect(mapStateToProps, mapDispatchToProps)(
-  ScrubberButton
-);
+const ScrubberButtonContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ScrubberButton);
 
 export default ScrubberButtonContainer;

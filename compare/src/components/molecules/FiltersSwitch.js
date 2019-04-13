@@ -63,8 +63,9 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-const FiltersSwitchContainer = connect(mapStateToProps, mapDispatchToProps)(
-  FiltersSwitch
-);
+const FiltersSwitchContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(FiltersSwitch);
 
 export default FiltersSwitchContainer;

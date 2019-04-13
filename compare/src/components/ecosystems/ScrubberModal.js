@@ -148,8 +148,9 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-const ScrubberModalContainer = connect(mapStateToProps, mapDispatchToProps)(
-  ScrubberModal
-);
+const ScrubberModalContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ScrubberModal);
 
 export default ScrubberModalContainer;

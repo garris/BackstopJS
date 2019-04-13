@@ -124,8 +124,9 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-const PopupContainer = connect(mapStateToProps, mapDispatchToProps)(
-  SettingsPopup
-);
+const PopupContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SettingsPopup);
 
 export default PopupContainer;

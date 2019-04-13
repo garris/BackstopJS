@@ -47,8 +47,9 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-const TextSearchContainer = connect(mapStateToProps, mapDispatchToProps)(
-  TextSearch
-);
+const TextSearchContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TextSearch);
 
 export default TextSearchContainer;

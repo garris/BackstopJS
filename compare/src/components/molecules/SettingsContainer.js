@@ -56,8 +56,9 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-const SettingsContainer = connect(mapStateToProps, mapDispatchToProps)(
-  SettingsPanel
-);
+const SettingsContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SettingsPanel);
 
 export default SettingsContainer;

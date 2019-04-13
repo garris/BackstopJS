@@ -85,8 +85,9 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-const TestImagesContainer = connect(mapStateToProps, mapDispatchToProps)(
-  TestImages
-);
+const TestImagesContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TestImages);
 
 export default TestImagesContainer;
