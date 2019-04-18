@@ -183,7 +183,7 @@ requireSameDimensions    // If set to true -- any change in selector size will t
 
 ### Testing click and hover interactions
 BackstopJS ships with an onReady script that enables the following interaction selectors...
-```
+```js
 clickSelector: ".my-hamburger-menu",
 hoverSelector: ".my-hamburger-menu .some-menu-item",
 ```
@@ -192,7 +192,7 @@ The above would tell BackstopJS to wait for your app to generate an element with
 You can use these properties independent of each other to easily test various click and or hover states in your app.  These are obviously simple scenarios -- if you have more complex needs then this example should serve as a pretty good starting point create your own onReady scripts.
 
 NOTE: Puppeteer version optionally takes `clickSelectors` & `hoverSelectors` as arrays of selectors...
-```
+```js
 clickSelectors: [".my-hamburger-menu",".my-hamburger-item"],
 hoverSelectors: [".my-nav-menu-item",".my-nav-menu-dropdown-item"],
 ```
@@ -220,7 +220,7 @@ scenarios: [
 
 ### Setting cookies
 BackstopJS ships with an onBefore script that makes it easy to import cookie files…
-```
+```json
 cookiePath: "backstop_data/engine_scripts/cookies.json",
 ```
 _note: path is relative to your current working directory_
@@ -617,7 +617,7 @@ To access use of Chromys static functions (such as addCustomDevice) the static c
 
 Example usage:
 
-```
+```js
 module.exports = function (chromy, scenario, vp, isReference, chromyStatic) {
   if(vp.label === "phone") {
     chromyStatic.addCustomDevice({ name: "some-phone", /.../ });
@@ -644,13 +644,13 @@ Make sure Docker is running on your machine.  On MacOS there is a menu item that
 
 Then, simply add a `--docker` flag onto your commands. E.G...
 
-```
+```sh
 backstop test --docker
 ```
 
 or for a local install
 
-```
+```js
 const backstop = require('backstopjs');
 backstop('test', {docker: true});
 ```
@@ -659,7 +659,7 @@ The above flag will cause BackstopJS to hit your Docker local client, spin up th
 
 If the default docker command or image does not work for you, you can customize the command to run BackstopJS with Docker by changing the `dockerCommandTemplate` config option. The default is:
 
-```
+```sh
 "dockerCommandTemplate": "docker run --rm -it --mount type=bind,source=\"{cwd}\",target=/src backstopjs/backstopjs:{version} {backstopCommand} {args}"
 ```
 
@@ -677,7 +677,7 @@ If the default docker command or image does not work for you, you can customize 
 
 then you need to add this to the root of your config...
 
-```
+```js
 "engineOptions": {
     "args": ["--no-sandbox"]
 },
@@ -685,7 +685,7 @@ then you need to add this to the root of your config...
 
 **2) `localhost` won't work in your scenarios -- instead, mac and win users can use `host.docker.internal` e.g.**
 
-```
+```json
 "url": "https://host.docker.internal/?someCoolAppParameter=true"
 ```
 
@@ -696,7 +696,7 @@ Installing BackstopJS locally to your project makes a few integration options av
 
 Using Backstop as a locally installed standalone app looks like this....
 
-```
+```sh
 # Install from your project root
 npm install backstopjs
 
