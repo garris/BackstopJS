@@ -19,6 +19,7 @@
     "build-compare": "cp ./node_modules/diverged/src/diverged.js ./compare/output/ && cp ./node_modules/diff/dist/diff.js ./compare/output/ && webpack --config ./compare/webpack.config.js && npm run lint",
     "dev-compare": "webpack-dev-server --content-base ./compare/output --config ./compare/webpack.config.js",
     "integration-test": "rm -rf newdir && mkdir newdir && cd newdir && node ../cli/index.js genConfig && node ../cli/index.js reference && node ../cli/index.js test && node -e \"require('../')('test')\"",
+    "inline-test": "cd test/configs/ && node ../../cli/index.js test --config=backstop_inline",
     "smoke-test": "cd test/configs/ && node ../../cli/index.js test --config=backstop_features",
     "sanity-test": "cd test/configs/ && node ../../cli/index.js test",
     "kill-zombies": "pkill -f \"(chrome)?(--headless)\"",

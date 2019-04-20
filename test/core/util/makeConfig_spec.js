@@ -9,6 +9,6 @@ describe('make config', function () {
 
   it('should work without an option param', function () {
     var actualConfig = makeConfig('init');
-    assert.strictEqual(actualConfig.args, {});
+    assert.deepStrictEqual(actualConfig.args, {});
   });
 });
