@@ -230,7 +230,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
         .evaluate(
           () => {
             Array.prototype.forEach.call(document.querySelectorAll(window._backstopSelector), function (s, j) {
-              s.style.display = 'none';
+              s.style.cssText = 'display: none !important;';
               s.classList.add('__86d');
             });
           }
