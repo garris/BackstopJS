@@ -148,7 +148,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
             await page
               .evaluate((sel) => {
                 document.querySelectorAll(sel).forEach(s => {
-                  s.style.display = 'none';
+                  s.style.cssText = 'display: none !important;';
                   s.classList.add('__86d');
                 });
               }, selector);
