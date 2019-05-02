@@ -39,6 +39,7 @@
   "license": "MIT",
   "main": "core/runner.js",
   "devDependencies": {
+    "@types/puppeteer": "^1.12.2",
     "assert": "^1.4.1",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.5",
