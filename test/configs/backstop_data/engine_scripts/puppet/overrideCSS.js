@@ -1,10 +1,8 @@
-const styleStr = 'html {font-kerning:none;}';
+const BACKSTOP_TEST_CSS_OVERRIDE = `html {background-image: none;}`;
 
 module.exports = function (page, scenario) {
-  console.log('font-smoothing workaround for > ' + scenario.label);
-
-  // inject some css to override styles
-  page.evaluate(`window._styleData = '${styleStr}'`);
+  // inject arbitrary css to override styles
+  page.evaluate(`window._styleData = '${BACKSTOP_TEST_CSS_OVERRIDE}'`);
   page.evaluate(() => {
     var style = document.createElement('style');
     style.type = 'text/css';
@@ -12,4 +10,6 @@ module.exports = function (page, scenario) {
     style.appendChild(styleNode);
     document.head.appendChild(style);
   });
+
+  console.log('BACKSTOP_TEST_CSS_OVERRIDE injected for: ' + scenario.label);
 };

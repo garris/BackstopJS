@@ -32,7 +32,7 @@ module.exports = {
       label: 'delay',
       url: `${URL}/index.html?delay`,
       delay: 5000,
-      selectors: ['.getItBlock:last-child']
+      selectors: ['.getItBlock:nth-child(3)']
     },
     {
       label: 'readyEvent',
@@ -49,28 +49,28 @@ module.exports = {
     {
       label: 'noDelay',
       url: `${URL}/index.html?delay`,
-      selectors: ['.getItBlock:last-child']
+      selectors: ['.getItBlock:nth-child(3)']
     },
-    // {
-    //   label: 'expanded',
-    //   url: `${URL}/index.html`,
-    //   selectors: ['.getItBlock'],
-    //   selectorExpansion: true,
-    //   delay: 1000
-    // },
-    // {
-    //   label: 'notExpanded',
-    //   url: `${URL}/index.html`,
-    //   selectors: ['.getItBlock'],
-    //   delay: 1000
-    // },
-    // {
-    //   label: 'expect',
-    //   url: `${URL}/index.html`,
-    //   selectors: ['.getItBlock'],
-    //   selectorExpansion: true,
-    //   expect: 3
-    // },
+    {
+      label: 'expanded',
+      url: `${URL}/index.html`,
+      selectors: ['.getItBlock'],
+      selectorExpansion: true,
+      delay: 1000
+    },
+    {
+      label: 'notExpanded',
+      url: `${URL}/index.html`,
+      selectors: ['.getItBlock'],
+      delay: 1000
+    },
+    {
+      label: 'expect',
+      url: `${URL}/index.html`,
+      selectors: ['.getItBlock'],
+      selectorExpansion: true,
+      expect: 4
+    },
     {
       label: 'magicSelectors',
       url: `${URL}/index.html`,
@@ -134,22 +134,22 @@ module.exports = {
       scrollToSelector: '.lemurFace',
       selectors: ['.lemurFace']
     },
-    {
-      label: 'misMatchThreshold_requireSameDimensions',
-      url: `${URL}/index.html`,
-      referenceUrl: 'https://garris.github.io/BackstopJS/?cookie',
-      selectors: ['.moneyshot'],
-      misMatchThreshold: 6.0,
-      requireSameDimensions: false
-    },
-    {
-      label: 'misMatchThreshold_realNumberDifference',
-      url: `${URL}/index.html`,
-      referenceUrl: 'https://garris.github.io/BackstopJS/?cookie',
-      selectors: ['.moneyshot'],
-      misMatchThreshold: 0.01,
-      requireSameDimensions: true
-    },
+    // {
+    //   label: 'misMatchThreshold_requireSameDimensions',
+    //   url: `${URL}/index.html`,
+    //   referenceUrl: 'https://garris.github.io/BackstopJS/?cookie',
+    //   selectors: ['.moneyshot'],
+    //   misMatchThreshold: 6.0,
+    //   requireSameDimensions: false
+    // },
+    // {
+    //   label: 'misMatchThreshold_realNumberDifference',
+    //   url: `${URL}/index.html`,
+    //   referenceUrl: 'https://garris.github.io/BackstopJS/?cookie',
+    //   selectors: ['.moneyshot'],
+    //   misMatchThreshold: 0.01,
+    //   requireSameDimensions: true
+    // },
     {
       label: 'scenarioSpecificViewports',
       url: `${URL}/index.html`,
@@ -193,34 +193,19 @@ module.exports = {
         }
       ]
     },
-    // {
-    //   label: 'scenarioSpecificViewports-withExpandSelector',
-    //   url: `${URL}/index.html`,
-    //   selectors: ['p'],
-    //   selectorExpansion: true,
-    //   viewports: [
-    //     {
-    //       label: 'Pixel-2',
-    //       width: 411,
-    //       height: 731
-    //     },
-    //     {
-    //       label: 'Pixel2-XL',
-    //       width: 411,
-    //       height: 823
-    //     },
-    //     {
-    //       label: 'iPhone-X',
-    //       width: 375,
-    //       height: 812
-    //     },
-    //     {
-    //       label: 'iPad-Pro',
-    //       width: 1024,
-    //       height: 1366
-    //     }
-    //   ]
-    // },
+    {
+      label: 'scenarioSpecificViewports-withExpandSelector',
+      url: `${URL}/index.html`,
+      selectors: ['.getItBlock'],
+      selectorExpansion: true,
+      viewports: [
+        {
+          label: 'iPad-Pro',
+          width: 1024,
+          height: 1366
+        }
+      ]
+    },
     {
       label: 'keyPressSelector',
       url: `${URL}/examples/featureTests/index.html`,
