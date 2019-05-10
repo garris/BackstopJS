@@ -32,7 +32,7 @@ module.exports = {
       label: 'delay',
       url: `${URL}/index.html?delay`,
       delay: 5000,
-      selectors: ['.moneyshot']
+      selectors: ['.getItBlock:last-child']
     },
     {
       label: 'readyEvent',
@@ -49,28 +49,28 @@ module.exports = {
     {
       label: 'noDelay',
       url: `${URL}/index.html?delay`,
-      selectors: ['.moneyshot']
+      selectors: ['.getItBlock:last-child']
     },
-    {
-      label: 'expanded',
-      url: `${URL}/index.html`,
-      selectors: ['p'],
-      selectorExpansion: true,
-      delay: 1000
-    },
-    {
-      label: 'notExpanded',
-      url: `${URL}/index.html`,
-      selectors: ['p'],
-      delay: 1000
-    },
-    {
-      label: 'expect',
-      url: `${URL}/index.html`,
-      selectors: ['p'],
-      selectorExpansion: true,
-      expect: 7
-    },
+    // {
+    //   label: 'expanded',
+    //   url: `${URL}/index.html`,
+    //   selectors: ['.getItBlock'],
+    //   selectorExpansion: true,
+    //   delay: 1000
+    // },
+    // {
+    //   label: 'notExpanded',
+    //   url: `${URL}/index.html`,
+    //   selectors: ['.getItBlock'],
+    //   delay: 1000
+    // },
+    // {
+    //   label: 'expect',
+    //   url: `${URL}/index.html`,
+    //   selectors: ['.getItBlock'],
+    //   selectorExpansion: true,
+    //   expect: 3
+    // },
     {
       label: 'magicSelectors',
       url: `${URL}/index.html`,
@@ -193,34 +193,34 @@ module.exports = {
         }
       ]
     },
-    {
-      label: 'scenarioSpecificViewports-withExpandSelector',
-      url: `${URL}/index.html`,
-      selectors: ['p'],
-      selectorExpansion: true,
-      viewports: [
-        {
-          label: 'Pixel-2',
-          width: 411,
-          height: 731
-        },
-        {
-          label: 'Pixel2-XL',
-          width: 411,
-          height: 823
-        },
-        {
-          label: 'iPhone-X',
-          width: 375,
-          height: 812
-        },
-        {
-          label: 'iPad-Pro',
-          width: 1024,
-          height: 1366
-        }
-      ]
-    },
+    // {
+    //   label: 'scenarioSpecificViewports-withExpandSelector',
+    //   url: `${URL}/index.html`,
+    //   selectors: ['p'],
+    //   selectorExpansion: true,
+    //   viewports: [
+    //     {
+    //       label: 'Pixel-2',
+    //       width: 411,
+    //       height: 731
+    //     },
+    //     {
+    //       label: 'Pixel2-XL',
+    //       width: 411,
+    //       height: 823
+    //     },
+    //     {
+    //       label: 'iPhone-X',
+    //       width: 375,
+    //       height: 812
+    //     },
+    //     {
+    //       label: 'iPad-Pro',
+    //       width: 1024,
+    //       height: 1366
+    //     }
+    //   ]
+    // },
     {
       label: 'keyPressSelector',
       url: `${URL}/examples/featureTests/index.html`,
