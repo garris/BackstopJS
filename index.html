@@ -62,6 +62,7 @@
 <script type="text/javascript">
   const READY_LAG_MS = 3000;
   const READY_TAG = '_the_lemur_is_ready_to_see_you';
+  const OCTOCAT_CLASS_ACTION = 'hideOctocat';
   const LEMUR_CLASS_ACTION = 'hideLemur';
   const COOKIE_TEST = /cookie/i;
   const CLICK_TEST = /click/i;
@@ -107,9 +108,20 @@
     document.body.classList.add(LEMUR_CLASS_ACTION);
   }
 
+  function hideOctocat () {
+    console.log('hideOctocat')
+    document.body.classList.add(OCTOCAT_CLASS_ACTION);
+  }
+
+  function showOctocat () {
+    document.body.classList.remove(OCTOCAT_CLASS_ACTION);
+  }
+
   function delayLemurification () {
     containTheLemur();
+    hideOctocat();
     setTimeout(releaseTheLemur, READY_LAG_MS);
+    setTimeout(showOctocat, READY_LAG_MS);
     setTimeout(setReadyFlags, READY_LAG_MS + 1000);
   }
 </script>
