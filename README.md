@@ -134,6 +134,8 @@ Pass a `--config=<configFilePathStr>` argument to test using a different config 
 
 Pass a `--filter=<scenarioLabelRegex>` argument to just run scenarios matching your scenario label.
 
+**Tip** The --filter argument offers a useful shortcut for re-running a single test or failed tests.
+
 Pass a `--docker` flag to render your test in a Docker container -- this will help with consistency if you are attempting to compare references across multiple environments.
 
 ### Approving changes
