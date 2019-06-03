@@ -67,8 +67,6 @@ $ npm install -g backstopjs
 ## Getting started
 ### Installation
 
-_[Chrome latest is recommended](https://www.google.com/chrome/browser)_
-
 #### Global installation (recommended)
 ```sh
 $ npm install -g backstopjs
