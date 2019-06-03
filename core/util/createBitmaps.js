@@ -41,10 +41,23 @@ function decorateConfigForCapture (config, isReference) {
 
   var totalScenarioCount = configJSON.scenarios.length;
 
+  function pad (number) {
+    var r = String(number);
+    if (r.length === 1) {
+      r = '0' + r;
+    }
+    return r;
+  }
   var screenshotNow = new Date();
   var screenshotDateTime = screenshotNow.getFullYear() + pad(screenshotNow.getMonth() + 1) + pad(screenshotNow.getDate()) + '-' + pad(screenshotNow.getHours()) + pad(screenshotNow.getMinutes()) + pad(screenshotNow.getSeconds());
-
+  screenshotDateTime = configJSON.dynamicTestId ? configJSON.dynamicTestId : screenshotDateTime;
   configJSON.screenshotDateTime = screenshotDateTime;
+  config.screenshotDateTime = screenshotDateTime;
+
+  if (configJSON.dynamicTestId) {
+    console.log(`dynamicTestId '${configJSON.dynamicTestId}' found. BackstopJS will run in dynamic-test mode.`);
+  }
+
   configJSON.env = cloneDeep(config);
   configJSON.isReference = isReference;
   configJSON.paths.tempCompareConfigFileName = config.tempCompareConfigFileName;
@@ -94,7 +107,6 @@ function delegateScenarios (config) {
         // var variantLabelSafe = makeSafe(variant.label);
         variant._parent = scenario;
         scenarios.push(scenario);
-        // processScenario(casper, variant, variantLabelSafe, scenarioLabelSafe, viewports, bitmapsReferencePath, bitmapsTestPath, screenshotDateTime);
       });
     }
   });
@@ -134,14 +146,6 @@ function delegateScenarios (config) {
   } else {
     logger.error(`Engine "${(typeof config.engine === 'string' && config.engine) || 'undefined'}" not recognized! If you require PhantomJS or Slimer support please use backstopjs@3.8.8 or earlier.`);
   }
-}
-
-function pad (number) {
-  var r = String(number);
-  if (r.length === 1) {
-    r = '0' + r;
-  }
-  return r;
 }
 
 function writeCompareConfigFile (comparePairsFileName, compareConfig) {

@@ -353,7 +353,7 @@ function delegateSelectors (chromy, scenario, viewport, variantOrScenarioLabelSa
     var referenceFilePath = bitmapsReferencePath + '/' + engineTools.getFilename(fileNameTemplate, outputFileFormatSuffix, configId, scenario.sIndex, scenarioLabelSafe, i, cleanedSelectorName, viewport.vIndex, viewport.label);
     var expect = engineTools.getScenarioExpect(scenario);
     var viewportLabel = viewport.label;
-    var testFilePath = bitmapsTestPath + '/' + config.screenshotDateTime + '/' + fileName;
+    var testFilePath = engineTools.testFilePath;
     var filePath = config.isReference ? referenceFilePath : testFilePath;
 
     if (!config.isReference) {
