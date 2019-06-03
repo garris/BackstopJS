@@ -31,7 +31,6 @@ function writeBrowserReport (config, reporter) {
     testConfig = Object.assign({}, require(config.backstopConfigFileName));
   }
 
-
   var browserReporter = cloneDeep(reporter);
   function toAbsolute (p) {
     return (path.isAbsolute(p)) ? p : path.join(config.projectPath, p);
@@ -66,7 +65,7 @@ function writeBrowserReport (config, reporter) {
         testReportJson.tests = testReportJson.tests.filter(test => test.pair.fileName !== browserReporter.tests[0].pair.fileName);
         testReportJson.tests.push(browserReporter.tests[0]);
         browserReporter = testReportJson;
-      } catch(err) {
+      } catch (err) {
         console.log('Creating new report.');
       }
     }
@@ -74,14 +73,14 @@ function writeBrowserReport (config, reporter) {
     var jsonReport = JSON.stringify(browserReporter, null, 2);
     var jsonpReport = `report(${jsonReport});`;
 
- var jsonConfgWrite = fs.writeFile(testReportJsonName, jsonReport).then(function () {
+    var jsonConfgWrite = fs.writeFile(testReportJsonName, jsonReport).then(function () {
       logger.log('Copied json report to: ' + testReportJsonName);
     }, function (err) {
       logger.error('Failed json report copy to: ' + testReportJsonName);
       throw err;
     });
 
-var jsonpConfgWrite = fs.writeFile(toAbsolute(reportConfigFilename), jsonpReport).then(function () {
+    var jsonpConfgWrite = fs.writeFile(toAbsolute(reportConfigFilename), jsonpReport).then(function () {
       logger.log('Copied jsonp report to: ' + reportConfigFilename);
     }, function (err) {
       logger.error('Failed jsonp report copy to: ' + reportConfigFilename);
@@ -89,7 +88,6 @@ var jsonpConfgWrite = fs.writeFile(toAbsolute(reportConfigFilename), jsonpReport
     });
 
     return allSettled([jsonpConfgWrite, jsonConfgWrite]);
-
   }).then(function () {
     if (config.openReport && config.report && config.report.indexOf('browser') > -1) {
       var executeCommand = require('./index');

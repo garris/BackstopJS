@@ -9,7 +9,6 @@ const MIN_CHROME_VERSION = 62;
 const TEST_TIMEOUT = 30000;
 // const CHROMY_STARTING_PORT_NUMBER = 9222;
 const DEFAULT_FILENAME_TEMPLATE = '{configId}_{scenarioLabel}_{selectorIndex}_{selectorLabel}_{viewportIndex}_{viewportLabel}';
-const DEFAULT_BITMAPS_TEST_DIR = 'bitmaps_test';
 const DEFAULT_BITMAPS_REFERENCE_DIR = 'bitmaps_reference';
 const SELECTOR_NOT_FOUND_PATH = '/capture/resources/notFound.png';
 const HIDDEN_SELECTOR_PATH = '/capture/resources/notVisible.png';
@@ -337,7 +336,6 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
 function delegateSelectors (chromy, scenario, viewport, variantOrScenarioLabelSafe, scenarioLabelSafe, config, selectors, selectorMap) {
   const fileNameTemplate = config.fileNameTemplate || DEFAULT_FILENAME_TEMPLATE;
   const configId = config.id || engineTools.genHash(config.backstopConfigFileName);
-  const bitmapsTestPath = config.paths.bitmaps_test || DEFAULT_BITMAPS_TEST_DIR;
   const bitmapsReferencePath = config.paths.bitmaps_reference || DEFAULT_BITMAPS_REFERENCE_DIR;
   const outputFileFormatSuffix = '.' + ((config.outputFormat && config.outputFormat.match(/jpg|jpeg/)) || 'png');
 
