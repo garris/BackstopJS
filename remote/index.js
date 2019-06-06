@@ -40,6 +40,7 @@ module.exports = function (app) {
       var s = config.scenarios[0];
       s.label = req.body.name;
       s.url = s.url
+        .replace(/{origin}/, req.body.origin)
         .replace(/{testId}/, req.params.testId)
         .replace(/{scenarioId}/, req.params.scenarioId);
       
