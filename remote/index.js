@@ -16,6 +16,14 @@ module.exports = function (app) {
     app.use(express.json({limit: '2mb'})); // support json encoded bodies
     app.use(express.urlencoded({ extended: true, limit: '2mb' })); // support encoded bodies
 
+    //Handle non-transparent proxy calls from testem (ember compatibility)
+    app.use(function(req, res, next) {
+       req.url = req.url
+         .replace(/\/backstop\/dview/,'/dview')
+         .replace(/\/backstop\/dtest/,'/dtest');
+       next();
+    });
+
     app.post('/dtest/:testId/:scenarioId', (req, res) => {
       app._backstop.testCtr++;
 
