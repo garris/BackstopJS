@@ -84,4 +84,24 @@ module.exports = function (app) {
         res.send('FAILED ' + err);
       }
     });
+    
+    app.get('/stop', async (req, res) => {
+      try {
+        await backstop('stop');
+        res.send('OK');
+      } catch (err) {
+        console.log(err);
+        res.send('FAILED ' + err);
+      }
+    });
+    
+    app.get('/version', async (req, res) => {
+      try {
+        const version = await backstop('version');
+        res.send('BackstopJS ' + version);
+      } catch (err) {
+        console.log(err);
+        res.send('FAILED ' + err);
+      }
+    });
 };
