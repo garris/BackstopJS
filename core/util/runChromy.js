@@ -191,7 +191,14 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   if (isReference && scenario.referenceUrl) {
     url = scenario.referenceUrl;
   }
-  chromy.goto(url);
+  var noWaitLoadEvent = scenario.noWaitLoadEvent || config.noWaitLoadEvent;
+  if (noWaitLoadEvent) {
+    chromy.goto(url, {
+      waitLoadEvent: false
+    });
+  } else {
+    chromy.goto(url);
+  }
 
   injectBackstopTools(chromy);
 
