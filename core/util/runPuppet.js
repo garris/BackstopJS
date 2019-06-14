@@ -93,8 +93,8 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     let v = navigator.userAgent.match(/Chrom(e|ium)\/([0-9]+)\./);
     return v ? parseInt(v[2], 10) : 0;
   });
-  console.log(`Using Chrome/Chromium version: ${chromeVersion}`)
-  
+  console.log(`Using Chrome/Chromium version: ${chromeVersion}`);
+
   if (chromeVersion < MIN_CHROME_VERSION) {
     console.warn(`***WARNING! CHROME VERSION ${MIN_CHROME_VERSION} OR GREATER IS REQUIRED. PLEASE UPDATE YOUR CHROME APP!***`);
   }
