@@ -1,6 +1,6 @@
 {
   "name": "backstopjs",
-  "version": "4.1.6",
+  "version": "4.1.7",
   "description": "BackstopJS: Catch CSS curveballs.",
   "bin": {
     "backstop": "./cli/index.js"
