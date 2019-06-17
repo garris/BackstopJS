@@ -19,6 +19,7 @@ module.exports = function (app) {
     //Handle non-transparent proxy calls from testem (ember compatibility)
     app.use(function(req, res, next) {
        req.url = req.url
+         .replace(/\/backstop\/backstop_data/,'/backstop_data')
          .replace(/\/backstop\/dview/,'/dview')
          .replace(/\/backstop\/dtest/,'/dtest');
        next();
