@@ -109,7 +109,6 @@ As a new user setting up tests for your project, you will be primarily concerned
 
 - **`scenarios[n].label`** – Required. Also used for screenshot naming.
 - **`scenarios[n].url`** – Required. Tells BackstopJS what endpoint/document you want to test.  This can be an absolute URL or local to your current working directory.
-- **`scenarios[n].viewports`** – An array of screen size objects your DOM will be tested against. This configuration will override the ones provided by default configuration.
 
 _TIP: no other SCENARIO properties are required. Other properties can just be added as necessary_
 
@@ -175,6 +174,7 @@ selectors                // Array of selectors to capture. Defaults to document 
 selectorExpansion        // See Targeting elements in the next section for more info...
 misMatchThreshold        // Percentage of different pixels allowed to pass test
 requireSameDimensions    // If set to true -- any change in selector size will trigger a test failure.
+viewports                // An array of screen size objects your DOM will be tested against. This configuration will override the viewports property assigned at the config root.
 ```
 
 
