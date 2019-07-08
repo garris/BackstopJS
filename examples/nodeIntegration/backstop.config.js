@@ -16,6 +16,7 @@ module.exports = options => {
       ci_report: `backstop_data/${options.project}/ci_report`
     },
     report: ['browser', 'CI'],
+    engine: 'puppeteer',
     debug: false
   };
 };
