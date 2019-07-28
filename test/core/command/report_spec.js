@@ -5,10 +5,14 @@ var sinon = require('sinon');
 describe('core report', function () {
   const config = {
     report: ['json'],
+    bitmaps_test: '/bitmat_test',
+    screenshotDateTime: '/date_time',
     json_report: '/test',
     compareJsonFileName: '/compareJson',
     compareConfigFileName: '/compareConfig',
-    html_report: '/html_report'
+    html_report: '/html_report',
+    args: {},
+    backstopConfigFileName: `${__dirname}/../util/backstop.json`
   };
 
   before(function () {
@@ -34,7 +38,7 @@ describe('core report', function () {
     var report = require('../../../core/command/report');
 
     return report.execute(config).then(() => {
-      assert.strictEqual(writeFileStub.callCount, 2);
+      assert.strictEqual(writeFileStub.callCount, 3);
       assert.strictEqual(writeFileStub.calledWith('/compareJson'), true);
       assert.strictEqual(writeFileStub.calledWith('/compareConfig'), true);
     });

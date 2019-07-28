@@ -1,14 +1,13 @@
 const Chromy = require('chromy');
-// const writeFileSync = require('fs').writeFileSync;
 const fs = require('./fs');
-const path = require('path');
 const ensureDirectoryPath = require('./ensureDirectoryPath');
 const engineTools = require('./engineTools');
+const { onBeforeScript, onReadyScript } = require('./lifecycleScripts');
 
 const MIN_CHROME_VERSION = 62;
 const TEST_TIMEOUT = 30000;
-// const CHROMY_STARTING_PORT_NUMBER = 9222;
-const DEFAULT_FILENAME_TEMPLATE = '{configId}_{scenarioLabel}_{selectorIndex}_{selectorLabel}_{viewportIndex}_{viewportLabel}';
+const DEFAULT_FILENAME_TEMPLATE =
+  '{configId}_{scenarioLabel}_{selectorIndex}_{selectorLabel}_{viewportIndex}_{viewportLabel}';
 const DEFAULT_BITMAPS_REFERENCE_DIR = 'bitmaps_reference';
 const SELECTOR_NOT_FOUND_PATH = '/capture/resources/notFound.png';
 const HIDDEN_SELECTOR_PATH = '/capture/resources/notVisible.png';
@@ -27,9 +26,19 @@ module.exports = function (args) {
   const runId = args.id;
   const assignedPort = args.assignedPort;
   const scenarioLabelSafe = engineTools.makeSafe(scenario.label);
-  const variantOrScenarioLabelSafe = scenario._parent ? engineTools.makeSafe(scenario._parent.label) : scenarioLabelSafe;
+  const variantOrScenarioLabelSafe = scenario._parent
+    ? engineTools.makeSafe(scenario._parent.label)
+    : scenarioLabelSafe;
 
-  return processScenarioView(scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, config, runId, assignedPort);
+  return processScenarioView(
+    scenario,
+    variantOrScenarioLabelSafe,
+    scenarioLabelSafe,
+    viewport,
+    config,
+    runId,
+    assignedPort
+  );
 };
 
 /**
@@ -41,7 +50,15 @@ module.exports = function (args) {
  * @param  {[type]} config                 [description]
  * @return {[type]}                        [description]
  */
-function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, config, runId, assignedPort) {
+async function processScenarioView (
+  scenario,
+  variantOrScenarioLabelSafe,
+  scenarioLabelSafe,
+  viewport,
+  config,
+  runId,
+  assignedPort
+) {
   if (!config.paths) {
     config.paths = {};
   }
@@ -50,7 +67,6 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
     viewport.label = viewport.name || '';
   }
 
-  const engineScriptsPath = config.env.engine_scripts || config.env.engine_scripts_default;
   const isReference = config.isReference;
   /**
    *  =============
@@ -60,8 +76,11 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   const VP_W = viewport.width || viewport.viewport.width;
   const VP_H = viewport.height || viewport.viewport.height;
 
-  const DEFAULT_CHROME_FLAGS = ['--disable-gpu', '--force-device-scale-factor=1', '--disable-infobars=true'];
-  // const PORT = (config.startingPort || CHROMY_STARTING_PORT_NUMBER) + runId;
+  const DEFAULT_CHROME_FLAGS = [
+    '--disable-gpu',
+    '--force-device-scale-factor=1',
+    '--disable-infobars=true'
+  ];
   const PORT = assignedPort;
   let defaultOptions = {
     chromeFlags: undefined,
@@ -71,7 +90,10 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   };
 
   // This option is depricated.
-  const chromeFlags = (Array.isArray(config.hostFlags) && config.hostFlags) || (Array.isArray(config.engineFlags) && config.engineFlags) || [];
+  const chromeFlags =
+    (Array.isArray(config.hostFlags) && config.hostFlags) ||
+    (Array.isArray(config.engineFlags) && config.engineFlags) ||
+    [];
 
   // set up engineOptions obj
   let engineOptions = {};
@@ -96,7 +118,6 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   // if --window-size= has not been explicity set, then set it. (this is the expected case)
   if (!/--window-size=/i.test(chromyOptions.chromeFlags.toString())) {
     chromyOptions.chromeFlags = chromyOptions.chromeFlags.concat('--window-size=' + VP_W + ',' + VP_H + '');
-    // chromyOptions.chromeFlags = chromyOptions.chromeFlags.concat(`--window-size=${VP_W},${VP_H}`);
   }
 
   console.log('Starting Chromy:', JSON.stringify(chromyOptions));
@@ -140,7 +161,10 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   // --- set up console output ---
   chromy.console(function (text, consoleObj) {
     if (console[consoleObj.level]) {
-      console[consoleObj.level](PORT + ' ' + (consoleObj.level).toUpperCase() + ' > ', text);
+      console[consoleObj.level](
+        PORT + ' ' + consoleObj.level.toUpperCase() + ' > ',
+        text
+      );
     }
   });
 
@@ -170,21 +194,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
       // run custom renderer (casper or chromy) code
     };
   ============ */
-  var onBeforeScript = scenario.onBeforeScript || config.onBeforeScript;
-  if (onBeforeScript) {
-    var beforeScriptPath = path.resolve(engineScriptsPath, onBeforeScript);
-    if (fs.existsSync(beforeScriptPath)) {
-      require(beforeScriptPath)(chromy, scenario, viewport, isReference, Chromy, config);
-    } else {
-      console.warn(PORT, ' WARNING: script not found: ' + beforeScriptPath);
-    }
-  }
-
-  // // --- SIMPLE AUTH ---
-  // if (casper.cli.options.user && casper.cli.options.password) {
-  //   console.log('Auth User via CLI: ' + casper.cli.options.user);
-  //   casper.setHttpAuth(casper.cli.options.user, casper.cli.options.password);
-  // }
+  await onBeforeScript(chromy, scenario, viewport, isReference, Chromy, config);
 
   //  --- OPEN URL ---
   var url = scenario.url;
@@ -226,14 +236,15 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
     scenario.removeSelectors.forEach(function (selector) {
       chromy
         .evaluate(`window._backstopSelector = '${selector}'`)
-        .evaluate(
-          () => {
-            Array.prototype.forEach.call(document.querySelectorAll(window._backstopSelector), function (s, j) {
+        .evaluate(() => {
+          Array.prototype.forEach.call(
+            document.querySelectorAll(window._backstopSelector),
+            function (s, j) {
               s.style.cssText = 'display: none !important;';
               s.classList.add('__86d');
-            });
-          }
-        );
+            }
+          );
+        });
     });
   }
 
@@ -245,15 +256,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
       // run custom renderer (casper or chromy) code
     };
   ============ */
-  var onReadyScript = scenario.onReadyScript || config.onReadyScript;
-  if (onReadyScript) {
-    var readyScriptPath = path.resolve(engineScriptsPath, onReadyScript);
-    if (fs.existsSync(readyScriptPath)) {
-      require(readyScriptPath)(chromy, scenario, viewport, isReference, Chromy, config);
-    } else {
-      console.warn(PORT, 'WARNING: script not found: ' + readyScriptPath);
-    }
-  }
+  await onReadyScript(chromy, scenario, viewport, isReference, Chromy, config);
 
   // reinstall tools in case onReadyScript has loaded a new URL.
   injectBackstopTools(chromy);
@@ -263,13 +266,14 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
     scenario.hideSelectors.forEach(function (selector) {
       chromy
         .evaluate(`window._backstopSelector = '${selector}'`)
-        .evaluate(
-          () => {
-            Array.prototype.forEach.call(document.querySelectorAll(window._backstopSelector), function (s, j) {
+        .evaluate(() => {
+          Array.prototype.forEach.call(
+            document.querySelectorAll(window._backstopSelector),
+            function (s, j) {
               s.style.visibility = 'hidden';
-            });
-          }
-        );
+            }
+          );
+        });
     });
   }
   // CREATE SCREEN SHOTS AND TEST COMPARE CONFIGURATION (CONFIG FILE WILL BE SAVED WHEN THIS PROCESS RETURNS)
@@ -293,33 +297,40 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
         if (!Array.isArray(window._backstopSelectorsExp)) {
           window._backstopSelectorsExp = window._backstopSelectorsExp.split(',');
         }
-        window._backstopSelectorsExpMap = window._backstopSelectorsExp.reduce((acc, selector) => {
-          acc[selector] = {
-            exists: window._backstopTools.exists(selector),
-            isVisible: window._backstopTools.isVisible(selector)
-          };
-          return acc;
-        }, {});
+        window._backstopSelectorsExpMap = window._backstopSelectorsExp.reduce(
+          (acc, selector) => {
+            acc[selector] = {
+              exists: window._backstopTools.exists(selector),
+              isVisible: window._backstopTools.isVisible(selector)
+            };
+            return acc;
+          },
+          {}
+        );
         return {
           backstopSelectorsExp: window._backstopSelectorsExp,
           backstopSelectorsExpMap: window._backstopSelectorsExpMap
         };
       })
       .result(_result => {
-        resolve(delegateSelectors(
-          chromy,
-          scenario,
-          viewport,
-          variantOrScenarioLabelSafe,
-          scenarioLabelSafe,
-          config,
-          _result.backstopSelectorsExp,
-          _result.backstopSelectorsExpMap
-        ));
+        resolve(
+          delegateSelectors(
+            chromy,
+            scenario,
+            viewport,
+            variantOrScenarioLabelSafe,
+            scenarioLabelSafe,
+            config,
+            _result.backstopSelectorsExp,
+            _result.backstopSelectorsExpMap
+          )
+        );
       })
       .end()
       // If an error occurred then resolve with an error.
-      .catch(e => resolve(new BackstopException('Chromy error', scenario, viewport, e)));
+      .catch(e =>
+        resolve(new BackstopException('Chromy error', scenario, viewport, e))
+      );
   });
 }
 
@@ -333,7 +344,16 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
  * @param  {[type]} config                     [description]
  * @return {[type]}                            [description]
  */
-function delegateSelectors (chromy, scenario, viewport, variantOrScenarioLabelSafe, scenarioLabelSafe, config, selectors, selectorMap) {
+function delegateSelectors (
+  chromy,
+  scenario,
+  viewport,
+  variantOrScenarioLabelSafe,
+  scenarioLabelSafe,
+  config,
+  selectors,
+  selectorMap
+) {
   const fileNameTemplate = config.fileNameTemplate || DEFAULT_FILENAME_TEMPLATE;
   const configId = config.id || engineTools.genHash(config.backstopConfigFileName);
   const bitmapsReferencePath = config.paths.bitmaps_reference || DEFAULT_BITMAPS_REFERENCE_DIR;
@@ -347,8 +367,31 @@ function delegateSelectors (chromy, scenario, viewport, variantOrScenarioLabelSa
 
   selectors.forEach(function (selector, i) {
     var cleanedSelectorName = selector.replace(/[^a-z0-9_-]/gi, ''); // remove anything that's not a letter or a number
-    var fileName = engineTools.getFilename(fileNameTemplate, outputFileFormatSuffix, configId, scenario.sIndex, variantOrScenarioLabelSafe, i, cleanedSelectorName, viewport.vIndex, viewport.label);
-    var referenceFilePath = bitmapsReferencePath + '/' + engineTools.getFilename(fileNameTemplate, outputFileFormatSuffix, configId, scenario.sIndex, scenarioLabelSafe, i, cleanedSelectorName, viewport.vIndex, viewport.label);
+    var fileName = engineTools.getFilename(
+      fileNameTemplate,
+      outputFileFormatSuffix,
+      configId,
+      scenario.sIndex,
+      variantOrScenarioLabelSafe,
+      i,
+      cleanedSelectorName,
+      viewport.vIndex,
+      viewport.label
+    );
+    var referenceFilePath =
+      bitmapsReferencePath +
+      '/' +
+      engineTools.getFilename(
+        fileNameTemplate,
+        outputFileFormatSuffix,
+        configId,
+        scenario.sIndex,
+        scenarioLabelSafe,
+        i,
+        cleanedSelectorName,
+        viewport.vIndex,
+        viewport.label
+      );
     var expect = engineTools.getScenarioExpect(scenario);
     var viewportLabel = viewport.label;
     var testFilePath = engineTools.testFilePath;
@@ -389,14 +432,41 @@ function delegateSelectors (chromy, scenario, viewport, variantOrScenarioLabelSa
   });
 
   if (captureDocument) {
-    captureJobs.push(function () { return captureScreenshot(chromy, null, captureDocument, selectorMap, config, []); });
+    captureJobs.push(function () {
+      return captureScreenshot(
+        chromy,
+        null,
+        captureDocument,
+        selectorMap,
+        config,
+        []
+      );
+    });
   }
   // TODO: push captureViewport into captureList (instead of calling captureScreenshot()) to improve perf.
   if (captureViewport) {
-    captureJobs.push(function () { return captureScreenshot(chromy, null, captureViewport, selectorMap, config, []); });
+    captureJobs.push(function () {
+      return captureScreenshot(
+        chromy,
+        null,
+        captureViewport,
+        selectorMap,
+        config,
+        []
+      );
+    });
   }
   if (captureList.length) {
-    captureJobs.push(function () { return captureScreenshot(chromy, null, null, selectorMap, config, captureList); });
+    captureJobs.push(function () {
+      return captureScreenshot(
+        chromy,
+        null,
+        null,
+        selectorMap,
+        config,
+        captureList
+      );
+    });
   }
 
   return new Promise(function (resolve, reject) {
@@ -412,20 +482,29 @@ function delegateSelectors (chromy, scenario, viewport, variantOrScenarioLabelSa
         return;
       }
       job = captureJobs.shift();
-      job.apply().catch(function (e) {
-        errors.push(e);
-      }).then(function () {
-        next();
-      });
+      job
+        .apply()
+        .catch(function (e) {
+          errors.push(e);
+        })
+        .then(function () {
+          next();
+        });
     };
     next();
-  }).then(function () {
-    return chromy.close().end();
-  }).catch(function (err) {
-    return chromy.close().end().then(function () {
-      throw err;
-    });
-  }).then(_ => compareConfig);
+  })
+    .then(function () {
+      return chromy.close().end();
+    })
+    .catch(function (err) {
+      return chromy
+        .close()
+        .end()
+        .then(function () {
+          throw err;
+        });
+    })
+    .then(_ => compareConfig);
 }
 
 /**
@@ -438,19 +517,24 @@ function delegateSelectors (chromy, scenario, viewport, variantOrScenarioLabelSa
  */
 
 // TODO: remove filepath_
-function captureScreenshot (chromy, filePath_, selector, selectorMap, config, selectors) {
+function captureScreenshot (
+  chromy,
+  filePath_,
+  selector,
+  selectorMap,
+  config,
+  selectors
+) {
   return new Promise(function (resolve, reject) {
     // VIEWPORT screenshot
     if (selector === VIEWPORT_SELECTOR || selector === BODY_SELECTOR) {
-      chromy
-        .screenshot()
-        .result(buffer => {
-          return saveViewport(buffer, selector);
-        });
-    // DOCUMENT screenshot
+      chromy.screenshot().result(buffer => {
+        return saveViewport(buffer, selector);
+      });
+      // DOCUMENT screenshot
     } else if (selector === NOCLIP_SELECTOR || selector === DOCUMENT_SELECTOR) {
       chromy.screenshotMultipleSelectors(['body'], saveSelector);
-    // OTHER-SELECTOR screenshot
+      // OTHER-SELECTOR screenshot
     } else {
       chromy.screenshotMultipleSelectors(selectors, saveSelector);
     }

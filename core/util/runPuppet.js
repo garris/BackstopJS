@@ -6,10 +6,12 @@ const chalk = require('chalk');
 const ensureDirectoryPath = require('./ensureDirectoryPath');
 const injectBackstopTools = require('../../capture/backstopTools.js');
 const engineTools = require('./engineTools');
+const { onBeforeScript, onReadyScript } = require('./lifecycleScripts');
 
 const MIN_CHROME_VERSION = 62;
 const TEST_TIMEOUT = 60000;
-const DEFAULT_FILENAME_TEMPLATE = '{configId}_{scenarioLabel}_{selectorIndex}_{selectorLabel}_{viewportIndex}_{viewportLabel}';
+const DEFAULT_FILENAME_TEMPLATE =
+  '{configId}_{scenarioLabel}_{selectorIndex}_{selectorLabel}_{viewportIndex}_{viewportLabel}';
 const DEFAULT_BITMAPS_TEST_DIR = 'bitmaps_test';
 const DEFAULT_BITMAPS_REFERENCE_DIR = 'bitmaps_reference';
 const SELECTOR_NOT_FOUND_PATH = '/capture/resources/notFound.png';
@@ -25,7 +27,9 @@ module.exports = function (args) {
   const viewport = args.viewport;
   const config = args.config;
   const scenarioLabelSafe = engineTools.makeSafe(scenario.label);
-  const variantOrScenarioLabelSafe = scenario._parent ? engineTools.makeSafe(scenario._parent.label) : scenarioLabelSafe;
+  const variantOrScenarioLabelSafe = scenario._parent
+    ? engineTools.makeSafe(scenario._parent.label)
+    : scenarioLabelSafe;
 
   config._bitmapsTestPath = config.paths.bitmaps_test || DEFAULT_BITMAPS_TEST_DIR;
   config._bitmapsReferencePath = config.paths.bitmaps_reference || DEFAULT_BITMAPS_REFERENCE_DIR;
@@ -33,10 +37,22 @@ module.exports = function (args) {
   config._outputFileFormatSuffix = '.' + ((config.outputFormat && config.outputFormat.match(/jpg|jpeg/)) || 'png');
   config._configId = config.id || engineTools.genHash(config.backstopConfigFileName);
 
-  return processScenarioView(scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, config);
+  return processScenarioView(
+    scenario,
+    variantOrScenarioLabelSafe,
+    scenarioLabelSafe,
+    viewport,
+    config
+  );
 };
 
-async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, config) {
+async function processScenarioView (
+  scenario,
+  variantOrScenarioLabelSafe,
+  scenarioLabelSafe,
+  viewport,
+  config
+) {
   if (!config.paths) {
     config.paths = {};
   }
@@ -45,7 +61,6 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     viewport.label = viewport.name || '';
   }
 
-  const engineScriptsPath = config.env.engine_scripts || config.env.engine_scripts_default;
   const isReference = config.isReference;
 
   const VP_W = viewport.width || viewport.viewport.width;
@@ -64,7 +79,9 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
   const page = await browser.newPage();
 
   page.setViewport({ width: VP_W, height: VP_H });
-  page.setDefaultNavigationTimeout(engineTools.getEngineOption(config, 'waitTimeout', TEST_TIMEOUT));
+  page.setDefaultNavigationTimeout(
+    engineTools.getEngineOption(config, 'waitTimeout', TEST_TIMEOUT)
+  );
 
   if (isReference) {
     console.log(chalk.blue('CREATING NEW REFERENCE FILE'));
@@ -102,15 +119,14 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
   let result;
   const puppetCommands = async () => {
     // --- BEFORE SCRIPT ---
-    var onBeforeScript = scenario.onBeforeScript || config.onBeforeScript;
-    if (onBeforeScript) {
-      var beforeScriptPath = path.resolve(engineScriptsPath, onBeforeScript);
-      if (fs.existsSync(beforeScriptPath)) {
-        await require(beforeScriptPath)(page, scenario, viewport, isReference, browser, config);
-      } else {
-        console.warn('WARNING: script not found: ' + beforeScriptPath);
-      }
-    }
+    await onBeforeScript(
+      page,
+      scenario,
+      viewport,
+      isReference,
+      browser,
+      config
+    );
 
     //  --- OPEN URL ---
     var url = scenario.url;
@@ -145,14 +161,13 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     if (scenario.hasOwnProperty('removeSelectors')) {
       const removeSelectors = async () => {
         return Promise.all(
-          scenario.removeSelectors.map(async (selector) => {
-            await page
-              .evaluate((sel) => {
-                document.querySelectorAll(sel).forEach(s => {
-                  s.style.cssText = 'display: none !important;';
-                  s.classList.add('__86d');
-                });
-              }, selector);
+          scenario.removeSelectors.map(async selector => {
+            await page.evaluate(sel => {
+              document.querySelectorAll(sel).forEach(s => {
+                s.style.cssText = 'display: none !important;';
+                s.classList.add('__86d');
+              });
+            }, selector);
           })
         );
       };
@@ -161,15 +176,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     }
 
     //  --- ON READY SCRIPT ---
-    var onReadyScript = scenario.onReadyScript || config.onReadyScript;
-    if (onReadyScript) {
-      var readyScriptPath = path.resolve(engineScriptsPath, onReadyScript);
-      if (fs.existsSync(readyScriptPath)) {
-        await require(readyScriptPath)(page, scenario, viewport, isReference, browser, config);
-      } else {
-        console.warn('WARNING: script not found: ' + readyScriptPath);
-      }
-    }
+    await onReadyScript(page, scenario, viewport, isReference, browser, config);
 
     // reinstall tools in case onReadyScript has loaded a new URL.
     await injectBackstopTools(page);
@@ -178,13 +185,12 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     if (scenario.hasOwnProperty('hideSelectors')) {
       const hideSelectors = async () => {
         return Promise.all(
-          scenario.hideSelectors.map(async (selector) => {
-            await page
-              .evaluate((sel) => {
-                document.querySelectorAll(sel).forEach(s => {
-                  s.style.visibility = 'hidden';
-                });
-              }, selector);
+          scenario.hideSelectors.map(async selector => {
+            await page.evaluate(sel => {
+              document.querySelectorAll(sel).forEach(s => {
+                s.style.visibility = 'hidden';
+              });
+            }, selector);
           })
         );
       };
@@ -196,7 +202,9 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
       scenario.selectors = [DOCUMENT_SELECTOR];
     }
 
-    await page.evaluate(`window._selectorExpansion = '${scenario.selectorExpansion}'`);
+    await page.evaluate(
+      `window._selectorExpansion = '${scenario.selectorExpansion}'`
+    );
     await page.evaluate(`window._backstopSelectors = '${scenario.selectors}'`);
     result = await page.evaluate(() => {
       if (window._selectorExpansion.toString() === 'true') {
@@ -207,13 +215,16 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
       if (!Array.isArray(window._backstopSelectorsExp)) {
         window._backstopSelectorsExp = window._backstopSelectorsExp.split(',');
       }
-      window._backstopSelectorsExpMap = window._backstopSelectorsExp.reduce((acc, selector) => {
-        acc[selector] = {
-          exists: window._backstopTools.exists(selector),
-          isVisible: window._backstopTools.isVisible(selector)
-        };
-        return acc;
-      }, {});
+      window._backstopSelectorsExpMap = window._backstopSelectorsExp.reduce(
+        (acc, selector) => {
+          acc[selector] = {
+            exists: window._backstopTools.exists(selector),
+            isVisible: window._backstopTools.isVisible(selector)
+          };
+          return acc;
+        },
+        {}
+      );
       return {
         backstopSelectorsExp: window._backstopSelectorsExp,
         backstopSelectorsExpMap: window._backstopSelectorsExpMap
@@ -250,12 +261,20 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
   }
 
   if (error) {
-    const testPair = engineTools.generateTestPair(config, scenario, viewport, variantOrScenarioLabelSafe, scenarioLabelSafe, 0, `${scenario.selectors.join('__')}`);
+    const testPair = engineTools.generateTestPair(
+      config,
+      scenario,
+      viewport,
+      variantOrScenarioLabelSafe,
+      scenarioLabelSafe,
+      0,
+      `${scenario.selectors.join('__')}`
+    );
     const filePath = config.isReference ? testPair.reference : testPair.test;
     testPair.engineErrorMsg = error.message;
 
     compareConfig = {
-      testPairs: [ testPair ]
+      testPairs: [testPair]
     };
     fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
   }
@@ -282,7 +301,15 @@ async function delegateSelectors (
   let captureJobs = [];
 
   selectors.forEach(function (selector, selectorIndex) {
-    const testPair = engineTools.generateTestPair(config, scenario, viewport, variantOrScenarioLabelSafe, scenarioLabelSafe, selectorIndex, selector);
+    const testPair = engineTools.generateTestPair(
+      config,
+      scenario,
+      viewport,
+      variantOrScenarioLabelSafe,
+      scenarioLabelSafe,
+      selectorIndex,
+      selector
+    );
     const filePath = config.isReference ? testPair.reference : testPair.test;
 
     if (!config.isReference) {
@@ -300,14 +327,41 @@ async function delegateSelectors (
   });
 
   if (captureDocument) {
-    captureJobs.push(function () { return captureScreenshot(page, browser, captureDocument, selectorMap, config, []); });
+    captureJobs.push(function () {
+      return captureScreenshot(
+        page,
+        browser,
+        captureDocument,
+        selectorMap,
+        config,
+        []
+      );
+    });
   }
   // TODO: push captureViewport into captureList (instead of calling captureScreenshot()) to improve perf.
   if (captureViewport) {
-    captureJobs.push(function () { return captureScreenshot(page, browser, captureViewport, selectorMap, config, []); });
+    captureJobs.push(function () {
+      return captureScreenshot(
+        page,
+        browser,
+        captureViewport,
+        selectorMap,
+        config,
+        []
+      );
+    });
   }
   if (captureList.length) {
-    captureJobs.push(function () { return captureScreenshot(page, browser, null, selectorMap, config, captureList); });
+    captureJobs.push(function () {
+      return captureScreenshot(
+        page,
+        browser,
+        null,
+        selectorMap,
+        config,
+        captureList
+      );
+    });
   }
 
   return new Promise(function (resolve, reject) {
@@ -323,35 +377,46 @@ async function delegateSelectors (
         return;
       }
       job = captureJobs.shift();
-      job().catch(function (e) {
-        console.log(e);
-        errors.push(e);
-      }).then(function () {
-        next();
-      });
+      job()
+        .catch(function (e) {
+          console.log(e);
+          errors.push(e);
+        })
+        .then(function () {
+          next();
+        });
     };
     next();
-  }).then(async () => {
-    console.log(chalk.green('x Close Browser'));
-    await browser.close();
-  }).catch(async (err) => {
-    console.log(chalk.red(err));
-    await browser.close();
-  }).then(_ => compareConfig);
+  })
+    .then(async () => {
+      console.log(chalk.green('x Close Browser'));
+      await browser.close();
+    })
+    .catch(async err => {
+      console.log(chalk.red(err));
+      await browser.close();
+    })
+    .then(_ => compareConfig);
 }
 
-async function captureScreenshot (page, browser, selector, selectorMap, config, selectors) {
+async function captureScreenshot (
+  page,
+  browser,
+  selector,
+  selectorMap,
+  config,
+  selectors
+) {
   let filePath;
-  let fullPage = (selector === NOCLIP_SELECTOR || selector === DOCUMENT_SELECTOR);
+  let fullPage = selector === NOCLIP_SELECTOR || selector === DOCUMENT_SELECTOR;
   if (selector) {
     filePath = selectorMap[selector].filePath;
     ensureDirectoryPath(filePath);
     try {
-      await page
-        .screenshot({
-          path: filePath,
-          fullPage: fullPage
-        });
+      await page.screenshot({
+        path: filePath,
+        fullPage: fullPage
+      });
     } catch (e) {
       console.log(chalk.red(`Error capturing..`), e);
       return fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
@@ -364,7 +429,9 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
         const box = await el.boundingBox();
         if (box) {
           var type = config.puppeteerOffscreenCaptureFix ? page : el;
-          var params = config.puppeteerOffscreenCaptureFix ? { path: path, clip: box } : { path: path };
+          var params = config.puppeteerOffscreenCaptureFix
+            ? { path: path, clip: box }
+            : { path: path };
           await type.screenshot(params);
         } else {
           console.log(chalk.yellow(`Element not visible for capturing: ${s}`));
