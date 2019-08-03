@@ -902,9 +902,9 @@ Here's some suggestions if you want to work on the HTML report locally...
 	# From test/configs/ directory
 	# ---------------
 	# simple test
-		../../cli/index.js test --config=backstop
+		../../cli/index.js test --config=backstop --docker
 	# longer test covering many features
-		../../cli/index.js test --config=backstop_features
+		../../cli/index.js test --config=backstop_features --docker
 	```
 
 ## Troubleshooting
