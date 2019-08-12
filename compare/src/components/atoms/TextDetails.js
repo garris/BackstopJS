@@ -26,7 +26,7 @@ const WrapperDetailsPopup = styled.div`
   background-color: ${colors.white};
   padding: 10px;
   top: -28px;
-  left: 20px;
+  left: 12px;
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
   z-index: 999;
 
