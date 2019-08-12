@@ -35,6 +35,10 @@ const CardWrapper = styled.div`
   }
 `;
 
+const CardHeader = styled.div`
+  display: flex;
+`;
+
 export default class TestCard extends React.Component {
   render () {
     let { pair: info, status } = this.props.test;
@@ -42,10 +46,12 @@ export default class TestCard extends React.Component {
 
     return (
       <CardWrapper id={this.props.id} status={status}>
-        {!onlyText && (
-          <NavButtons currentId={this.props.numId} lastId={this.props.lastId} />
-        )}
-        <TextDetails info={info} />
+        <CardHeader>
+          <TextDetails info={info} />
+          {!onlyText && (
+            <NavButtons currentId={this.props.numId} lastId={this.props.lastId} />
+          )}
+        </CardHeader>
         <TestImages info={info} status={status} />
         <ErrorMessages info={info} status={status} />
       </CardWrapper>
