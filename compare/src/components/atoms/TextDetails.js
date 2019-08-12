@@ -91,7 +91,10 @@ class TextDetails extends React.Component {
           <Label>selector: </Label>
           <Value>{selector}</Value>
         </Row>
-        <DiffDetails suppress={!settings.textInfo} diff={diff} />
+        <Row hidden={!settings.textInfo}>
+          <UrlDetails url={url} referenceUrl={referenceUrl} />
+          <DiffDetails diff={diff} />
+        </Row>
 
         <DetailsPanel {...{ showPanel }} onMouseLeave={this.hidePanel}>
           <Row>
