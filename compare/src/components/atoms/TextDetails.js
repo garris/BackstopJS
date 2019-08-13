@@ -96,7 +96,8 @@ class TextDetails extends React.Component {
       selector,
       diff,
       url,
-      referenceUrl
+      referenceUrl,
+      viewportLabel
     } = this.props.info;
     const { textInfo } = this.props.settings;
     const { showPanel } = this.state;
@@ -108,9 +109,11 @@ class TextDetails extends React.Component {
           <Label>filename: </Label>
           <Value>{fileName}</Value>
         </Row>
-        <RowDefault>
+        <RowDefault onMouseOver={this.showPanel}>
           <Label>label: </Label>
-          <Value onMouseOver={this.showPanel}>{label}</Value>
+          <Value>{label}</Value>
+          <Label>viewport: </Label>
+          <Value>{viewportLabel}</Value>
         </RowDefault>
         <Row>
           <Label>selector: </Label>
