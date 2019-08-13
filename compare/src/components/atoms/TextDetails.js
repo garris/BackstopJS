@@ -7,10 +7,32 @@ import UrlDetails from './UrlDetails';
 import { colors, fonts } from '../../styles';
 
 // styled
-const WrapperDetails = styled.div``;
-
 const Row = styled.div`
   padding: 5px 0;
+`;
+
+const RowDefault = styled(Row)`
+  display: block !important;
+`;
+
+const WrapperDetailsStatic = styled.div`
+  ${Row} {
+    display: ${props => (props.textInfo ? 'block' : 'none')};
+  }
+`;
+
+const WrapperDetailsPopup = styled.div`
+  position: absolute;
+  background-color: ${colors.white};
+  padding: 10px;
+  top: -28px;
+  left: 12px;
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+  z-index: 999;
+
+  ${Row} {
+    display: block;
+  }
 `;
 
 const Label = styled.span`
@@ -27,16 +49,18 @@ const Value = styled.span`
   padding-right: 20px;
 `;
 
-const DetailsPanel = styled.div`
-  display: ${props => (props.showPanel ? 'block' : 'none')};
-  position: absolute;
-  background-color: ${colors.white};
-  padding: 10px;
-  top: -28px;
-  left: 20px;
-  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
-  z-index: 999;
-`;
+const WrapperDetails = props => {
+  const {
+    children,
+    hidePanel,
+    showPanel,
+    textInfo
+  } = props;
+
+  return showPanel && !textInfo
+    ? <WrapperDetailsPopup onMouseLeave={hidePanel}>{children}</WrapperDetailsPopup>
+    : <WrapperDetailsStatic textInfo={textInfo}>{children}</WrapperDetailsStatic>;
+};
 
 class TextDetails extends React.Component {
   constructor (props) {
@@ -72,41 +96,33 @@ class TextDetails extends React.Component {
       selector,
       diff,
       url,
-      referenceUrl
+      referenceUrl,
+      viewportLabel
     } = this.props.info;
-    const { settings } = this.props;
+    const { textInfo } = this.props.settings;
     const { showPanel } = this.state;
+    const hidePanel = this.hidePanel;
 
     return (
-      <WrapperDetails>
-        <Row hidden={!settings.textInfo}>
+      <WrapperDetails {...{ textInfo, showPanel, hidePanel }}>
+        <Row>
+          <Label>filename: </Label>
+          <Value>{fileName}</Value>
+        </Row>
+        <RowDefault onMouseOver={this.showPanel}>
           <Label>label: </Label>
           <Value>{label}</Value>
+          <Label>viewport: </Label>
+          <Value>{viewportLabel}</Value>
+        </RowDefault>
+        <Row>
           <Label>selector: </Label>
           <Value>{selector}</Value>
         </Row>
         <Row>
-          <Label>filename: </Label>
-          <Value onMouseOver={this.showPanel}>{fileName}</Value>
+          <UrlDetails url={url} referenceUrl={referenceUrl} />
+          <DiffDetails diff={diff} />
         </Row>
-        <DiffDetails suppress={!settings.textInfo} diff={diff} />
-
-        <DetailsPanel {...{ showPanel }} onMouseLeave={this.hidePanel}>
-          <Row>
-            <Label>label: </Label>
-            <Value>{label} </Value>
-            <Label>selector: </Label>
-            <Value>{selector} </Value>
-          </Row>
-          <Row>
-            <Label>filename: </Label>
-            <Value>{fileName} </Value>
-          </Row>
-          <Row>
-            <UrlDetails url={url} referenceUrl={referenceUrl} />
-            <DiffDetails diff={diff} />
-          </Row>
-        </DetailsPanel>
       </WrapperDetails>
     );
   }
