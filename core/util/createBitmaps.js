@@ -3,6 +3,7 @@ var cloneDeep = require('lodash/cloneDeep');
 var fs = require('./fs');
 var each = require('./each');
 var pMap = require('p-map');
+const path = require('path');
 
 var runChromy = require('./runChromy');
 var runPuppet = require('./runPuppet');
@@ -100,6 +101,11 @@ function delegateScenarios (config) {
     scenario.sIndex = i;
     scenario.selectors = scenario.selectors || [];
     scenario.viewports && scenario.viewports.forEach(saveViewportIndexes);
+    
+    if (config.baseUrl && config.baseUrl.trim()) {
+      scenario.url = path.join(config.baseUrl, scenario.url);  
+    }
+
     scenarios.push(scenario);
 
     if (!config.isReference && scenario.hasOwnProperty('variants')) {
