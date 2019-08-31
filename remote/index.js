@@ -44,7 +44,8 @@ module.exports = function (app) {
         .replace(/{origin}/, req.body.origin)
         .replace(/{testId}/, req.params.testId)
         .replace(/{scenarioId}/, req.params.scenarioId);
-      
+      config.scenarios[0] = s;
+
       var result = {
         label: s.label,
         surl: s.url,
