@@ -8,7 +8,9 @@ import iconDown from '../../assets/icons/iconDown.png';
 
 const Wrapper = styled.div`
   display: flex;
-  margin-left: auto;
+  position: absolute;
+  top: 15px;
+  right: 10px;
 
   a {
     display: inline-block;
@@ -24,14 +26,11 @@ const ButtonNav = styled.div`
   border-radius: 3px;
   height: 32px;
   width: 32px;
+  margin: 0 5px;
   transform: ${props => (props.prev ? `rotate(0)` : `rotate(180deg)`)};
 
   &:hover {
     cursor: pointer;
-  }
-
-  &:not(:first-child) {
-    margin-left: 10px;
   }
 `;
 

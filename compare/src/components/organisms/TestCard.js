@@ -14,21 +14,25 @@ import TestImages from '../molecules/TestImages';
 const CardWrapper = styled.div`
   position: relative;
   margin: 5px auto;
-  padding: 10px 22px;
+  padding: 10px 30px;
   background-color: ${colors.cardWhite};
   box-shadow: ${shadows.shadow01};
   min-height: 40px;
   break-inside: avoid;
-  border-left: 8px solid transparent;
-  border-left-color: ${props => props.status === 'pass' ? colors.green : colors.red};
 
+  &:before {
+    content: '';
+    display: block;
+    width: 8px;
+    height: 100%;
+    background-color: ${props => props.status === 'pass' ? colors.green : colors.red};
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
   @media print {
     box-shadow: none;
   }
-`;
-
-const CardHeader = styled.div`
-  display: flex;
 `;
 
 export default class TestCard extends React.Component {
@@ -38,12 +42,10 @@ export default class TestCard extends React.Component {
 
     return (
       <CardWrapper id={this.props.id} status={status}>
-        <CardHeader>
-          <TextDetails info={info} />
-          {!onlyText && (
-            <NavButtons currentId={this.props.numId} lastId={this.props.lastId} />
-          )}
-        </CardHeader>
+        {!onlyText && (
+          <NavButtons currentId={this.props.numId} lastId={this.props.lastId} />
+        )}
+        <TextDetails info={info} />
         <TestImages info={info} status={status} />
         <ErrorMessages info={info} status={status} />
       </CardWrapper>
