@@ -14,6 +14,7 @@
     "test": "node ./cli/index.js test",
     "approve": "node ./cli/index.js approve",
     "openReport": "node ./cli/index.js openReport",
+    "report": "node ./cli/index.js openReport",
     "echo": "node ./cli/index.js echo",
     "unit-test": "mocha --reporter spec --recursive 'test/**/*_spec.js'",
     "precommit": "lint-staged",
@@ -24,7 +25,9 @@
     "sanity-test": "cd test/configs/ && node ../../cli/index.js test",
     "kill-zombies": "pkill -f \"(chrome)?(--headless)\"",
     "copy-report-bundle": "mkdir -p test/configs/backstop_data/html_report && cp compare/output/index_bundle.js test/configs/backstop_data/html_report/",
-    "build-and-copy-report-bundle": "npm run build-compare && npm run copy-report-bundle"
+    "build-and-copy-report-bundle": "npm run build-compare && npm run copy-report-bundle",
+    "remote": "node ./cli/index.js remote",
+    "stop": "curl http://localhost:3000/stop"
   },
   "lint-staged": {
     "compare/src/**/*.js": [
