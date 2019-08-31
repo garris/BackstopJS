@@ -38,7 +38,7 @@ module.exports = function (app) {
 
       var config = JSON.parse(JSON.stringify(_config))
       config.dynamicTestId = req.params.testId;
-      var s = config.scenarios[0];
+      var s = Object.assign({}, config.scenarios[0], req.body.scenario);
       s.label = req.body.name;
       s.url = s.url
         .replace(/{origin}/, req.body.origin)
