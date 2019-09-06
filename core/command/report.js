@@ -45,11 +45,26 @@ function writeBrowserReport (config, reporter) {
     for (var i in browserReporter.tests) {
       if (browserReporter.tests.hasOwnProperty(i)) {
         var pair = browserReporter.tests[i].pair;
-        pair.reference = path.relative(report, toAbsolute(pair.reference));
-        pair.test = path.relative(report, toAbsolute(pair.test));
+        var pathReference = path.relative(report, toAbsolute(pair.reference));
+        var pathTest = path.relative(report, toAbsolute(pair.test));
+
+        if (config.report_resource_base_url) {
+          pathReference = toAbsolute(config.report_resource_base_url + pair.reference);
+          pathTest = toAbsolute(config.report_resource_base_url + pair.test);
+        }
+
+        pair.reference = pathReference;
+        pair.test = pathTest;
 
         if (pair.diffImage) {
-          pair.diffImage = path.relative(report, toAbsolute(pair.diffImage));
+          var pathDiff = path.relative(report, toAbsolute(pair.diffImage));
+          if (config.report_resource_base_url) {
+            var backstopDataPosition = pair.diffImage.indexOf('backstop_data');
+            var relativePart = pair.diffImage.substr(backstopDataPosition);
+            pathDiff = toAbsolute(config.report_resource_base_url + relativePart);
+          }
+
+          pair.diffImage = pathDiff;
         }
       }
     }
