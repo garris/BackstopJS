@@ -605,9 +605,9 @@ An example config below...
 
 ```js
 "engineOptions": {
-  waitTimeout: 120000,
-  chromePath: /path/to/chrome,
-  chromeFlags: ['--disable-gpu', '--force-device-scale-factor=1']
+  "waitTimeout": 120000,
+  "chromePath": "/path/to/chrome",
+  "chromeFlags": ["--disable-gpu", "--force-device-scale-factor=1"]
 }
 ```
 
