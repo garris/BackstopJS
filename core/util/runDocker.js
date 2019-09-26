@@ -23,7 +23,7 @@ module.exports.runDocker = async (config, backstopCommand) => {
     // When calling BackstopJS from node config props will be overridden by the passed config object. e.g. backstop('test', {thisProp:'will be passed to config.args'})
     let configArgs = '';
     if (config.args && !config.args._) {
-      configArgs = Object.keys(config.args)
+      const argPromises = Object.keys(config.args)
         .map(async prop => {
           if (prop === 'config' && typeof config.args[prop] === 'object') {
             // If config is an object, export it to a json file
@@ -32,9 +32,11 @@ module.exports.runDocker = async (config, backstopCommand) => {
           }
 
           return `"--${prop}=${config.args[prop]}"`;
-        })
-        .join(' ')
-        .replace(/--docker/, '--moby');
+        });
+
+      configArgs = await Promise.all(argPromises).then((str) => {
+        return str.join(' ').replace(/--docker/, '--moby');
+      });
     }
 
     const backstopArgs = [configArgs, passAlongArgs]
