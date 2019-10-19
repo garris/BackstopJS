@@ -82,7 +82,7 @@ function decorateConfigForCapture (config, isReference) {
 }
 
 function saveViewportIndexes (viewport, index) {
-  return Object.assign({}, viewport, {vIndex: index});
+  return Object.assign({}, viewport, { vIndex: index });
 }
 
 function delegateScenarios (config) {
