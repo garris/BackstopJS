@@ -494,13 +494,13 @@ One testing approach to consider is incorporating BackstopJS into your build pro
 
 It's natural for your layout to break while you're in feature development -- in that case you might just run a `backstop test` when you feel things should be shaping up.
 
-Using the `report` property in your config to enable or disable browser including/excluding the respective properties. E.G. The following settings will open a browser and write a junit report.
+Use the `report` property in your config to enable or disable the respective properties. E.g. The following settings will open a browser and write a junit report.
 
 ```json
 "report": ["browser", "CI"]
 ```
 
-You can also specify a json report by specifying:
+You can also specify a json report:
 ```json
 "report": ["json"]
 ```
