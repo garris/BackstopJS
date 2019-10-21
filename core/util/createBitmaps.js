@@ -82,7 +82,7 @@ function decorateConfigForCapture (config, isReference) {
 }
 
 function saveViewportIndexes (viewport, index) {
-  viewport.vIndex = index;
+  return Object.assign({}, viewport, { vIndex: index });
 }
 
 function delegateScenarios (config) {
@@ -92,14 +92,16 @@ function delegateScenarios (config) {
   var scenarios = [];
   var scenarioViews = [];
 
-  config.viewports.forEach(saveViewportIndexes);
+  config.viewports = config.viewports.map(saveViewportIndexes);
 
   // casper.each(scenarios, function (casper, scenario, i) {
   config.scenarios.forEach(function (scenario, i) {
     // var scenarioLabelSafe = makeSafe(scenario.label);
     scenario.sIndex = i;
     scenario.selectors = scenario.selectors || [];
-    scenario.viewports && scenario.viewports.forEach(saveViewportIndexes);
+    if (scenario.viewports) {
+      scenario.viewports = scenario.viewports.map(saveViewportIndexes);
+    }
     scenarios.push(scenario);
 
     if (!config.isReference && scenario.hasOwnProperty('variants')) {
