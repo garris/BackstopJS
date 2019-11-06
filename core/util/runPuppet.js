@@ -348,10 +348,10 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
     filePath = selectorMap[selector].filePath;
     ensureDirectoryPath(filePath);
 
-
     /*
-      Setting config.mergeImgHack == true will use an alternate screen grab technique 
-      whereby the screen 
+      Setting config.mergeImgHack == true will use an alternate screen grab method which
+      takes multple screenshots at periodic scroll positions then stitches them all togther
+      into one single screenshot.
      */
     if (fullPage && config.mergeImgHack) {
       // Safer version of `document` selector
@@ -398,7 +398,6 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
             });
           });
         }
-
         await bodyHandle.dispose();
       } catch (e) {
         console.log(chalk.red(`Error capturing..`), e);
