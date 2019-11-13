@@ -19,8 +19,8 @@ describe('runDocker', function () {
       spawn: function (dockerCommand) {
         assert.strictEqual(
           dockerCommand,
-          'docker run --rm -it --mount type=bind,source="/path/mock",target=/src backstopjs/backstopjs:version.mock test'
-            + ' "--moby=true" "--config=my_config.json" "--filter=my_filter"');
+          'docker run --rm -it --mount type=bind,source="/path/mock",target=/src backstopjs/backstopjs:version.mock test' +
+          ' "--moby=true" "--config=my_config.json" "--filter=my_filter"');
         done();
         return { on: () => {} };
       }
@@ -62,7 +62,7 @@ describe('runDocker', function () {
   it('should create tmp config file if config arg is an object', function (done) {
     process.argv = ['test'];
     mockery.registerMock('./fs', {
-      writeFile: function() {
+      writeFile: function () {
         return Promise.resolve();
       }
     });
