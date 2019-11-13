@@ -24,6 +24,7 @@ module.exports.runDocker = async (config, backstopCommand) => {
     let configArgs = '';
     if (config.args && !config.args._) {
       const argPromises = Object.keys(config.args)
+        .filter(prop => config.args[prop])
         .map(async prop => {
           if (prop === 'config' && typeof config.args[prop] === 'object') {
             // If config is an object, export it to a json file

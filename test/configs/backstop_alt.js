@@ -1,5 +1,5 @@
 module.exports = {
-  id: `backstop_alt`,
+  id: `puppet_backstop_features`,
   viewports: [
     {
       label: 'phone',
