@@ -6,7 +6,7 @@ var version = require('../package.json').version;
 var runner = require('../core/runner');
 
 var argsOptions = parseArgs(process.argv.slice(2), {
-  boolean: ['h', 'help', 'v', 'version', 'i'],
+  boolean: ['h', 'help', 'v', 'version', 'i', 'docker'],
   string: ['config'],
   default: {
     config: 'backstop.json'
