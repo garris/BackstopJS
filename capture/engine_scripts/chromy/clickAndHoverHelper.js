@@ -17,7 +17,7 @@ module.exports = function (chromy, scenario) {
     chromy
       .wait(hoverSelector)
       .rect(hoverSelector)
-      .result(function (rect) {
+      .result((rect) => {
         chromy.mouseMoved(rect.left, rect.top);
       });
   }
@@ -36,7 +36,7 @@ module.exports = function (chromy, scenario) {
     chromy
       .wait(scrollToSelector)
       .evaluate(`window._scrollToSelector = '${scrollToSelector}'`)
-      .evaluate(function () {
+      .evaluate(() => {
         document.querySelector(window._scrollToSelector).scrollIntoView();
       });
   }
