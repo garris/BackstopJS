@@ -1,8 +1,8 @@
-var fs = require('fs');
+const fs = require('fs');
 
 module.exports = function (chromy, scenario) {
-  var cookies = [];
-  var cookiePath = scenario.cookiePath;
+  const cookies = [];
+  const cookiePath = scenario.cookiePath;
 
   // READ COOKIES FROM FILE IF EXISTS
   if (fs.existsSync(cookiePath)) {

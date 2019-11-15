@@ -1,8 +1,8 @@
 module.exports = function (chromy, scenario) {
-  var hoverSelector = scenario.hoverSelectors || scenario.hoverSelector;
-  var clickSelector = scenario.clickSelectors || scenario.clickSelector;
-  var scrollToSelector = scenario.scrollToSelectors || scenario.scrollToSelector;
-  var postInteractionWait = scenario.postInteractionWait; // selector [str] | ms [int]
+  const hoverSelector = scenario.hoverSelectors || scenario.hoverSelector;
+  const clickSelector = scenario.clickSelectors || scenario.clickSelector;
+  const scrollToSelector = scenario.scrollToSelectors || scenario.scrollToSelector;
+  const postInteractionWait = scenario.postInteractionWait; // selector [str] | ms [int]
 
   if (hoverSelector) {
     chromy
