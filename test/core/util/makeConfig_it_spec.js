@@ -37,10 +37,11 @@ const expectedConfig = {
   compareReportURL: path.resolve('backstop_data/html_report/index.html'),
   defaultMisMatchThreshold: 0.1,
   debug: false,
-  resembleOutputOptions: undefined
+  resembleOutputOptions: undefined,
+  dockerCommandTemplate: undefined
 };
 
-describe('make config', function () {
+describe('make config it', function () {
   it('should return the default config correctly', function () {
     const actualConfig = makeConfig('test');
 
