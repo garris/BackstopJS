@@ -11,10 +11,10 @@
 ## Backstop Features
 
 - In-browser reporting UI with...
-	* layout settings for print and screen
-	* scenario display filtering
-	* reference, test, visual diff inspector
-	* cool scrubber thingy
+  * layout settings for print and screen
+  * scenario display filtering
+  * reference, test, visual diff inspector
+  * cool scrubber thingy
 
 ![BackstopJS browser report](http://garris.github.io/BackstopJS/assets/backstopjs_new_ui_.png)
 
@@ -584,8 +584,8 @@ You can add more settings (or override the defaults) with the engineOptions prop
 
 ```json
 "engineOptions": {
-	"ignoreHTTPSErrors": false,
-	"args": ["--no-sandbox", "--disable-setuid-sandbox"]
+  "ignoreHTTPSErrors": false,
+  "args": ["--no-sandbox", "--disable-setuid-sandbox"]
 }
 ```
 
@@ -882,30 +882,30 @@ Here's some suggestions if you want to work on the HTML report locally...
 - The HTML front end is a React app.  It lives in `/compare/src/`
 - To test your work you can build with
 
-	```
-	npm run build-and-copy-report-bundle
-	```
+  ```
+  npm run build-and-copy-report-bundle
+  ```
 
 - 👆 As a convenience, this command will move your newly built React bundle into `test/configs/backstop_data/html_report/` so you can then test your changes with some of these commands...
 
-	```
-	# From root directory
-	# ---------------
-	# simple test
-		npm run sanity-test
+  ```
+  # From root directory
+  # ---------------
+  # simple test
+    npm run sanity-test-docker
 
-	# longer test covering many features
-		npm run smoke-test
+  # longer test covering many features
+    npm run smoke-test-docker
 
   # Or another way to test...
 
-	# From test/configs/ directory
-	# ---------------
-	# simple test
-		../../cli/index.js test --config=backstop --docker
-	# longer test covering many features
-		../../cli/index.js test --config=backstop_features --docker
-	```
+  # From test/configs/ directory
+  # ---------------
+  # simple test
+    ../../cli/index.js test --config=backstop --docker
+  # longer test covering many features
+    ../../cli/index.js test --config=backstop_features --docker
+  ```
 
 ## Troubleshooting
 
