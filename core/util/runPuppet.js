@@ -118,7 +118,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     if (isReference && scenario.referenceUrl) {
       url = scenario.referenceUrl;
     }
-    await page.goto(translateUrl(url));
+    await page.goto(translateUrl(url), { waitUntil: 'domcontentloaded' });
 
     await injectBackstopTools(page);
 
