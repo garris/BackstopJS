@@ -20,7 +20,7 @@ describe('cli', function () {
 
     require('../../cli/index');
 
-    promiseMock.finally(() => {
+    promiseMock.then(() => {
       assert.strictEqual(process.exitCode, undefined);
       assert(runnerMock.calledWith('test'));
       done();
@@ -35,7 +35,7 @@ describe('cli', function () {
 
     require('../../cli/index');
 
-    promiseMock.finally(() => {
+    promiseMock.catch(() => {
       assert.strictEqual(process.exitCode, 1);
       done();
     });
