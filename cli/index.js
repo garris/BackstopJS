@@ -20,31 +20,22 @@ process.on('unhandledRejection', function (error) {
 
 if (argsOptions.h || argsOptions.help) {
   console.log(usage);
-  process.exit();
+  return;
 }
 
 if (argsOptions.v || argsOptions.version) {
   console.log('BackstopJS v' + version);
-  process.exit();
+  return;
 }
 
 var commandName = argsOptions['_'][0];
 
 if (!commandName) {
   console.log(usage);
-  process.exit();
 } else {
-  var exitCode = 0;
   console.log('BackstopJS v' + version);
   runner(commandName, argsOptions).catch(function () {
-    exitCode = 1;
-  });
-
-  /*
-   * Wait for the stdout buffer to drain.
-   */
-  process.on('exit', function (code) {
-    process.exit(code || exitCode);
+    process.exitCode = 1;
   });
 
   process.on('uncaughtException', function (err) {
