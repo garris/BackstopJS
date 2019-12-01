@@ -29,7 +29,7 @@ describe('cli', function () {
 
   it('should exit with code 1 if runner fails', function (done) {
     process.argv = ['node', 'backstop', 'test'];
-    const promiseMock = Promise.reject('errorMock');
+    const promiseMock = Promise.reject(new Error('errorMock'));
     const runnerMock = sinon.stub().returns(promiseMock);
     mockery.registerMock('../core/runner', runnerMock);
 
