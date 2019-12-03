@@ -1,23 +1,43 @@
-var mockery = require('mockery');
-var assert = require('assert');
+const mockery = require('mockery');
+const assert = require('assert');
+const sinon = require('sinon');
 
 describe('cli', function () {
-  before(function () {
-    mockery.enable({ warnOnUnregistered: false });
+  beforeEach(function () {
+    mockery.enable({ warnOnUnregistered: false, useCleanCache: true });
   });
 
-  after(function () {
+  afterEach(function () {
+    mockery.deregisterAll();
     mockery.disable();
   });
 
-  // causes issue with CI https://github.com/garris/BackstopJS/issues/1006
-  it.skip('should call the runner without custom options correctly', function (done) {
+  it('should call the runner without custom options correctly', function (done) {
     process.argv = ['node', 'backstop', 'test'];
-    mockery.registerMock('../core/runner', function (command, options) {
-      assert.strictEqual(command, 'test');
-      done();
-      return Promise.resolve();
-    });
+    const promiseMock = Promise.resolve();
+    const runnerMock = sinon.stub().returns(promiseMock);
+    mockery.registerMock('../core/runner', runnerMock);
+
     require('../../cli/index');
+
+    promiseMock.then(() => {
+      assert.strictEqual(process.exitCode, undefined);
+      assert(runnerMock.calledWith('test'));
+      done();
+    });
+  });
+
+  it('should exit with code 1 if runner fails', function (done) {
+    process.argv = ['node', 'backstop', 'test'];
+    const promiseMock = Promise.reject(new Error('errorMock'));
+    const runnerMock = sinon.stub().returns(promiseMock);
+    mockery.registerMock('../core/runner', runnerMock);
+
+    require('../../cli/index');
+
+    promiseMock.catch(() => {
+      assert.strictEqual(process.exitCode, 1);
+      done();
+    });
   });
 });
