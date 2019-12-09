@@ -20,7 +20,8 @@ var commandNames = [
   'test',
   'approve',
   'version',
-  'stop'
+  'stop',
+  'engineErrors'
 ];
 
 /* Commands that are only exposed to higher levels */
