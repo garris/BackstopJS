@@ -2,10 +2,10 @@ const createBitmaps = require('../util/createBitmaps');
 const fs = require('../util/fs');
 const logger = require('../util/logger')('clean');
 const { shouldRunDocker, runDocker } = require('../util/runDocker');
+const engineErrors = require('../util/engineErrors');
 
 module.exports = {
   execute: function (config) {
-    const executeCommand = require('./index');
     if (shouldRunDocker(config)) {
       return runDocker(config, 'reference');
     } else {
@@ -23,7 +23,7 @@ module.exports = {
         return createBitmaps(config, true);
       }).then(function () {
         console.log('\nRun `$ backstop test` to generate diff report.\n');
-        return executeCommand('_engineErrors', config);
+        return engineErrors(config);
       });
     }
   }
