@@ -357,7 +357,7 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
       // Safer version of `document` selector
       // see https://github.com/garris/BackstopJS/issues/820
       try {
-        const screenHeight = typeof config.mergeImgHack === 'number' ?  config.mergeImgHack : MERGE_IMG_SEGMENT_HEIGHT;
+        const screenHeight = typeof config.mergeImgHack === 'number' ? config.mergeImgHack : MERGE_IMG_SEGMENT_HEIGHT;
 
         const bodyHandle = await page.$('body');
         const { width, height: totalHeight } = await bodyHandle.boundingBox();
