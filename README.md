@@ -862,6 +862,35 @@ bitmaps_test/
 _Of course you can alternatively change your default config to save these files somewhere else out of the source control scope -- thats cool too._
 
 
+### Changing screenshot filename formats
+One of the things Backstop does for you is manage all your screenshot files.  Backstop uses a specific file-nameing scheme to make this work.  Changing this scheme is of course NOT RECOMMENDED.  That said -- if you have an overwhelming need, then you can modify this behavior using the `fileNameTemplate` property. The default pattern is shown below where the labels in braces are replaced with internal values during runtime. 
+
+```js
+{
+  // ...
+  fileNameTemplate: '{scenarioIndex}_{scenarioLabel}_{selectorIndex}_{selectorLabel}_{viewportIndex}_{viewportLabel}',
+  // ...
+}
+```
+
+
+### Alternate way of taking a FULL PAGE SCREENSHOT
+Puppeteer has an unexpected way of implementing full-screen bitmap captures -- the current approach rerenders viewport contents and takes a single fullpage screenshot.  This is totally fine in most cases -- however some Backstop users have run into issues where this approach causes some of the scenario state to be lost (e.g. a hover state).  Our friend @sballesteros was kind enough to create a workaround for this. The alternate approach captures multiple areas of your screen (without rerendering) and then magically stitches the multiple shots together, giving you a reliable fullscreen representation.
+
+This approach will likely become the default method -- but until then -- if you're having issues with current full-screen capture, go ahead and try the alternate way with this...
+
+```js
+{
+  // ...
+  mergeImgHack: true,
+  // ...
+}
+```
+Let us know [here](https://github.com/garris/BackstopJS/issues/820) if this works for you!
+
+
+
+
 
 ## Developing, bug fixing, contributing...
 
@@ -928,7 +957,7 @@ Run this command if you have made changes to the BackstopJS codebase and you wan
 ```
 
 ### Debugging
-If you are using Chrome-Headless engine then you have the option of displaying the Chrome window as tests are running.  This can be helpful for visually monitoring your app state at the time of your test.  To enable use...
+You have the option of displaying the Chrome window as tests are running.  This will allow you to visually see your app state at the time of your test.  To enable use...
 ```json
 "debugWindow": true
 ```
@@ -983,17 +1012,6 @@ Sometimes bad permissions happen to good people. It's ok, this is a safe space. 
 
 Be sure to use a config `id` in your config file. See https://github.com/garris/BackstopJS/issues/291
 
-#### If you just upgraded to 2.x or 3.x
-
-Filename formats have changed.  To use the 1.x (compatible) file format, use the `fileNameTemplate` property like so...
-
-```js
-{
-  // ...
-  fileNameTemplate: '{scenarioIndex}_{scenarioLabel}_{selectorIndex}_{selectorLabel}_{viewportIndex}_{viewportLabel}',
-  // ...
-}
-```
 
 
 ---
