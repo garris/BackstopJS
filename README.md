@@ -902,21 +902,34 @@ Please run the linter before each submit, as follows. Thank you. 🙇🏽
 $ npm run lint --fix
 ```
 
-### There is a BackstopJS SMOKE TEST
-See the next section for running the SMOKE TEST -- Please make sure this is working before submitting any PR's.  Thanks!
 
 ### HTML report development
 Here's some suggestions if you want to work on the HTML report locally...
 
 - The HTML front end is a React app.  It lives in `/compare/src/`
-- To test your work you can build with
 
-  ```
-  npm run build-and-copy-report-bundle
-  ```
+- The workflow is as follows from the backstopjs root
+	- Run a test with this...
 
-- 👆 As a convenience, this command will move your newly built React bundle into `test/configs/backstop_data/html_report/` so you can then test your changes with some of these commands...
+  	```
+  	npm run sanity-test
+  	```
+	- Your test report should display as designed.
+	- Then, make your UI changes and build with this...
 
+  	```
+  	npm run build-and-copy-report-bundle
+  	```
+  	- No need to rerun a test, just refresh the browser window to view your UI changes.
+  	- Repeat the process until you're done.
+  	- When you are done, check it in and include the bundle as part of the checkin.
+
+- 👆 NOTE: As a convenience, `npm run build-and-copy-report-bundle` copies your newly built React bundle into `test/configs/backstop_data/html_report/` so you can then test your changes by simply refreshing your report in chrome.
+
+
+
+### SMOKE & FEATURE TESTS
+See the next section for running the SMOKE TEST -- Please make sure this is working before submitting any PR's.  Thanks!
   ```
   # From root directory
   # ---------------
