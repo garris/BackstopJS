@@ -86,7 +86,7 @@ module.exports = function (app) {
     }
   });
 
-  app.get('/approve', async (req, res) => {
+  app.post('/approve', async (req, res) => {
     const filter = req.query.filter || '';
     const config = JSON.parse(JSON.stringify(_config));
     console.log(`backstop approve --filter=${filter}`);
