@@ -4,8 +4,10 @@
 var path = require('path');
 var express = require('express');
 var backstop = require('../core/runner');
-var PATH_TO_CONFIG = path.resolve(process.cwd(), 'backstop');
+var PROJECT_PATH = process.cwd();
+var PATH_TO_CONFIG = path.resolve(PROJECT_PATH, 'backstop');
 var _config = require(PATH_TO_CONFIG);
+var { modifyJsonpReport } = require('../core/util/remote');
 
 module.exports = function (app) {
   app._backstop = app._backstop || {};
@@ -90,12 +92,35 @@ module.exports = function (app) {
     const filter = req.query.filter || '';
     const config = JSON.parse(JSON.stringify(_config));
     console.log(`backstop approve --filter=${filter}`);
+
     try {
       await backstop('approve', {
         config,
-        filter: filter
+        filter
       });
+
+      const reportConfigFilename = path.join(
+        PROJECT_PATH,
+        'backstop_data',
+        'html_report',
+        'config.js'
+      );
+      await modifyJsonpReport({
+        reportConfigFilename,
+        approvedFileName: filter
+      });
+
       res.send('OK ' + req.query.filter);
+    } catch (error) {
+      console.log(error);
+      res.status(500).send({ error: error.message });
+    }
+  });
+
+  app.post('/test', async (req, res) => {
+    try {
+      await backstop('test');
+      res.send('OK');
     } catch (err) {
       console.log(err);
       res.send('FAILED ' + err);

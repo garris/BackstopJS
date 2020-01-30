@@ -34,7 +34,23 @@ function ButtonsFilter (props) {
 class FiltersSwitch extends React.Component {
   render () {
     let tests = this.props.tests;
-    let availableStatus = this.props.availableStatus;
+    let availableStatus = [
+      {
+        id: 'all',
+        label: 'all',
+        count: this.props.tests.all.length
+      },
+      {
+        id: 'pass',
+        label: 'passed',
+        count: this.props.tests.all.filter(e => e.status === 'pass').length
+      },
+      {
+        id: 'fail',
+        label: 'failed',
+        count: this.props.tests.all.filter(e => e.status === 'fail').length
+      }
+    ];
 
     return (
       <ButtonsWrapper>

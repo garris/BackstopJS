@@ -1,3 +1,10 @@
+export const approveTest = id => {
+  return {
+    type: 'APPROVE_TEST',
+    id
+  };
+};
+
 export const filterTests = status => {
   return {
     type: 'FILTER_TESTS',
