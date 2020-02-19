@@ -38,17 +38,17 @@ class FiltersSwitch extends React.Component {
       {
         id: 'all',
         label: 'all',
-        count: this.props.tests.all.length
+        count: tests.all.length
       },
       {
         id: 'pass',
         label: 'passed',
-        count: this.props.tests.all.filter(e => e.status === 'pass').length
+        count: tests.all.filter(e => e.status === 'pass').length
       },
       {
         id: 'fail',
         label: 'failed',
-        count: this.props.tests.all.filter(e => e.status === 'fail').length
+        count: tests.all.filter(e => e.status === 'fail').length
       }
     ];
 
@@ -66,8 +66,7 @@ class FiltersSwitch extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    tests: state.tests,
-    availableStatus: state.availableStatus
+    tests: state.tests
   };
 };
 
