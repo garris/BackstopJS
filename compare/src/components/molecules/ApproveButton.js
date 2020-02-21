@@ -75,7 +75,7 @@ class ApproveButton extends React.Component {
       this.setState({
         approveStatus: 'FAILED',
         errorMsg: `${err.message}. 🧐
-Looks like the "approve" operation failed. 
+Looks like the "approve" operation failed.
 Please check that backstopRemote is running.
       ` });
       alert(this.state.errorMsg);
@@ -87,7 +87,7 @@ Please check that backstopRemote is running.
 
     return (
       <div>
-        <Button onClick={this.approve} disabled={approveStatus === 'APPROVED'}>
+        <Button onClick={this.approve} disabled={approveStatus === 'APPROVED' || approveStatus === 'PENDING'}>
           {APPROVE_STATUS_TO_LABEL_MAP[this.state.approveStatus]}
         </Button>
       </div>
