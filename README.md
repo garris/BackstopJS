@@ -535,6 +535,13 @@ You may customize the testsuite name and/or a report file (xunit.xml) path to yo
 },
 ```
 
+### BackstopJS and CLI return values
+Pro Tip: When run on the command line, the BackstopJS process will return a 0 if tests were successful and a 1 if anything failed. So you always have the flexibility of branching way up high in your CLI if needed -- e.g....
+
+```
+node ./backstopjs/cli/ test  && echo 'passed' || echo 'failed'
+```
+
 #### CLI error handling
 
 When a layout error is found in CLI mode, BackstopJS will let you know in a general report displayed in the console. In addition, BackstopJS will return a 1 (error) to the calling CLI process.
