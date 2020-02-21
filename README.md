@@ -15,6 +15,7 @@
   * scenario display filtering
   * reference, test, visual diff inspector
   * cool scrubber thingy
+  * approving a test
 
 ![BackstopJS browser report](http://garris.github.io/BackstopJS/assets/backstopjs_new_ui_.png)
 
@@ -863,7 +864,7 @@ _Of course you can alternatively change your default config to save these files 
 
 
 ### Changing screenshot filename formats
-One of the things Backstop does for you is manage all your screenshot files.  Backstop uses a specific file-nameing scheme to make this work.  Changing this scheme is of course NOT RECOMMENDED.  That said -- if you have an overwhelming need, then you can modify this behavior using the `fileNameTemplate` property. The default pattern is shown below where the labels in braces are replaced with internal values during runtime. 
+One of the things Backstop does for you is manage all your screenshot files.  Backstop uses a specific file-nameing scheme to make this work.  Changing this scheme is of course NOT RECOMMENDED.  That said -- if you have an overwhelming need, then you can modify this behavior using the `fileNameTemplate` property. The default pattern is shown below where the labels in braces are replaced with internal values during runtime.
 
 ```js
 {
@@ -909,7 +910,12 @@ Here's some suggestions if you want to work on the HTML report locally...
 - The HTML front end is a React app.  It lives in `/compare/src/`
 
 - The workflow is as follows from the backstopjs root
-	- Run a test with this...
+  - Start a remote server if you need to work with the approving tests flow
+
+    ```
+    cd test/configs/ && node ../../cli/index.js remote
+    ```
+	- Open another shell and run a test with this...
 
   	```
   	npm run sanity-test

@@ -10,6 +10,7 @@ import NavButtons from '../atoms/NavButtons';
 
 // molecules
 import TestImages from '../molecules/TestImages';
+import ApproveButton from '../molecules/ApproveButton';
 
 const CardWrapper = styled.div`
   position: relative;
@@ -42,6 +43,7 @@ export default class TestCard extends React.Component {
 
     return (
       <CardWrapper id={this.props.id} status={status}>
+        {status === 'fail' && <ApproveButton fileName={info.fileName} currentId={this.props.numId} />}
         {!onlyText && (
           <NavButtons currentId={this.props.numId} lastId={this.props.lastId} />
         )}
