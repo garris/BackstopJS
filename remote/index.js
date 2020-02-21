@@ -41,7 +41,7 @@ module.exports = function (app) {
       `dview/${req.params.testId}/${req.params.scenarioId} `,
       app._backstop.testCtr
     );
-    console.log('Loadinfg dynamic config template at ' + PATH_TO_CONFIG);
+    console.log('Loading dynamic config template at ' + PATH_TO_CONFIG);
 
     var config = JSON.parse(JSON.stringify(_config));
     config.dynamicTestId = req.params.testId;

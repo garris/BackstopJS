@@ -6,6 +6,12 @@ import { colors, fonts } from '../../styles';
 
 const REMOTE_HOST = 'http://127.0.0.1';
 const REMOTE_PORT = 3000;
+const APPROVE_STATUS_TO_LABEL_MAP = Object.freeze({
+  INITIAL: 'Approve',
+  PENDING: 'Pending...',
+  APPROVED: 'Approved',
+  FAILED: 'Approve'
+});
 
 const Button = styled.button`
   font-size: 20px;
@@ -17,7 +23,7 @@ const Button = styled.button`
   color: ${colors.white};
   padding: 0px 30px;
   margin-bottom: 10px;
-  
+
   &:hover {
     cursor: pointer;
   }
@@ -37,44 +43,39 @@ const ErrorMsg = styled.p`
   color: brown;
 `;
 
-const APPROVE_STATUS_TO_LABEL_MAP = {
-  initial: 'Approve',
-  pending: 'Pending...',
-  approved: 'Approved',
-  failed: 'Approve'
-};
-
 class ApproveButton extends React.Component {
   constructor (props) {
     super(props);
     this.approve = this.approve.bind(this);
     this.state = {
-      approveStatus: 'initial',
+      approveStatus: 'INITIAL',
       errorMsg: null
     };
   }
 
-  approve () {
+  async approve () {
     const { fileName } = this.props;
     const url = `${REMOTE_HOST}:${REMOTE_PORT}/approve?filter=${fileName}`;
-    this.setState({ approveStatus: 'pending' });
+    this.setState({ approveStatus: 'PENDING' });
 
-    fetch(url, {
-      method: 'POST'
-    })
-      .then(response => {
-        if (response.ok) {
-          this.setState({ approveStatus: 'approved' });
-          this.props.approveTest(this.props.currentId, this.props.filterStatus);
-        } else {
-          response.json().then(body => {
-            this.setState({ approveStatus: 'failed', errorMsg: body.error });
-          });
-        }
-      })
-      .catch(err => {
-        this.setState({ approveStatus: 'failed', errorMsg: `${err.message}. Please check your network.` });
+    try {
+      const response = await fetch(url, {
+        method: 'POST'
       });
+
+      if (response.ok) {
+        this.setState({ approveStatus: 'APPROVED' });
+        this.props.approveTest(this.props.currentId, this.props.filterStatus);
+      } else {
+        const body = await response.json();
+        this.setState({ approveStatus: 'FAILED', errorMsg: body.error });
+      }
+    } catch (err) {
+      this.setState({
+        approveStatus: 'FAILED',
+        errorMsg: `${err.message}. Please check your network.`
+      });
+    }
   }
 
   render () {
@@ -82,13 +83,12 @@ class ApproveButton extends React.Component {
 
     return (
       <div>
-        <Button
-          onClick={this.approve}
-          disabled={approveStatus === 'approved'}
-        >
+        <Button onClick={this.approve} disabled={approveStatus === 'APPROVED'}>
           {APPROVE_STATUS_TO_LABEL_MAP[this.state.approveStatus]}
         </Button>
-        {approveStatus === 'failed' && <ErrorMsg>BACKSTOP ERROR: {errorMsg}</ErrorMsg>}
+        {approveStatus === 'FAILED' && (
+          <ErrorMsg>BACKSTOP ERROR: {errorMsg}</ErrorMsg>
+        )}
       </div>
     );
   }

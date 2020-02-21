@@ -41,7 +41,7 @@ function modifyJsonpReportHelper (originalJsonpReport, approvedFileName) {
  * @param {Object} params - the input params
  * @param {String} params.reportConfigFilename - the path to the html report config file
  * @param {String} params.approvedFileName - the name of the screenshot that is approved
- * @return {Prmoise}
+ * @return {Promise}
  */
 async function modifyJsonpReport ({ reportConfigFilename, approvedFileName }) {
   return fs
@@ -56,6 +56,6 @@ async function modifyJsonpReport ({ reportConfigFilename, approvedFileName }) {
 }
 
 module.exports = {
-  modifyJsonpReport: modifyJsonpReport,
-  modifyJsonpReportHelper: modifyJsonpReportHelper
+  modifyJsonpReport,
+  modifyJsonpReportHelper
 };
