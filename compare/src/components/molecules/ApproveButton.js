@@ -14,18 +14,19 @@ const APPROVE_STATUS_TO_LABEL_MAP = Object.freeze({
 });
 
 const Button = styled.button`
-  font-size: 20px;
-  line-height: 40px;
+  font-size: 12px;
+  line-height: auto;
   font-family: ${fonts.latoRegular};
-  background-color: ${colors.green};
+  background-color: ${colors.borderGray};
   border: none;
+  height: 32px;
   border-radius: 3px;
   color: ${colors.white};
-  padding: 0px 30px;
-  margin-bottom: 10px;
+  padding: 5px 5px;
 
   &:hover {
     cursor: pointer;
+    background-color: ${colors.green};
   }
 
   &:disabled {
@@ -35,13 +36,13 @@ const Button = styled.button`
   }
 `;
 
-const ErrorMsg = styled.p`
-  word-wrap: break-word;
-  font-family: monospace;
-  background: rgb(251, 234, 234);
-  padding: 2ex;
-  color: brown;
-`;
+// const ErrorMsg = styled.div`
+//   word-wrap: break-word;
+//   font-family: monospace;
+//   background: rgb(251, 234, 234);
+//   color: brown;
+//   line-height: 32px;
+// `;
 
 class ApproveButton extends React.Component {
   constructor (props) {
@@ -73,22 +74,22 @@ class ApproveButton extends React.Component {
     } catch (err) {
       this.setState({
         approveStatus: 'FAILED',
-        errorMsg: `${err.message}. Please check your network.`
-      });
+        errorMsg: `${err.message}. 🧐
+Looks like the "approve" operation failed. 
+Please check that backstopRemote is running.
+      ` });
+      alert(this.state.errorMsg);
     }
   }
 
   render () {
-    const { approveStatus, errorMsg } = this.state;
+    const { approveStatus } = this.state;
 
     return (
       <div>
         <Button onClick={this.approve} disabled={approveStatus === 'APPROVED'}>
           {APPROVE_STATUS_TO_LABEL_MAP[this.state.approveStatus]}
         </Button>
-        {approveStatus === 'FAILED' && (
-          <ErrorMsg>BACKSTOP ERROR: {errorMsg}</ErrorMsg>
-        )}
       </div>
     );
   }

@@ -36,6 +36,17 @@ const CardWrapper = styled.div`
   }
 `;
 
+const ButtonsWrapper = styled.div`
+  position: absolute;
+  right: 10px;
+  display: flex;
+`;
+
+// only show the diverged option if remote option is found
+function isRemoteOption () {
+  return /remote/.test(location.search);
+}
+
 export default class TestCard extends React.Component {
   render () {
     let { pair: info, status } = this.props.test;
@@ -43,10 +54,12 @@ export default class TestCard extends React.Component {
 
     return (
       <CardWrapper id={this.props.id} status={status}>
-        {status === 'fail' && <ApproveButton fileName={info.fileName} currentId={this.props.numId} />}
-        {!onlyText && (
-          <NavButtons currentId={this.props.numId} lastId={this.props.lastId} />
-        )}
+        <ButtonsWrapper>
+          {status === 'fail' && isRemoteOption() && <ApproveButton fileName={info.fileName} currentId={this.props.numId} />}
+          {!onlyText && (
+            <NavButtons currentId={this.props.numId} lastId={this.props.lastId} />
+          )}
+        </ButtonsWrapper>
         <TextDetails info={info} />
         <TestImages info={info} status={status} />
         <ErrorMessages info={info} status={status} />
