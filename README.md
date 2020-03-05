@@ -484,7 +484,7 @@ onBefore(engine, scenario, viewport, isReference, Engine, config)
 engine:      chromy or puppeteer engine instance
 scenario:    currently running scenario config
 viewport:    viewport info
-isReference: whether scenario contains reference URL propery
+isReference: whether scenario contains reference URL property
 Engine:      Static class reference (Chromy or Puppeteer)
 config:      the whole config object
 ```
