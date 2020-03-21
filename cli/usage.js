@@ -12,7 +12,7 @@ var commandsDescription = {
 
 var optionsDescription = {
   '--config': 'Path to config file name',
-  '--filter': 'A RegEx string used to filter by scenario labels when running "test" or "approve" commands',
+  '--filter': 'A RegEx string used to filter by scenario labels when running "test", "reference", or "approve" commands',
   '-h, --help': 'Display usage',
   '-v, --version': 'Display version',
   '-i': 'Prevent deletion of non-matching reference files when running "reference" command (newer matching reference files are still overwritten)'
