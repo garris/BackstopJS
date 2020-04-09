@@ -9,7 +9,6 @@ const REMOTE_PORT = 3000;
 const APPROVE_STATUS_TO_LABEL_MAP = Object.freeze({
   INITIAL: 'Approve',
   PENDING: 'Pending...',
-  APPROVED: 'Approved',
   FAILED: 'Approve'
 });
 
@@ -65,8 +64,8 @@ class ApproveButton extends React.Component {
       });
 
       if (response.ok) {
-        this.setState({ approveStatus: 'APPROVED' });
-        this.props.approveTest(this.props.currentId, this.props.filterStatus);
+        this.setState({ approveStatus: 'INITIAL' });
+        this.props.approveTest(fileName, this.props.filterStatus);
       } else {
         const body = await response.json();
         this.setState({ approveStatus: 'FAILED', errorMsg: body.error });
