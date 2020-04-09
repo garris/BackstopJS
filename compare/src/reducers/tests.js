@@ -2,8 +2,8 @@ const tests = (state = {}, action) => {
   switch (action.type) {
     case 'APPROVE_TEST':
       return Object.assign({}, state, {
-        all: state.all.map((test, i) => {
-          if (i === action.id) {
+        all: state.all.map(test => {
+          if (test.pair && (test.pair.fileName === action.id)) {
             return Object.assign({}, test, { status: 'pass' });
           }
           return test;

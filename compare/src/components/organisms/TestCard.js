@@ -55,7 +55,7 @@ export default class TestCard extends React.Component {
     return (
       <CardWrapper id={this.props.id} status={status}>
         <ButtonsWrapper>
-          {status === 'fail' && isRemoteOption() && <ApproveButton fileName={info.fileName} currentId={this.props.numId} />}
+          {status === 'fail' && isRemoteOption() && <ApproveButton fileName={info.fileName}/>}
           {!onlyText && (
             <NavButtons currentId={this.props.numId} lastId={this.props.lastId} />
           )}
