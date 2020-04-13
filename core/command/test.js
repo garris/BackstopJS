@@ -8,7 +8,11 @@ module.exports = {
     const executeCommand = require('./index');
     if (shouldRunDocker(config)) {
       return runDocker(config, 'test')
-        .finally(() => executeCommand('_openReport', config));
+        .finally(() => {
+          if (config.openReport && config.report && config.report.indexOf('browser') > -1) {
+            executeCommand('_openReport', config);
+          }
+        });
     } else {
       return createBitmaps(config, false).then(function () {
         return executeCommand('_report', config);

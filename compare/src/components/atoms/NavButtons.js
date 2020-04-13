@@ -7,13 +7,9 @@ import { colors } from '../../styles';
 import iconDown from '../../assets/icons/iconDown.png';
 
 const Wrapper = styled.div`
-  display: flex;
-  position: absolute;
-  top: 15px;
-  right: 10px;
-
   a {
     display: inline-block;
+    text-align: right;
   }
 `;
 
@@ -26,11 +22,14 @@ const ButtonNav = styled.div`
   border-radius: 3px;
   height: 32px;
   width: 32px;
-  margin: 0 5px;
+  margin: 0 0px 0 5px;
   transform: ${props => (props.prev ? `rotate(0)` : `rotate(180deg)`)};
+  opacity: ${props => (props.disabled ? `0.2` : `1`)};
+  display: inline-block;
 
   &:hover {
-    cursor: pointer;
+    cursor: ${props => (props.disabled ? `` : `pointer`)};
+    background-color: ${props => (props.disabled ? `${colors.lightGray}` : `${colors.medGray}`)};
   }
 `;
 
@@ -57,11 +56,17 @@ export default class NavButtons extends React.Component {
 
     return (
       <Wrapper>
+        {currentId === 0 && (
+          <ButtonNav onClick={this.prevTest.bind(this)} prev disabled />
+        )}
         {currentId !== 0 && (
           <ButtonNav onClick={this.prevTest.bind(this)} prev />
         )}
         {lastId !== currentId && (
           <ButtonNav onClick={this.nextTest.bind(this)} />
+        )}
+        {lastId === currentId && (
+          <ButtonNav onClick={this.nextTest.bind(this)} disabled />
         )}
       </Wrapper>
     );

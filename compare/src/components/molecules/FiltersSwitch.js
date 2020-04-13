@@ -34,7 +34,23 @@ function ButtonsFilter (props) {
 class FiltersSwitch extends React.Component {
   render () {
     let tests = this.props.tests;
-    let availableStatus = this.props.availableStatus;
+    let availableStatus = [
+      {
+        id: 'all',
+        label: 'all',
+        count: tests.all.length
+      },
+      {
+        id: 'pass',
+        label: 'passed',
+        count: tests.all.filter(e => e.status === 'pass').length
+      },
+      {
+        id: 'fail',
+        label: 'failed',
+        count: tests.all.filter(e => e.status === 'fail').length
+      }
+    ];
 
     return (
       <ButtonsWrapper>
@@ -50,8 +66,7 @@ class FiltersSwitch extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    tests: state.tests,
-    availableStatus: state.availableStatus
+    tests: state.tests
   };
 };
 

@@ -1,5 +1,6 @@
 var path = require('path');
 var chalk = require('chalk');
+var cloneDeep = require('lodash/cloneDeep');
 
 var allSettled = require('../util/allSettled');
 var fs = require('../util/fs');
@@ -13,24 +14,37 @@ function writeReport (config, reporter) {
     promises.push(writeJunitReport(config, reporter));
   }
 
+  if (config.report && config.report.indexOf('json') > -1) {
+    promises.push(writeJsonReport(config, reporter));
+  }
+
   promises.push(writeBrowserReport(config, reporter));
 
   return allSettled(promises);
 }
 
 function writeBrowserReport (config, reporter) {
+  var testConfig;
+  if (typeof config.args.config === 'object') {
+    testConfig = config.args.config;
+  } else {
+    testConfig = Object.assign({}, require(config.backstopConfigFileName));
+  }
+
+  var browserReporter = cloneDeep(reporter);
   function toAbsolute (p) {
     return (path.isAbsolute(p)) ? p : path.join(config.projectPath, p);
   }
   logger.log('Writing browser report');
+
   return fs.copy(config.comparePath, toAbsolute(config.html_report)).then(function () {
     logger.log('Resources copied');
 
     // Fixing URLs in the configuration
     var report = toAbsolute(config.html_report);
-    for (var i in reporter.tests) {
-      if (reporter.tests.hasOwnProperty(i)) {
-        var pair = reporter.tests[i].pair;
+    for (var i in browserReporter.tests) {
+      if (browserReporter.tests.hasOwnProperty(i)) {
+        var pair = browserReporter.tests[i].pair;
         pair.reference = path.relative(report, toAbsolute(pair.reference));
         pair.test = path.relative(report, toAbsolute(pair.test));
 
@@ -40,13 +54,40 @@ function writeBrowserReport (config, reporter) {
       }
     }
 
-    var jsonp = 'report(' + JSON.stringify(reporter, null, 2) + ');';
-    return fs.writeFile(toAbsolute(config.compareConfigFileName), jsonp).then(function () {
-      logger.log('Copied configuration to: ' + toAbsolute(config.compareConfigFileName));
+    var reportConfigFilename = toAbsolute(config.compareConfigFileName);
+    var testReportJsonName = toAbsolute(config.bitmaps_test + '/' + config.screenshotDateTime + '/report.json');
+
+    // if this is a dynamic test then we assume browserReporter has one scenario. This scenario will be appended to any existing report.
+    if (testConfig.dynamicTestId) {
+      try {
+        console.log('Attempting to open: ', testReportJsonName);
+        var testReportJson = require(testReportJsonName);
+        testReportJson.tests = testReportJson.tests.filter(test => test.pair.fileName !== browserReporter.tests[0].pair.fileName);
+        testReportJson.tests.push(browserReporter.tests[0]);
+        browserReporter = testReportJson;
+      } catch (err) {
+        console.log('Creating new report.');
+      }
+    }
+
+    var jsonReport = JSON.stringify(browserReporter, null, 2);
+    var jsonpReport = `report(${jsonReport});`;
+
+    var jsonConfgWrite = fs.writeFile(testReportJsonName, jsonReport).then(function () {
+      logger.log('Copied json report to: ' + testReportJsonName);
     }, function (err) {
-      logger.error('Failed configuration copy');
+      logger.error('Failed json report copy to: ' + testReportJsonName);
       throw err;
     });
+
+    var jsonpConfgWrite = fs.writeFile(toAbsolute(reportConfigFilename), jsonpReport).then(function () {
+      logger.log('Copied jsonp report to: ' + reportConfigFilename);
+    }, function (err) {
+      logger.error('Failed jsonp report copy to: ' + reportConfigFilename);
+      throw err;
+    });
+
+    return allSettled([jsonpConfgWrite, jsonConfgWrite]);
   }).then(function () {
     if (config.openReport && config.report && config.report.indexOf('browser') > -1) {
       var executeCommand = require('./index');
@@ -92,6 +133,38 @@ function writeJunitReport (config, reporter) {
     } catch (e) {
       return reject(e);
     }
+  });
+}
+
+function writeJsonReport (config, reporter) {
+  var jsonReporter = cloneDeep(reporter);
+  function toAbsolute (p) {
+    return (path.isAbsolute(p)) ? p : path.join(config.projectPath, p);
+  }
+  logger.log('Writing json report');
+  return fs.ensureDir(toAbsolute(config.json_report)).then(function () {
+    logger.log('Resources copied');
+
+    // Fixing URLs in the configuration
+    var report = toAbsolute(config.json_report);
+    for (var i in jsonReporter.tests) {
+      if (jsonReporter.tests.hasOwnProperty(i)) {
+        var pair = jsonReporter.tests[i].pair;
+        pair.reference = path.relative(report, toAbsolute(pair.reference));
+        pair.test = path.relative(report, toAbsolute(pair.test));
+
+        if (pair.diffImage) {
+          pair.diffImage = path.relative(report, toAbsolute(pair.diffImage));
+        }
+      }
+    }
+
+    return fs.writeFile(toAbsolute(config.compareJsonFileName), JSON.stringify(jsonReporter.getReport(), null, 2)).then(function () {
+      logger.log('Wrote Json report to: ' + toAbsolute(config.compareJsonFileName));
+    }, function (err) {
+      logger.error('Failed writing Json report to: ' + toAbsolute(config.compareJsonFileName));
+      throw err;
+    });
   });
 }
 

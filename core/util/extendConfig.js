@@ -9,9 +9,9 @@ function extendConfig (config, userConfig) {
   bitmapPaths(config, userConfig);
   ci(config, userConfig);
   htmlReport(config, userConfig);
+  jsonReport(config, userConfig);
   comparePaths(config);
   captureConfigPaths(config);
-  casper(config, userConfig);
   engine(config, userConfig);
 
   config.id = userConfig.id;
@@ -22,6 +22,7 @@ function extendConfig (config, userConfig) {
   config.resembleOutputOptions = userConfig.resembleOutputOptions;
   config.asyncCompareLimit = userConfig.asyncCompareLimit;
   config.backstopVersion = version;
+  config.dockerCommandTemplate = userConfig.dockerCommandTemplate;
   return config;
 }
 
@@ -66,6 +67,15 @@ function htmlReport (config, userConfig) {
   config.compareReportURL = path.join(config.html_report, 'index.html');
 }
 
+function jsonReport (config, userConfig) {
+  config.json_report = path.join(config.projectPath, 'backstop_data', 'json_report');
+  if (userConfig.paths) {
+    config.json_report = userConfig.paths.json_report || config.json_report;
+  }
+
+  config.compareJsonFileName = path.join(config.json_report, 'jsonReport.json');
+}
+
 function comparePaths (config) {
   config.comparePath = path.join(config.backstop, 'compare/output');
   config.tempCompareConfigFileName = temp.path({ suffix: '.json' });
@@ -81,22 +91,9 @@ function captureConfigPaths (config) {
   config.captureConfigFileNameDefault = path.join(config.backstop, 'capture', 'config.default.json');
 }
 
-function casper (config, userConfig) {
-  config.casper_scripts = path.join(config.projectPath, 'backstop_data', 'casper_scripts');
-  config.casper_scripts_default = path.join(config.backstop, 'capture', 'casper_scripts');
-
-  config.casperFlags = userConfig.casperFlags || null;
-
-  if (userConfig.paths) {
-    config.casper_scripts = userConfig.paths.casper_scripts || config.casper_scripts;
-  }
-}
-
 function engine (config, userConfig) {
   config.engine_scripts = path.join(config.projectPath, 'backstop_data', 'engine_scripts');
   config.engine_scripts_default = path.join(config.backstop, 'capture', 'engine_scripts');
-
-  config.casperFlags = userConfig.casperFlags || null;
 
   if (userConfig.paths) {
     config.engine_scripts = userConfig.paths.engine_scripts || config.engine_scripts;

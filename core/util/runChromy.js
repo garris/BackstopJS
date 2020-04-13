@@ -51,7 +51,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
     viewport.label = viewport.name || '';
   }
 
-  const engineScriptsPath = config.env.engine_scripts || config.env.casper_scripts || config.env.engine_scripts_default;
+  const engineScriptsPath = config.env.engine_scripts || config.env.engine_scripts_default;
   const isReference = config.isReference;
   /**
    *  =============
@@ -175,7 +175,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   if (onBeforeScript) {
     var beforeScriptPath = path.resolve(engineScriptsPath, onBeforeScript);
     if (fs.existsSync(beforeScriptPath)) {
-      require(beforeScriptPath)(chromy, scenario, viewport, isReference, Chromy);
+      require(beforeScriptPath)(chromy, scenario, viewport, isReference, Chromy, config);
     } else {
       console.warn(PORT, ' WARNING: script not found: ' + beforeScriptPath);
     }
@@ -230,7 +230,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
         .evaluate(
           () => {
             Array.prototype.forEach.call(document.querySelectorAll(window._backstopSelector), function (s, j) {
-              s.style.display = 'none';
+              s.style.cssText = 'display: none !important;';
               s.classList.add('__86d');
             });
           }
@@ -250,7 +250,7 @@ function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabe
   if (onReadyScript) {
     var readyScriptPath = path.resolve(engineScriptsPath, onReadyScript);
     if (fs.existsSync(readyScriptPath)) {
-      require(readyScriptPath)(chromy, scenario, viewport, isReference, Chromy);
+      require(readyScriptPath)(chromy, scenario, viewport, isReference, Chromy, config);
     } else {
       console.warn(PORT, 'WARNING: script not found: ' + readyScriptPath);
     }

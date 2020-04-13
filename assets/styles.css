@@ -42,6 +42,14 @@ a:hover {
   visibility: hidden;
   transform: translateZ(200px);
 }
+.hideLemur .lemurInYourFace {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateZ(200px);
+}
+.hideOctocat .github-icon {
+  visibility: hidden;
+}
 .lemurInYourFace {
   transition: transform 750ms ease, opacity 750ms ease, visibility 800ms ease;
   width: 50%;

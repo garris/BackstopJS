@@ -11,23 +11,6 @@ const defaultState = {
     filtered: window.tests.tests,
     filterStatus: 'all'
   },
-  availableStatus: [
-    {
-      id: 'all',
-      label: 'all',
-      count: window.tests.tests.length
-    },
-    {
-      id: 'pass',
-      label: 'passed',
-      count: window.tests.tests.filter(e => e.status === 'pass').length
-    },
-    {
-      id: 'fail',
-      label: 'failed',
-      count: window.tests.tests.filter(e => e.status === 'fail').length
-    }
-  ],
   scrubber: {
     visible: false,
     mode: 'scrub',
