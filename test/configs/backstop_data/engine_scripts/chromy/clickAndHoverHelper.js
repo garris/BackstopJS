@@ -1,5 +1,6 @@
 module.exports = function (chromy, scenario) {
   const hoverSelector = scenario.hoverSelectors || scenario.hoverSelector;
+  const focusSelector = scenario.focusSelectors || scenario.focusSelector;
   const clickSelector = scenario.clickSelectors || scenario.clickSelector;
   const keyPressSelector = scenario.keyPressSelectors || scenario.keyPressSelector;
   const scrollToSelector = scenario.scrollToSelectors || scenario.scrollToSelector;
@@ -20,6 +21,12 @@ module.exports = function (chromy, scenario) {
       .result((rect) => {
         chromy.mouseMoved(rect.left, rect.top);
       });
+  }
+
+  if (focusSelector) {
+    chromy
+      .wait(focusSelector)
+      .focus(focusSelector);
   }
 
   if (clickSelector) {

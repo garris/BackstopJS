@@ -25,6 +25,7 @@
       "hideSelectors": [],
       "removeSelectors": [],
       "hoverSelector": "",
+      "focusSelector": "",
       "clickSelector": "",
       "postInteractionWait": 0,
       "selectors": [],

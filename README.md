@@ -169,9 +169,11 @@ onReadyScript            // After the above conditions are met -- use this scrip
 keyPressSelectors        // Takes array of selector and string values -- simulates multiple sequential keypress interactions.
 hoverSelector            // Move the pointer over the specified DOM element prior to screen shot.
 hoverSelectors           // *Puppeteer only* takes array of selectors -- simulates multiple sequential hover interactions.
+focusSelector            // Focus the specified DOM element prior to screen shot.
+focusSelectors           // *Puppeteer only* takes array of selectors -- simulates multiple sequential focus interactions.
 clickSelector            // Click the specified DOM element prior to screen shot.
 clickSelectors           // *Puppeteer only* takes array of selectors -- simulates multiple sequential click interactions.
-postInteractionWait      // Wait for a selector after interacting with hoverSelector or clickSelector (optionally accepts wait time in ms. Idea for use with a click or hover element transition. available with default onReadyScript)
+postInteractionWait      // Wait for a selector after interacting with hoverSelector, clickSelector, or focusSelector (optionally accepts wait time in ms. Idea for use with a click or hover element transition. available with default onReadyScript)
 scrollToSelector         // Scrolls the specified DOM element into view prior to screen shot (available with default onReadyScript)
 selectors                // Array of selectors to capture. Defaults to document if omitted. Use "viewport" to capture the viewport size. See Targeting elements in the next section for more info...
 selectorExpansion        // See Targeting elements in the next section for more info...
@@ -181,20 +183,22 @@ viewports                // An array of screen size objects your DOM will be tes
 ```
 
 
-### Testing click and hover interactions
+### Testing click, hover, and focus interactions
 BackstopJS ships with an onReady script that enables the following interaction selectors...
 ```js
 clickSelector: ".my-hamburger-menu",
 hoverSelector: ".my-hamburger-menu .some-menu-item",
+focusSelector: ".my-hamburger-menu .some-menu-item",
 ```
-The above would tell BackstopJS to wait for your app to generate an element with a `.my-hamburger-menu` class, then click that selector.   Then it would wait again for a `.my-hamburger-menu .some-menu-item` class, then move the cursor over that element (causing a hover state).  Then BackstopJS would take a screenshot.
+The above would tell BackstopJS to wait for your app to generate an element with a `.my-hamburger-menu` class, then click that selector.   Then it would wait again for a `.my-hamburger-menu .some-menu-item` class, then move the cursor over that element (causing a hover state), then focus that element (causing a focus state).  Then BackstopJS would take a screenshot.
 
 You can use these properties independent of each other to easily test various click and or hover states in your app.  These are obviously simple scenarios -- if you have more complex needs then this example should serve as a pretty good starting point create your own onReady scripts.
 
-NOTE: Puppeteer version optionally takes `clickSelectors` & `hoverSelectors` as arrays of selectors...
+NOTE: Puppeteer version optionally takes `clickSelectors`, `hoverSelectors`, and `focusSelectors` as arrays of selectors...
 ```js
 clickSelectors: [".my-hamburger-menu",".my-hamburger-item"],
 hoverSelectors: [".my-nav-menu-item",".my-nav-menu-dropdown-item"],
+focusSelectors: [".my-nav-menu-item",".my-nav-menu-dropdown-item"],
 ```
 
 ### Key Press interactions

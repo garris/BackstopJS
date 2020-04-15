@@ -1,5 +1,6 @@
 module.exports = async (page, scenario) => {
   const hoverSelector = scenario.hoverSelectors || scenario.hoverSelector;
+  const focusSelector = scenario.focusSelectors || scenario.focusSelector;
   const clickSelector = scenario.clickSelectors || scenario.clickSelector;
   const keyPressSelector = scenario.keyPressSelectors || scenario.keyPressSelector;
   const scrollToSelector = scenario.scrollToSelector;
@@ -15,6 +16,11 @@ module.exports = async (page, scenario) => {
   if (hoverSelector) {
     await page.waitFor(hoverSelector);
     await page.hover(hoverSelector);
+  }
+
+  if (focusSelector) {
+    await page.waitFor(focusSelector);
+    await page.focus(focusSelector);
   }
 
   if (clickSelector) {
