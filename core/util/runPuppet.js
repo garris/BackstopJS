@@ -1,5 +1,7 @@
+const MERGE_IMG_SEGMENT_HEIGHT = 2000;
 const puppeteer = require('puppeteer');
 
+const mergeImg = require('merge-img');
 const fs = require('./fs');
 const path = require('path');
 const chalk = require('chalk');
@@ -45,7 +47,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     viewport.label = viewport.name || '';
   }
 
-  const engineScriptsPath = config.env.engine_scripts || config.env.casper_scripts || config.env.engine_scripts_default;
+  const engineScriptsPath = config.env.engine_scripts || config.env.engine_scripts_default;
   const isReference = config.isReference;
 
   const VP_W = viewport.width || viewport.viewport.width;
@@ -63,7 +65,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
   const browser = await puppeteer.launch(puppeteerArgs);
   const page = await browser.newPage();
 
-  page.setViewport({ width: VP_W, height: VP_H });
+  await page.setViewport({ width: VP_W, height: VP_H });
   page.setDefaultNavigationTimeout(engineTools.getEngineOption(config, 'waitTimeout', TEST_TIMEOUT));
 
   if (isReference) {
@@ -105,7 +107,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     if (onBeforeScript) {
       var beforeScriptPath = path.resolve(engineScriptsPath, onBeforeScript);
       if (fs.existsSync(beforeScriptPath)) {
-        await require(beforeScriptPath)(page, scenario, viewport, isReference, browser);
+        await require(beforeScriptPath)(page, scenario, viewport, isReference, browser, config);
       } else {
         console.warn('WARNING: script not found: ' + beforeScriptPath);
       }
@@ -148,7 +150,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
             await page
               .evaluate((sel) => {
                 document.querySelectorAll(sel).forEach(s => {
-                  s.style.display = 'none';
+                  s.style.cssText = 'display: none !important;';
                   s.classList.add('__86d');
                 });
               }, selector);
@@ -164,7 +166,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     if (onReadyScript) {
       var readyScriptPath = path.resolve(engineScriptsPath, onReadyScript);
       if (fs.existsSync(readyScriptPath)) {
-        await require(readyScriptPath)(page, scenario, viewport, isReference, browser);
+        await require(readyScriptPath)(page, scenario, viewport, isReference, browser, config);
       } else {
         console.warn('WARNING: script not found: ' + readyScriptPath);
       }
@@ -345,15 +347,72 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
   if (selector) {
     filePath = selectorMap[selector].filePath;
     ensureDirectoryPath(filePath);
-    try {
-      await page
-        .screenshot({
+
+    /*
+      Setting config.mergeImgHack == true will use an alternate screen grab method which
+      takes multple screenshots at periodic scroll positions then stitches them all togther
+      into one single screenshot.
+     */
+    if (fullPage && config.mergeImgHack) {
+      // Safer version of `document` selector
+      // see https://github.com/garris/BackstopJS/issues/820
+      try {
+        const screenHeight = typeof config.mergeImgHack === 'number' ? config.mergeImgHack : MERGE_IMG_SEGMENT_HEIGHT;
+
+        const bodyHandle = await page.$('body');
+        const { width, height: totalHeight } = await bodyHandle.boundingBox();
+
+        const screens = [];
+        let cumHeight = 0;
+        for (let i = 0; i * screenHeight < totalHeight; i++) {
+          cumHeight += screenHeight;
+          console.log(`screenshot part ${i} (${Math.min(cumHeight, totalHeight)} / ${totalHeight})`);
+          const screen = await page.screenshot({
+            path: totalHeight > screenHeight ? undefined : filePath, // if only 1 screen is needed with save immediately
+            fullPage: false,
+            clip: {
+              x: 0,
+              y: i * screenHeight,
+              width,
+              height:
+                cumHeight > totalHeight
+                  ? Math.ceil(screenHeight - (cumHeight - totalHeight))
+                  : screenHeight
+            }
+          });
+          screens.push(screen);
+        }
+
+        // if there was only 1 screen we already saved the file during screenshot
+        if (screens.length > 1) {
+          const img = await mergeImg(screens, {
+            direction: true
+          });
+
+          // Note: mergeImg relies on an old version of Jimp without writeAsync support
+          // See https://github.com/preco21/merge-img/issues/6
+          await new Promise((resolve, reject) => {
+            img.write(filePath, err => {
+              if (err) return reject(err);
+              resolve();
+            });
+          });
+        }
+        await bodyHandle.dispose();
+      } catch (e) {
+        console.log(chalk.red(`Error capturing..`), e);
+        return fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
+      }
+    } else {
+      try {
+        await page.screenshot({
           path: filePath,
           fullPage: fullPage
         });
-    } catch (e) {
-      console.log(chalk.red(`Error capturing..`), e);
-      return fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
+      } catch (e) {
+        console.log(chalk.red(`Error capturing..`), e);
+        return fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
+      }
     }
   } else {
     // OTHER-SELECTOR screenshot

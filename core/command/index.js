@@ -18,7 +18,9 @@ var commandNames = [
   'reference',
   'report',
   'test',
-  'approve'
+  'approve',
+  'version',
+  'stop'
 ];
 
 /* Commands that are only exposed to higher levels */
@@ -28,7 +30,9 @@ var exposedCommandNames = [
   'reference',
   'test',
   'openReport',
-  'approve'
+  'approve',
+  'version',
+  'stop'
 ];
 
 /* Used to convert an array of objects {name, execute} to a unique object {[name]: execute} */

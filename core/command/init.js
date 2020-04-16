@@ -10,9 +10,6 @@ module.exports = {
     if (config.engine_scripts) {
       logger.log("Copying '" + config.engine_scripts_default + "' to '" + config.engine_scripts + "'");
       promises.push(fs.copy(config.engine_scripts_default, config.engine_scripts));
-    } else if (config.casper_scripts) {
-      logger.log("Copying '" + config.casper_scripts_default + "' to '" + config.casper_scripts + "'");
-      promises.push(fs.copy(config.casper_scripts_default, config.casper_scripts));
     } else {
       logger.error('ERROR: Can\'t generate a scripts directory. No \'engine_scripts\' path property was found in backstop.json.');
     }

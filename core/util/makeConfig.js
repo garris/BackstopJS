@@ -1,12 +1,9 @@
 var path = require('path');
 var extendConfig = require('./extendConfig');
 
+const NON_CONFIG_COMMANDS = ['init', 'version', 'stop'];
+
 function projectPath (config) {
-  // Legacy mode, if the cwd is the backstop module
-  // if (config.backstop === process.cwd()) {
-  //   console.log('BackstopJS is running in legacy mode.');
-  //   return path.join(__dirname, '../../../..');
-  // }
   return process.cwd();
 }
 
@@ -33,11 +30,11 @@ function loadProjectConfig (command, options, config) {
   }
 
   var userConfig = {};
-  var CMD_REQUIRES_CONFIG = command !== 'init';
+  const CMD_REQUIRES_CONFIG = !NON_CONFIG_COMMANDS.includes(command);
   if (CMD_REQUIRES_CONFIG) {
     // This flow is confusing -- is checking for !config.backstopConfigFileName more reliable?
     if (options && typeof options.config === 'object' && options.config.scenarios) {
-      console.log('User config detected.');
+      console.log('Object-literal config detected.');
       if (options.config.debug) {
         console.log(JSON.stringify(options.config, null, 2));
       }
@@ -62,7 +59,7 @@ function makeConfig (command, options) {
   config.projectPath = projectPath(config);
   config.perf = {};
 
-  var userConfig = loadProjectConfig(command, options, config);
+  var userConfig = Object.assign({}, loadProjectConfig(command, options, config));
 
   return extendConfig(config, userConfig);
 }

@@ -22,9 +22,6 @@ const expectedConfig = {
   openReport: true,
   comparePath: path.resolve(backstopDir, 'compare/output'),
   captureConfigFileNameDefault: path.resolve(backstopDir, 'capture/config.default.json'),
-  casper_scripts: path.resolve('backstop_data/casper_scripts'),
-  casper_scripts_default: path.resolve(backstopDir, 'capture/casper_scripts'),
-  casperFlags: null,
   engine: null,
   engine_scripts: path.resolve('backstop_data/engine_scripts'),
   engine_scripts_default: path.resolve(backstopDir, 'capture/engine_scripts'),
@@ -40,10 +37,11 @@ const expectedConfig = {
   compareReportURL: path.resolve('backstop_data/html_report/index.html'),
   defaultMisMatchThreshold: 0.1,
   debug: false,
-  resembleOutputOptions: undefined
+  resembleOutputOptions: undefined,
+  dockerCommandTemplate: undefined
 };
 
-describe('make config', function () {
+describe('make config it', function () {
   it('should return the default config correctly', function () {
     const actualConfig = makeConfig('test');
 
@@ -58,6 +56,12 @@ describe('make config', function () {
 
     assert(actualConfig.captureConfigFileName);
     delete actualConfig.captureConfigFileName;
+
+    assert(actualConfig.json_report);
+    delete actualConfig.json_report;
+
+    assert(actualConfig.compareJsonFileName);
+    delete actualConfig.compareJsonFileName;
 
     assert.deepStrictEqual(actualConfig, expectedConfig);
   });

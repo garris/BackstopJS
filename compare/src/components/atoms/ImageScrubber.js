@@ -64,7 +64,14 @@ const Wrapper = styled.div`
 const WrapTitle = styled.div`
   display: flex;
   justify-content: center;
-  padding-bottom: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: white;
+  border-bottom: 1px solid #e4e4e4;
+
 `;
 
 const SliderBar = styled.div`
@@ -184,7 +191,7 @@ export default class ImageScrubber extends React.Component {
 
     const dontUseScrubberView = this.state.dontUseScrubberView || !showButtons;
     return (
-      <Wrapper>
+      <div>
         <WrapTitle>
           {showButtons && (
             <div>
@@ -229,57 +236,59 @@ export default class ImageScrubber extends React.Component {
             </div>
           )}
         </WrapTitle>
-        <img
-          id="isolatedRefImage"
-          src={refImage}
-          style={{
-            display: 'none'
-          }}
-        />
-        <img
-          id="isolatedTestImage"
-          className="testImage"
-          src={testImage}
-          style={{
-            margin: 'auto',
-            display: dontUseScrubberView ? 'block' : 'none'
-          }}
-        />
-        <img
-          className="diffImage"
-          src={diffImage}
-          style={{
-            margin: 'auto',
-            display: dontUseScrubberView ? 'block' : 'none'
-          }}
-        />
-        <div
-          style={{
-            display: dontUseScrubberView ? 'none' : 'block'
-          }}
-        >
-          <TwentyTwenty
-            verticalAlign="top"
-            minDistanceToBeginInteraction={0}
-            maxAngleToBeginInteraction={Infinity}
-            initialPosition={position}
-            newPosition={position}
+        <Wrapper>
+          <img
+            id="isolatedRefImage"
+            src={refImage}
+            style={{
+              display: 'none'
+            }}
+          />
+          <img
+            id="isolatedTestImage"
+            className="testImage"
+            src={testImage}
+            style={{
+              margin: 'auto',
+              display: dontUseScrubberView ? 'block' : 'none'
+            }}
+          />
+          <img
+            className="diffImage"
+            src={diffImage}
+            style={{
+              margin: 'auto',
+              display: dontUseScrubberView ? 'block' : 'none'
+            }}
+          />
+          <div
+            style={{
+              display: dontUseScrubberView ? 'none' : 'block'
+            }}
           >
-            <img
-              id="scrubberRefImage"
-              className="refImage"
-              src={refImage}
-              onError={this.handleLoadingError}
-            />
-            <img
-              id="scrubberTestImage"
-              className="testImage"
-              src={scrubberTestImageSlug}
-            />
-            <SliderBar className="slider" />
-          </TwentyTwenty>
-        </div>
-      </Wrapper>
+            <TwentyTwenty
+              verticalAlign="top"
+              minDistanceToBeginInteraction={0}
+              maxAngleToBeginInteraction={Infinity}
+              initialPosition={position}
+              newPosition={position}
+            >
+              <img
+                id="scrubberRefImage"
+                className="refImage"
+                src={refImage}
+                onError={this.handleLoadingError}
+              />
+              <img
+                id="scrubberTestImage"
+                className="testImage"
+                src={scrubberTestImageSlug}
+              />
+              <SliderBar className="slider" />
+            </TwentyTwenty>
+          </div>
+        </Wrapper>
+      </div>
     );
   }
 }

@@ -43,4 +43,11 @@ Reporter.prototype.failed = function () {
   return count;
 };
 
+Reporter.prototype.getReport = function () {
+  return {
+    testSuite: this.testSuite,
+    tests: this.tests
+  };
+};
+
 module.exports = Reporter;

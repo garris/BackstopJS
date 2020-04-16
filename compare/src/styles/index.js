@@ -7,7 +7,8 @@ export const colors = {
   red: '#F44336',
   white: '#FFFFFF',
   cardWhite: '#FAFAFA',
-  lightGray: '#EEEEEE'
+  lightGray: '#EEEEEE',
+  medGray: '#999999'
 };
 
 export const fonts = {

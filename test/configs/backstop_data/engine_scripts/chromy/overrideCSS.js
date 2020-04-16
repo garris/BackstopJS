@@ -7,9 +7,9 @@ module.exports = function (chromy, scenario, vp) {
   // inject some css to override styles
   chromy.evaluate(`window._styleData = '${styleStr}'`);
   chromy.evaluate(() => {
-    var style = document.createElement('style');
+    const style = document.createElement('style');
     style.type = 'text/css';
-    var styleNode = document.createTextNode(window._styleData);
+    const styleNode = document.createTextNode(window._styleData);
     style.appendChild(styleNode);
     document.head.appendChild(style);
   });
