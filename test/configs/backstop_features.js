@@ -122,6 +122,13 @@ module.exports = {
       selectors: ['.moneyshot']
     },
     {
+      label: 'focus',
+      url: `${URL}/index.html?click`,
+      focusSelector: '.lemur-link',
+      postInteractionWait: 1000,
+      selectors: ['.moneyshot']
+    },
+    {
       label: 'click',
       url: `${URL}/index.html?click`,
       clickSelector: '#theLemur',
