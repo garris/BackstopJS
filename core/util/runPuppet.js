@@ -118,7 +118,24 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     if (isReference && scenario.referenceUrl) {
       url = scenario.referenceUrl;
     }
-    await page.goto(translateUrl(url));
+    var request = await page.goto(translateUrl(url));
+
+    // --- RELOAD WEBSITE IF THERE WAS AN ERROR (base on the response code) ---
+    if (typeof config.reloadOnError !== 'undefined' && typeof config.reloadOnError.enable !== 'undefined' && typeof config.reloadOnError.onStatus !== 'undefined' && config.reloadOnError.enable === true) {
+      if (config.reloadOnError.onStatus.indexOf(request.status()) !== -1) {
+        // Wait for the website if needed
+        if (typeof config.reloadOnError.waitBeforeReload !== 'undefined' && parseInt(config.reloadOnError.waitBeforeReload) > 0) {
+          await ((milis) => {
+            return new Promise(function (resolve, reject) {
+              console.log('URL responded with status', request.status(), 'will be reloaded after', milis, 'ms');
+              setTimeout(function () { resolve(); }, milis);
+            });
+          })(config.reloadOnError.waitBeforeReload);
+
+          await page.goto(translateUrl(url));
+        }
+      }
+    }
 
     await injectBackstopTools(page);
 
