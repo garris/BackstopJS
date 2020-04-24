@@ -490,6 +490,7 @@ By default puppeteer will take a screenshot even if the URL returned http status
   "onStatus": [504, 503, 500] // Reload website if responded with one of the following statuses
 },
 ```
+Keep in mind that it works fine only with puppeteer `"engine": "puppeteer"`.
 
 #### Setting the base path for custom onBefore and onReady scripts
 
