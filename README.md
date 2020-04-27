@@ -22,7 +22,7 @@
 - Integrated Docker rendering -- to eliminate cross-platform rendering shenanigans
 - CLI reports
 - Render tests with **Chrome Headless**
-- Simulate user interactions with **Puppeteer** and **ChromyJS** scripts
+- Simulate user interactions with **Puppeteer** scripts
 - JUnit reports
 - Plays nice with CI and source control
 - Run globally or locally as a standalone package app or `require('backstopjs')` right into your node app
@@ -199,7 +199,7 @@ hoverSelectors: [".my-nav-menu-item",".my-nav-menu-dropdown-item"],
 
 ### Key Press interactions
 BackstopJS ships with an onReady script that allows user to key press on selectors...
-NOTE: Supports Chromy and Puppeteer and takes arrays of selectors and key press values.
+NOTE: Supports Puppeteer and takes arrays of selectors and key press values.
 
 ```json
 scenarios: [
@@ -481,11 +481,11 @@ By default the base path is a folder called `engine_scripts` inside your Backsto
 onBefore(engine, scenario, viewport, isReference, Engine, config)
 
 ```
-engine:      chromy or puppeteer engine instance
+engine:      puppeteer engine instance
 scenario:    currently running scenario config
 viewport:    viewport info
 isReference: whether scenario contains reference URL property
-Engine:      Static class reference (Chromy or Puppeteer)
+Engine:      Static class reference (Puppeteer)
 config:      the whole config object
 ```
 
@@ -565,19 +565,14 @@ By default, BackstopJS saves generated resources into the `backstop_data` direct
 ```
 
 ### Changing the rendering engine
-Puppeteer is currently the default value and will be installed by default. You could choose to use Chromy as well.
+Puppeteer is currently the default value and will be installed by default.
 
 #### Chrome-Headless (The latest webkit library)
-To use chrome headless you have two options for scripting engines, the default _puppeteer_ (https://github.com/GoogleChrome/puppeteer) or the very cool _chromy.js_ (https://github.com/OnetapInc/chromy) library.
+To use chrome headless you can currently use _puppeteer_ (https://github.com/GoogleChrome/puppeteer).
 
 
 ```json
 "engine": "puppeteer"
-```
-or
-
-```json
-"engine": "chromy"
 ```
 
 ### Setting Puppeteer option flags
@@ -598,44 +593,6 @@ You can add more settings (or override the defaults) with the engineOptions prop
 ```
 
 More info here: [Puppeteer on github](https://github.com/GoogleChrome/puppeteer).
-
-
-### Setting Chromy option flags
-Chromy enables a lot of behavior via constructor options.  See Chromy documentation for more info.
-
-**NOTE:** Backstop sets defaults for many Chromy properties. Setting a parameter value with engineOptions will override any default value set by backstop. _But please watch out for the following..._
-- (TLDR) Setting `port` as a chromy option flag is _very_ _very_ not advised. Instead, consider changing the `startingPort` property in the Backstop configuration. e.g. `"startingPort": 9333`
-- Setting `chromeFlags` will override all chromeFlags properties set by backstop -- **EXCEPT FOR `--window-size`***...  (i.e. `--window-size` flag will be added by backstop if not found in chromeFlags)
-- Setting `--window-size` explicitly in `chromeFlags` will override values used in your viewport settings.
-
-
-An example config below...
-
-```js
-"engineOptions": {
-  "waitTimeout": 120000,
-  "chromePath": "/path/to/chrome",
-  "chromeFlags": ["--disable-gpu", "--force-device-scale-factor=1"]
-}
-```
-
-### Using Chromy static functions
-To access use of Chromys static functions (such as addCustomDevice) the static chromy reference is sent as the fifth parameter to your onBefore/onReady scripts.
-
-Example usage:
-
-```js
-module.exports = function (chromy, scenario, vp, isReference, chromyStatic) {
-  if(vp.label === "phone") {
-    chromyStatic.addCustomDevice({ name: "some-phone", /.../ });
-    chromy.emulate("some-phone");
-  }
-}
-```
-For more info, see the [Chromy script documentation](https://github.com/OnetapInc/chromy).
-
-
-
 
 ### Using Docker for testing across different environments
 We've found that different environments can render the same webpage in slightly different ways -- in particular with text. E.G. see the text in this example rendering slightly differently between Linux and Mac...
@@ -1006,7 +963,7 @@ https://github.com/garris/BackstopJS/issues/537#issuecomment-339710797
 This is a grey area for BackstopJS.  When you click a link to a new page inside of Chrome headless then you are unloading all your current app state and starting fresh with a new app state.  If this is your case, the best practice is to simply create a new BackstopJS scenario with the required URL state etc.  If you have some kind of situation which really requires this kind of behavior then it's doable -- take a look at this issue for inspiration... https://github.com/garris/BackstopJS/issues/657
 
 ### Chrome Zombies!
-Sometimes when developing scripts -- browser errors can actually cause Chrome-Headless and Chromy to lose their special connection to each other.  If you find that Chrome zombies are accumulating in your ENV spacetime continuum then please follow these steps:
+Sometimes when developing scripts -- browser errors can actually cause Chrome-Headless to lose their special connection to each other.  If you find that Chrome zombies are accumulating in your ENV spacetime continuum then please follow these steps:
 
    1) DON’T PANIC!
 
@@ -1094,8 +1051,6 @@ Be sure to use a config `id` in your config file. See https://github.com/garris/
     - [Changing the rendering engine](#changing-the-rendering-engine)
       - [Chrome-Headless (The latest webkit library)](#chrome-headless-the-latest-webkit-library)
     - [Setting Puppeteer option flags](#setting-puppeteer-option-flags)
-    - [Setting Chromy option flags](#setting-chromy-option-flags)
-    - [Using Chromy static functions](#using-chromy-static-functions)
     - [Using Docker for testing across different environments](#using-docker-for-testing-across-different-environments)
       - [Requirements for when you're using docker...](#requirements-for-when-youre-using-docker)
     - [Integration options (local install)](#integration-options-local-install)

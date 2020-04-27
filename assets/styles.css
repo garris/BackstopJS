@@ -90,7 +90,7 @@ a:hover {
 .casper {
   color: #BD10E0;
 }
-.chromy {
+.chrome {
   color: #9013FE;
 }
 
@@ -115,5 +115,3 @@ h1, p { font-size: 1em; color: #666; font-weight: 300}
 @media (min-width: 1200px) {
   h1, p { font-size: 2.1rem; }
 }
-
-
