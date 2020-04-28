@@ -131,7 +131,7 @@ function delegateScenarios (config) {
     return pMap(scenarioViews, runPuppet, { concurrency: asyncCaptureLimit });
   }
   else if (/chrom./i.test(config.engine)) {
-    logger.error(`Engine "${(typeof config.engine === 'string' && config.engine) || 'undefined'}" not recognized! Chromy is no longer supported in version 5+. Please use version 4.x.x for chromy support.`);
+    logger.error(`Chromy is no longer supported in version 5+. Please use version 4.x.x for chromy support.`);
   } else {
     logger.error(`Engine "${(typeof config.engine === 'string' && config.engine) || 'undefined'}" not recognized! If you require PhantomJS or Slimer support please use backstopjs@3.8.8 or earlier.`);
   }
