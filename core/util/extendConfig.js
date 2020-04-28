@@ -23,6 +23,13 @@ function extendConfig (config, userConfig) {
   config.asyncCompareLimit = userConfig.asyncCompareLimit;
   config.backstopVersion = version;
   config.dockerCommandTemplate = userConfig.dockerCommandTemplate;
+  config.reloadOnError = userConfig.reloadOnError || {
+    "enabled": false,
+    "retryCount": 3,
+    "waitBeforeReload": 1500,
+    "onStatus": [504, 503, 500],
+    "outputFile": "retry_urls.json"
+  }
   return config;
 }
 

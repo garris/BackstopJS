@@ -63,7 +63,10 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
   const browser = await puppeteer.launch(puppeteerArgs);
   const page = await browser.newPage();
 
+  let urlWrongStatus = [];
+
   await page.setViewport({ width: VP_W, height: VP_H });
+
   page.setDefaultNavigationTimeout(engineTools.getEngineOption(config, 'waitTimeout', TEST_TIMEOUT));
 
   if (isReference) {
@@ -116,22 +119,35 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     if (isReference && scenario.referenceUrl) {
       url = scenario.referenceUrl;
     }
+
     var request = await page.goto(translateUrl(url));
 
-    // --- RELOAD WEBSITE IF THERE WAS AN ERROR (base on the response code) ---
-    if (typeof config.reloadOnError !== 'undefined' && typeof config.reloadOnError.enable !== 'undefined' && typeof config.reloadOnError.onStatus !== 'undefined' && config.reloadOnError.enable === true) {
+    if (config.reloadOnError.enabled) {
+      // Check the status of the request
       if (config.reloadOnError.onStatus.indexOf(request.status()) !== -1) {
-        // Wait for the website if needed
-        if (typeof config.reloadOnError.waitBeforeReload !== 'undefined' && parseInt(config.reloadOnError.waitBeforeReload) > 0) {
+        let reloadArray = Array.from(Array(config.reloadOnError.retryCount).keys());
+        
+        for(const iteration of reloadArray) {
+          const reloadRequest = await page.goto(url);
+
+          if (config.reloadOnError.onStatus.indexOf(reloadRequest.status()) === -1) {
+            break;
+          }
+
           await ((milis) => {
             return new Promise(function (resolve, reject) {
-              console.log('URL responded with status', request.status(), 'will be reloaded after', milis, 'ms');
               setTimeout(function () { resolve(); }, milis);
             });
-          })(config.reloadOnError.waitBeforeReload);
-
-          await page.goto(translateUrl(url));
-        }
+          })(config.reloadOnError.waitBeforeReload);          
+            urlWrongStatus.push({
+              iteration: iteration+1,
+              url: translateUrl(url),
+              status: reloadRequest.status(),
+              date: new Date().toISOString(),
+              timestamp: Date.now(), 
+              reloadStatus: (iteration === reloadArray.length - 1) ? 'failed' : 'reload'
+            });
+          }
       }
     }
 
@@ -275,6 +291,11 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     };
     fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
   }
+  
+  compareConfig = { failureUrls: urlWrongStatus, ...compareConfig }
+  
+  // console.log(compareConfig);
+  // console.log(urlWrongStatus);
 
   return Promise.resolve(compareConfig);
 }
