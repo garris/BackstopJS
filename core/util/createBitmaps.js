@@ -153,7 +153,16 @@ function delegateScenarios (config) {
 function writeCompareConfigFile (comparePairsFileName, compareConfig) {
   var compareConfigJSON = JSON.stringify(compareConfig, null, 2);
   ensureDirectoryPath(comparePairsFileName);
+
   return fs.writeFile(comparePairsFileName, compareConfigJSON);
+}
+
+function flatMapFailuresUrls (rawTestPairs) {
+  return rawTestPairs.reduce((acc, result) => {
+    var failureUrls = result.failureUrls;
+
+    return acc.concat(failureUrls);
+  }, []);
 }
 
 function flatMapTestPairs (rawTestPairs) {
@@ -190,8 +199,17 @@ module.exports = function (config, isReference) {
       const result = {
         compareConfig: {
           testPairs: flatMapTestPairs(rawTestPairs)
-        }
+        },
       };
+      
+      const failuresUrls = flatMapFailuresUrls(rawTestPairs);
+      
+      if (failuresUrls.length > 0) {
+        var failedUrlsPath = config.bitmaps_reference + '/' + (isReference ? 'reference-' : 'test-') + config.reloadOnError.outputFile;
+        ensureDirectoryPath(failedUrlsPath);
+        fs.writeFile(failedUrlsPath, JSON.stringify(failuresUrls, null, '\t'))
+      }
+
       return writeCompareConfigFile(config.tempCompareConfigFileName, result);
     });
 
