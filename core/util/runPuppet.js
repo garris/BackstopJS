@@ -40,7 +40,6 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
   if (!config.paths) {
     config.paths = {};
   }
-
   if (typeof viewport.label !== 'string') {
     viewport.label = viewport.name || '';
   }
@@ -145,6 +144,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
               status: reloadRequest.status(),
               date: new Date().toISOString(),
               timestamp: Date.now(), 
+              viewportLabel: viewport.label, 
               reloadStatus: (iteration === reloadArray.length - 1) ? 'failed' : 'reload'
             });
           }
