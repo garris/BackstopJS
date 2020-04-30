@@ -8,7 +8,7 @@ const injectBackstopTools = require('../../capture/backstopTools.js');
 const engineTools = require('./engineTools');
 
 const MIN_CHROME_VERSION = 62;
-const TEST_TIMEOUT = 60000;
+const TEST_TIMEOUT = 120000;
 const DEFAULT_FILENAME_TEMPLATE = '{configId}_{scenarioLabel}_{selectorIndex}_{selectorLabel}_{viewportIndex}_{viewportLabel}';
 const DEFAULT_BITMAPS_TEST_DIR = 'bitmaps_test';
 const DEFAULT_BITMAPS_REFERENCE_DIR = 'bitmaps_reference';
