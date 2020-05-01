@@ -1,17 +1,14 @@
-const Chromy = require('chromy');
 var cloneDeep = require('lodash/cloneDeep');
 var fs = require('./fs');
 var each = require('./each');
 var pMap = require('p-map');
 
-var runChromy = require('./runChromy');
 var runPuppet = require('./runPuppet');
 
 const ensureDirectoryPath = require('./ensureDirectoryPath');
 var logger = require('./logger')('createBitmaps');
 
 var CONCURRENCY_DEFAULT = 10;
-const CHROMY_STARTING_PORT_NUMBER = 9222;
 
 function regexTest (string, search) {
   var re = new RegExp(search);
@@ -86,9 +83,6 @@ function saveViewportIndexes (viewport, index) {
 }
 
 function delegateScenarios (config) {
-  // TODO: start chromy here?  Or later?  maybe later because maybe changing resolutions doesn't work after starting?
-  // casper.start();
-
   var scenarios = [];
   var scenarioViews = [];
 
@@ -133,18 +127,11 @@ function delegateScenarios (config) {
 
   const asyncCaptureLimit = config.asyncCaptureLimit === 0 ? 1 : config.asyncCaptureLimit || CONCURRENCY_DEFAULT;
 
-  if (/chrom./i.test(config.engine)) {
-    const PORT = (config.startingPort || CHROMY_STARTING_PORT_NUMBER);
-    var getFreePorts = require('./getFreePorts');
-    return getFreePorts(PORT, scenarioViews.length).then(freeports => {
-      console.log('These ports will be used:', JSON.stringify(freeports));
-      scenarioViews.forEach((scenarioView, i) => {
-        scenarioView.assignedPort = freeports[i];
-      });
-      return pMap(scenarioViews, runChromy, { concurrency: asyncCaptureLimit });
-    });
-  } else if (config.engine.startsWith('puppet')) {
+  if (config.engine.startsWith('puppet')) {
     return pMap(scenarioViews, runPuppet, { concurrency: asyncCaptureLimit });
+  }
+  else if (/chrom./i.test(config.engine)) {
+    logger.error(`Chromy is no longer supported in version 5+. Please use version 4.x.x for chromy support.`);
   } else {
     logger.error(`Engine "${(typeof config.engine === 'string' && config.engine) || 'undefined'}" not recognized! If you require PhantomJS or Slimer support please use backstopjs@3.8.8 or earlier.`);
   }
@@ -194,10 +181,6 @@ module.exports = function (config, isReference) {
       };
       return writeCompareConfigFile(config.tempCompareConfigFileName, result);
     });
-
-  if (/chrom./i.test(config.engine)) {
-    promise.then(() => Chromy.cleanup());
-  }
 
   return promise;
 };

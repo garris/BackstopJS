@@ -55,8 +55,8 @@ const exampleConfig = {
         height: 768
       }
     ],
-    onBeforeScript: 'chromy/onBefore.js',
-    onReadyScript: 'chromy/onReady.js',
+    onBeforeScript: 'puppeteer/onBefore.js',
+    onReadyScript: 'puppeteer/onReady.js',
     scenarios: [
       {
         label: 'Homepage',
@@ -77,7 +77,7 @@ const exampleConfig = {
       ci_report: 'backstop_data/ci_report'
     },
     report: ['browser'],
-    engine: 'chrome',
+    engine: 'puppeteer',
     asyncCaptureLimit: 5,
     asyncCompareLimit: 50,
     debug: false,
