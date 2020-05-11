@@ -847,7 +847,7 @@ This approach will likely become the default method -- but until then -- if you'
 ```js
 {
   // ...
-  mergeImgHack: true,
+  "mergeImgHack": true,
   // ...
 }
 ```
