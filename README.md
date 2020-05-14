@@ -828,7 +828,7 @@ _Of course you can alternatively change your default config to save these files 
 
 
 ### Changing screenshot filename formats
-One of the things Backstop does for you is manage all your screenshot files.  Backstop uses a specific file-nameing scheme to make this work.  Changing this scheme is of course NOT RECOMMENDED.  That said -- if you have an overwhelming need, then you can modify this behavior using the `fileNameTemplate` property. The default pattern is shown below where the labels in braces are replaced with internal values during runtime.
+One of the things Backstop does for you is manage all your screenshot files.  Backstop uses a specific file-naming scheme to make this work.  Changing this scheme is of course NOT RECOMMENDED.  That said -- if you have an overwhelming need, then you can modify this behavior using the `fileNameTemplate` property. The default pattern is shown below where the labels in braces are replaced with internal values during runtime.
 
 ```js
 {
