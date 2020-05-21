@@ -121,15 +121,27 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
       url = scenario.referenceUrl;
     }
 
-    var request = await page.goto(translateUrl(url));
+    // Add random string to the URL
+    // It will allow to bypass cache
+    var bypass = "";
+
+    if (!isReference) {
+      if (url.indexOf('?') !== -1) {
+        bypass = '&bypassCache=' + Date.now()
+      } else {
+        bypass = '?bypassCache=' + Date.now()
+      }
+    }
+
+    var request = await page.goto(translateUrl(url) + bypass);
 
     if (config.reloadOnError.enabled) {
       // Check the status of the request
       if (config.reloadOnError.onStatus.indexOf(request.status()) !== -1) {
         let reloadArray = Array.from(Array(config.reloadOnError.retryCount).keys());
-        
+
         for(const iteration of reloadArray) {
-          const reloadRequest = await page.goto(url);
+          const reloadRequest = await page.goto(translateUrl(url) + bypass);
 
           if (config.reloadOnError.onStatus.indexOf(reloadRequest.status()) === -1) {
             break;
@@ -139,14 +151,14 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
             return new Promise(function (resolve, reject) {
               setTimeout(function () { resolve(); }, milis);
             });
-          })(config.reloadOnError.waitBeforeReload);          
+          })(config.reloadOnError.waitBeforeReload);
             urlWrongStatus.push({
               iteration: iteration+1,
               url: translateUrl(url),
               status: reloadRequest.status(),
               date: new Date().toISOString(),
-              timestamp: Date.now(), 
-              viewportLabel: viewport.label, 
+              timestamp: Date.now(),
+              viewportLabel: viewport.label,
               reloadStatus: (iteration === reloadArray.length - 1) ? 'failed' : 'reload'
             });
           }
@@ -293,9 +305,9 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     };
     fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
   }
-  
+
   compareConfig = { failureUrls: urlWrongStatus, ...compareConfig }
-  
+
   // console.log(compareConfig);
   // console.log(urlWrongStatus);
 
