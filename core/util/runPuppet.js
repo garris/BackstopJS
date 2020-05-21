@@ -163,6 +163,8 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
       }
     }
 
+    await page.waitFor(2000);
+
     await injectBackstopTools(page);
 
     //  --- WAIT FOR READY EVENT ---
