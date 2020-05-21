@@ -123,12 +123,10 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     // It will allow to bypass cache
     var bypass = "";
 
-    if (!isReference) {
-      if (url.indexOf('?') !== -1) {
-        bypass = '&bypassCache=' + Date.now()
-      } else {
-        bypass = '?bypassCache=' + Date.now()
-      }
+    if (url.indexOf('?') !== -1) {
+      bypass = '&bypassCache=' + Date.now()
+    } else {
+      bypass = '?bypassCache=' + Date.now()
     }
 
     var request = await page.goto(translateUrl(url) + bypass);
