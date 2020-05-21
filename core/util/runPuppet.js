@@ -131,7 +131,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
       bypass = '?bypassCache=' + Date.now()
     }
 
-    var request = await page.goto(translateUrl(url) + bypass);
+    var request = await page.goto(translateUrl(url) + bypass, {waitUntil: 'networkidle2'});
 
     if (config.reloadOnError.enabled) {
       // Check the status of the request
@@ -139,7 +139,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
         let reloadArray = Array.from(Array(config.reloadOnError.retryCount).keys());
 
         for(const iteration of reloadArray) {
-          const reloadRequest = await page.goto(translateUrl(url) + bypass);
+          const reloadRequest = await page.goto(translateUrl(url) + bypass, {waitUntil: 'networkidle2'});
 
           if (config.reloadOnError.onStatus.indexOf(reloadRequest.status()) === -1) {
             break;
