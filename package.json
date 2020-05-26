@@ -96,7 +96,7 @@
     "p-map": "^1.1.1",
     "path": "^0.12.7",
     "portfinder": "^1.0.17",
-    "puppeteer": "^3.1.0",
+    "puppeteer": "^2.0.0",
     "resolve": "^1.11.1",
     "super-simple-web-server": "^1.1.2",
     "temp": "^0.8.3"
