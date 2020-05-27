@@ -131,9 +131,12 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
       bypass = '?bypassCache=' + Date.now()
     }
 
-    console.log(chalk.green('Opening URL:', translateUrl(url) + bypass));
+    // Open the URL for a first time
     await page.goto(translateUrl(url) + bypass, {waitUntil: 'networkidle0'});
-    var request = await page.goto(translateUrl(url) + bypass, {waitUntil: 'networkidle0'});
+
+    console.log(chalk.green('Opening URL:', translateUrl(url) + bypass));
+
+    var request = await page.reload(translateUrl(url) + bypass, {waitUntil: 'networkidle0'});
 
     if (config.reloadOnError.enabled) {
       // Check the status of the request
