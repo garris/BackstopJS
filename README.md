@@ -1005,6 +1005,7 @@ Be sure to use a config `id` in your config file. See https://github.com/garris/
 - [Angela Riggs](https://www.linkedin.com/in/angelariggs/detail/recent-activity/posts/) is a pioneer in the Visual Testing space and leader in cultivating a culture of quality for software teams.  Read about it [here](https://www.linkedin.com/pulse/visual-regression-testing-backstopjs-angela-riggs/) and [here](https://www.pnsqc.org/automated-visual-regression-testing-with-backstopjs/) and listen to her talk [here](https://www.linkedin.com/pulse/creating-culture-quality-angela-riggs/)
 - Check out [Marc Dacanay's](https://www.linkedin.com/in/marcdacanay/detail/recent-activity/posts/) BackstopJS articles -- he has a great intro as well as some great in-depth tips.
 - Here is a [cool project template for static sites](https://github.com/wlsf82/backstop-config) by Walmyr Filho [@wlsf82](https://github.com/wlsf82) https://twitter.com/walmyrlimaesilv
+- Here is [an online course about visual regression testing with BackstopJS](https://www.udemy.com/course/visual-regression-testing-with-backstopjs/) by [Walmyr Filho](https://www.udemy.com/user/walmyr/)
 - [A really good one on refactoring CSS with BackstopJS](https://hannesdotkaeuflerdotnet.herokuapp.com/posts/refactoring-css) by Hannes Käufler
 - [A Simple grunt-backstopjs plugin](http://www.obqo.de/blog/2016/12/30/grunt-backstopjs/) - For the Grunt enthusiasts
 
