@@ -121,6 +121,9 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
       url = scenario.referenceUrl;
     }
 
+    // Open the URL for a first time
+    await page.goto(translateUrl(url), {waitUntil: 'networkidle0'});
+
     // Add random string to the URL
     // It will allow to bypass cache
     var bypass = "";
@@ -133,7 +136,8 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
 
     // Open the URL for a first time
     await page.goto(translateUrl(url) + bypass, {waitUntil: 'networkidle0'});
-
+    await page.evaluate(`location.reload(true);`);
+    
     console.log(chalk.green('Opening URL:', translateUrl(url) + bypass));
 
     var request = await page.reload(translateUrl(url) + bypass, {waitUntil: 'networkidle0'});
