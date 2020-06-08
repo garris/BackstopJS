@@ -301,14 +301,14 @@ async function delegateSelectors (
   });
 
   if (captureDocument) {
-    captureJobs.push(function () { return captureScreenshot(page, browser, captureDocument, selectorMap, config, []); });
+    captureJobs.push(function () { return captureScreenshot(page, browser, captureDocument, selectorMap, config, [], viewport); });
   }
   // TODO: push captureViewport into captureList (instead of calling captureScreenshot()) to improve perf.
   if (captureViewport) {
-    captureJobs.push(function () { return captureScreenshot(page, browser, captureViewport, selectorMap, config, []); });
+    captureJobs.push(function () { return captureScreenshot(page, browser, captureViewport, selectorMap, config, [], viewport); });
   }
   if (captureList.length) {
-    captureJobs.push(function () { return captureScreenshot(page, browser, null, selectorMap, config, captureList); });
+    captureJobs.push(function () { return captureScreenshot(page, browser, null, selectorMap, config, captureList, viewport); });
   }
 
   return new Promise(function (resolve, reject) {
@@ -341,7 +341,7 @@ async function delegateSelectors (
   }).then(_ => compareConfig);
 }
 
-async function captureScreenshot (page, browser, selector, selectorMap, config, selectors) {
+async function captureScreenshot (page, browser, selector, selectorMap, config, selectors, viewport) {
   let filePath;
   let fullPage = (selector === NOCLIP_SELECTOR || selector === DOCUMENT_SELECTOR);
   if (selector) {
@@ -421,8 +421,20 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
       if (el) {
         const box = await el.boundingBox();
         if (box) {
+          // Resize the viewport to screenshot elements outside of the viewport
+          if (config.useBoundingBoxViewportForSelectors !== false) {
+            const bodyHandle = await page.$('body');
+            const boundingBox = await bodyHandle.boundingBox();
+
+            await page.setViewport({
+              width: Math.max(viewport.width, Math.ceil(boundingBox.width)),
+              height: Math.max(viewport.height, Math.ceil(boundingBox.height))
+            });
+          }
+
           var type = config.puppeteerOffscreenCaptureFix ? page : el;
           var params = config.puppeteerOffscreenCaptureFix ? { path: path, clip: box } : { path: path };
+
           await type.screenshot(params);
         } else {
           console.log(chalk.yellow(`Element not visible for capturing: ${s}`));
