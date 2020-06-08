@@ -422,13 +422,15 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
         const box = await el.boundingBox();
         if (box) {
           // Resize the viewport to screenshot elements outside of the viewport
-          const bodyHandle = await page.$('body');
-          const boundingBox = await bodyHandle.boundingBox();
+          if (config.useBoundingBoxViewportForSelectors === false) {
+            const bodyHandle = await page.$('body');
+            const boundingBox = await bodyHandle.boundingBox();
 
-          await page.setViewport({
-            width: Math.max(viewport.width, Math.ceil(boundingBox.width)),
-            height: Math.max(viewport.height, Math.ceil(boundingBox.height)),
-          });
+            await page.setViewport({
+              width: Math.max(viewport.width, Math.ceil(boundingBox.width)),
+              height: Math.max(viewport.height, Math.ceil(boundingBox.height))
+            });
+          }
 
           var type = config.puppeteerOffscreenCaptureFix ? page : el;
           var params = config.puppeteerOffscreenCaptureFix ? { path: path, clip: box } : { path: path };
