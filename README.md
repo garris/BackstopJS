@@ -900,6 +900,7 @@ Here's some suggestions if you want to work on the HTML report locally...
 
 ### SMOKE & FEATURE TESTS
 See the next section for running the SMOKE TEST -- Please make sure this is working before submitting any PR's.  Thanks!
+
   ```
   # From root directory
   # ---------------
@@ -923,11 +924,14 @@ See the next section for running the SMOKE TEST -- Please make sure this is work
 
 ### SANITY TEST: Does Backstop work in my environment?
 Run the following command from your Desktop, home or project directory to check that Backstop will install and run in your environment. _Please make sure you have node version 8 or above. Windows users: Powershell is recommended._
+
 ```
 mkdir backstopSanityTest; cd backstopSanityTest; npm install backstopjs; node ./node_modules/backstopjs/cli/ init; node ./node_modules/backstopjs/cli/ test
 
 ```
+
 Here is a sanity test which also uses docker...
+
 ```
 mkdir backstopSanityTest; cd backstopSanityTest; npm install backstopjs; node ./node_modules/backstopjs/cli/ init; node ./node_modules/backstopjs/cli/ test --docker
 ```
