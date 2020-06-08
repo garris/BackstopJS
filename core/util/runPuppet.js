@@ -422,7 +422,7 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
         const box = await el.boundingBox();
         if (box) {
           // Resize the viewport to screenshot elements outside of the viewport
-          if (config.useBoundingBoxViewportForSelectors === false) {
+          if (config.useBoundingBoxViewportForSelectors !== false) {
             const bodyHandle = await page.$('body');
             const boundingBox = await bodyHandle.boundingBox();
 
