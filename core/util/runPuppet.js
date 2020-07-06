@@ -135,7 +135,6 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     }
 
     // Open the URL for a first time
-    await page.goto(translateUrl(url) + bypass, {waitUntil: 'networkidle0'});
     await page.evaluate(`location.reload(true);`);
     
     console.log(chalk.green('Opening URL:', translateUrl(url) + bypass));
@@ -172,7 +171,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
       }
     }
 
-    await page.waitFor(2000);
+    // await page.waitFor(2000);
 
     await injectBackstopTools(page);
 
