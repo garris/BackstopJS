@@ -667,7 +667,7 @@ Using Backstop as a locally installed standalone app looks like this....
 npm install backstopjs
 
 # Then, run commands by directly calling the cli
-./node_modules/backstopjs/cli/index.js test --config=<myConfigPath>
+./node_modules/.bin/backstop test --config=<myConfigPath>
 ```
 
 The more interesting case is calling backstop from another node app...
@@ -928,14 +928,14 @@ See the next section for running the SMOKE TEST -- Please make sure this is work
 Run the following command from your Desktop, home or project directory to check that Backstop will install and run in your environment. _Please make sure you have node version 8 or above. Windows users: Powershell is recommended._
 
 ```
-mkdir backstopSanityTest; cd backstopSanityTest; npm install backstopjs; node ./node_modules/backstopjs/cli/ init; node ./node_modules/backstopjs/cli/ test
+mkdir backstopSanityTest; cd backstopSanityTest; npm install backstopjs; ./node_modules/.bin/backstop init; ./node_modules/.bin/backstop test
 
 ```
 
 Here is a sanity test which also uses docker...
 
 ```
-mkdir backstopSanityTest; cd backstopSanityTest; npm install backstopjs; node ./node_modules/backstopjs/cli/ init; node ./node_modules/backstopjs/cli/ test --docker
+mkdir backstopSanityTest; cd backstopSanityTest; npm install backstopjs; ./node_modules/.bin/backstop init; ./node_modules/.bin/backstop test --docker
 ```
 
 ### SMOKE TEST: Are backstop features working ok?
