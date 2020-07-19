@@ -435,6 +435,13 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
           var type = config.puppeteerOffscreenCaptureFix ? page : el;
           var params = config.puppeteerOffscreenCaptureFix ? { path: path, clip: box } : { path: path };
 
+          if(config.puppeteerOffscreenCaptureFix) {
+            const pageHeight = await page.evaluate("document.body.scrollHeight");
+            await type.setViewport(
+              Object.assign({}, type.viewport(), {height: parseInt(pageHeight) })
+            );
+          }
+
           await type.screenshot(params);
         } else {
           console.log(chalk.yellow(`Element not visible for capturing: ${s}`));
