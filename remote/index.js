@@ -5,7 +5,8 @@ var path = require('path');
 var express = require('express');
 var backstop = require('../core/runner');
 var PROJECT_PATH = process.cwd();
-var PATH_TO_CONFIG = path.resolve(PROJECT_PATH, 'backstop');
+const BACKSTOP_CONFIG_FILE_NAME = process.env.BACKSTOP_CONFIG_FILE_NAME || 'backstop';
+const PATH_TO_CONFIG = path.resolve(PROJECT_PATH, BACKSTOP_CONFIG_FILE_NAME);
 var _config = require(PATH_TO_CONFIG);
 var { modifyJsonpReport } = require('../core/util/remote');
 
