@@ -1,12 +1,17 @@
 /* eslint no-console: off */
 'use strict';
 
+var parseArgs = require('minimist');
+var argsOptions = parseArgs(process.argv.slice(2), {
+  string: ['config']
+});
+var PROJECT_PATH = argsOptions._[0];
+var PATH_TO_CONFIG = argsOptions.config;
+var _config = require(argsOptions.config);
+
 var path = require('path');
 var express = require('express');
 var backstop = require('../core/runner');
-var PROJECT_PATH = process.cwd();
-var PATH_TO_CONFIG = path.resolve(PROJECT_PATH, 'backstop');
-var _config = require(PATH_TO_CONFIG);
 var { modifyJsonpReport } = require('../core/util/remote');
 
 module.exports = function (app) {

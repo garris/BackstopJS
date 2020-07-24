@@ -6,15 +6,13 @@ const ssws = resolver.sync('super-simple-web-server', { basedir: __dirname });
 
 module.exports = {
   execute: function (config) {
-    logger.log('Starting remote.');
-
     const MIDDLEWARE_PATH = path.resolve(config.backstop, 'remote');
     const projectPath = path.resolve(config.projectPath);
 
     return new Promise(function (resolve, reject) {
-      logger.log(`Starting remote with: node ${ssws} ${projectPath} ${MIDDLEWARE_PATH}`);
+      logger.log(`Starting remote with: node ${ssws} ${projectPath} ${MIDDLEWARE_PATH} --config=${config.backstopConfigFileName}`);
 
-      const child = exec(`node ${ssws} ${projectPath} ${MIDDLEWARE_PATH}`);
+      const child = exec(`node ${ssws} ${projectPath} ${MIDDLEWARE_PATH} --config=${config.backstopConfigFileName}`);
 
       child.stdout.on('data', (data) => {
         logger.log(data);
