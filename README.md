@@ -5,7 +5,7 @@
 
 **BackstopJS automates visual regression testing of your responsive web UI by comparing DOM screenshots over time.**
 
-## Breaking News
+## News
 **EmberJS users** -- check out our ember-backstop test helper! https://github.com/garris/ember-backstop
 
 **Want to learn how to Backstop from a pro?** Check out [visual regression testing with BackstopJS on udemy.com](https://www.udemy.com/course/visual-regression-testing-with-backstopjs/) by [Walmyr Filho](https://www.udemy.com/user/walmyr/)
