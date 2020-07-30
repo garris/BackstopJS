@@ -3,7 +3,8 @@
 
 var parseArgs = require('minimist');
 var argsOptions = parseArgs(process.argv.slice(2), {
-  string: ['config']
+  string: ['config'],
+  boolean: ['i']
 });
 var PROJECT_PATH = argsOptions._[0];
 var PATH_TO_CONFIG = argsOptions.config;
@@ -66,7 +67,8 @@ module.exports = function (app) {
       vid: app._backstop.testCtr
     };
 
-    backstop('test', { config }).then(
+    // TODO: how to fork test vs reference
+    backstop('reference', { config, i: argsOptions.i }).then(
       () => {
         result.ok = true;
         res.send(JSON.stringify(result));

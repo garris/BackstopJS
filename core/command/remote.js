@@ -10,15 +10,18 @@ module.exports = {
     const projectPath = path.resolve(config.projectPath);
 
     return new Promise(function (resolve, reject) {
-      logger.log(`Starting remote with: node ${ssws} ${projectPath} ${MIDDLEWARE_PATH} --config=${config.backstopConfigFileName}`);
+      let commandStr = `node ${ssws} ${projectPath} ${MIDDLEWARE_PATH} --config=${config.backstopConfigFileName}`;
+      if (config && config.args && config.args.i) {
+        commandStr = `${commandStr} --i ${config.args.i}`;
+      }
 
-      const child = exec(`node ${ssws} ${projectPath} ${MIDDLEWARE_PATH} --config=${config.backstopConfigFileName}`);
+      logger.log(`Starting remote with: ${commandStr}`);
 
-      child.stdout.on('data', (data) => {
-        logger.log(data);
-      });
+      const child = exec(commandStr);
 
-      child.stdout.on('close', (data) => {
+      child.stdout.on('data', logger.log);
+
+      child.stdout.on('close', data => {
         logger.log('Backstop remote connection closed.', data);
         resolve(data);
       });
