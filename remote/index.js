@@ -3,8 +3,7 @@
 
 var parseArgs = require('minimist');
 var argsOptions = parseArgs(process.argv.slice(2), {
-  string: ['config'],
-  boolean: ['i']
+  string: ['config']
 });
 var PROJECT_PATH = argsOptions._[0];
 var PATH_TO_CONFIG = argsOptions.config;
@@ -68,7 +67,7 @@ module.exports = function (app) {
     };
 
     const command = req.path.includes('dtest') ? 'test' : 'reference';
-    backstop(command, { config, i: argsOptions.i }).then(
+    backstop(command, { config, i: Boolean(req.body.i) }).then(
       () => {
         result.ok = true;
         res.send(JSON.stringify(result));

@@ -11,9 +11,6 @@ module.exports = {
 
     return new Promise(function (resolve, reject) {
       let commandStr = `node ${ssws} ${projectPath} ${MIDDLEWARE_PATH} --config=${config.backstopConfigFileName}`;
-      if (config && config.args && config.args.i) {
-        commandStr = `${commandStr} --i ${config.args.i}`;
-      }
 
       logger.log(`Starting remote with: ${commandStr}`);
 
