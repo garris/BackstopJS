@@ -14,6 +14,8 @@ var express = require('express');
 var backstop = require('../core/runner');
 var { modifyJsonpReport } = require('../core/util/remote');
 
+const booleanizeArg = incrementalFlag => [true, 'true'].includes(incrementalFlag);
+
 module.exports = function (app) {
   app._backstop = app._backstop || {};
   app._backstop.testCtr = 0;
@@ -67,7 +69,7 @@ module.exports = function (app) {
     };
 
     const command = req.path.includes('dtest') ? 'test' : 'reference';
-    backstop(command, { config, i: Boolean(req.body.i) }).then(
+    backstop(command, { config, i: booleanizeArg(req.body.i) }).then(
       () => {
         result.ok = true;
         res.send(JSON.stringify(result));
