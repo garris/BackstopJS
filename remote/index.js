@@ -68,7 +68,7 @@ module.exports = function (app) {
       vid: app._backstop.testCtr
     };
 
-    const command = req.path.includes('dtest') ? 'test' : 'reference';
+    const command = req.path.includes(`/dref/`) ? 'reference' : 'test';
     backstop(command, { config, i: booleanizeArg(req.body.i) }).then(
       () => {
         result.ok = true;
