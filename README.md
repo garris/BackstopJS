@@ -227,7 +227,7 @@ cookiePath: "backstop_data/engine_scripts/cookies.json",
 ```
 _note: path is relative to your current working directory_
 
-Pro tip:  If your app uses a lot of cookies then do yourself a favor and download this extension for chrome. It adds a tab to your dev-tools so you can download all your cookies as a JSON file that you can directly use with BackstopJS  https://chrome.google.com/webstore/detail/cookie-inspector/jgbbilmfbammlbbhmmgaagdkbkepnijn?hl=en
+Pro tip:  If your app uses a lot of cookies then do yourself a favor and download this extension for chrome. It adds a tab to your dev-tools so you can download all your cookies as a JSON file that you can directly use with BackstopJS  https://chrome.google.com/webstore/detail/editthiscookie/fngmhnnpilhplaeedifhccceomclgfbg
 
 
 
