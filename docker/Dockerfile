@@ -18,8 +18,7 @@ RUN sudo add-apt-repository "deb http://dl.google.com/linux/chrome/deb/ stable m
 
 # RUN apt-get install -y firefox-esr
 
-# patch for https://github.com/garris/BackstopJS/issues/1225
-RUN apt-get install libxss1
+# libxss1 added for https://github.com/garris/BackstopJS/issues/1225
 
 RUN apt-get -qqy update \
   && apt-get -qqy --no-install-recommends install \
@@ -30,6 +29,7 @@ RUN apt-get -qqy update \
     fonts-liberation \
     fonts-ipafont-gothic \
     fonts-wqy-zenhei \
+    libxss1 \
   && rm -rf /var/lib/apt/lists/* \
   && apt-get -qyy clean
 
