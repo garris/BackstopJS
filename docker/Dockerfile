@@ -14,9 +14,12 @@ RUN sudo npm install -g --unsafe-perm=true --allow-root backstopjs@${BACKSTOPJS_
 RUN wget https://dl-ssl.google.com/linux/linux_signing_key.pub && sudo apt-key add linux_signing_key.pub
 RUN sudo add-apt-repository "deb http://dl.google.com/linux/chrome/deb/ stable main"
 
-RUN	apt-get -y update && apt-get -y install google-chrome-stable
+# RUN	apt-get -y update && apt-get -y install google-chrome-stable
 
 # RUN apt-get install -y firefox-esr
+
+# patch for https://github.com/garris/BackstopJS/issues/1225
+RUN apt-get install libxss1
 
 RUN apt-get -qqy update \
   && apt-get -qqy --no-install-recommends install \
@@ -29,6 +32,7 @@ RUN apt-get -qqy update \
     fonts-wqy-zenhei \
   && rm -rf /var/lib/apt/lists/* \
   && apt-get -qyy clean
+
 
 WORKDIR /src
 
