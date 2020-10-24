@@ -881,20 +881,20 @@ Here's some suggestions if you want to work on the HTML report locally...
     ```
     cd test/configs/ && node ../../cli/index.js remote
     ```
-	- Open another shell and run a test with this...
+  - Open another shell and run a test with this...
 
-  	```
-  	npm run sanity-test
-  	```
-	- Your test report should display as designed.
-	- Then, make your UI changes and build with this...
+    ```
+    npm run sanity-test
+    ```
+  - Your test report should display as designed.
+  - Then, make your UI changes and build with this...
 
-  	```
-  	npm run build-and-copy-report-bundle
-  	```
-  	- No need to rerun a test, just refresh the browser window to view your UI changes.
-  	- Repeat the process until you're done.
-  	- When you are done, check it in and include the bundle as part of the checkin.
+    ```
+    npm run build-and-copy-report-bundle
+    ```
+    - No need to rerun a test, just refresh the browser window to view your UI changes.
+    - Repeat the process until you're done.
+    - When you are done, check it in and include the bundle as part of the checkin.
 
 - 👆 NOTE: As a convenience, `npm run build-and-copy-report-bundle` copies your newly built React bundle into `test/configs/backstop_data/html_report/` so you can then test your changes by simply refreshing your report in chrome.
 
