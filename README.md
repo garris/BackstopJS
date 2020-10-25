@@ -866,7 +866,7 @@ First off, You are awesome! Thanks for your interest, time and hard work!  Here 
 ### We use `eslint-config-semistandard`.
 Please run the linter before each submit, as follows. Thank you. 🙇🏽
 ```sh
-$ npm run lint --fix
+$ npm run lint -- --fix
 ```
 
 
