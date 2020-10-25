@@ -1,6 +1,7 @@
 const path = require('path');
 
 module.exports = {
+  mode: 'production',
   entry: './compare/src/index.js',
   output: {
     path: path.resolve(__dirname, 'output'),
