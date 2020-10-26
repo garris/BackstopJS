@@ -47,7 +47,7 @@ module.exports.runDocker = async (config, backstopCommand) => {
     const dockerCommandTemplate = config.dockerCommandTemplate || DEFAULT_DOCKER_COMMAND_TEMPLATE;
 
     const dockerCommand = dockerCommandTemplate
-      .replace(/{cwd}/, process.cwd())
+      .replace(/{cwd}/g, process.cwd())
       .replace(/{version}/, version)
       .replace(/{backstopCommand}/, backstopCommand)
       .replace(/{args}/, backstopArgs);
