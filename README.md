@@ -102,6 +102,21 @@ $ backstop init
 
 By default, BackstopJS places `backstop.json` in the root of your project. And also by default, BackstopJS looks for this file when invoked.
 
+Pass a `--config=<configFilePathStr>` argument to test using a different config file.
+
+**JS based config file** 
+
+You may use a javascript based config file to allow connents in your config. Be sure to _export your config object as a node module_. 
+
+Example: Create a backstop.config.js 
+
+```
+module.exports = { Same object as backstop.json }
+```
+
+and then `backstop test --config="backstop.config.js"`
+
+
 #### Required config properties
 
 As a new user setting up tests for your project, you will be primarily concerned with these properties...
@@ -126,10 +141,6 @@ $ backstop test
 This will create a new set of bitmaps in `bitmaps_test/<timestamp>/`
 
 Once the test bitmaps are generated, a report comparing the most recent test bitmaps against the current reference bitmaps will display.
-
-Pass a `--config=<configFilePathStr>` argument to test using a different config file.
-
-**Tip** To use a js-module as a config file, just explicitly specify your config filepath and point to a `.js` file. _Just be sure to export your config object as a node module._
 
 Pass a `--filter=<scenarioLabelRegex>` argument to just run scenarios matching your scenario label.
 
