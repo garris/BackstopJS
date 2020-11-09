@@ -104,7 +104,18 @@ By default, BackstopJS places `backstop.json` in the root of your project. And a
 
 Pass a `--config=<configFilePathStr>` argument to test using a different config file.
 
-**Tip** To use a js-module as a config file, just explicitly specify your config filepath and point to a `.js` file. _Just be sure to export your config object as a node module._
+**Config file with comments** 
+
+You may use a javascript based config file. Be sure to _export your config object as a node module_. 
+
+Example: Create a backstop.config.js 
+
+```
+module.exports = { Same object as backstop.json }
+```
+
+and then `backstop test --config="backstop.config.js"`
+
 
 #### Required config properties
 
