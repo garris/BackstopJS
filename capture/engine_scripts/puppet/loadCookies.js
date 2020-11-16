@@ -1,7 +1,7 @@
 const fs = require('fs');
 
 module.exports = async (page, scenario) => {
-  let cookies = [];
+  const cookies = [];
   const cookiePath = scenario.cookiePath;
 
   // READ COOKIES FROM FILE IF EXISTS
@@ -9,10 +9,14 @@ module.exports = async (page, scenario) => {
     cookies = JSON.parse(fs.readFileSync(cookiePath));
   }
 
-  // MUNGE COOKIE DOMAIN
+  // Inject cookie domain, url, secure from scenario url.
+  const url = new URL(scenario.url);
   cookies = cookies.map(cookie => {
-    cookie.url = 'https://' + cookie.domain;
-    delete cookie.domain;
+    cookie.url = `${url.protocol}//${url.hostname}`;
+    cookie.domain = url.hostname;
+    if(url.protocol === 'https:') {
+      cookie.secure = true;
+    }
     return cookie;
   });
 
