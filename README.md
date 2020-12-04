@@ -807,7 +807,7 @@ $ backstop reference
 optional parameters
 `--config=<configFilePath>`   point to a specific config file
 `--filter=<scenario.name>`    filter on scenario.name via regex string
-`--i`                         incremental flag -- use if you don't want BackstopJS do first delete all files in your reference directory
+`--i`                         incremental flag -- use if you don't want BackstopJS to first delete all files in your reference directory
 
 
 ### Modifying output settings of image-diffs
