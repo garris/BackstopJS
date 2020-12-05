@@ -77,7 +77,8 @@ const scrubber = (state = {}, action) => {
     case 'SHOW_SCRUBBER':
       return Object.assign({}, state, {
         position: getPosFromImgId(),
-        scrubberModalMode: 'SCRUB'
+        scrubberModalMode: 'SCRUB',
+        testImageType: 'testImage'
       });
 
     default:
