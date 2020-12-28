@@ -1023,7 +1023,7 @@ Be sure to use a config `id` in your config file. See https://github.com/garris/
 - Check out [Marc Dacanay's](https://www.linkedin.com/in/marcdacanay/detail/recent-activity/posts/) BackstopJS articles -- he has a great intro as well as some great in-depth tips.
 - Here is a [cool project template for static sites](https://github.com/wlsf82/backstop-config) by Walmyr Filho [@wlsf82](https://github.com/wlsf82) https://twitter.com/walmyrlimaesilv
 - Here is [an online course about visual regression testing with BackstopJS](https://www.udemy.com/course/visual-regression-testing-with-backstopjs/) by [Walmyr Filho](https://www.udemy.com/user/walmyr/)
-- [A really good one on refactoring CSS with BackstopJS](https://hannesdotkaeuflerdotnet.herokuapp.com/posts/refactoring-css) by Hannes Käufler
+- [A really good one on refactoring CSS with BackstopJS](https://hannes.kaeufler.net/posts/refactoring-css) by Hannes Käufler
 - [A Simple grunt-backstopjs plugin](http://www.obqo.de/blog/2016/12/30/grunt-backstopjs/) - For the Grunt enthusiasts
 
 <!--
