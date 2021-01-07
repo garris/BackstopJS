@@ -1,4 +1,3 @@
-const MERGE_IMG_SEGMENT_HEIGHT = 2000;
 const puppeteer = require('puppeteer');
 
 const mergeImg = require('merge-img');
@@ -357,7 +356,7 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
       // Safer version of `document` selector
       // see https://github.com/garris/BackstopJS/issues/820
       try {
-        const screenHeight = typeof config.mergeImgHack === 'number' ? config.mergeImgHack : MERGE_IMG_SEGMENT_HEIGHT;
+        const screenHeight = typeof config.mergeImgHack === 'number' ? config.mergeImgHack : viewport.height;
 
         const bodyHandle = await page.$('body');
         const { width, height: totalHeight } = await bodyHandle.boundingBox();
@@ -367,6 +366,11 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
         for (let i = 0; i * screenHeight < totalHeight; i++) {
           cumHeight += screenHeight;
           console.log(`screenshot part ${i} (${Math.min(cumHeight, totalHeight)} / ${totalHeight})`);
+
+          await page.evaluate((i, screenHeight) => {
+            window.scrollTo(0, i * screenHeight);
+          }, i, screenHeight);
+
           const screen = await page.screenshot({
             path: totalHeight > screenHeight ? undefined : filePath, // if only 1 screen is needed with save immediately
             fullPage: false,
