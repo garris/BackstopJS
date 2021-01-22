@@ -950,7 +950,7 @@ mkdir backstopSanityTest; cd backstopSanityTest; npm install backstopjs; ./node_
 ```
 
 ### SMOKE TEST: Are backstop features working ok?
-Run this command if you have made changes to the BackstopJS codebase and you want to make sure that you haven't hosed anything.
+Run this command if you have made changes to the BackstopJS codebase and you want to make sure that you haven't corrupted anything.
 ```
     # from the backstopjs directory
     npm run smoke-test
