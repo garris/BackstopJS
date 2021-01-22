@@ -491,10 +491,10 @@ By default the base path is a folder called `engine_scripts` inside your Backsto
 
 #### onBeforeScript/onReadyScript available variables
 
-onBefore(engine, scenario, viewport, isReference, Engine, config)
+onBefore(page, scenario, viewport, isReference, Engine, config)
 
 ```
-engine:      puppeteer engine instance
+engine:      browser page object
 scenario:    currently running scenario config
 viewport:    viewport info
 isReference: whether scenario contains reference URL property
