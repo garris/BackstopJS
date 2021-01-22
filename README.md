@@ -238,7 +238,7 @@ cookiePath: "backstop_data/engine_scripts/cookies.json",
 ```
 _note: path is relative to your current working directory_
 
-Pro tip:  If your app uses a lot of cookies then do yourself a favor and download this extension for chrome. It adds a tab to your dev-tools so you can download all your cookies as a JSON file that you can directly use with BackstopJS  https://chrome.google.com/webstore/detail/cookie-inspector/jgbbilmfbammlbbhmmgaagdkbkepnijn?hl=en
+Pro tip:  If you want an easy way to manually export cookies from your browser then download this chrome extension. You can directly use the output cookie files with BackstopJS  https://chrome.google.com/webstore/detail/%E3%82%AF%E3%83%83%E3%82%AD%E3%83%BCjson%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E5%87%BA%E5%8A%9B-for-puppet/nmckokihipjgplolmcmjakknndddifde/
 
 
 
