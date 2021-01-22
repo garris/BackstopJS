@@ -491,10 +491,10 @@ By default the base path is a folder called `engine_scripts` inside your Backsto
 
 #### onBeforeScript/onReadyScript available variables
 
-onBefore(engine, scenario, viewport, isReference, Engine, config)
+onBefore(page, scenario, viewport, isReference, Engine, config)
 
 ```
-engine:      puppeteer engine instance
+engine:      browser page object
 scenario:    currently running scenario config
 viewport:    viewport info
 isReference: whether scenario contains reference URL property
@@ -807,7 +807,7 @@ $ backstop reference
 optional parameters
 `--config=<configFilePath>`   point to a specific config file
 `--filter=<scenario.name>`    filter on scenario.name via regex string
-`--i`                         incremental flag -- use if you don't want BackstopJS do first delete all files in your reference directory
+`--i`                         incremental flag -- use if you don't want BackstopJS to first delete all files in your reference directory
 
 
 ### Modifying output settings of image-diffs
@@ -860,7 +860,7 @@ This approach will likely become the default method -- but until then -- if you'
 ```js
 {
   // ...
-  mergeImgHack: true,
+  "mergeImgHack": true,
   // ...
 }
 ```
