@@ -132,13 +132,13 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
 
     // --- WAIT FOR SELECTOR ---
     if (scenario.readySelector) {
-      await page.waitFor(scenario.readySelector);
+      await page.waitForTimeout(scenario.readySelector);
     }
     //
 
     // --- DELAY ---
     if (scenario.delay > 0) {
-      await page.waitFor(scenario.delay);
+      await page.waitForTimeout(scenario.delay);
     }
 
     // --- REMOVE SELECTORS ---
