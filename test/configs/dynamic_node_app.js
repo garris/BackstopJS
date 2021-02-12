@@ -4,7 +4,11 @@
 // EXAMPLE COMMAND
 // ~/Development/BackstopJS/test/configs
 // $ node dynamic_node_app --dynamicTestId=6 --testLabel="dynamic test" --scenarioLabel="one" --url=https://garris.github.io/BackstopJS?cookie --command=test
-
+//
+// Each time the above command is run with a unique scenarioLabel a new scenario is created and added to a test identified by dynamicTestId. 
+// In this way you can create an arbitrary test creating new scenarios on-the-fly.
+// Once you have created test data, commands like `approve` will operate normally.
+// This mode is intended for integrating with external test runners such as qunit -- like in the https://github.com/garris/ember-backstop project.
 
 
 
