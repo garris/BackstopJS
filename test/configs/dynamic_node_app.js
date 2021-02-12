@@ -4,6 +4,9 @@
 // EXAMPLE COMMAND
 // ~/Development/BackstopJS/test/configs
 // $ node dynamic_node_app --dynamicTestId=6 --testLabel="dynamic test" --scenarioLabel="one" --url=https://garris.github.io/BackstopJS?cookie --command=test
+
+
+//  THIS IS A DEMO OF DYNAMIC SCENARIO MODE
 //
 // - Each time the above command is run with a unique scenarioLabel and URL a new scenario is created and added to a test identified by dynamicTestId. 
 //
