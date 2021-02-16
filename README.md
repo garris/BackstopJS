@@ -104,11 +104,11 @@ By default, BackstopJS places `backstop.json` in the root of your project. And a
 
 Pass a `--config=<configFilePathStr>` argument to test using a different config file.
 
-**JS based config file** 
+**JS based config file**
 
-You may use a javascript based config file to allow connents in your config. Be sure to _export your config object as a node module_. 
+You may use a javascript based config file to allow connents in your config. Be sure to _export your config object as a node module_.
 
-Example: Create a backstop.config.js 
+Example: Create a backstop.config.js
 
 ```
 module.exports = { Same object as backstop.json }
@@ -850,24 +850,6 @@ One of the things Backstop does for you is manage all your screenshot files.  Ba
   // ...
 }
 ```
-
-
-### Alternate way of taking a FULL PAGE SCREENSHOT
-Puppeteer has an unexpected way of implementing full-screen bitmap captures -- the current approach rerenders viewport contents and takes a single fullpage screenshot.  This is totally fine in most cases -- however some Backstop users have run into issues where this approach causes some of the scenario state to be lost (e.g. a hover state).  Our friend @sballesteros was kind enough to create a workaround for this. The alternate approach captures multiple areas of your screen (without rerendering) and then magically stitches the multiple shots together, giving you a reliable fullscreen representation.
-
-This approach will likely become the default method -- but until then -- if you're having issues with current full-screen capture, go ahead and try the alternate way with this...
-
-```js
-{
-  // ...
-  "mergeImgHack": true,
-  // ...
-}
-```
-Let us know [here](https://github.com/garris/BackstopJS/issues/820) if this works for you!
-
-
-
 
 
 ## Developing, bug fixing, contributing...

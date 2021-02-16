@@ -1,6 +1,5 @@
 const puppeteer = require('puppeteer');
 
-const mergeImg = require('merge-img');
 const fs = require('./fs');
 const path = require('path');
 const chalk = require('chalk');
@@ -347,76 +346,14 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
     filePath = selectorMap[selector].filePath;
     ensureDirectoryPath(filePath);
 
-    /*
-      Setting config.mergeImgHack == true will use an alternate screen grab method which
-      takes multple screenshots at periodic scroll positions then stitches them all togther
-      into one single screenshot.
-     */
-    if (fullPage && config.mergeImgHack) {
-      // Safer version of `document` selector
-      // see https://github.com/garris/BackstopJS/issues/820
-      try {
-        const screenHeight = typeof config.mergeImgHack === 'number' ? config.mergeImgHack : viewport.height;
-
-        const bodyHandle = await page.$('body');
-        const { width, height: totalHeight } = await bodyHandle.boundingBox();
-
-        const screens = [];
-        let cumHeight = 0;
-        for (let i = 0; i * screenHeight < totalHeight; i++) {
-          cumHeight += screenHeight;
-          console.log(`screenshot part ${i} (${Math.min(cumHeight, totalHeight)} / ${totalHeight})`);
-
-          await page.evaluate((i, screenHeight) => {
-            window.scrollTo(0, i * screenHeight);
-          }, i, screenHeight);
-
-          const screen = await page.screenshot({
-            path: totalHeight > screenHeight ? undefined : filePath, // if only 1 screen is needed with save immediately
-            fullPage: false,
-            clip: {
-              x: 0,
-              y: i * screenHeight,
-              width,
-              height:
-                cumHeight > totalHeight
-                  ? Math.ceil(screenHeight - (cumHeight - totalHeight))
-                  : screenHeight
-            }
-          });
-          screens.push(screen);
-        }
-
-        // if there was only 1 screen we already saved the file during screenshot
-        if (screens.length > 1) {
-          const img = await mergeImg(screens, {
-            direction: true
-          });
-
-          // Note: mergeImg relies on an old version of Jimp without writeAsync support
-          // See https://github.com/preco21/merge-img/issues/6
-          await new Promise((resolve, reject) => {
-            img.write(filePath, err => {
-              if (err) return reject(err);
-              resolve();
-            });
-          });
-        }
-        await bodyHandle.dispose();
-      } catch (e) {
-        console.log(chalk.red(`Error capturing..`), e);
-        return fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
-      }
-    } else {
-      try {
-        await page.screenshot({
-          path: filePath,
-          fullPage: fullPage
-        });
-      } catch (e) {
-        console.log(chalk.red(`Error capturing..`), e);
-        return fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
-      }
+    try {
+      await page.screenshot({
+        path: filePath,
+        fullPage: fullPage
+      });
+    } catch (e) {
+      console.log(chalk.red(`Error capturing..`), e);
+      return fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
     }
   } else {
     // OTHER-SELECTOR screenshot
