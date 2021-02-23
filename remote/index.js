@@ -108,9 +108,7 @@ module.exports = function (app) {
       });
 
       const reportConfigFilename = path.join(
-        PROJECT_PATH,
-        'backstop_data',
-        'html_report',
+        _config.paths.html_report,
         'config.js'
       );
       await modifyJsonpReport({
