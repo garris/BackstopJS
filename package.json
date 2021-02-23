@@ -66,6 +66,7 @@
     "mockery": "^1.4.0",
     "prettier": "^1.14.3",
     "prettier-eslint-cli": "^4.7.1",
+    "puppeteer": "^7.1.0",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-modal": "^3.0.3",
@@ -96,7 +97,6 @@
     "p-map": "^1.1.1",
     "path": "^0.12.7",
     "portfinder": "^1.0.17",
-    "puppeteer": "^5.5.0",
     "resolve": "^1.11.1",
     "super-simple-web-server": "^1.1.2",
     "temp": "^0.8.3"
