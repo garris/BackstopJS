@@ -104,11 +104,11 @@ By default, BackstopJS places `backstop.json` in the root of your project. And a
 
 Pass a `--config=<configFilePathStr>` argument to test using a different config file.
 
-**JS based config file** 
+**JS based config file**
 
-You may use a javascript based config file to allow connents in your config. Be sure to _export your config object as a node module_. 
+You may use a javascript based config file to allow connents in your config. Be sure to _export your config object as a node module_.
 
-Example: Create a backstop.config.js 
+Example: Create a backstop.config.js
 
 ```
 module.exports = { Same object as backstop.json }
@@ -238,7 +238,7 @@ cookiePath: "backstop_data/engine_scripts/cookies.json",
 ```
 _note: path is relative to your current working directory_
 
-Pro tip:  If your app uses a lot of cookies then do yourself a favor and download this extension for chrome. It adds a tab to your dev-tools so you can download all your cookies as a JSON file that you can directly use with BackstopJS  https://chrome.google.com/webstore/detail/cookie-inspector/jgbbilmfbammlbbhmmgaagdkbkepnijn?hl=en
+Pro tip:  If you want an easy way to manually export cookies from your browser then download this chrome extension. You can directly use the output cookie files with BackstopJS  https://chrome.google.com/webstore/detail/%E3%82%AF%E3%83%83%E3%82%AD%E3%83%BCjson%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E5%87%BA%E5%8A%9B-for-puppet/nmckokihipjgplolmcmjakknndddifde/
 
 
 
@@ -491,10 +491,10 @@ By default the base path is a folder called `engine_scripts` inside your Backsto
 
 #### onBeforeScript/onReadyScript available variables
 
-onBefore(engine, scenario, viewport, isReference, Engine, config)
+onBefore(page, scenario, viewport, isReference, Engine, config)
 
 ```
-engine:      puppeteer engine instance
+engine:      browser page object
 scenario:    currently running scenario config
 viewport:    viewport info
 isReference: whether scenario contains reference URL property
@@ -807,7 +807,7 @@ $ backstop reference
 optional parameters
 `--config=<configFilePath>`   point to a specific config file
 `--filter=<scenario.name>`    filter on scenario.name via regex string
-`--i`                         incremental flag -- use if you don't want BackstopJS do first delete all files in your reference directory
+`--i`                         incremental flag -- use if you don't want BackstopJS to first delete all files in your reference directory
 
 
 ### Modifying output settings of image-diffs
@@ -841,7 +841,7 @@ _Of course you can alternatively change your default config to save these files 
 
 
 ### Changing screenshot filename formats
-One of the things Backstop does for you is manage all your screenshot files.  Backstop uses a specific file-nameing scheme to make this work.  Changing this scheme is of course NOT RECOMMENDED.  That said -- if you have an overwhelming need, then you can modify this behavior using the `fileNameTemplate` property. The default pattern is shown below where the labels in braces are replaced with internal values during runtime.
+One of the things Backstop does for you is manage all your screenshot files.  Backstop uses a specific file-naming scheme to make this work.  Changing this scheme is of course NOT RECOMMENDED.  That said -- if you have an overwhelming need, then you can modify this behavior using the `fileNameTemplate` property. The default pattern is shown below where the labels in braces are replaced with internal values during runtime.
 
 ```js
 {
@@ -850,24 +850,6 @@ One of the things Backstop does for you is manage all your screenshot files.  Ba
   // ...
 }
 ```
-
-
-### Alternate way of taking a FULL PAGE SCREENSHOT
-Puppeteer has an unexpected way of implementing full-screen bitmap captures -- the current approach rerenders viewport contents and takes a single fullpage screenshot.  This is totally fine in most cases -- however some Backstop users have run into issues where this approach causes some of the scenario state to be lost (e.g. a hover state).  Our friend @sballesteros was kind enough to create a workaround for this. The alternate approach captures multiple areas of your screen (without rerendering) and then magically stitches the multiple shots together, giving you a reliable fullscreen representation.
-
-This approach will likely become the default method -- but until then -- if you're having issues with current full-screen capture, go ahead and try the alternate way with this...
-
-```js
-{
-  // ...
-  mergeImgHack: true,
-  // ...
-}
-```
-Let us know [here](https://github.com/garris/BackstopJS/issues/820) if this works for you!
-
-
-
 
 
 ## Developing, bug fixing, contributing...
@@ -1023,7 +1005,7 @@ Be sure to use a config `id` in your config file. See https://github.com/garris/
 - Check out [Marc Dacanay's](https://www.linkedin.com/in/marcdacanay/detail/recent-activity/posts/) BackstopJS articles -- he has a great intro as well as some great in-depth tips.
 - Here is a [cool project template for static sites](https://github.com/wlsf82/backstop-config) by Walmyr Filho [@wlsf82](https://github.com/wlsf82) https://twitter.com/walmyrlimaesilv
 - Here is [an online course about visual regression testing with BackstopJS](https://www.udemy.com/course/visual-regression-testing-with-backstopjs/) by [Walmyr Filho](https://www.udemy.com/user/walmyr/)
-- [A really good one on refactoring CSS with BackstopJS](https://hannesdotkaeuflerdotnet.herokuapp.com/posts/refactoring-css) by Hannes Käufler
+- [A really good one on refactoring CSS with BackstopJS](https://hannes.kaeufler.net/posts/refactoring-css) by Hannes Käufler
 - [A Simple grunt-backstopjs plugin](http://www.obqo.de/blog/2016/12/30/grunt-backstopjs/) - For the Grunt enthusiasts
 
 <!--

@@ -106,7 +106,6 @@ class ScrubberModal extends React.Component {
             diffImage={diffImage}
             divergedImage={divergedImage}
             position={position}
-            showButtons={diffImage && diffImage.length > 0}
             showScrubberTestImage={showScrubberTestImage}
             showScrubberRefImage={showScrubberRefImage}
             showScrubberDiffImage={showScrubberDiffImage}
