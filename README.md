@@ -238,7 +238,7 @@ cookiePath: "backstop_data/engine_scripts/cookies.json",
 ```
 _note: path is relative to your current working directory_
 
-Pro tip:  If you want an easy way to manually export cookies from your browser then download this chrome extension. You can directly use the output cookie files with BackstopJS  https://chrome.google.com/webstore/detail/%E3%82%AF%E3%83%83%E3%82%AD%E3%83%BCjson%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E5%87%BA%E5%8A%9B-for-puppet/nmckokihipjgplolmcmjakknndddifde/
+Pro tip:  If you want an easy way to manually export cookies from your browser then download this chrome extension. You can directly use the output cookie files with BackstopJS  https://chrome.google.com/webstore/detail/%E3%82%AF%E3%83%83%E3%82%AD%E3%83%BCjson%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E5%87%BA%E5%8A%9B-for-puppet/nmckokihipjgplolmcmjakknndddifde
 
 
 
@@ -932,7 +932,7 @@ mkdir backstopSanityTest; cd backstopSanityTest; npm install backstopjs; ./node_
 ```
 
 ### SMOKE TEST: Are backstop features working ok?
-Run this command if you have made changes to the BackstopJS codebase and you want to make sure that you haven't hosed anything.
+Run this command if you have made changes to the BackstopJS codebase and you want to make sure that you haven't broken anything.
 ```
     # from the backstopjs directory
     npm run smoke-test
