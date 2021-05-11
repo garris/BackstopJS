@@ -97,7 +97,6 @@
     "path": "^0.12.7",
     "portfinder": "^1.0.17",
     "puppeteer": "^7.1.0",
-    "resolve": "^1.11.1",
     "super-simple-web-server": "^1.1.2",
     "temp": "^0.8.3"
   }
