@@ -96,7 +96,15 @@
     "p-map": "^1.1.1",
     "path": "^0.12.7",
     "portfinder": "^1.0.17",
+<<<<<<< HEAD
+<<<<<<< HEAD
     "puppeteer": "^7.1.0",
+=======
+    "puppeteer": "^3.3.0",
+>>>>>>> f3955d6 (Updated puppeteer version)
+=======
+    "puppeteer": "^3.3.0",
+>>>>>>> 1acde5def375c3f0d829c633839cdc63018bfb22
     "resolve": "^1.11.1",
     "super-simple-web-server": "^1.1.2",
     "temp": "^0.8.3"

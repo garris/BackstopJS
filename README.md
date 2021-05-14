@@ -479,6 +479,19 @@ module.exports = async (page, scenario, vp) => {
 };
 ```
 
+### Reload scenario on specific error (puppeteer)
+
+By default puppeteer will take a screenshot even if the URL returned http status different than 200. If you want to reload website on failure (only once), add the following code to `backstop.json`.
+
+```json
+"reloadOnError": {
+  "enable": true, // Whether website should be reloaded on error
+  "waitBeforeReload": 1500, // Wait 1500ms before reload
+  "onStatus": [504, 503, 500] // Reload website if responded with one of the following statuses
+},
+```
+Keep in mind that it works fine only with puppeteer `"engine": "puppeteer"`.
+
 #### Setting the base path for custom onBefore and onReady scripts
 
 By default the base path is a folder called `engine_scripts` inside your BackstopJS installation directory. You can override this by setting the `paths.scripts` property in your `backstop.json` file to point to somewhere in your project directory (recommended).

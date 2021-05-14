@@ -8,7 +8,7 @@ const injectBackstopTools = require('../../capture/backstopTools.js');
 const engineTools = require('./engineTools');
 
 const MIN_CHROME_VERSION = 62;
-const TEST_TIMEOUT = 60000;
+const TEST_TIMEOUT = 120000;
 const DEFAULT_FILENAME_TEMPLATE = '{configId}_{scenarioLabel}_{selectorIndex}_{selectorLabel}_{viewportIndex}_{viewportLabel}';
 const DEFAULT_BITMAPS_TEST_DIR = 'bitmaps_test';
 const DEFAULT_BITMAPS_REFERENCE_DIR = 'bitmaps_reference';
@@ -40,7 +40,6 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
   if (!config.paths) {
     config.paths = {};
   }
-
   if (typeof viewport.label !== 'string') {
     viewport.label = viewport.name || '';
   }
@@ -63,7 +62,10 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
   const browser = await puppeteer.launch(puppeteerArgs);
   const page = await browser.newPage();
 
+  let urlWrongStatus = [];
+
   await page.setViewport({ width: VP_W, height: VP_H });
+
   page.setDefaultNavigationTimeout(engineTools.getEngineOption(config, 'waitTimeout', TEST_TIMEOUT));
 
   if (isReference) {
@@ -116,7 +118,58 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     if (isReference && scenario.referenceUrl) {
       url = scenario.referenceUrl;
     }
-    await page.goto(translateUrl(url));
+
+    // Open the URL for a first time
+    await page.goto(translateUrl(url), {waitUntil: 'networkidle0'});
+
+    // Add random string to the URL
+    // It will allow to bypass cache
+    var bypass = "";
+
+    if (url.indexOf('?') !== -1) {
+      bypass = '&bypassCache=' + Date.now()
+    } else {
+      bypass = '?bypassCache=' + Date.now()
+    }
+
+    // Open the URL for a first time
+    await page.evaluate(`location.reload(true);`);
+    
+    console.log(chalk.green('Opening URL:', translateUrl(url) + bypass));
+
+    var request = await page.reload(translateUrl(url) + bypass, {waitUntil: 'networkidle0'});
+
+    if (config.reloadOnError.enabled) {
+      // Check the status of the request
+      if (config.reloadOnError.onStatus.indexOf(request.status()) !== -1) {
+        let reloadArray = Array.from(Array(config.reloadOnError.retryCount).keys());
+
+        for(const iteration of reloadArray) {
+          const reloadRequest = await page.goto(translateUrl(url) + bypass, {waitUntil: 'networkidle0'});
+
+          if (config.reloadOnError.onStatus.indexOf(reloadRequest.status()) === -1) {
+            break;
+          }
+
+          await ((milis) => {
+            return new Promise(function (resolve, reject) {
+              setTimeout(function () { resolve(); }, milis);
+            });
+          })(config.reloadOnError.waitBeforeReload);
+            urlWrongStatus.push({
+              iteration: iteration+1,
+              url: translateUrl(url),
+              status: reloadRequest.status(),
+              date: new Date().toISOString(),
+              timestamp: Date.now(),
+              viewportLabel: viewport.label,
+              reloadStatus: (iteration === reloadArray.length - 1) ? 'failed' : 'reload'
+            });
+          }
+      }
+    }
+
+    // await page.waitFor(2000);
 
     await injectBackstopTools(page);
 
@@ -258,6 +311,11 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     };
     fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
   }
+
+  compareConfig = { failureUrls: urlWrongStatus, ...compareConfig }
+
+  // console.log(compareConfig);
+  // console.log(urlWrongStatus);
 
   return Promise.resolve(compareConfig);
 }
