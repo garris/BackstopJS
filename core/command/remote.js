@@ -1,8 +1,7 @@
 const logger = require('../util/logger')('remote');
 const path = require('path');
 const { exec } = require('child_process');
-const resolver = require('resolve');
-const ssws = resolver.sync('super-simple-web-server', { basedir: __dirname });
+const ssws = require.resolve('super-simple-web-server');
 
 module.exports = {
   execute: function (config) {
