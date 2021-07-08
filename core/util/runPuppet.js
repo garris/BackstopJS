@@ -76,7 +76,6 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
   let readyResolve, readyPromise, readyTimeout;
   if (readyEvent) {
     readyPromise = new Promise(resolve => {
-      console.log('readyEvent Timeout:', readyEventTimeOut, scenario);
       readyResolve = resolve;
       // fire the ready event after the readyEventTimeout
       readyTimeout = setTimeout(() => {
