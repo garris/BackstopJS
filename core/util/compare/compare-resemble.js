@@ -10,7 +10,7 @@ module.exports = function (referencePath, testPath, misMatchThreshold, resembleO
     }
 
     comparison.onComplete(data => {
-      if ((requireSameDimensions === false || data.isSameDimensions === true) && data.misMatchPercentage <= misMatchThreshold) {
+      if ((requireSameDimensions === false || data.isSameDimensions === true) && data.rawMisMatchPercentage <= misMatchThreshold) {
         return resolve(data);
       }
       reject(data);
