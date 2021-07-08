@@ -72,10 +72,16 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
 
   // --- set up console output and ready event ---
   const readyEvent = scenario.readyEvent || config.readyEvent;
+  const readyEventTimeOut = scenario.readyEventTimeout || config.readyEventTimeout || 10000;
   let readyResolve, readyPromise;
   if (readyEvent) {
     readyPromise = new Promise(resolve => {
       readyResolve = resolve;
+      // fire the ready event after the readyEventTimeout
+      setTimeout(() => {
+        console.warn(`***readyEvent Timeout!***`);
+        readyResolve();
+      }, readyEventTimeOut);
     });
   }
 
