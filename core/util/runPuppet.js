@@ -72,16 +72,16 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
 
   // --- set up console output and ready event ---
   const readyEvent = scenario.readyEvent || config.readyEvent;
-  const readyEventTimeOut = scenario.readyEventTimeout || config.readyEventTimeout || 20000;
-  let readyResolve, readyPromise, readyTimeout;
+  const readyTimeout = scenario.readyTimeout || config.readyTimeout || 30000;
+  let readyResolve, readyPromise, readyTimeoutTimer;
   if (readyEvent) {
     readyPromise = new Promise(resolve => {
       readyResolve = resolve;
-      // fire the ready event after the readyEventTimeout
-      readyTimeout = setTimeout(() => {
-        console.error('***readyEvent Timeout!***');
-        readyResolve();
-      }, readyEventTimeOut);
+      // fire the ready event after the readyTimeout
+      readyTimeoutTimer = setTimeout(() => {
+        console.error(chalk.red('*** readyEvent Timeout! ***'), scenario.url);
+        resolve();
+      }, readyTimeout);
     });
   }
 
@@ -90,7 +90,6 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
       const line = msg.args()[i];
       console.log(`Browser Console Log ${i}: ${line}`);
       if (readyEvent && new RegExp(readyEvent).test(line)) {
-        clearTimeout(readyEventTimeOut);
         readyResolve();
       }
     }
@@ -132,6 +131,8 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
       await page.evaluate(`window._readyEvent = '${readyEvent}'`);
 
       await readyPromise;
+
+      clearTimeout(readyTimeoutTimer);
 
       await page.evaluate(_ => console.info('readyEvent ok'));
     }
