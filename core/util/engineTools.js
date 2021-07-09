@@ -30,7 +30,7 @@ function genHash (str) {
   return hash.toString().replace(/^-/, 0);
 }
 
-function getRequireSameDimentions (scenario, config) {
+function getRequireSameDimensions (scenario, config) {
   if (scenario.requireSameDimensions !== undefined) {
     return scenario.requireSameDimensions;
   } else if (config.requireSameDimensions !== undefined) {
@@ -114,7 +114,7 @@ function generateTestPair (config, scenario, viewport, variantOrScenarioLabelSaf
     selector: selector,
     fileName: fileName,
     label: scenario.label,
-    requireSameDimensions: getRequireSameDimentions(scenario, config),
+    requireSameDimensions: getRequireSameDimensions(scenario, config),
     misMatchThreshold: getMisMatchThreshHold(scenario, config),
     url: scenario.url,
     referenceUrl: scenario.referenceUrl,
@@ -126,7 +126,7 @@ function generateTestPair (config, scenario, viewport, variantOrScenarioLabelSaf
 module.exports = {
   generateTestPair: generateTestPair,
   getMisMatchThreshHold: getMisMatchThreshHold,
-  getRequireSameDimentions: getRequireSameDimentions,
+  getRequireSameDimensions: getRequireSameDimensions,
   ensureFileSuffix: ensureFileSuffix,
   glueStringsWithSlash: glueStringsWithSlash,
   genHash: genHash,

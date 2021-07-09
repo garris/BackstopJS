@@ -40,7 +40,8 @@
   },
   "report": ["browser"],
   "resembleOutputOptions": {
-    "ignoreAntialiasing": true
+    "ignoreAntialiasing": true,
+    "usePreciseMatching": true
   },
   "debug": false
 }

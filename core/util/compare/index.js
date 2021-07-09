@@ -53,7 +53,7 @@ function comparePair (pair, report, config, compareConfig) {
     }
   }
 
-  var resembleOutputSettings = config.resembleOutputOptions;
+  const resembleOutputSettings = config.resembleOutputOptions;
   return compareImages(referencePath, testPath, pair, resembleOutputSettings, Test);
 }
 
