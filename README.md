@@ -816,6 +816,8 @@ By specifying `resembleOutputOptions` in your backstop.json file you can modify 
 
 Instead of calling resemble`s ignoreAntialiasing(), you may set it as a property in the config. (See [example](examples/simpleReactApp/backstop.json))
 
+Per default, Backstop uses Resemble's misMatchPercentage value. However, this value only detects mismatches above 0.01%. If you need more precision and want to use a `misMatchThreshold` below `0.01` (e.g. for large screenshots or small changes), you can set `usePreciseMatching` in the `resembleOutputOptions`. (See [example](examples/simpleReactApp/backstop.json))
+
 ```json
 "resembleOutputOptions": {
   "errorColor": {
