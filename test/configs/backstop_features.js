@@ -41,9 +41,23 @@ module.exports = {
       selectors: ['.moneyshot']
     },
     {
+      label: 'readyEventTimeout',
+      url: `${URL}/index.html?delay`,
+      readyEvent: '_the_lemur_is_ready_to_see_you_timeout',
+      readyTimeout: 2000,
+      selectors: ['.moneyshot']
+    },
+    {
       label: 'readySelector',
       url: `${URL}/index.html?delay`,
       readySelector: '._the_lemur_is_ready_to_see_you',
+      selectors: ['.moneyshot']
+    },
+    {
+      label: 'readySelectorTimeout',
+      url: `${URL}/index.html?delay`,
+      readySelector: '._the_lemur_is_ready_to_see_you_timeout',
+      readyTimeout: 2000,
       selectors: ['.moneyshot']
     },
     {
