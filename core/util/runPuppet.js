@@ -79,7 +79,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
       readyResolve = resolve;
       // fire the ready event after the readyTimeout
       readyTimeoutTimer = setTimeout(() => {
-        console.error(chalk.red('*** readyEvent Timeout! ***'), scenario.url);
+        console.error(chalk.red(`ReadyEvent not detected within readyTimeout limit. (${readyTimeout} ms)`), scenario.url);
         resolve();
       }, readyTimeout);
     });
