@@ -72,10 +72,16 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
 
   // --- set up console output and ready event ---
   const readyEvent = scenario.readyEvent || config.readyEvent;
-  let readyResolve, readyPromise;
+  const readyTimeout = scenario.readyTimeout || config.readyTimeout || 30000;
+  let readyResolve, readyPromise, readyTimeoutTimer;
   if (readyEvent) {
     readyPromise = new Promise(resolve => {
       readyResolve = resolve;
+      // fire the ready event after the readyTimeout
+      readyTimeoutTimer = setTimeout(() => {
+        console.error(chalk.red(`ReadyEvent not detected within readyTimeout limit. (${readyTimeout} ms)`), scenario.url);
+        resolve();
+      }, readyTimeout);
     });
   }
 
@@ -126,12 +132,16 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
 
       await readyPromise;
 
+      clearTimeout(readyTimeoutTimer);
+
       await page.evaluate(_ => console.info('readyEvent ok'));
     }
 
     // --- WAIT FOR SELECTOR ---
     if (scenario.readySelector) {
-      await page.waitForSelector(scenario.readySelector);
+      await page.waitForSelector(scenario.readySelector, {
+        timeout: readyTimeout
+      });
     }
     //
 

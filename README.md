@@ -175,6 +175,7 @@ url                      // [required] The url of your app state
 referenceUrl             // Specify a different state or environment when creating reference.
 readyEvent               // Wait until this string has been logged to the console.
 readySelector            // Wait until this selector exists before continuing.
+readyTimeout             // Timeout for readyEvent and readySelector (default: 30000ms)
 delay                    // Wait for x milliseconds
 hideSelectors            // Array of selectors set to visibility: hidden
 removeSelectors          // Array of selectors set to display: none
