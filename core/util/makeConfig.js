@@ -1,10 +1,14 @@
-var path = require('path');
-var extendConfig = require('./extendConfig');
+const path = require('path');
+const extendConfig = require('./extendConfig');
 
 const NON_CONFIG_COMMANDS = ['init', 'version', 'stop'];
 
 function projectPath (config) {
-  return process.cwd();
+  if (config && config.args && typeof config.args.projectPath === 'string' && config.args.projectPath.length > 0) {
+    return config.args.projectPath;
+  } else {
+    return process.cwd();
+  }
 }
 
 function loadProjectConfig (command, options, config) {
@@ -51,15 +55,14 @@ function loadProjectConfig (command, options, config) {
 }
 
 function makeConfig (command, options) {
-  var config = {};
+  const config = {};
 
   config.args = options || {};
-
   config.backstop = path.join(__dirname, '../..');
   config.projectPath = projectPath(config);
   config.perf = {};
 
-  var userConfig = Object.assign({}, loadProjectConfig(command, options, config));
+  const userConfig = Object.assign({}, loadProjectConfig(command, options, config));
 
   return extendConfig(config, userConfig);
 }
