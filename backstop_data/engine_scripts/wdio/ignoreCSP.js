@@ -10,6 +10,6 @@
  * @TODO implement a wdio solution here (proxy maybe?)
  */
 
-module.exports = async function (page, scenario) {
+module.exports = async function (browser, scenario) {
   // this feature is not available
 };
