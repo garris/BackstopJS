@@ -8,31 +8,34 @@ module.exports = async (browser, scenario) => {
   if (keyPressSelector) {
     for (const keyPressSelectorItem of [].concat(keyPressSelector)) {
       await browser.$(keyPressSelectorItem.selector).waitForDisplayed();
-      await page.type(keyPressSelectorItem.selector, keyPressSelectorItem.keyPress);
+      const input = browser.$(keyPressSelectorItem.selector);
+      input.setValue(keyPressSelectorItem.keyPress);
     }
   }
 
   if (hoverSelector) {
     for (const hoverSelectorIndex of [].concat(hoverSelector)) {
-      await page.waitFor(hoverSelectorIndex);
-      await page.hover(hoverSelectorIndex);
+      await browser.$(hoverSelectorIndex).waitForDisplayed();
+      browser.$(hoverSelectorIndex).moveTo();
     }
   }
 
   if (clickSelector) {
     for (const clickSelectorIndex of [].concat(clickSelector)) {
-      await page.waitFor(clickSelectorIndex);
-      await page.click(clickSelectorIndex);
+      await browser.$(clickSelectorIndex).waitForDisplayed();
+      const clickElement = browser.$(clickSelectorIndex);
+      clickElement.click();
     }
   }
 
   if (postInteractionWait) {
-    await page.waitFor(postInteractionWait);
+    await browser.$(postInteractionWait).waitForDisplayed();
   }
 
   if (scrollToSelector) {
-    await page.waitFor(scrollToSelector);
-    await page.evaluate(scrollToSelector => {
+    await browser.$(scrollToSelector).waitForDisplayed();
+
+    await browser.execute(scrollToSelector => {
       document.querySelector(scrollToSelector).scrollIntoView();
     }, scrollToSelector);
   }
