@@ -7,6 +7,8 @@
     "backstop": "./cli/index.js"
   },
   "scripts": {
+    "approve:run": "node \"./cli/index.js\" approve",
+    "test:run": "node \"./cli/index.js\" test",
     "lint": "eslint 'compare/*.js' 'compare/src/**/*.js' 'core/**/*.js' 'cli/**/*.js' 'capture/**/*.js' 'test/**/*.js'",
     "format": "prettier-eslint --write \"compare/src/**/*.js\"",
     "genConfig": "node ./cli/index.js genConfig",
@@ -82,6 +84,7 @@
     "webpack-dev-server": "^3.3.1"
   },
   "dependencies": {
+    "@mirzazeyrek/node-resemble-js": "^1.2.1",
     "chalk": "^1.1.3",
     "diverged": "^0.1.3",
     "fs-extra": "^0.30.0",
@@ -89,7 +92,6 @@
     "junit-report-builder": "^1.3.3",
     "lodash": "^4.17.11",
     "minimist": "^1.2.0",
-    "@mirzazeyrek/node-resemble-js": "^1.2.1",
     "object-hash": "1.1.5",
     "opn": "^5.3.0",
     "os": "^0.1.1",
@@ -97,7 +99,9 @@
     "path": "^0.12.7",
     "portfinder": "^1.0.17",
     "puppeteer": "^10.0.0",
+    "selenium-standalone": "^7.1.0",
     "super-simple-web-server": "^1.1.2",
-    "temp": "^0.8.3"
+    "temp": "^0.8.3",
+    "webdriverio": "^7.8.0"
   }
 }

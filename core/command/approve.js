@@ -10,6 +10,7 @@ module.exports = {
   execute: function (config) {
     // TODO:  IF Exists config.bitmaps_test  &&  list.length > 0n  (otherwise throw)
     console.log('Copying from ' + config.bitmaps_test + ' to ' + config.bitmaps_reference + '.');
+    debugger;
     return new Promise((resolve, reject) => {
       fs.readdir(config.bitmaps_test, (err, list) => {
         if (err) {

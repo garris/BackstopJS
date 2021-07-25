@@ -1,5 +1,9 @@
 'use strict';
 module.exports = (target) => {
+  // enabled for wdio
+  if (typeof target.execute === 'function') {
+    target.evaluate = target.execute;
+  }
   return target.evaluate(() => {
     if (window._backstopTools) {
       return false;
