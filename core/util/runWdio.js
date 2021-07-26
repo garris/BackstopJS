@@ -52,14 +52,17 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
 
   const wdioArgs = {
     logLevel: 'error',
+    hostname: '0.0.0.0',
+    port: 3333,
     path: '/wd/hub', // remove `path` if you decided using something different from driver binaries.
     capabilities: {
       browserName: 'chrome'
     }
   };
-
-  const browser = await remote(wdioArgs);
+  // merge default config
+  const browser = await remote({ ...wdioArgs, ...config.engineOptions.wdio });
   await browser.setWindowSize(VP_W, VP_H);
+
   await browser.setTimeout({
     'pageLoad': engineTools.getEngineOption(config, 'waitTimeout', TEST_TIMEOUT),
     'script': engineTools.getEngineOption(config, 'waitTimeout', TEST_TIMEOUT)
@@ -349,10 +352,14 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
     ensureDirectoryPath(filePath);
 
     try {
-      debugger;
-
-      await browser.saveScreenshot(filePath);
-
+      // @todo set browser height workaround try
+      // @fixme still picture is same height
+      await browser.execute((VP_H) => {
+        document.querySelector('html').style.height = VP_H + 'px';
+        document.querySelector('html').style.overflow = 'hidden';
+      }, viewport.height);
+      const body = await browser.$('html');
+      await body.saveScreenshot(filePath);
     } catch (e) {
       console.log(chalk.red(`Error capturing..`), e);
       return fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
