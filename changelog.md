@@ -2,13 +2,23 @@
 # Change Log
 
  
+## [5.3.7] - 2021-07-29
+### Added
+- Changelog
+
+### Changed
+
+
+### Fixed 
+
+
 ## [5.3.6] - 2021-07-29
 
 ### Added
-- nc
+
 
 ### Changed
-- nc
+
 
 ### Fixed
 - https://github.com/garris/BackstopJS/issues/1344
@@ -28,4 +38,4 @@
 
 
 ### Fixed
-- nc
+
