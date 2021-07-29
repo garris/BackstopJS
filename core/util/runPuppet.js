@@ -384,7 +384,7 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
           }
 
           var type = config.puppeteerOffscreenCaptureFix ? page : el;
-          var params = config.puppeteerOffscreenCaptureFix ? { path: path, clip: box } : { path: path };
+          var params = config.puppeteerOffscreenCaptureFix ? { captureBeyondViewport: false, path: path, clip: box } : { captureBeyondViewport: false, path: path };
 
           await type.screenshot(params);
         } else {
@@ -398,8 +398,8 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
     };
 
     const selectorsShot = async () => {
-      return Promise.all(
-        selectors.map(async selector => {
+        for (let i = 0; i < selectors.length; i++) {
+          var selector = selectors[i];
           filePath = selectorMap[selector].filePath;
           ensureDirectoryPath(filePath);
           try {
@@ -408,8 +408,7 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
             console.log(chalk.red(`Error capturing Element ${selector}`), e);
             return fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
           }
-        })
-      );
+      }
     };
     await selectorsShot();
   }
