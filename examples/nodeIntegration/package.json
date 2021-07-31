@@ -13,10 +13,10 @@
   "author": "Alex Bondarev",
   "license": "ISC",
   "devDependencies": {
-    "backstopjs": "^2.3.7",
-    "koa": "^1.2.4",
+    "backstopjs": "^4.1.9",
+    "koa": "^2.7.0",
     "koa-serve": "^0.1.7",
-    "lodash": "^4.17.4",
-    "yargs": "^6.6.0"
+    "lodash": "^4.17.11",
+    "yargs": "^13.2.4"
   }
 }
