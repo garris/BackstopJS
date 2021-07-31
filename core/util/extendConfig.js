@@ -61,6 +61,10 @@ function htmlReport (config, userConfig) {
 
   if (userConfig.paths) {
     config.html_report = userConfig.paths.html_report || config.html_report;
+
+    if (userConfig.paths.report_resource_base_url) {
+      config.report_resource_base_url = userConfig.paths.report_resource_base_url;
+    }
   }
 
   config.compareConfigFileName = path.join(config.html_report, 'config.js');
