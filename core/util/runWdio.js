@@ -67,7 +67,6 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
 
   finalConfig = { ...wdioArgs, ...config.engineOptions.wdio };
   // merge default config
-
   Object.freeze(finalConfig);
 
   wdioServices = initialiseLauncherService(finalConfig, [{ ...finalConfig.capabilities }]);
