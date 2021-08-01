@@ -7,6 +7,7 @@ const chalk = require('chalk');
 const ensureDirectoryPath = require('./ensureDirectoryPath');
 const injectBackstopTools = require('../../capture/backstopTools.js');
 const engineTools = require('./engineTools');
+const { setService } = require('./wdio-service-handler');
 
 const TEST_TIMEOUT = 60000;
 const DEFAULT_FILENAME_TEMPLATE = '{configId}_{scenarioLabel}_{selectorIndex}_{selectorLabel}_{viewportIndex}_{viewportLabel}';
@@ -37,7 +38,6 @@ module.exports = function (args) {
 };
 let wdioServices;
 let finalConfig;
-let loadedServices = [];
 let instanceCounter = 0;
 
 async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, config) {
@@ -71,13 +71,14 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
 
   wdioServices = initialiseLauncherService(finalConfig, [{ ...finalConfig.capabilities }]);
   for (let i = 0; i < wdioServices.launcherServices.length; i++) {
-    if (loadedServices.indexOf(wdioServices.launcherServices[i].constructor.name) === -1 || instanceCounter === 0) {
-      console.info('Run onPrepare hook for ' + wdioServices.launcherServices[i].constructor.name);
-      instanceCounter++;
-      await wdioServices.launcherServices[i].onPrepare({ ...finalConfig.capabilities });
-      loadedServices.push(wdioServices.launcherServices[i].constructor.name);
-    }
+    await setService(
+      wdioServices.launcherServices[i].constructor.name,
+      wdioServices.launcherServices[i],
+      [{ ...finalConfig.capabilities }]
+    );
+    instanceCounter++;
   }
+
   const browser = await remote(finalConfig);
 
   await browser.setWindowSize(VP_W, VP_H);
