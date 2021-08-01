@@ -1,4 +1,5 @@
 const { remote } = require('webdriverio');
+const { initialiseLauncherService } = require('@wdio/utils/build/initialiseServices');
 
 const fs = require('./fs');
 const path = require('path');
@@ -34,6 +35,10 @@ module.exports = function (args) {
 
   return processScenarioView(scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, config);
 };
+let wdioServices;
+let finalConfig;
+let loadedServices = [];
+let instanceCounter = 0;
 
 async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, config) {
   if (!config.paths) {
@@ -51,16 +56,31 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
   const VP_H = viewport.height || viewport.viewport.height;
 
   const wdioArgs = {
-    logLevel: 'error',
-    hostname: '0.0.0.0',
-    port: 3333,
+    logLevel: 'trace',
+    hostname: 'localhost',
+    port: 7777,
     path: '/wd/hub', // remove `path` if you decided using something different from driver binaries.
     capabilities: {
       browserName: 'chrome'
     }
   };
+
+  finalConfig = { ...wdioArgs, ...config.engineOptions.wdio };
   // merge default config
-  const browser = await remote({ ...wdioArgs, ...config.engineOptions.wdio });
+
+  Object.freeze(finalConfig);
+
+  wdioServices = initialiseLauncherService(finalConfig, [{ ...finalConfig.capabilities }]);
+  for (let i = 0; i < wdioServices.launcherServices.length; i++) {
+    if (loadedServices.indexOf(wdioServices.launcherServices[i].constructor.name) === -1 || instanceCounter === 0) {
+      console.info('Run onPrepare hook for ' + wdioServices.launcherServices[i].constructor.name);
+      instanceCounter++;
+      await wdioServices.launcherServices[i].onPrepare({ ...finalConfig.capabilities });
+      loadedServices.push(wdioServices.launcherServices[i].constructor.name);
+    }
+  }
+  const browser = await remote(finalConfig);
+
   await browser.setWindowSize(VP_W, VP_H);
 
   await browser.setTimeout({
@@ -338,6 +358,14 @@ async function delegateSelectors (
   }).then(async () => {
     console.log(chalk.green('x Close Browser'));
     await browser.closeWindow();
+    // tear down services
+    if (instanceCounter === 1) {
+      for (let i = 0; i < wdioServices.launcherServices.length; i++) {
+        console.info('Run onComplete hook for ' + wdioServices.launcherServices[i].constructor.name);
+        await wdioServices.launcherServices[i].onComplete(0, undefined, undefined, undefined);
+        instanceCounter = instanceCounter - 1;
+      }
+    }
   }).catch(async (err) => {
     console.log(chalk.red(err));
     await browser.closeWindow();

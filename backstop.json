@@ -10,6 +10,56 @@
       "label": "tablet",
       "width": 1024,
       "height": 1768
+    },
+    {
+      "label": "tablet",
+      "width": 1024,
+      "height": 1768
+    },
+    {
+      "label": "tablet",
+      "width": 1024,
+      "height": 1768
+    },
+    {
+      "label": "tablet",
+      "width": 1024,
+      "height": 1768
+    },
+    {
+      "label": "tablet",
+      "width": 1024,
+      "height": 1768
+    },
+    {
+      "label": "tablet",
+      "width": 1024,
+      "height": 1768
+    },
+    {
+      "label": "tablet",
+      "width": 1024,
+      "height": 1768
+    },
+    {
+      "label": "tablet",
+      "width": 1024,
+      "height": 1768
+    },
+    {
+      "label": "tablet",
+      "width": 1024,
+      "height": 1768
+    },
+    {
+      "label": "tablet",
+      "width": 1024,
+      "height": 1768
+    },
+    {
+      "label": "tablet",
+      "width": 1024,
+      "height": 1768
     }
   ],
   "onBeforeScript": "wdio/onBefore.js",
@@ -48,13 +98,22 @@
   "engine": "wdio",
   "engineOptions": {
     "wdio": {
-      "logLevel": "error",
+      "logLevel": "trace",
       "hostname": "127.0.0.1",
-      "port": 4444,
+      "port": 7777,
       "path": "/wd/hub",
       "capabilities": {
         "browserName": "chrome"
-      }
+      },
+      "services": [
+        [
+          "selenium-standalone",
+          {
+            "drivers": { "firefox": "0.29.1", "chrome": true, "chromiumedge": "latest" },
+            "args": { "seleniumArgs": ["-port", "7777"] }
+          }
+        ]
+      ]
     },
     "puppeteer": {
       "args": [
