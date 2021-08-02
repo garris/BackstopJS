@@ -5,61 +5,6 @@
       "label": "phone",
       "width": 320,
       "height": 1768
-    },
-    {
-      "label": "tablet",
-      "width": 1024,
-      "height": 1768
-    },
-    {
-      "label": "tablet",
-      "width": 1024,
-      "height": 1768
-    },
-    {
-      "label": "tablet",
-      "width": 1024,
-      "height": 1768
-    },
-    {
-      "label": "tablet",
-      "width": 1024,
-      "height": 1768
-    },
-    {
-      "label": "tablet",
-      "width": 1024,
-      "height": 1768
-    },
-    {
-      "label": "tablet",
-      "width": 1024,
-      "height": 1768
-    },
-    {
-      "label": "tablet",
-      "width": 1024,
-      "height": 1768
-    },
-    {
-      "label": "tablet",
-      "width": 1024,
-      "height": 1768
-    },
-    {
-      "label": "tablet",
-      "width": 1024,
-      "height": 1768
-    },
-    {
-      "label": "tablet",
-      "width": 1024,
-      "height": 1768
-    },
-    {
-      "label": "tablet",
-      "width": 1024,
-      "height": 1768
     }
   ],
   "onBeforeScript": "wdio/onBefore.js",
@@ -105,13 +50,14 @@
       "capabilities": {
         "browserName": "chrome"
       },
-      "user": "process.env.BROWSERSTACK_ACCESS_KEY",
-      "key": "process.env.BROWSERSTACK_ACCESS_KEY",
       "services": [
         [
-          "browserstack", {
-          "browserstackLocal": true
-        }]
+          "selenium-standalone",
+          {
+            "drivers": { "firefox": "0.29.1", "chrome": true, "chromiumedge": "latest" },
+            "args": { "seleniumArgs": ["-port", "7777"] }
+          }
+        ]
       ]
     },
     "puppeteer": {

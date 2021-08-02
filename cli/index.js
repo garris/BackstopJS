@@ -5,9 +5,9 @@ var usage = require('./usage');
 var version = require('../package.json').version;
 var runner = require('../core/runner');
 
-main();
+main()
 
-function main () {
+async function main () {
   var argsOptions = parseArgs(process.argv.slice(2), {
     boolean: ['h', 'help', 'v', 'version', 'i', 'docker'],
     string: ['config'],

@@ -8,7 +8,7 @@
   },
   "scripts": {
     "approve:run": "node \"./cli/index.js\" approve",
-    "test:run": "node \"./cli/index.js\" test",
+    "test:run": "node \"./cli/index.js\" test  --config=\"backstop_standalone.json\"",
     "lint": "eslint 'compare/*.js' 'compare/src/**/*.js' 'core/**/*.js' 'cli/**/*.js' 'capture/**/*.js' 'test/**/*.js'",
     "format": "prettier-eslint --write \"compare/src/**/*.js\"",
     "genConfig": "node ./cli/index.js genConfig",

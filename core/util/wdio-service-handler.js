@@ -1,6 +1,6 @@
 const loadedServiceNames = [];
 const loadedServiceInstances = [];
-module.exports.setService = async (serviceName, serivce, config) => {
+const setService = async (serviceName, serivce, config) => {
   if (loadedServiceNames.indexOf(serviceName) === -1) {
     console.info('Run onPrepare hook for ' + serviceName);
 
@@ -8,6 +8,7 @@ module.exports.setService = async (serviceName, serivce, config) => {
     await serivce.onPrepare({ ...config.capabilities });
     loadedServiceInstances.push(serivce);
   }
+  // here we can add service restarts
   await new Promise((resolve, reject) => {
     const serviceIndex = loadedServiceNames.indexOf(serviceName);
     const waiter = setInterval(() => {
@@ -18,11 +19,21 @@ module.exports.setService = async (serviceName, serivce, config) => {
     }, 50);
   });
 };
-module.exports.isLoadedService = (serviceName) => {
+const isLoadedService = (serviceName) => {
   return (loadedServiceNames.indexOf(serviceName) === -1);
 };
 
-module.exports.tearDownService = async (serviceName) => {
+const tearDownService = async (serviceName) => {
   const serviceIndex = loadedServiceNames.indexOf(serviceName);
   await loadedServiceInstances[serviceIndex].onComplete();
+};
+
+const tearDownServices = async () => {
+  for (let i = 0; i < loadedServiceNames.length; i++) {
+    await tearDownService(loadedServiceNames[i]);
+  }
+};
+module.exports = {
+  tearDownServices,
+  setService
 };

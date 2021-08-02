@@ -358,15 +358,7 @@ async function delegateSelectors (
   }).then(async () => {
     console.log(chalk.green('x Close Browser'));
     await browser.closeWindow();
-    // tear down services
-    // @TODO Place this somewhere else to avoid service shut downs while backstopjs is still testing
-    if (instanceCounter === 1) {
-      for (let i = 0; i < wdioServices.launcherServices.length; i++) {
-        console.info('Run onComplete hook for ' + wdioServices.launcherServices[i].constructor.name);
-        await wdioServices.launcherServices[i].onComplete(0, undefined, undefined, undefined);
-        instanceCounter = instanceCounter - 1;
-      }
-    }
+
   }).catch(async (err) => {
     console.log(chalk.red(err));
     await browser.closeWindow();

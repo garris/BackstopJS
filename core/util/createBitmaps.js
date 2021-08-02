@@ -7,6 +7,7 @@ var runPuppet = require('./runPuppet');
 var runWdio = require('./runWdio');
 
 const ensureDirectoryPath = require('./ensureDirectoryPath');
+const wdioServiceHandler = require('./wdio-service-handler');
 var logger = require('./logger')('createBitmaps');
 
 var CONCURRENCY_DEFAULT = 10;
@@ -131,6 +132,7 @@ function delegateScenarios (config) {
   if (config.engine.startsWith('puppet')) {
     return pMap(scenarioViews, runPuppet, { concurrency: asyncCaptureLimit });
   } else if (config.engine.startsWith('wdio')) {
+    /* @todo better Start Launcher Services here? */
     return pMap(scenarioViews, runWdio, { concurrency: asyncCaptureLimit });
   } else if (/chrom./i.test(config.engine)) {
     logger.error(`Chromy is no longer supported in version 5+. Please use version 4.x.x for chromy support.`);
@@ -175,7 +177,12 @@ function flatMapTestPairs (rawTestPairs) {
 
 module.exports = function (config, isReference) {
   const promise = delegateScenarios(decorateConfigForCapture(config, isReference))
-    .then(rawTestPairs => {
+    .then(async rawTestPairs => {
+      /* if wdio we need to shutdown services */
+      if (config.engine === 'wdio') {
+        // tear down services
+        await wdioServiceHandler.tearDownServices();
+      }
       const result = {
         compareConfig: {
           testPairs: flatMapTestPairs(rawTestPairs)
