@@ -1,11 +1,10 @@
 const loadedServiceNames = [];
 const loadedServiceInstances = [];
-const setService = async (serviceName, serivce, config) => {
+const setService = async (serviceName, serivce, config, capabilities) => {
   if (loadedServiceNames.indexOf(serviceName) === -1) {
     console.info('Run onPrepare hook for ' + serviceName);
-
     loadedServiceNames.push(serviceName);
-    await serivce.onPrepare({ ...config.capabilities });
+    await serivce.onPrepare(config, capabilities);
     loadedServiceInstances.push(serivce);
   }
   // here we can add service restarts

@@ -38,7 +38,6 @@ module.exports = function (args) {
 };
 let wdioServices;
 let finalConfig;
-let instanceCounter = 0;
 
 async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, config) {
   if (!config.paths) {
@@ -58,7 +57,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
   const wdioArgs = {
     logLevel: 'trace',
     hostname: 'localhost',
-    port: 7777,
+    port: 4444,
     path: '/wd/hub', // remove `path` if you decided using something different from driver binaries.
     capabilities: {
       browserName: 'chrome'
@@ -74,9 +73,9 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     await setService(
       wdioServices.launcherServices[i].constructor.name,
       wdioServices.launcherServices[i],
+      wdioServices.launcherServices[i]._options,
       [{ ...finalConfig.capabilities }]
     );
-    instanceCounter++;
   }
 
   const browser = await remote(finalConfig);
@@ -356,9 +355,8 @@ async function delegateSelectors (
     };
     next();
   }).then(async () => {
-    console.log(chalk.green('x Close Browser'));
-    await browser.closeWindow();
-
+    console.log(chalk.green('x Close Webdriver Session'));
+    await browser.deleteSession();
   }).catch(async (err) => {
     console.log(chalk.red(err));
     await browser.closeWindow();

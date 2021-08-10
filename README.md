@@ -29,6 +29,9 @@
 - Plays nice with CI and source control
 - Run globally or locally as a standalone package app or `require('backstopjs')` right into your node app
 - Incredibly easy to use: just 3 commands go a long long way!
+- [BETA] Limited Support for WebDriver Protocol, based on wdio
+   - works as well with any wdio-(cloud)-service (see [wdio configuration]() )
+   - not compatible with puppeteer references pictures
 
 ![BackstopJS cli report](http://garris.github.io/BackstopJS/assets/cli-report.png)
 
@@ -96,13 +99,16 @@ BackstopJS can create a default configuration file and project scaffolding in yo
 ```sh
 $ backstop init
 ```
-
-
 ### Working with your config file
 
 By default, BackstopJS places `backstop.json` in the root of your project. And also by default, BackstopJS looks for this file when invoked.
 
 Pass a `--config=<configFilePathStr>` argument to test using a different config file.
+
+**Propagation of Environment Variables**
+
+To avoid having any hardcoded credentials, you can use "process.env." as prefix for any value in your json config. These values overwritten on runtime.
+Alternativ you can use the `backstop.js` config file.
 
 **JS based config file**
 
@@ -588,6 +594,30 @@ To use chrome headless you can currently use _puppeteer_ (https://github.com/Goo
 ```json
 "engine": "puppeteer"
 ```
+#### [BETA] WebDriverIO
+
+To use WebDriverIO for Screenshot Comparison Testing you change the engine to
+
+```json
+"engine": "wdio"
+```
+To pass any required additional WDIO Configuration you can configure:
+```json
+ "engineOptions": {
+    "wdio": {
+       [...]
+     }
+  }
+```
+Services can be configured like in wdio. Have a look at their documentation.
+- [FEEDBACK WANTED] Sauce Service - https://webdriver.io/docs/sauce-service
+- [TESTED] Browserstack - https://webdriver.io/docs/browserstack-service
+- [TESTED] Selenium Standalone - https://webdriver.io/docs/selenium-standalone-service
+
+The WDIO Setup is based on [wdio standalone - remote() function](https://webdriver.io/docs/setuptypes/#package-api-1) - it has slightly different configuration.
+#### ⚠️ LIMITATIONS ⚠️
+- Request blocking or interceptions are not possible without additional setup.
+   - you can proxy your whole browser session, configure proxy as capabilities  https://github.com/lightbody/browsermob-proxy
 
 ### Setting Puppeteer option flags
 Backstop sets two defaults for Puppeteer:
