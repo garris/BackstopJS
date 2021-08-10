@@ -398,16 +398,16 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
     };
 
     const selectorsShot = async () => {
-        for (let i = 0; i < selectors.length; i++) {
-          var selector = selectors[i];
-          filePath = selectorMap[selector].filePath;
-          ensureDirectoryPath(filePath);
-          try {
-            await selectorShot(selector, filePath);
-          } catch (e) {
-            console.log(chalk.red(`Error capturing Element ${selector}`), e);
-            return fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
-          }
+      for (let i = 0; i < selectors.length; i++) {
+        var selector = selectors[i];
+        filePath = selectorMap[selector].filePath;
+        ensureDirectoryPath(filePath);
+        try {
+          await selectorShot(selector, filePath);
+        } catch (e) {
+          console.log(chalk.red(`Error capturing Element ${selector}`), e);
+          return fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
+        }
       }
     };
     await selectorsShot();
