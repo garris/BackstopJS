@@ -1,5 +1,5 @@
 module.exports = function each (arr, callback) {
-  for (var i in arr) {
+  for (let i in arr) {
     if (arr.hasOwnProperty(i)) {
       callback(arr[i], i, arr);
     }

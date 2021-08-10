@@ -1,16 +1,16 @@
-var React = require('react');
+const React = require('react');
 
-var Search = require('./Search');
-var Map = require('./Map');
-var CurrentLocation = require('./CurrentLocation');
-var LocationList = require('./LocationList');
+const Search = require('./Search');
+const Map = require('./Map');
+const CurrentLocation = require('./CurrentLocation');
+const LocationList = require('./LocationList');
 
-var App = React.createClass({
+const App = React.createClass({
 
-  getInitialState () {
+  getInitialState() {
     // Extract the favorite locations from local storage
 
-    var favorites = [];
+    let favorites = [];
 
     if (localStorage.favorites) {
       favorites = JSON.parse(localStorage.favorites);
@@ -28,7 +28,7 @@ var App = React.createClass({
     };
   },
 
-  toggleFavorite (address) {
+  toggleFavorite(address) {
     if (this.isAddressInFavorites(address)) {
       this.removeFromFavorites(address);
     } else {
@@ -36,8 +36,8 @@ var App = React.createClass({
     }
   },
 
-  addToFavorites (address) {
-    var favorites = this.state.favorites;
+  addToFavorites(address) {
+    const favorites = this.state.favorites;
 
     favorites.push({
       address: address,
@@ -51,11 +51,11 @@ var App = React.createClass({
     localStorage.favorites = JSON.stringify(favorites);
   },
 
-  removeFromFavorites (address) {
-    var favorites = this.state.favorites;
-    var index = -1;
+  removeFromFavorites(address) {
+    const favorites = this.state.favorites;
+    let index = -1;
 
-    for (var i = 0; i < favorites.length; i++) {
+    for (let i = 0; i < favorites.length; i++) {
       if (favorites[i].address == address) {
         index = i;
         break;
@@ -75,10 +75,10 @@ var App = React.createClass({
     }
   },
 
-  isAddressInFavorites (address) {
-    var favorites = this.state.favorites;
+  isAddressInFavorites(address) {
+    const favorites = this.state.favorites;
 
-    for (var i = 0; i < favorites.length; i++) {
+    for (let i = 0; i < favorites.length; i++) {
       if (favorites[i].address == address) {
         return true;
       }
@@ -87,8 +87,8 @@ var App = React.createClass({
     return false;
   },
 
-  searchForAddress (address) {
-    var self = this;
+  searchForAddress(address) {
+    const self = this;
 
     // We will use GMaps' geocode functionality,
     // which is built on top of the Google Maps API
@@ -98,7 +98,7 @@ var App = React.createClass({
       callback: function (results, status) {
         if (status !== 'OK') return;
 
-        var latlng = results[0].geometry.location;
+        const latlng = results[0].geometry.location;
 
         self.setState({
           currentAddress: results[0].formatted_address,
@@ -114,29 +114,29 @@ var App = React.createClass({
     });
   },
 
-  componentDidMount () {
-    var that = this;
+  componentDidMount() {
+    const that = this;
     setTimeout(function () {
       that.searchForAddress('San Francisco');
     }, 2000);
   },
 
-  render () {
+  render() {
     return (
 
-      <div >
+      <div>
         <h1>Your Google Maps Locations</h1>
 
-        <Search onSearch={this.searchForAddress} />
+        <Search onSearch={this.searchForAddress}/>
 
         <Map lat={this.state.mapCoordinates.lat} lng={this.state.mapCoordinates.lng}/>
 
         <CurrentLocation address={this.state.currentAddress}
-          favorite={this.isAddressInFavorites(this.state.currentAddress)}
-          onFavoriteToggle={this.toggleFavorite} />
+                         favorite={this.isAddressInFavorites(this.state.currentAddress)}
+                         onFavoriteToggle={this.toggleFavorite}/>
 
         <LocationList locations={this.state.favorites} activeLocationAddress={this.state.currentAddress}
-          onClick={this.searchForAddress} />
+                      onClick={this.searchForAddress}/>
 
       </div>
 

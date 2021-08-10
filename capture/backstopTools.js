@@ -13,7 +13,7 @@ module.exports = (target) => {
         if (typeof window._backstopTools._consoleLogger !== 'string') {
           window._backstopTools._consoleLogger = '';
         }
-        var log = window.console.log.bind(console);
+        const log = window.console.log.bind(console);
         window.console.log = function () {
           window._backstopTools._consoleLogger += Array.from(arguments).join('\n');
           log.apply(this, arguments);
@@ -38,14 +38,14 @@ module.exports = (target) => {
           if (selector === 'document') {
             return acc.concat(['document']);
           }
-          var qResult = document.querySelectorAll(selector);
+          const qResult = document.querySelectorAll(selector);
 
           // pass-through any selectors that don't match any DOM elements
           if (!qResult.length) {
             return acc.concat(selector);
           }
 
-          var expandedSelector = [].slice.call(qResult)
+          const expandedSelector = [].slice.call(qResult)
             .map(function (element, expandedIndex) {
               if (element.classList.contains('__86d')) {
                 return '';
@@ -56,7 +56,7 @@ module.exports = (target) => {
                 return selector;
               }
               // create index partial
-              var indexPartial = '__n' + expandedIndex;
+              const indexPartial = '__n' + expandedIndex;
               // update all matching selectors with additional indexPartial class
               element.classList.add(indexPartial);
               // return array of fully-qualified classnames

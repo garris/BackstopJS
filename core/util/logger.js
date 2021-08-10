@@ -1,9 +1,9 @@
-var chalk = require('chalk');
-var makeSpaces = require('./makeSpaces');
+const chalk = require('chalk');
+const makeSpaces = require('./makeSpaces');
 
 function identity (string) { return string; }
 
-var typeToColor = {
+const typeToColor = {
   error: identity,
   warn: identity,
   log: identity,
@@ -12,7 +12,7 @@ var typeToColor = {
   success: identity
 };
 
-var typeToTitleColor = {
+const typeToTitleColor = {
   error: chalk.red,
   warn: chalk.yellow,
   log: chalk.white,
@@ -21,10 +21,10 @@ var typeToTitleColor = {
   success: chalk.green
 };
 
-var longestTitle = 5;
+let longestTitle = 5;
 
 function paddedString (length, string) {
-  var padding = makeSpaces(length + 3);
+  const padding = makeSpaces(length + 3);
 
   if (string instanceof Error) {
     string = string.stack;
@@ -34,8 +34,8 @@ function paddedString (length, string) {
     return string;
   }
 
-  var lines = string.split('\n');
-  var paddedLines = lines
+  const lines = string.split('\n');
+  const paddedLines = lines
     .slice(1)
     .map(function addPadding (string) {
       return padding + string;

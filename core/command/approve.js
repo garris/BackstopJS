@@ -1,9 +1,9 @@
-var fs = require('../util/fs');
-var path = require('path');
-var map = require('p-map');
+const fs = require('../util/fs');
+const path = require('path');
+const map = require('p-map');
 
-var FAILED_DIFF_RE = /^failed_diff_/;
-var FILTER_DEFAULT = /\w+/;
+const FAILED_DIFF_RE = /^failed_diff_/;
+const FILTER_DEFAULT = /\w+/;
 
 // This task will copy ALL test bitmap files (from the most recent test directory) to the reference directory overwriting any existing files.
 module.exports = {
@@ -16,7 +16,7 @@ module.exports = {
           console.log(err.stack);
           reject(err);
         }
-        var src = path.join(config.bitmaps_test, list[list.length - 1]);
+        const src = path.join(config.bitmaps_test, list[list.length - 1]);
         return fs.readdir(src, (err, files) => {
           if (err) {
             console.log(err.stack);

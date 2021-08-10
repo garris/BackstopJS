@@ -23,7 +23,7 @@ const parseArgs = require('minimist');
 const backstop = require('../../core/runner');
 const URL = 'https://garris.github.io/BackstopJS';
 
-var argsOptions = parseArgs(process.argv.slice(2), {
+const argsOptions = parseArgs(process.argv.slice(2), {
   string: ['dynamicTestId', 'testLabel', 'scenarioLabel', 'url', 'command'],
   default: {
     url: URL

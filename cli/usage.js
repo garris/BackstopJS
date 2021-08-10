@@ -1,7 +1,7 @@
-var version = require('../package.json').version;
-var makeSpaces = require('../core/util/makeSpaces');
+const version = require('../package.json').version;
+const makeSpaces = require('../core/util/makeSpaces');
 
-var commandsDescription = {
+const commandsDescription = {
   test: 'Create test screenshots and compare against the set you previously approved/referenced.',
   approve: 'Promotes all test bitmaps from last test run to reference bitmaps.',
   reference: 'Creates new reference screenshots. Deletes all existing reference files.',
@@ -10,7 +10,7 @@ var commandsDescription = {
   openReport: 'View the last test report in your browser.'
 };
 
-var optionsDescription = {
+const optionsDescription = {
   '--config': 'Path to config file name',
   '--filter': 'A RegEx string used to filter by scenario labels when running "test", "reference", or "approve" commands',
   '-h, --help': 'Display usage',
@@ -26,12 +26,8 @@ function makeDescription (descriptions) {
     .join('\n');
 }
 
-function spacesBetweenCommandAndDescription (commandName) {
-  return makeSpaces(2 + leftPaddingOfDescription - commandName.length);
-}
-
 // Number of spaces to echo before writing description
-var leftPaddingOfDescription = Object.keys(commandsDescription)
+const leftPaddingOfDescription = Object.keys(commandsDescription)
   .concat(Object.keys(optionsDescription))
   .map(function (string) {
     return string.length;
@@ -40,7 +36,11 @@ var leftPaddingOfDescription = Object.keys(commandsDescription)
     return Math.max(max, length);
   }, 0);
 
-var usage = '\
+function spacesBetweenCommandAndDescription (commandName) {
+  return makeSpaces(2 + leftPaddingOfDescription - commandName.length);
+}
+
+const usage = '\
 Welcome to BackstopJS ' + version + ' CLI\n\
 \n\
 Commands:\n\

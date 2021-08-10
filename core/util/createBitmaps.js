@@ -1,17 +1,17 @@
-var cloneDeep = require('lodash/cloneDeep');
-var fs = require('./fs');
-var each = require('./each');
-var pMap = require('p-map');
+const cloneDeep = require('lodash/cloneDeep');
+const fs = require('./fs');
+const each = require('./each');
+const pMap = require('p-map');
 
-var runPuppet = require('./runPuppet');
+const runPuppet = require('./runPuppet');
 
 const ensureDirectoryPath = require('./ensureDirectoryPath');
-var logger = require('./logger')('createBitmaps');
+const logger = require('./logger')('createBitmaps');
 
-var CONCURRENCY_DEFAULT = 10;
+const CONCURRENCY_DEFAULT = 10;
 
 function regexTest (string, search) {
-  var re = new RegExp(search);
+  const re = new RegExp(search);
   return re.test(string);
 }
 
@@ -26,7 +26,7 @@ function ensureViewportLabel (config) {
 }
 
 function decorateConfigForCapture (config, isReference) {
-  var configJSON;
+  let configJSON;
 
   if (typeof config.args.config === 'object') {
     configJSON = config.args.config;
@@ -36,17 +36,18 @@ function decorateConfigForCapture (config, isReference) {
   configJSON.scenarios = configJSON.scenarios || [];
   ensureViewportLabel(configJSON);
 
-  var totalScenarioCount = configJSON.scenarios.length;
+  const totalScenarioCount = configJSON.scenarios.length;
 
   function pad (number) {
-    var r = String(number);
+    let r = String(number);
     if (r.length === 1) {
       r = '0' + r;
     }
     return r;
   }
-  var screenshotNow = new Date();
-  var screenshotDateTime = screenshotNow.getFullYear() + pad(screenshotNow.getMonth() + 1) + pad(screenshotNow.getDate()) + '-' + pad(screenshotNow.getHours()) + pad(screenshotNow.getMinutes()) + pad(screenshotNow.getSeconds());
+
+  const screenshotNow = new Date();
+  let screenshotDateTime = screenshotNow.getFullYear() + pad(screenshotNow.getMonth() + 1) + pad(screenshotNow.getDate()) + '-' + pad(screenshotNow.getHours()) + pad(screenshotNow.getMinutes()) + pad(screenshotNow.getSeconds());
   screenshotDateTime = configJSON.dynamicTestId ? configJSON.dynamicTestId : screenshotDateTime;
   configJSON.screenshotDateTime = screenshotDateTime;
   config.screenshotDateTime = screenshotDateTime;
@@ -63,7 +64,7 @@ function decorateConfigForCapture (config, isReference) {
   configJSON.defaultRequireSameDimensions = config.defaultRequireSameDimensions;
 
   if (config.args.filter) {
-    var scenarios = [];
+    const scenarios = [];
     config.args.filter.split(',').forEach(function (filteredTest) {
       each(configJSON.scenarios, function (scenario) {
         if (regexTest(scenario.label, filteredTest)) {
@@ -83,8 +84,8 @@ function saveViewportIndexes (viewport, index) {
 }
 
 function delegateScenarios (config) {
-  var scenarios = [];
-  var scenarioViews = [];
+  const scenarios = [];
+  const scenarioViews = [];
 
   config.viewports = config.viewports.map(saveViewportIndexes);
 
@@ -107,9 +108,9 @@ function delegateScenarios (config) {
     }
   });
 
-  var scenarioViewId = 0;
+  let scenarioViewId = 0;
   scenarios.forEach(function (scenario) {
-    var desiredViewportsForScenario = config.viewports;
+    let desiredViewportsForScenario = config.viewports;
 
     if (scenario.viewports && scenario.viewports.length > 0) {
       desiredViewportsForScenario = scenario.viewports;
@@ -137,14 +138,14 @@ function delegateScenarios (config) {
 }
 
 function writeCompareConfigFile (comparePairsFileName, compareConfig) {
-  var compareConfigJSON = JSON.stringify(compareConfig, null, 2);
+  const compareConfigJSON = JSON.stringify(compareConfig, null, 2);
   ensureDirectoryPath(comparePairsFileName);
   return fs.writeFile(comparePairsFileName, compareConfigJSON);
 }
 
 function flatMapTestPairs (rawTestPairs) {
   return rawTestPairs.reduce((acc, result) => {
-    var testPairs = result.testPairs;
+    let testPairs = result.testPairs;
     if (!testPairs) {
       testPairs = {
         diff: {

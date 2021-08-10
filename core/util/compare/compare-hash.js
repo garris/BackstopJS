@@ -1,13 +1,13 @@
-var crypto = require('crypto');
-var fs = require('fs');
+const crypto = require('crypto');
+const fs = require('fs');
 
 function getFileHash (filename) {
   if (!filename) {
     return '';
   }
   return new Promise(resolve => {
-    var md5sum = crypto.createHash('md5');
-    var stream = fs.ReadStream(filename);
+    const md5sum = crypto.createHash('md5');
+    const stream = fs.ReadStream(filename);
 
     stream.on('data', d => md5sum.update(d));
     stream.on('end', () => resolve(md5sum.digest('hex')));

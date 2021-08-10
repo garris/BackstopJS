@@ -1,18 +1,18 @@
 /* eslint no-console: off */
 'use strict';
 
-var parseArgs = require('minimist');
-var argsOptions = parseArgs(process.argv.slice(2), {
-  string: ['config']
+const parseArgs = require('minimist');
+const argsOptions = parseArgs(process.argv.slice(2), {
+    string: ['config']
 });
-var PROJECT_PATH = argsOptions._[0];
-var PATH_TO_CONFIG = argsOptions.config;
-var _config = require(argsOptions.config);
+const PROJECT_PATH = argsOptions._[0];
+const PATH_TO_CONFIG = argsOptions.config;
+const _config = require(argsOptions.config);
 
-var path = require('path');
-var express = require('express');
-var backstop = require('../core/runner');
-var { modifyJsonpReport } = require('../core/util/remote');
+const path = require('path');
+const express = require('express');
+const backstop = require('../core/runner');
+let {modifyJsonpReport} = require('../core/util/remote');
 
 const booleanizeArg = incrementalFlag => [true, 'true'].includes(incrementalFlag);
 
@@ -50,25 +50,25 @@ module.exports = function (app) {
     );
     console.log('Loading dynamic config template at ' + PATH_TO_CONFIG);
 
-    var config = JSON.parse(JSON.stringify(_config));
-    config.dynamicTestId = req.params.testId;
-    var s = Object.assign({}, config.scenarios[0], req.body.scenario);
-    s.label = req.body.name;
+      const config = JSON.parse(JSON.stringify(_config));
+      config.dynamicTestId = req.params.testId;
+      const s = Object.assign({}, config.scenarios[0], req.body.scenario);
+      s.label = req.body.name;
     s.url = s.url
       .replace(/{origin}/, req.body.origin)
       .replace(/{testId}/, req.params.testId)
       .replace(/{scenarioId}/, req.params.scenarioId);
     config.scenarios[0] = s;
 
-    var result = {
-      label: s.label,
-      surl: s.url,
-      testId: req.params.testId,
-      scenarioId: req.params.scenarioId,
-      vid: app._backstop.testCtr
-    };
+      const result = {
+          label: s.label,
+          surl: s.url,
+          testId: req.params.testId,
+          scenarioId: req.params.scenarioId,
+          vid: app._backstop.testCtr
+      };
 
-    const command = req.path.includes(`/dref/`) ? 'reference' : 'test';
+      const command = req.path.includes(`/dref/`) ? 'reference' : 'test';
     backstop(command, { config, i: booleanizeArg(req.body.i) }).then(
       () => {
         result.ok = true;

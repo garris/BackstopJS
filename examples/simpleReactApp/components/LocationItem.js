@@ -1,17 +1,16 @@
-var React = require('react');
-var LocationItem = require('./LocationItem');
-var moment = require('moment');
+const React = require('react');
+const moment = require('moment');
 
-var LocationItem = React.createClass({
+const LocationItem = React.createClass({
 
   handleClick () {
     this.props.onClick(this.props.address);
   },
 
   render () {
-    var cn = 'list-group-item';
+      let cn = 'list-group-item';
 
-    if (this.props.active) {
+      if (this.props.active) {
       cn += ' active-location';
     }
 
