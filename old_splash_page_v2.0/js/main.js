@@ -1,8 +1,6 @@
 $('button').click(function () {
-  window.location.href = "https://github.com/garris/BackstopJS";
+  window.location.href = 'https://github.com/garris/BackstopJS';
 });
-
-
 
 // TODO:  modify this for v2.0 content vvvvv
 
@@ -57,4 +55,3 @@ function delayLemurification () {
   setTimeout(releaseTheLemur, READY_LAG_MS);
   setTimeout(setReadyFlags, READY_LAG_MS + 1000);
 }
-

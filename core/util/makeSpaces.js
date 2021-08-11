@@ -1,6 +1,6 @@
 module.exports = function makeSpaces (length) {
-  var i = 0;
-  var result = '';
+  let i = 0;
+  let result = '';
   while (i < length) {
     result += ' ';
     i++;

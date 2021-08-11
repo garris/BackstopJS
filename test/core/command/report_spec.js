@@ -1,6 +1,6 @@
-var mockery = require('mockery');
-var assert = require('assert');
-var sinon = require('sinon');
+const mockery = require('mockery');
+const assert = require('assert');
+const sinon = require('sinon');
 
 describe('core report', function () {
   const config = {

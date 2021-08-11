@@ -7,7 +7,7 @@
     "backstop": "./cli/index.js"
   },
   "scripts": {
-    "lint": "eslint 'compare/*.js' 'compare/src/**/*.js' 'core/**/*.js' 'cli/**/*.js' 'capture/**/*.js' 'test/**/*.js'",
+    "lint": "eslint \"compare/*.js\" \"compare/src/**/*.js\" \"core/**/*.js\" \"cli/**/*.js\" \"capture/**/*.js\" \"test/**/*.js\"",
     "format": "prettier-eslint --write \"compare/src/**/*.js\"",
     "genConfig": "node ./cli/index.js genConfig",
     "init": "node ./cli/index.js init",
@@ -17,11 +17,11 @@
     "openReport": "node ./cli/index.js openReport",
     "report": "node ./cli/index.js openReport",
     "echo": "node ./cli/index.js echo",
-    "unit-test": "mocha --reporter spec --recursive 'test/**/*_spec.js'",
+    "unit-test": "mocha --reporter spec --recursive \"test/**/*_spec.js\"",
     "precommit": "lint-staged",
     "build-compare": "cp ./node_modules/diverged/src/diverged.js ./compare/output/ && cp ./node_modules/diff/dist/diff.js ./compare/output/ && webpack --config ./compare/webpack.config.js && npm run lint",
     "dev-compare": "webpack-dev-server --content-base ./compare/output --config ./compare/webpack.config.js",
-    "integration-test": "rm -rf newdir && mkdir newdir && cd newdir && node ../cli/index.js genConfig && node ../cli/index.js reference && node ../cli/index.js test && node -e \"require('../')('test')\"",
+    "integration-test": "rm -rf newdir && mkdir newdir && cd newdir && node ../cli/index.js genConfig && node ../cli/index.js reference && node ../cli/index.js test && node -e \"require(\"../\")(\"test\")\"",
     "smoke-test": "cd test/configs/ && node ../../cli/index.js test --config=backstop_features",
     "smoke-test-docker": "cd test/configs/ && node ../../cli/index.js test --config=backstop_features --docker",
     "sanity-test": "cd test/configs/ && node ../../cli/index.js test",
