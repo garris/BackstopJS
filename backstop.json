@@ -5,61 +5,6 @@
       "label": "phone",
       "width": 320,
       "height": 1768
-    },
-    {
-      "label": "tablet",
-      "width": 1024,
-      "height": 1768
-    },
-    {
-      "label": "tablet",
-      "width": 1024,
-      "height": 1768
-    },
-    {
-      "label": "tablet",
-      "width": 1024,
-      "height": 1768
-    },
-    {
-      "label": "tablet",
-      "width": 1024,
-      "height": 1768
-    },
-    {
-      "label": "tablet",
-      "width": 1024,
-      "height": 1768
-    },
-    {
-      "label": "tablet",
-      "width": 1024,
-      "height": 1768
-    },
-    {
-      "label": "tablet",
-      "width": 1024,
-      "height": 1768
-    },
-    {
-      "label": "tablet",
-      "width": 1024,
-      "height": 1768
-    },
-    {
-      "label": "tablet",
-      "width": 1024,
-      "height": 1768
-    },
-    {
-      "label": "tablet",
-      "width": 1024,
-      "height": 1768
-    },
-    {
-      "label": "tablet",
-      "width": 1024,
-      "height": 1768
     }
   ],
   "onBeforeScript": "wdio/onBefore.js",
@@ -99,13 +44,12 @@
   "engineOptions": {
     "wdio": {
       "logLevel": "trace",
-      "hostname": "127.0.0.1",
-      "port": 7777,
-      "path": "/wd/hub",
+      "protocol": "http",
+      "hostname": "hub.browserstack.com",
       "capabilities": {
         "browserName": "chrome"
       },
-      "user": "process.env.BROWSERSTACK_ACCESS_KEY",
+      "user": "process.env.BROWSERSTACK_ACCESS_USER",
       "key": "process.env.BROWSERSTACK_ACCESS_KEY",
       "services": [
         [

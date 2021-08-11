@@ -1,14 +1,7 @@
 /**
- * INTERCEPT IMAGES
- * Listen to all requests. If a request matches IMAGE_URL_RE
- * then stub the image with data from IMAGE_STUB_URL
- *
- * Use this in an onBefore script E.G.
-  ```
-  module.exports = async function(page, scenario) {
-    require('./interceptImages')(page, scenario);
-  }
-  ```
+ * Filename has historical reasons, even if that has nothing to do with inception
+ * We exchange the
+ * Overwrite images with imageStub
  *
  */
 
@@ -20,18 +13,32 @@ const IMAGE_STUB_URL = path.resolve(__dirname, '../../imageStub.jpg');
 const IMAGE_DATA_BUFFER = fs.readFileSync(IMAGE_STUB_URL);
 const HEADERS_STUB = {};
 
-module.exports = async function (page, scenario) {
-  const intercept = async (request, targetUrl) => {
-    if (IMAGE_URL_RE.test(request.url())) {
-      await request.respond({
-        body: IMAGE_DATA_BUFFER,
-        headers: HEADERS_STUB,
-        status: 200
-      });
-    } else {
-      request.continue();
+// @todo needs input
+module.exports = async function (browser, scenario) {
+  console.warn('Using mock Images is currently not supported with WebdriverIO,' +
+    ' if you need it you can use a proxy like browsermob or use puppeteer');
+
+  /**
+   * We interate over whole dom and replace all image possibilities
+   * Possible idea would be to exchange all image sources to our mock image that is hosted somewhere
+
+   await browser.execute(() => {
+    const items = window.body.getElementsByTagName('*');
+    for (let i = items.length; i--;) {
+      const currentElement = items[i];
+      // check for css background image
+      if (currentElement.style.backgroundImage !== '') {
+        currentElement.style.backgroundImage = ''; // @todo add here remote url?
+      }
+      if (currentElement.tagName === 'img' && currentElement.src !== '') {
+        // @todo remove srcset and sizes?
+        currentElement.src = ''; // @todo add here remote url?
+      }
+      if (currentElement.tagName === 'picture' && currentElement.src !== '') {
+        // @todo remove srcset and sizes?
+        currentElement.src = ''; // @todo add here remote url?
+      }
     }
-  };
-  await page.setRequestInterception(true);
-  page.on('request', intercept);
+  });
+   */
 };
