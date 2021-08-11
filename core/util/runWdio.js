@@ -104,9 +104,10 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
         resolve();
       }, readyTimeout);
     });
-    readyResolve();
   }
-  // @TODO Not sure if that is possible with selenium3
+  // @TODO It's not possible to read the command line, maybe we can inject a script that reports to backstop
+  //       I guess for now it's fine to disable this feature
+
   // page.on('console', msg => {
   //   for (let i = 0; i < msg.args().length; ++i) {
   //     const line = msg.args()[i];
@@ -140,16 +141,23 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
 
     await injectBackstopTools(browser);
 
-    // //  --- WAIT FOR READY EVENT ---
-    // if (readyEvent) {
-    //   await browser.execute(`window._readyEvent = '${readyEvent}'`);
-    //
-    //   await readyPromise;
-    //
-    //   clearTimeout(readyTimeoutTimer);
-    //
-    //   await browser.execute(_ => console.info('readyEvent ok'));
-    // }
+    //  --- WAIT FOR READY EVENT ---
+    if (readyEvent) {
+      await browser.waitUntil(function () {
+        const state = browser.execute(function () {
+          return document.readyState;
+        });
+        return state === 'complete';
+      },
+      {
+        timeout: 60000, // 60secs
+        timeoutMsg: 'Oops! Page did not respond with ready event'
+      });
+
+      clearTimeout(readyTimeoutTimer);
+
+      await browser.execute(_ => console.info('readyEvent ok'));
+    }
 
     // --- WAIT FOR SELECTOR ---
     if (scenario.readySelector) {
