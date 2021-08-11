@@ -107,9 +107,9 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
   let result;
   const puppetCommands = async () => {
     // --- BEFORE SCRIPT ---
-    var onBeforeScript = scenario.onBeforeScript || config.onBeforeScript;
+    const onBeforeScript = scenario.onBeforeScript || config.onBeforeScript;
     if (onBeforeScript) {
-      var beforeScriptPath = path.resolve(engineScriptsPath, onBeforeScript);
+      const beforeScriptPath = path.resolve(engineScriptsPath, onBeforeScript);
       if (fs.existsSync(beforeScriptPath)) {
         await require(beforeScriptPath)(page, scenario, viewport, isReference, browser, config);
       } else {
@@ -118,7 +118,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     }
 
     //  --- OPEN URL ---
-    var url = scenario.url;
+    let url = scenario.url;
     if (isReference && scenario.referenceUrl) {
       url = scenario.referenceUrl;
     }
@@ -170,9 +170,9 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     }
 
     //  --- ON READY SCRIPT ---
-    var onReadyScript = scenario.onReadyScript || config.onReadyScript;
+    const onReadyScript = scenario.onReadyScript || config.onReadyScript;
     if (onReadyScript) {
-      var readyScriptPath = path.resolve(engineScriptsPath, onReadyScript);
+      const readyScriptPath = path.resolve(engineScriptsPath, onReadyScript);
       if (fs.existsSync(readyScriptPath)) {
         await require(readyScriptPath)(page, scenario, viewport, isReference, browser, config);
       } else {
@@ -266,7 +266,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     compareConfig = {
       testPairs: [ testPair ]
     };
-    fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
+    await fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
   }
 
   return Promise.resolve(compareConfig);
@@ -320,9 +320,9 @@ async function delegateSelectors (
   }
 
   return new Promise(function (resolve, reject) {
-    var job = null;
-    var errors = [];
-    var next = function () {
+    let job = null;
+    const errors = [];
+    const next = function () {
       if (captureJobs.length === 0) {
         if (errors.length === 0) {
           resolve();
@@ -383,8 +383,12 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
             });
           }
 
-          var type = config.puppeteerOffscreenCaptureFix ? page : el;
-          var params = config.puppeteerOffscreenCaptureFix ? { path: path, clip: box } : { path: path };
+          const type = config.puppeteerOffscreenCaptureFix ? page : el;
+          const params = config.puppeteerOffscreenCaptureFix ? {
+            captureBeyondViewport: false,
+            path: path,
+            clip: box
+          } : { captureBeyondViewport: false, path: path };
 
           await type.screenshot(params);
         } else {
@@ -398,18 +402,17 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
     };
 
     const selectorsShot = async () => {
-      return Promise.all(
-        selectors.map(async selector => {
-          filePath = selectorMap[selector].filePath;
-          ensureDirectoryPath(filePath);
-          try {
-            await selectorShot(selector, filePath);
-          } catch (e) {
-            console.log(chalk.red(`Error capturing Element ${selector}`), e);
-            return fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
-          }
-        })
-      );
+      for (let i = 0; i < selectors.length; i++) {
+        const selector = selectors[i];
+        filePath = selectorMap[selector].filePath;
+        ensureDirectoryPath(filePath);
+        try {
+          await selectorShot(selector, filePath);
+        } catch (e) {
+          console.log(chalk.red(`Error capturing Element ${selector}`), e);
+          return fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
+        }
+      }
     };
     await selectorsShot();
   }

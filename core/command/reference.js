@@ -9,7 +9,7 @@ module.exports = {
     if (shouldRunDocker(config)) {
       return runDocker(config, 'reference');
     } else {
-      var firstStep;
+      let firstStep;
       // do not remove reference directory if we are in incremental mode
       if (config.args.filter || config.args.i) {
         firstStep = Promise.resolve();

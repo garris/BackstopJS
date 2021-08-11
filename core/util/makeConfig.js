@@ -1,5 +1,5 @@
-var path = require('path');
-var extendConfig = require('./extendConfig');
+const path = require('path');
+const extendConfig = require('./extendConfig');
 
 const NON_CONFIG_COMMANDS = ['init', 'version', 'stop'];
 
@@ -25,12 +25,12 @@ function loadSystemConfig (config) {
 }
 function loadProjectConfig (command, options, config) {
   // TEST REPORT FILE NAME
-  var customTestReportFileName = options && (options.testReportFileName || null);
+  const customTestReportFileName = options && (options.testReportFileName || null);
   if (customTestReportFileName) {
     config.testReportFileName = options.testReportFileName || null;
   }
 
-  var customConfigPath = options && (options.backstopConfigFilePath || options.configPath);
+  let customConfigPath = options && (options.backstopConfigFilePath || options.configPath);
   if (options && typeof options.config === 'string' && !customConfigPath) {
     customConfigPath = options.config;
   }
@@ -45,7 +45,7 @@ function loadProjectConfig (command, options, config) {
     config.backstopConfigFileName = path.join(config.projectPath, 'backstop.json');
   }
 
-  var userConfig = {};
+  let userConfig = {};
   const CMD_REQUIRES_CONFIG = !NON_CONFIG_COMMANDS.includes(command);
   if (CMD_REQUIRES_CONFIG) {
     // This flow is confusing -- is checking for !config.backstopConfigFileName more reliable?
@@ -67,7 +67,7 @@ function loadProjectConfig (command, options, config) {
 }
 
 function makeConfig (command, options) {
-  var config = {};
+  const config = {};
 
   config.args = options || {};
 
@@ -75,7 +75,9 @@ function makeConfig (command, options) {
   config.projectPath = projectPath(config);
   config.perf = {};
 
-  var userConfig = Object.assign({}, loadProjectConfig(command, options, config));
+  let userConfig = Object.assign({}, loadProjectConfig(command, options, config));
+  
+  // load env variables in json
   userConfig = loadSystemConfig(userConfig);
 
   return extendConfig(config, userConfig);

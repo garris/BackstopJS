@@ -1,7 +1,7 @@
-var usage = require('../../cli/usage');
-var assert = require('assert');
+const usage = require('../../cli/usage');
+const assert = require('assert');
 
-var expectedUsage = /Welcome to BackstopJS/;
+const expectedUsage = /Welcome to BackstopJS/;
 
 describe('the cli usage', function () {
   it('should print usage hints correctly', function () {

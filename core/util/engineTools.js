@@ -5,7 +5,7 @@ function getMisMatchThreshHold (scenario, config) {
 }
 
 function ensureFileSuffix (filename, suffix) {
-  var re = new RegExp('\.' + suffix + '$', ''); // eslint-disable-line no-useless-escape
+  const re = new RegExp('\.' + suffix + '$', ''); // eslint-disable-line no-useless-escape
   return filename.replace(re, '') + '.' + suffix;
 }
 
@@ -15,10 +15,10 @@ function glueStringsWithSlash (stringA, stringB) {
 }
 
 function genHash (str) {
-  var hash = 0;
-  var i;
-  var chr;
-  var len;
+  let hash = 0;
+  let i;
+  let chr;
+  let len;
   if (!str) return hash;
   str = str.toString();
   for (i = 0, len = str.length; i < len; i++) {
@@ -49,7 +49,7 @@ function makeSafe (str) {
 }
 
 function getFilename (fileNameTemplate, outputFileFormatSuffix, configId, scenarioIndex, scenarioLabelSafe, selectorIndex, selectorLabel, viewportIndex, viewportLabel) {
-  var fileName = fileNameTemplate
+  let fileName = fileNameTemplate
     .replace(/\{configId\}/, configId)
     .replace(/\{scenarioIndex\}/, scenarioIndex)
     .replace(/\{scenarioLabel\}/, scenarioLabelSafe)
@@ -59,7 +59,7 @@ function getFilename (fileNameTemplate, outputFileFormatSuffix, configId, scenar
     .replace(/\{viewportLabel\}/, makeSafe(viewportLabel))
     .replace(/[^a-z0-9_-]/gi, ''); // remove anything that's not a letter or a number or dash or underscore.
 
-  var extRegExp = new RegExp(outputFileFormatSuffix + '$', 'i');
+  const extRegExp = new RegExp(outputFileFormatSuffix + '$', 'i');
   if (!extRegExp.test(fileName)) {
     fileName = fileName + outputFileFormatSuffix;
   }

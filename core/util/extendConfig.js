@@ -1,7 +1,7 @@
-var path = require('path');
-var temp = require('temp');
-var fs = require('fs');
-var hash = require('object-hash');
+const path = require('path');
+const temp = require('temp');
+const fs = require('fs');
+const hash = require('object-hash');
 const tmpdir = require('os').tmpdir();
 const version = require('../../package.json').version;
 
@@ -82,11 +82,11 @@ function comparePaths (config) {
 }
 
 function captureConfigPaths (config) {
-  var captureDir = path.join(tmpdir, 'capture');
+  const captureDir = path.join(tmpdir, 'capture');
   if (!fs.existsSync(captureDir)) {
     fs.mkdirSync(captureDir);
   }
-  var configHash = hash(config);
+  const configHash = hash(config);
   config.captureConfigFileName = path.join(tmpdir, 'capture', configHash + '.json');
   config.captureConfigFileNameDefault = path.join(config.backstop, 'capture', 'config.default.json');
 }
