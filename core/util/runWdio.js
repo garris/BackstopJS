@@ -91,22 +91,22 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     console.log(chalk.blue('CREATING NEW REFERENCE FILE'));
   }
 
+  // @TODO It's not possible to read the command line, maybe we can inject a script that reports to backstop
+  //       I guess for now it's fine to disable this feature
   // --- set up console output and ready event ---
   const readyEvent = scenario.readyEvent || config.readyEvent;
   const readyTimeout = scenario.readyTimeout || config.readyTimeout || 30000;
-  let readyResolve, readyPromise, readyTimeoutTimer;
-  if (readyEvent) {
-    readyPromise = new Promise(resolve => {
-      readyResolve = resolve;
-      // fire the ready event after the readyTimeout
-      readyTimeoutTimer = setTimeout(() => {
-        console.error(chalk.red(`ReadyEvent not detected within readyTimeout limit. (${readyTimeout} ms)`), scenario.url);
-        resolve();
-      }, readyTimeout);
-    });
-  }
-  // @TODO It's not possible to read the command line, maybe we can inject a script that reports to backstop
-  //       I guess for now it's fine to disable this feature
+  // let readyResolve, readyPromise, readyTimeoutTimer;
+  // if (readyEvent) {
+  //   readyPromise = new Promise(resolve => {
+  //     readyResolve = resolve;
+  //     // fire the ready event after the readyTimeout
+  //     readyTimeoutTimer = setTimeout(() => {
+  //       console.error(chalk.red(`ReadyEvent not detected within readyTimeout limit. (${readyTimeout} ms)`), scenario.url);
+  //       resolve();
+  //     }, readyTimeout);
+  //   });
+  // }
 
   // page.on('console', msg => {
   //   for (let i = 0; i < msg.args().length; ++i) {
@@ -154,7 +154,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
         timeoutMsg: 'Oops! Page did not respond with ready event'
       });
 
-      clearTimeout(readyTimeoutTimer);
+      // clearTimeout(readyTimeoutTimer);
 
       await browser.execute(_ => console.info('readyEvent ok'));
     }
