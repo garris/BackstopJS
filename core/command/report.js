@@ -7,6 +7,23 @@ const fs = require('../util/fs');
 const logger = require('../util/logger')('report');
 const compare = require('../util/compare/');
 
+function replaceInFile (file, search, replace) {
+  return new Promise((resolve, reject) => {
+    fs.readFile(file, 'utf8', function (err, data) {
+      if (err) {
+        reject(err);
+      }
+      const result = data.replace(search, replace);
+
+      fs.writeFile(file, result, 'utf8', function (err) {
+        if (err) reject(err);
+      }).then(() => {
+        resolve();
+      });
+    });
+  });
+}
+
 function writeReport (config, reporter) {
   const promises = [];
 
@@ -23,6 +40,21 @@ function writeReport (config, reporter) {
   return allSettled(promises);
 }
 
+function archiveReport (config) {
+  let archivePath = path.join(config.archivePath, config.screenshotDateTime);
+
+  function toAbsolute (p) {
+    return (path.isAbsolute(p)) ? p : path.join(config.projectPath, p);
+  }
+
+  archivePath = toAbsolute(archivePath);
+
+  return fs.copy(toAbsolute(config.html_report), archivePath).then(function () {
+    const file = path.join(archivePath, path.basename(config.compareConfigFileName));
+    return replaceInFile(file, /"..\\\\/g, '"../../');
+  });
+}
+
 function writeBrowserReport (config, reporter) {
   let testConfig;
   if (typeof config.args.config === 'object') {
@@ -36,6 +68,7 @@ function writeBrowserReport (config, reporter) {
   function toAbsolute (p) {
     return (path.isAbsolute(p)) ? p : path.join(config.projectPath, p);
   }
+
   logger.log('Writing browser report');
 
   return fs.copy(config.comparePath, toAbsolute(config.html_report)).then(function () {
@@ -88,7 +121,13 @@ function writeBrowserReport (config, reporter) {
       throw err;
     });
 
-    return allSettled([jsonpConfgWrite, jsonConfgWrite]);
+    let promises = [jsonpConfgWrite, jsonConfgWrite];
+
+    if (config.archiveReport) {
+      promises.push(archiveReport(config));
+    }
+
+    return allSettled(promises);
   }).then(function () {
     if (config.openReport && config.report && config.report.indexOf('browser') > -1) {
       const executeCommand = require('./index');
@@ -143,6 +182,7 @@ function writeJsonReport (config, reporter) {
   function toAbsolute (p) {
     return (path.isAbsolute(p)) ? p : path.join(config.projectPath, p);
   }
+
   logger.log('Writing json report');
   return fs.ensureDir(toAbsolute(config.json_report)).then(function () {
     logger.log('Resources copied');
