@@ -125,14 +125,14 @@ function writeBrowserReport (config, reporter) {
       throw err;
     });
 
-    let promises = [jsonpConfgWrite, jsonConfgWrite];
-
-    if (config.archiveReport) {
-      promises.push(archiveReport(config));
-    }
+    const promises = [jsonpConfgWrite, jsonConfgWrite];
 
     return allSettled(promises);
   }).then(function () {
+    if (config.archiveReport) {
+      archiveReport(config);
+    }
+
     if (config.openReport && config.report && config.report.indexOf('browser') > -1) {
       const executeCommand = require('./index');
       return executeCommand('_openReport', config);
