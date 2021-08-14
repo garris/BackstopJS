@@ -51,7 +51,11 @@ function archiveReport (config) {
 
   return fs.copy(toAbsolute(config.html_report), archivePath).then(function () {
     const file = path.join(archivePath, path.basename(config.compareConfigFileName));
-    return replaceInFile(file, /"..\\\\/g, '"../../');
+    // replace the "..\\" with "..\\..\\" in the config.js files
+    // on windows double escape in order to work properly
+    const search = path.sep.replace(/\\/g, '\\\\\\\\');
+    const replace = path.sep.replace(/\\/g, '\\\\');
+    return replaceInFile(file, new RegExp(`"..${search}`, 'g'), `"..${replace}..${replace}`);
   });
 }
 
