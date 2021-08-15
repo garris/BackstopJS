@@ -1,5 +1,6 @@
 const path = require('path');
 const chalk = require('chalk');
+const _ = require('lodash');
 const cloneDeep = require('lodash/cloneDeep');
 
 const allSettled = require('../util/allSettled');
@@ -43,7 +44,7 @@ function writeBrowserReport (config, reporter) {
 
     // Fixing URLs in the configuration
     const report = toAbsolute(config.html_report);
-    browserReporter.tests.forEach(test => {
+    _.forEach(browserReporter.tests, test => {
       const pair = test.pair;
       pair.reference = path.relative(report, toAbsolute(pair.reference));
       pair.test = path.relative(report, toAbsolute(pair.test));
@@ -102,7 +103,7 @@ function writeJunitReport (config, reporter) {
   const suite = builder.testSuite()
     .name(reporter.testSuite);
 
-  reporter.tests.forEach(test => {
+  _.forEach(reporter.tests, test => {
     const testCase = suite.testCase()
       .className(test.pair.selector)
       .name(' ›› ' + test.pair.label);
@@ -142,7 +143,7 @@ function writeJsonReport (config, reporter) {
 
     // Fixing URLs in the configuration
     const report = toAbsolute(config.json_report);
-    jsonReporter.tests.forEach(test => {
+    _.forEach(jsonReporter.tests, test => {
       const pair = test.pair;
       pair.reference = path.relative(report, toAbsolute(pair.reference));
       pair.test = path.relative(report, toAbsolute(pair.test));
