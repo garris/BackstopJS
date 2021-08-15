@@ -66,7 +66,7 @@ function decorateConfigForCapture (config, isReference) {
   if (config.args.filter) {
     const scenarios = [];
     config.args.filter.split(',').forEach(function (filteredTest) {
-      each(configJSON.scenarios, function (scenario) {
+      configJSON.scenarios.forEach(function (scenario) {
         if (regexTest(scenario.label, filteredTest)) {
           scenarios.push(scenario);
         }
