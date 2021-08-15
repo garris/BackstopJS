@@ -28,7 +28,7 @@ Node 14:
 
 
 Node 16:
-  image: node:14
+  image: node:16
   script:
     - npm run lint && npm run unit-test
 
