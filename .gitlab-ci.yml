@@ -1,34 +1,27 @@
-# Official framework image. Look for the different tagged releases at:
-# https://hub.docker.com/r/library/node/tags/
+
+image: ubuntu:20.04
+
 before_script:
+  - export DEBIAN_FRONTEND=noninteractive
+  - apt-get update
+  - apt-get install curl wget -y
+  - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+  - apt-get install ./google-chrome-stable_current_amd64.deb  -y
+  - curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash
+  - . ~/.nvm/nvm.sh
+  - nvm --version
+  - nvm install $NODEJS
   - node -v
   - npm -v
   - npm install
 
-cache:
-  paths:
-    - node_modules/
-
-# Supported node versions can be found here:
-# https://github.com/nodejs/LTS#lts_schedule
-Node 10:
-  image: node:10
+tests:
   script:
     - npm run lint && npm run unit-test
-
-Node 12:
-  image: node:14
-  script:
-    - npm run lint && npm run unit-test
-
-Node 14:
-  image: node:14
-  script:
-    - npm run lint && npm run unit-test
-
-
-Node 16:
-  image: node:16
-  script:
-    - npm run lint && npm run unit-test
-
+  parallel:
+    matrix:
+      - NODEJS:
+          - 10
+          - 12
+          - 14
+          - 16
