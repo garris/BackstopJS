@@ -18,7 +18,7 @@ const Value = styled.span`
 
 export default class DiffDetails extends React.Component {
   render () {
-    let { diff, suppress } = this.props;
+    const { diff, suppress } = this.props;
     if (!diff || suppress) {
       return null;
     }

@@ -3,6 +3,7 @@ const puppeteer = require('puppeteer');
 const fs = require('./fs');
 const path = require('path');
 const chalk = require('chalk');
+const _ = require('lodash');
 const ensureDirectoryPath = require('./ensureDirectoryPath');
 const injectBackstopTools = require('../../capture/backstopTools.js');
 const engineTools = require('./engineTools');
@@ -95,8 +96,8 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     }
   });
 
-  let chromeVersion = await page.evaluate(_ => {
-    let v = navigator.userAgent.match(/Chrom(e|ium)\/([0-9]+)\./);
+  const chromeVersion = await page.evaluate(_ => {
+    const v = navigator.userAgent.match(/Chrom(e|ium)\/([0-9]+)\./);
     return v ? parseInt(v[2], 10) : 0;
   });
 
@@ -151,7 +152,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     }
 
     // --- REMOVE SELECTORS ---
-    if (scenario.hasOwnProperty('removeSelectors')) {
+    if (_.has(scenario, 'removeSelectors')) {
       const removeSelectors = async () => {
         return Promise.all(
           scenario.removeSelectors.map(async (selector) => {
@@ -184,7 +185,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     await injectBackstopTools(page);
 
     // --- HIDE SELECTORS ---
-    if (scenario.hasOwnProperty('hideSelectors')) {
+    if (_.has(scenario, 'hideSelectors')) {
       const hideSelectors = async () => {
         return Promise.all(
           scenario.hideSelectors.map(async (selector) => {
@@ -201,7 +202,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     }
 
     // --- HANDLE NO-SELECTORS ---
-    if (!scenario.hasOwnProperty('selectors') || !scenario.selectors.length) {
+    if (!_.has(scenario, 'selectors') || !scenario.selectors.length) {
       scenario.selectors = [DOCUMENT_SELECTOR];
     }
 
@@ -264,7 +265,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     testPair.engineErrorMsg = error.message;
 
     compareConfig = {
-      testPairs: [ testPair ]
+      testPairs: [testPair]
     };
     await fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
   }
@@ -284,11 +285,11 @@ async function delegateSelectors (
   selectors,
   selectorMap
 ) {
-  let compareConfig = { testPairs: [] };
+  const compareConfig = { testPairs: [] };
   let captureDocument = false;
   let captureViewport = false;
-  let captureList = [];
-  let captureJobs = [];
+  const captureList = [];
+  const captureJobs = [];
 
   selectors.forEach(function (selector, selectorIndex) {
     const testPair = engineTools.generateTestPair(config, scenario, viewport, variantOrScenarioLabelSafe, scenarioLabelSafe, selectorIndex, selector);
@@ -351,7 +352,7 @@ async function delegateSelectors (
 
 async function captureScreenshot (page, browser, selector, selectorMap, config, selectors, viewport) {
   let filePath;
-  let fullPage = (selector === NOCLIP_SELECTOR || selector === DOCUMENT_SELECTOR);
+  const fullPage = (selector === NOCLIP_SELECTOR || selector === DOCUMENT_SELECTOR);
   if (selector) {
     filePath = selectorMap[selector].filePath;
     ensureDirectoryPath(filePath);
@@ -362,7 +363,7 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
         fullPage: fullPage
       });
     } catch (e) {
-      console.log(chalk.red(`Error capturing..`), e);
+      console.log(chalk.red('Error capturing..'), e);
       return fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
     }
   } else {
@@ -384,11 +385,13 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
           }
 
           const type = config.puppeteerOffscreenCaptureFix ? page : el;
-          const params = config.puppeteerOffscreenCaptureFix ? {
-            captureBeyondViewport: false,
-            path: path,
-            clip: box
-          } : { captureBeyondViewport: false, path: path };
+          const params = config.puppeteerOffscreenCaptureFix
+            ? {
+                captureBeyondViewport: false,
+                path: path,
+                clip: box
+              }
+            : { captureBeyondViewport: false, path: path };
 
           await type.screenshot(params);
         } else {
@@ -420,7 +423,7 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
 
 // handle relative file name
 function translateUrl (url) {
-  const RE = new RegExp('^[./]');
+  const RE = /^[./]/;
   if (RE.test(url)) {
     const fileUrl = 'file://' + path.join(process.cwd(), url);
     console.log('Relative filename detected -- translating to ' + fileUrl);

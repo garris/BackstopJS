@@ -5,7 +5,7 @@ const storeFailedDiff = require('./store-failed-diff.js');
 process.on('message', compare);
 
 function compare (data) {
-  let { referencePath, testPath, resembleOutputSettings, pair } = data;
+  const { referencePath, testPath, resembleOutputSettings, pair } = data;
   const promise = compareHashes(referencePath, testPath)
     .catch(() => compareResemble(referencePath, testPath, pair.misMatchThreshold, resembleOutputSettings, pair.requireSameDimensions));
   promise

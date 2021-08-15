@@ -43,17 +43,15 @@ function writeBrowserReport (config, reporter) {
 
     // Fixing URLs in the configuration
     const report = toAbsolute(config.html_report);
-    for (let i in browserReporter.tests) {
-      if (browserReporter.tests.hasOwnProperty(i)) {
-        const pair = browserReporter.tests[i].pair;
-        pair.reference = path.relative(report, toAbsolute(pair.reference));
-        pair.test = path.relative(report, toAbsolute(pair.test));
+    browserReporter.tests.forEach(test => {
+      const pair = test.pair;
+      pair.reference = path.relative(report, toAbsolute(pair.reference));
+      pair.test = path.relative(report, toAbsolute(pair.test));
 
-        if (pair.diffImage) {
-          pair.diffImage = path.relative(report, toAbsolute(pair.diffImage));
-        }
+      if (pair.diffImage) {
+        pair.diffImage = path.relative(report, toAbsolute(pair.diffImage));
       }
-    }
+    });
 
     const reportConfigFilename = toAbsolute(config.compareConfigFileName);
     const testReportJsonName = toAbsolute(config.bitmaps_test + '/' + config.screenshotDateTime + '/report.json');
@@ -104,12 +102,7 @@ function writeJunitReport (config, reporter) {
   const suite = builder.testSuite()
     .name(reporter.testSuite);
 
-  for (let i in reporter.tests) {
-    if (!reporter.tests.hasOwnProperty(i)) {
-      continue;
-    }
-
-    const test = reporter.tests[i];
+  reporter.tests.forEach(test => {
     const testCase = suite.testCase()
       .className(test.pair.selector)
       .name(' ›› ' + test.pair.label);
@@ -119,7 +112,7 @@ function writeJunitReport (config, reporter) {
       testCase.failure(error);
       testCase.error(error);
     }
-  }
+  });
 
   return new Promise(function (resolve, reject) {
     let testReportFilename = config.testReportFileName || config.ciReport.testReportFileName;
@@ -149,17 +142,15 @@ function writeJsonReport (config, reporter) {
 
     // Fixing URLs in the configuration
     const report = toAbsolute(config.json_report);
-    for (let i in jsonReporter.tests) {
-      if (jsonReporter.tests.hasOwnProperty(i)) {
-        const pair = jsonReporter.tests[i].pair;
-        pair.reference = path.relative(report, toAbsolute(pair.reference));
-        pair.test = path.relative(report, toAbsolute(pair.test));
+    jsonReporter.tests.forEach(test => {
+      const pair = test.pair;
+      pair.reference = path.relative(report, toAbsolute(pair.reference));
+      pair.test = path.relative(report, toAbsolute(pair.test));
 
-        if (pair.diffImage) {
-          pair.diffImage = path.relative(report, toAbsolute(pair.diffImage));
-        }
+      if (pair.diffImage) {
+        pair.diffImage = path.relative(report, toAbsolute(pair.diffImage));
       }
-    }
+    });
 
     return fs.writeFile(toAbsolute(config.compareJsonFileName), JSON.stringify(jsonReporter.getReport(), null, 2)).then(function () {
       logger.log('Wrote Json report to: ' + toAbsolute(config.compareJsonFileName));

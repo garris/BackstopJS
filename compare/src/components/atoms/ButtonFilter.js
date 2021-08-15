@@ -38,7 +38,7 @@ const Button = styled.button`
 
 export default class ButtonFilter extends React.Component {
   render () {
-    let { count, label, status } = this.props;
+    const { count, label, status } = this.props;
 
     return (
       <Button

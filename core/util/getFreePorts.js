@@ -11,7 +11,7 @@ module.exports = function getFreePorts (startingPort, requestedPorts) {
     const R = resolve;
     console.log(`searching for ${requestedPorts} available ports.`);
     const requestedAmount = requestedPorts;
-    let freePorts = [];
+    const freePorts = [];
 
     function findFreePorts (startPort, pointer) {
       const PTR = pointer || 1;

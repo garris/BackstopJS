@@ -33,7 +33,7 @@ const argsOptions = parseArgs(process.argv.slice(2), {
 console.log('Dynamic test example.');
 console.log(`config: ${JSON.stringify(argsOptions, null, 2)}`);
 
-assert.ok(argsOptions.dynamicTestId, `Hold on there: dynamicTestId must represent a unique identifyer (string or int) for each test run.`);
+assert.ok(argsOptions.dynamicTestId, 'Hold on there: dynamicTestId must represent a unique identifyer (string or int) for each test run.');
 
 /**
  * A config used to test explicity setting a config.
@@ -84,10 +84,10 @@ function open () {
 function main () {
   backstop('test', exampleConfig).then(
     () => {
-      console.log(`No changes found.`);
+      console.log('No changes found.');
     },
     () => {
-      console.log(`Changes found.`);
+      console.log('Changes found.');
     }
   );
 }

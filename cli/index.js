@@ -31,7 +31,7 @@ function main () {
     return;
   }
 
-  const commandName = argsOptions['_'][0];
+  const commandName = argsOptions._[0];
 
   if (!commandName) {
     console.log(usage);
