@@ -1,0 +1,34 @@
+# Official framework image. Look for the different tagged releases at:
+# https://hub.docker.com/r/library/node/tags/
+before_script:
+  - node -v
+  - npm -v
+  - npm install
+
+cache:
+  paths:
+    - node_modules/
+
+# Supported node versions can be found here:
+# https://github.com/nodejs/LTS#lts_schedule
+Node 10:
+  image: node:10
+  script:
+    - npm run lint && npm run unit-test
+
+Node 12:
+  image: node:14
+  script:
+    - npm run lint && npm run unit-test
+
+Node 14:
+  image: node:14
+  script:
+    - npm run lint && npm run unit-test
+
+
+Node 16:
+  image: node:14
+  script:
+    - npm run lint && npm run unit-test
+
