@@ -18,9 +18,6 @@ const setService = async (serviceName, serivce, config, capabilities) => {
     }, 50);
   });
 };
-const isLoadedService = (serviceName) => {
-  return (loadedServiceNames.indexOf(serviceName) === -1);
-};
 
 const tearDownService = async (serviceName) => {
   const serviceIndex = loadedServiceNames.indexOf(serviceName);
