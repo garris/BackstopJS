@@ -1,0 +1,71 @@
+{
+  "id": "backstop_default",
+  "viewports": [
+    {
+      "label": "phone",
+      "width": 320,
+      "height": 1768
+    }
+  ],
+  "onBeforeScript": "wdio/onBefore.js",
+  "onReadyScript": "wdio/onReady.js",
+  "scenarios": [
+    {
+      "label": "BackstopJS Homepage",
+      "cookiePath": "backstop_data/engine_scripts/cookies.json",
+      "url": "https://garris.github.io/BackstopJS/",
+      "referenceUrl": "",
+      "readyEvent": "",
+      "readySelector": "",
+      "delay": 0,
+      "hideSelectors": [],
+      "removeSelectors": [],
+      "hoverSelector": "",
+      "clickSelector": "",
+      "postInteractionWait": 0,
+      "selectors": [],
+      "selectorExpansion": true,
+      "expect": 0,
+      "misMatchThreshold": 0.1,
+      "requireSameDimensions": true
+    }
+  ],
+  "paths": {
+    "bitmaps_reference": "backstop_data/bitmaps_reference",
+    "bitmaps_test": "backstop_data/bitmaps_test",
+    "engine_scripts": "backstop_data/engine_scripts",
+    "html_report": "backstop_data/html_report",
+    "ci_report": "backstop_data/ci_report"
+  },
+  "report": [
+    "browser"
+  ],
+  "engine": "wdio",
+  "engineOptions": {
+    "wdio": {
+      "logLevel": "trace",
+      "protocol": "http",
+      "hostname": "hub.browserstack.com",
+      "capabilities": {
+        "browserName": "chrome"
+      },
+      "user": "process.env.BROWSERSTACK_ACCESS_USER",
+      "key": "process.env.BROWSERSTACK_ACCESS_KEY",
+      "services": [
+        [
+          "browserstack", {
+          "browserstackLocal": true
+        }]
+      ]
+    },
+    "puppeteer": {
+      "args": [
+        "--no-sandbox"
+      ]
+    }
+  },
+  "asyncCaptureLimit": 5,
+  "asyncCompareLimit": 50,
+  "debug": false,
+  "debugWindow": false
+}

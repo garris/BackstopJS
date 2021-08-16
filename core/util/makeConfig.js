@@ -6,7 +6,23 @@ const NON_CONFIG_COMMANDS = ['init', 'version', 'stop'];
 function projectPath (config) {
   return process.cwd();
 }
-
+/**
+ * check if variables come from system (process.env. prefix)
+ */
+function loadSystemConfig (config) {
+  for (var attributename in config) {
+    if (typeof config[attributename] === 'object') {
+      config[attributename] = loadSystemConfig(config[attributename]);
+    }
+    if (typeof config[attributename] === 'string') {
+      if (config[attributename].indexOf('process.env.') !== -1) {
+        const key = config[attributename].split('process.env.')[1];
+        config[attributename] = process.env[key];
+      }
+    }
+  }
+  return config;
+}
 function loadProjectConfig (command, options, config) {
   // TEST REPORT FILE NAME
   const customTestReportFileName = options && (options.testReportFileName || null);
@@ -59,7 +75,10 @@ function makeConfig (command, options) {
   config.projectPath = projectPath(config);
   config.perf = {};
 
-  const userConfig = Object.assign({}, loadProjectConfig(command, options, config));
+  let userConfig = Object.assign({}, loadProjectConfig(command, options, config));
+  
+  // load env variables in json
+  userConfig = loadSystemConfig(userConfig);
 
   return extendConfig(config, userConfig);
 }

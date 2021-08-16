@@ -1,4 +1,5 @@
-const puppeteer = require('puppeteer');
+const { remote } = require('webdriverio');
+const { initialiseLauncherService } = require('@wdio/utils/build/initialiseServices');
 
 const fs = require('./fs');
 const path = require('path');
@@ -6,8 +7,8 @@ const chalk = require('chalk');
 const ensureDirectoryPath = require('./ensureDirectoryPath');
 const injectBackstopTools = require('../../capture/backstopTools.js');
 const engineTools = require('./engineTools');
+const { setService } = require('./wdio-service-handler');
 
-const MIN_CHROME_VERSION = 62;
 const TEST_TIMEOUT = 60000;
 const DEFAULT_FILENAME_TEMPLATE = '{configId}_{scenarioLabel}_{selectorIndex}_{selectorLabel}_{viewportIndex}_{viewportLabel}';
 const DEFAULT_BITMAPS_TEST_DIR = 'bitmaps_test';
@@ -35,6 +36,8 @@ module.exports = function (args) {
 
   return processScenarioView(scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, config);
 };
+let wdioServices;
+let finalConfig;
 
 async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, config) {
   if (!config.paths) {
@@ -51,95 +54,114 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
   const VP_W = viewport.width || viewport.viewport.width;
   const VP_H = viewport.height || viewport.viewport.height;
 
-  const puppeteerArgs = Object.assign(
-    {},
-    {
-      ignoreHTTPSErrors: true,
-      headless: !config.debugWindow
-    },
-    config.engineOptions.puppeteer
-  );
+  const wdioArgs = {
+    logLevel: 'trace',
+    hostname: 'localhost',
+    port: 4444,
+    path: '/wd/hub', // remove `path` if you decided using something different from driver binaries.
+    capabilities: {
+      browserName: 'chrome'
+    }
+  };
 
-  const browser = await puppeteer.launch(puppeteerArgs);
-  const page = await browser.newPage();
+  finalConfig = { ...wdioArgs, ...config.engineOptions.wdio };
+  // merge default config
+  Object.freeze(finalConfig);
 
-  await page.setViewport({ width: VP_W, height: VP_H });
-  page.setDefaultNavigationTimeout(engineTools.getEngineOption(config, 'waitTimeout', TEST_TIMEOUT));
+  wdioServices = initialiseLauncherService(finalConfig, [{ ...finalConfig.capabilities }]);
+  for (let i = 0; i < wdioServices.launcherServices.length; i++) {
+    await setService(
+      wdioServices.launcherServices[i].constructor.name,
+      wdioServices.launcherServices[i],
+      wdioServices.launcherServices[i]._options,
+      [{ ...finalConfig.capabilities }]
+    );
+  }
+
+  const browser = await remote(finalConfig);
+
+  await browser.setWindowSize(VP_W, VP_H);
+
+  await browser.setTimeout({
+    'pageLoad': engineTools.getEngineOption(config, 'waitTimeout', TEST_TIMEOUT),
+    'script': engineTools.getEngineOption(config, 'waitTimeout', TEST_TIMEOUT)
+  });
 
   if (isReference) {
     console.log(chalk.blue('CREATING NEW REFERENCE FILE'));
   }
 
+  // @TODO It's not possible to read the command line, maybe we can inject a script that reports to backstop
+  //       I guess for now it's fine to disable this feature
   // --- set up console output and ready event ---
   const readyEvent = scenario.readyEvent || config.readyEvent;
   const readyTimeout = scenario.readyTimeout || config.readyTimeout || 30000;
-  let readyResolve, readyPromise, readyTimeoutTimer;
-  if (readyEvent) {
-    readyPromise = new Promise(resolve => {
-      readyResolve = resolve;
-      // fire the ready event after the readyTimeout
-      readyTimeoutTimer = setTimeout(() => {
-        console.error(chalk.red(`ReadyEvent not detected within readyTimeout limit. (${readyTimeout} ms)`), scenario.url);
-        resolve();
-      }, readyTimeout);
-    });
-  }
+  // let readyResolve, readyPromise, readyTimeoutTimer;
+  // if (readyEvent) {
+  //   readyPromise = new Promise(resolve => {
+  //     readyResolve = resolve;
+  //     // fire the ready event after the readyTimeout
+  //     readyTimeoutTimer = setTimeout(() => {
+  //       console.error(chalk.red(`ReadyEvent not detected within readyTimeout limit. (${readyTimeout} ms)`), scenario.url);
+  //       resolve();
+  //     }, readyTimeout);
+  //   });
+  // }
 
-  page.on('console', msg => {
-    for (let i = 0; i < msg.args().length; ++i) {
-      const line = msg.args()[i];
-      console.log(`Browser Console Log ${i}: ${line}`);
-      if (readyEvent && new RegExp(readyEvent).test(line)) {
-        readyResolve();
-      }
-    }
-  });
+  // page.on('console', msg => {
+  //   for (let i = 0; i < msg.args().length; ++i) {
+  //     const line = msg.args()[i];
+  //     console.log(`Browser Console Log ${i}: ${line}`);
+  //     if (readyEvent && new RegExp(readyEvent).test(line)) {
+  //       readyResolve();
+  //     }
+  //   }
+  // });
 
-  let chromeVersion = await page.evaluate(_ => {
-    let v = navigator.userAgent.match(/Chrom(e|ium)\/([0-9]+)\./);
-    return v ? parseInt(v[2], 10) : 0;
-  });
-
-  if (chromeVersion < MIN_CHROME_VERSION) {
-    console.warn(`***WARNING! CHROME VERSION ${MIN_CHROME_VERSION} OR GREATER IS REQUIRED. PLEASE UPDATE YOUR CHROME APP!***`);
-  }
-
+  console.warn(`ready event is not available`);
   let result;
-  const puppetCommands = async () => {
+  const wdioCommands = async () => {
     // --- BEFORE SCRIPT ---
-    const onBeforeScript = scenario.onBeforeScript || config.onBeforeScript;
+    var onBeforeScript = scenario.onBeforeScript || config.onBeforeScript;
     if (onBeforeScript) {
-      const beforeScriptPath = path.resolve(engineScriptsPath, onBeforeScript);
+      var beforeScriptPath = path.resolve(engineScriptsPath, onBeforeScript);
       if (fs.existsSync(beforeScriptPath)) {
-        await require(beforeScriptPath)(page, scenario, viewport, isReference, browser, config);
+        await require(beforeScriptPath)(browser, scenario, viewport, isReference, browser, config);
       } else {
         console.warn('WARNING: script not found: ' + beforeScriptPath);
       }
     }
 
     //  --- OPEN URL ---
-    let url = scenario.url;
+    var url = scenario.url;
     if (isReference && scenario.referenceUrl) {
       url = scenario.referenceUrl;
     }
-    await page.goto(translateUrl(url));
+    await browser.url(translateUrl(url));
 
-    await injectBackstopTools(page);
+    await injectBackstopTools(browser);
 
     //  --- WAIT FOR READY EVENT ---
     if (readyEvent) {
-      await page.evaluate(`window._readyEvent = '${readyEvent}'`);
+      await browser.waitUntil(function () {
+        const state = browser.execute(function () {
+          return document.readyState;
+        });
+        return state === 'complete';
+      },
+      {
+        timeout: 60000, // 60secs
+        timeoutMsg: 'Oops! Page did not respond with ready event'
+      });
 
-      await readyPromise;
+      // clearTimeout(readyTimeoutTimer);
 
-      clearTimeout(readyTimeoutTimer);
-
-      await page.evaluate(_ => console.info('readyEvent ok'));
+      await browser.execute(_ => console.info('readyEvent ok'));
     }
 
     // --- WAIT FOR SELECTOR ---
     if (scenario.readySelector) {
-      await page.waitForSelector(scenario.readySelector, {
+      await browser.$(scenario.readySelector).waitForDisplayed({
         timeout: readyTimeout
       });
     }
@@ -147,7 +169,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
 
     // --- DELAY ---
     if (scenario.delay > 0) {
-      await page.waitForTimeout(scenario.delay);
+      await browser.pause(scenario.delay);
     }
 
     // --- REMOVE SELECTORS ---
@@ -155,8 +177,8 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
       const removeSelectors = async () => {
         return Promise.all(
           scenario.removeSelectors.map(async (selector) => {
-            await page
-              .evaluate((sel) => {
+            await browser
+              .execute((sel) => {
                 document.querySelectorAll(sel).forEach(s => {
                   s.style.cssText = 'display: none !important;';
                   s.classList.add('__86d');
@@ -170,26 +192,26 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     }
 
     //  --- ON READY SCRIPT ---
-    const onReadyScript = scenario.onReadyScript || config.onReadyScript;
+    var onReadyScript = scenario.onReadyScript || config.onReadyScript;
     if (onReadyScript) {
-      const readyScriptPath = path.resolve(engineScriptsPath, onReadyScript);
+      var readyScriptPath = path.resolve(engineScriptsPath, onReadyScript);
       if (fs.existsSync(readyScriptPath)) {
-        await require(readyScriptPath)(page, scenario, viewport, isReference, browser, config);
+        await require(readyScriptPath)(browser, scenario, viewport, isReference, browser, config);
       } else {
         console.warn('WARNING: script not found: ' + readyScriptPath);
       }
     }
 
     // reinstall tools in case onReadyScript has loaded a new URL.
-    await injectBackstopTools(page);
+    await injectBackstopTools(browser);
 
     // --- HIDE SELECTORS ---
     if (scenario.hasOwnProperty('hideSelectors')) {
       const hideSelectors = async () => {
         return Promise.all(
           scenario.hideSelectors.map(async (selector) => {
-            await page
-              .evaluate((sel) => {
+            await browser
+              .execute((sel) => {
                 document.querySelectorAll(sel).forEach(s => {
                   s.style.visibility = 'hidden';
                 });
@@ -205,9 +227,9 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
       scenario.selectors = [DOCUMENT_SELECTOR];
     }
 
-    await page.evaluate(`window._selectorExpansion = '${scenario.selectorExpansion}'`);
-    await page.evaluate(`window._backstopSelectors = '${scenario.selectors}'`);
-    result = await page.evaluate(() => {
+    await browser.execute(`window._selectorExpansion = '${scenario.selectorExpansion}'`);
+    await browser.execute(`window._backstopSelectors = '${scenario.selectors}'`);
+    result = await browser.execute(() => {
       if (window._selectorExpansion.toString() === 'true') {
         window._backstopSelectorsExp = window._backstopTools.expandSelectors(window._backstopSelectors);
       } else {
@@ -231,7 +253,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
   };
 
   let error;
-  await puppetCommands().catch(e => {
+  await wdioCommands().catch(e => {
     console.log(chalk.red(`Puppeteer encountered an error while running scenario "${scenario.label}"`));
     console.log(chalk.red(e));
     error = e;
@@ -241,7 +263,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
   if (!error) {
     try {
       compareConfig = await delegateSelectors(
-        page,
+        browser,
         browser,
         scenario,
         viewport,
@@ -255,7 +277,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
       error = e;
     }
   } else {
-    await browser.close();
+    await browser.closeWindow();
   }
 
   if (error) {
@@ -266,7 +288,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     compareConfig = {
       testPairs: [ testPair ]
     };
-    await fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
+    fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
   }
 
   return Promise.resolve(compareConfig);
@@ -320,9 +342,9 @@ async function delegateSelectors (
   }
 
   return new Promise(function (resolve, reject) {
-    let job = null;
-    const errors = [];
-    const next = function () {
+    var job = null;
+    var errors = [];
+    var next = function () {
       if (captureJobs.length === 0) {
         if (errors.length === 0) {
           resolve();
@@ -341,11 +363,11 @@ async function delegateSelectors (
     };
     next();
   }).then(async () => {
-    console.log(chalk.green('x Close Browser'));
-    await browser.close();
+    console.log(chalk.green('x Close Webdriver Session'));
+    await browser.deleteSession();
   }).catch(async (err) => {
     console.log(chalk.red(err));
-    await browser.close();
+    await browser.closeWindow();
   }).then(_ => compareConfig);
 }
 
@@ -357,10 +379,14 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
     ensureDirectoryPath(filePath);
 
     try {
-      await page.screenshot({
-        path: filePath,
-        fullPage: fullPage
-      });
+      // @todo set browser height workaround try
+      // @fixme still picture is same height
+      await browser.execute((VP_H) => {
+        document.querySelector('html').style.height = VP_H + 'px';
+        document.querySelector('html').style.overflow = 'hidden';
+      }, viewport.height);
+      const body = await browser.$('html');
+      await body.saveScreenshot(filePath);
     } catch (e) {
       console.log(chalk.red(`Error capturing..`), e);
       return fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
@@ -368,51 +394,22 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
   } else {
     // OTHER-SELECTOR screenshot
     const selectorShot = async (s, path) => {
-      const el = await page.$(s);
-      if (el) {
-        const box = await el.boundingBox();
-        if (box) {
-          // Resize the viewport to screenshot elements outside of the viewport
-          if (config.useBoundingBoxViewportForSelectors !== false) {
-            const bodyHandle = await page.$('body');
-            const boundingBox = await bodyHandle.boundingBox();
-
-            await page.setViewport({
-              width: Math.max(viewport.width, Math.ceil(boundingBox.width)),
-              height: Math.max(viewport.height, Math.ceil(boundingBox.height))
-            });
-          }
-
-          const type = config.puppeteerOffscreenCaptureFix ? page : el;
-          const params = config.puppeteerOffscreenCaptureFix ? {
-            captureBeyondViewport: false,
-            path: path,
-            clip: box
-          } : { captureBeyondViewport: false, path: path };
-
-          await type.screenshot(params);
-        } else {
-          console.log(chalk.yellow(`Element not visible for capturing: ${s}`));
-          return fs.copy(config.env.backstop + HIDDEN_SELECTOR_PATH, path);
-        }
-      } else {
-        console.log(chalk.magenta(`Element not found for capturing: ${s}`));
-        return fs.copy(config.env.backstop + SELECTOR_NOT_FOUND_PATH, path);
-      }
+      await browser.$(selector).saveScreenshot(path);
     };
 
     const selectorsShot = async () => {
-      for (let i = 0; i < selectors.length; i++) {
-        const selector = selectors[i];
-        filePath = selectorMap[selector].filePath;
-        ensureDirectoryPath(filePath);
-        try {
-          await selectorShot(selector, filePath);
-        } catch (e) {
-          console.log(chalk.red(`Error capturing Element ${selector}`), e);
-          return fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
-        }
-      }
+      return Promise.all(
+        selectors.map(async selector => {
+          filePath = selectorMap[selector].filePath;
+          ensureDirectoryPath(filePath);
+          try {
+            await selectorShot(selector, filePath);
+          } catch (e) {
+            console.log(chalk.red(`Error capturing Element ${selector}`), e);
+            return fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
+          }
+        })
+      );
     };
     await selectorsShot();
   }
