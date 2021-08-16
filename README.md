@@ -31,7 +31,6 @@
 - Incredibly easy to use: just 3 commands go a long long way!
 - [BETA] Limited Support for WebDriver Protocol, based on wdio
    - works as well with any wdio-(cloud)-service (see [wdio configuration]() )
-   - not compatible with puppeteer references pictures
 
 ![BackstopJS cli report](http://garris.github.io/BackstopJS/assets/cli-report.png)
 
