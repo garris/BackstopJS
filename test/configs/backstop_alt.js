@@ -1,5 +1,5 @@
 module.exports = {
-  id: `puppet_backstop_features`,
+  id: 'puppet_backstop_features',
   viewports: [
     {
       label: 'phone',
@@ -12,8 +12,8 @@ module.exports = {
       height: 768
     }
   ],
-  onBeforeScript: `puppet/onBefore.js`,
-  onReadyScript: `puppet/onReady.js`,
+  onBeforeScript: 'puppet/onBefore.js',
+  onReadyScript: 'puppet/onReady.js',
   scenarios: [
     {
       label: 'Simple',

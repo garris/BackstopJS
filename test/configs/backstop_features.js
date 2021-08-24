@@ -234,6 +234,8 @@ module.exports = {
         }
       ],
       selectors: ['div[id=navbar]'],
+      postInteractionWait: 1000,
+      misMatchThreshold: 5,
       viewports: [
         {
           label: 'Desktop',

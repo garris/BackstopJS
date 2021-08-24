@@ -1,6 +1,6 @@
 const cloneDeep = require('lodash/cloneDeep');
 const fs = require('./fs');
-const each = require('./each');
+const _ = require('lodash');
 const pMap = require('p-map');
 
 const runPuppet = require('./runPuppet');
@@ -66,7 +66,7 @@ function decorateConfigForCapture (config, isReference) {
   if (config.args.filter) {
     const scenarios = [];
     config.args.filter.split(',').forEach(function (filteredTest) {
-      each(configJSON.scenarios, function (scenario) {
+      configJSON.scenarios.forEach(function (scenario) {
         if (regexTest(scenario.label, filteredTest)) {
           scenarios.push(scenario);
         }
@@ -99,7 +99,7 @@ function delegateScenarios (config) {
     }
     scenarios.push(scenario);
 
-    if (!config.isReference && scenario.hasOwnProperty('variants')) {
+    if (!config.isReference && _.has(scenario, 'variants')) {
       scenario.variants.forEach(function (variant) {
         // var variantLabelSafe = makeSafe(variant.label);
         variant._parent = scenario;
@@ -131,7 +131,7 @@ function delegateScenarios (config) {
   if (config.engine.startsWith('puppet')) {
     return pMap(scenarioViews, runPuppet, { concurrency: asyncCaptureLimit });
   } else if (/chrom./i.test(config.engine)) {
-    logger.error(`Chromy is no longer supported in version 5+. Please use version 4.x.x for chromy support.`);
+    logger.error('Chromy is no longer supported in version 5+. Please use version 4.x.x for chromy support.');
   } else {
     logger.error(`Engine "${(typeof config.engine === 'string' && config.engine) || 'undefined'}" not recognized! If you require PhantomJS or Slimer support please use backstopjs@3.8.8 or earlier.`);
   }

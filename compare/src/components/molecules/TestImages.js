@@ -21,14 +21,14 @@ class TestImages extends React.Component {
   }
 
   onImageClick (img) {
-    let { openModal } = this.props;
+    const { openModal } = this.props;
     this.props.info.targetImg = img;
     openModal(this.props.info);
   }
 
   render () {
-    let { reference, test } = this.props.info;
-    let { status, settings } = this.props;
+    const { reference, test } = this.props.info;
+    const { status, settings } = this.props;
 
     this.state.images = [
       {

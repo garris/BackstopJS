@@ -76,7 +76,8 @@ class ApproveButton extends React.Component {
         errorMsg: `${err.message}. 🧐
 Looks like the "approve" operation failed.
 Please check that backstopRemote is running.
-      ` });
+      `
+      });
       alert(this.state.errorMsg);
     }
   }

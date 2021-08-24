@@ -25,9 +25,9 @@ function getModeFromImgId (imgId) {
 }
 
 const scrubber = (state = {}, action) => {
+  let targetImgId = '';
   switch (action.type) {
     case 'OPEN_SCRUBBER_MODAL':
-      let targetImgId = '';
       try {
         targetImgId = action.value.targetImg.id;
       } catch (err) {}

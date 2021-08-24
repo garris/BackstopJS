@@ -23,24 +23,24 @@ const ButtonNav = styled.div`
   height: 32px;
   width: 32px;
   margin: 0 0px 0 5px;
-  transform: ${props => (props.prev ? `rotate(0)` : `rotate(180deg)`)};
-  opacity: ${props => (props.disabled ? `0.2` : `1`)};
+  transform: ${props => (props.prev ? 'rotate(0)' : 'rotate(180deg)')};
+  opacity: ${props => (props.disabled ? '0.2' : '1')};
   display: inline-block;
 
   &:hover {
-    cursor: ${props => (props.disabled ? `` : `pointer`)};
+    cursor: ${props => (props.disabled ? '' : 'pointer')};
     background-color: ${props => (props.disabled ? `${colors.lightGray}` : `${colors.medGray}`)};
   }
 `;
 
 export default class NavButtons extends React.Component {
   nextTest () {
-    let dest = `#test${this.props.currentId + 1}`;
+    const dest = `#test${this.props.currentId + 1}`;
     this.jumpTo(dest);
   }
 
   prevTest () {
-    let dest = `#test${this.props.currentId - 1}`;
+    const dest = `#test${this.props.currentId - 1}`;
     this.jumpTo(dest);
   }
 
@@ -52,7 +52,7 @@ export default class NavButtons extends React.Component {
   }
 
   render () {
-    let { currentId, lastId } = this.props;
+    const { currentId, lastId } = this.props;
 
     return (
       <Wrapper>

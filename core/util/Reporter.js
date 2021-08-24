@@ -20,27 +20,11 @@ Reporter.prototype.addTest = function (pair) {
 };
 
 Reporter.prototype.passed = function () {
-  let count = 0;
-
-  for (let test in this.tests) {
-    if (this.tests.hasOwnProperty(test) && this.tests[test].passed()) {
-      count++;
-    }
-  }
-
-  return count;
+  return this.tests.filter(test => test.passed()).length;
 };
 
 Reporter.prototype.failed = function () {
-  let count = 0;
-
-  for (let test in this.tests) {
-    if (this.tests.hasOwnProperty(test) && !this.tests[test].passed()) {
-      count++;
-    }
-  }
-
-  return count;
+  return this.tests.filter(test => !test.passed()).length;
 };
 
 Reporter.prototype.getReport = function () {

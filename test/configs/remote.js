@@ -1,7 +1,7 @@
 /* eslint-env browser, node */
 
 module.exports = {
-  id: `backstop-remote`,
+  id: 'backstop-remote',
   viewports: [
     {
       label: 'webview',
@@ -9,7 +9,7 @@ module.exports = {
       height: 900
     }
   ],
-  onReadyScript: `puppet/onReady.js`,
+  onReadyScript: 'puppet/onReady.js',
   scenarios: [
     {
       label: '{testName}',

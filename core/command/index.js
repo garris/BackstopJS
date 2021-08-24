@@ -1,4 +1,5 @@
 const path = require('path');
+const _ = require('lodash');
 const logger = require('../util/logger')('COMMAND');
 
 /*
@@ -86,7 +87,7 @@ const commands = commandNames
 
 const exposedCommands = exposedCommandNames
   .filter(function commandIsDefined (commandName) {
-    return commands.hasOwnProperty(commandName);
+    return _.has(commands, commandName);
   })
   .map(function (commandName) {
     return {
@@ -97,8 +98,8 @@ const exposedCommands = exposedCommandNames
   .reduce(toObjectReducer, {});
 
 function execute (commandName, config) {
-  if (!exposedCommands.hasOwnProperty(commandName)) {
-    if (commandName.charAt(0) === '_' && commands.hasOwnProperty(commandName.substring(1))) {
+  if (!_.has(exposedCommands, commandName)) {
+    if (commandName.charAt(0) === '_' && _.has(commands, commandName.substring(1))) {
       commandName = commandName.substring(1);
     } else {
       throw new Error('The command "' + commandName + '" is not exposed publicly.');
