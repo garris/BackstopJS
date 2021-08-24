@@ -192,6 +192,7 @@ selectorExpansion        // See Targeting elements in the next section for more 
 misMatchThreshold        // Percentage of different pixels allowed to pass test
 requireSameDimensions    // If set to true -- any change in selector size will trigger a test failure.
 viewports                // An array of screen size objects your DOM will be tested against. This configuration will override the viewports property assigned at the config root.
+archiveReport            // If set to true -- all test reports will be archived(copied) (in `reports` folder)   
 ```
 
 
@@ -482,7 +483,7 @@ module.exports = async (page, scenario, vp) => {
 
 #### Setting the base path for custom onBefore and onReady scripts
 
-By default the base path is a folder called `engine_scripts` inside your BackstopJS installation directory. You can override this by setting the `paths.scripts` property in your `backstop.json` file to point to somewhere in your project directory (recommended).
+By default, the base path is a folder called `engine_scripts` inside your BackstopJS installation directory. You can override this by setting the `paths.scripts` property in your `backstop.json` file to point to somewhere in your project directory (recommended).
 
 ```json
 "paths": {
@@ -573,7 +574,8 @@ By default, BackstopJS saves generated resources into the `backstop_data` direct
     "engine_scripts": "backstop_data/engine_scripts",
     "html_report": "backstop_data/html_report",
     "json_report": "backstop_data/json_report",
-    "ci_report": "backstop_data/ci_report"
+    "ci_report": "backstop_data/ci_report",
+    "reports_archive": "backstop_data/reports",
   }
   ...
 ```
