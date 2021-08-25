@@ -2,6 +2,19 @@
 # Change Log
 
  
+## [5.4.2] - 2021-08-24
+### Added
+
+
+
+### Changed
+- More code formatting
+
+### Fixed 
+
+
+
+ 
 ## [5.4.1] - 2021-08-24
 ### Added
 - Feature: archive report (#1353)  @klodoma
