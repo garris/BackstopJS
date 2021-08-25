@@ -2,13 +2,14 @@
 # Change Log
 
  
-## [5.4.2] - 2021-08-24
+## [5.4.3] - 2021-08-24
 ### Added
 
 
 
 ### Changed
-- More code formatting
+- More code formatting and some test cleanups
+- updated readme
 
 ### Fixed 
 
