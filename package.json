@@ -30,7 +30,9 @@
     "copy-report-bundle": "mkdir -p test/configs/backstop_data/html_report && cp compare/output/index_bundle.js test/configs/backstop_data/html_report/",
     "build-and-copy-report-bundle": "npm run build-compare && npm run copy-report-bundle",
     "remote": "node ./cli/index.js remote",
-    "stop": "curl http://localhost:3000/stop"
+    "stop": "curl http://localhost:3000/stop",
+    "build-docker": "PV=$(node -p -e \"require('./package.json').version\"); docker build docker -t backstopjs/backstopjs:$PV",
+    "push-docker": "PV=$(node -p -e \"require('./package.json').version\"); docker push backstopjs/backstopjs:$PV"
   },
   "lint-staged": {
     "compare/src/**/*.js": [

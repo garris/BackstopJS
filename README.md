@@ -635,13 +635,17 @@ const backstop = require('backstopjs');
 backstop('test', {docker: true});
 ```
 
-The above flag will cause BackstopJS to hit your Docker local client, spin up the BackstopJS container at https://hub.docker.com/r/backstopjs/backstopjs/ and execute your test.
+The above flag will cause BackstopJS to hit your Docker local client, spin up a BackstopJS container from https://hub.docker.com/r/backstopjs/backstopjs/ and execute your test. By default, Backstop will attemt to use a Docker image with the same version number specified in your `package.js`.
+
+
+####Changing the default Docker command
 
 If the default docker command or image does not work for you, you can customize the command to run BackstopJS with Docker by changing the `dockerCommandTemplate` config option. The default is:
 
 ```sh
 "dockerCommandTemplate": "docker run --rm -it --mount type=bind,source=\"{cwd}\",target=/src backstopjs/backstopjs:{version} {backstopCommand} {args}"
 ```
+
 
 *Tip: to run BackstopJS in Docker in an environment where the output is piped (e.g. CI server or an IDE's output window), remove the -t parameter (change the default to "docker run --rm -i --mount...)*
 
@@ -897,6 +901,17 @@ Here's some suggestions if you want to work on the HTML report locally...
 - 👆 NOTE: As a convenience, `npm run build-and-copy-report-bundle` copies your newly built React bundle into `test/configs/backstop_data/html_report/` so you can then test your changes by simply refreshing your report in chrome.
 
 
+
+### Docker development
+Want to make sure your changes work with the `--docker` option? You can rebuild your local docker image from your current BackstopJS source.  From your BackstopJS root...
+```sh
+npm run build-docker
+```
+
+If you have access to Docker Hub @backstop/backstop, then this command will push a new public BackstopJS docker image with the current version tag...
+```sh
+npm run push-docker
+```
 
 ### SMOKE & FEATURE TESTS
 See the next section for running the SMOKE TEST -- Please make sure this is working before submitting any PR's.  Thanks!
