@@ -1,20 +1,17 @@
-const Chromy = require('chromy');
-var cloneDeep = require('lodash/cloneDeep');
-var fs = require('./fs');
-var each = require('./each');
-var pMap = require('p-map');
+const cloneDeep = require('lodash/cloneDeep');
+const fs = require('./fs');
+const _ = require('lodash');
+const pMap = require('p-map');
 
-var runChromy = require('./runChromy');
-var runPuppet = require('./runPuppet');
+const runPuppet = require('./runPuppet');
 
 const ensureDirectoryPath = require('./ensureDirectoryPath');
-var logger = require('./logger')('createBitmaps');
+const logger = require('./logger')('createBitmaps');
 
-var CONCURRENCY_DEFAULT = 10;
-const CHROMY_STARTING_PORT_NUMBER = 9222;
+const CONCURRENCY_DEFAULT = 10;
 
 function regexTest (string, search) {
-  var re = new RegExp(search);
+  const re = new RegExp(search);
   return re.test(string);
 }
 
@@ -29,7 +26,7 @@ function ensureViewportLabel (config) {
 }
 
 function decorateConfigForCapture (config, isReference) {
-  var configJSON;
+  let configJSON;
 
   if (typeof config.args.config === 'object') {
     configJSON = config.args.config;
@@ -39,17 +36,18 @@ function decorateConfigForCapture (config, isReference) {
   configJSON.scenarios = configJSON.scenarios || [];
   ensureViewportLabel(configJSON);
 
-  var totalScenarioCount = configJSON.scenarios.length;
+  const totalScenarioCount = configJSON.scenarios.length;
 
   function pad (number) {
-    var r = String(number);
+    let r = String(number);
     if (r.length === 1) {
       r = '0' + r;
     }
     return r;
   }
-  var screenshotNow = new Date();
-  var screenshotDateTime = screenshotNow.getFullYear() + pad(screenshotNow.getMonth() + 1) + pad(screenshotNow.getDate());
+
+  const screenshotNow = new Date();
+  let screenshotDateTime = screenshotDateTime = screenshotNow.getFullYear() + pad(screenshotNow.getMonth() + 1) + pad(screenshotNow.getDate());
   screenshotDateTime = configJSON.dynamicTestId ? configJSON.dynamicTestId : screenshotDateTime;
   configJSON.screenshotDateTime = screenshotDateTime;
   config.screenshotDateTime = screenshotDateTime;
@@ -66,9 +64,9 @@ function decorateConfigForCapture (config, isReference) {
   configJSON.defaultRequireSameDimensions = config.defaultRequireSameDimensions;
 
   if (config.args.filter) {
-    var scenarios = [];
+    const scenarios = [];
     config.args.filter.split(',').forEach(function (filteredTest) {
-      each(configJSON.scenarios, function (scenario) {
+      configJSON.scenarios.forEach(function (scenario) {
         if (regexTest(scenario.label, filteredTest)) {
           scenarios.push(scenario);
         }
@@ -86,11 +84,8 @@ function saveViewportIndexes (viewport, index) {
 }
 
 function delegateScenarios (config) {
-  // TODO: start chromy here?  Or later?  maybe later because maybe changing resolutions doesn't work after starting?
-  // casper.start();
-
-  var scenarios = [];
-  var scenarioViews = [];
+  const scenarios = [];
+  const scenarioViews = [];
 
   config.viewports = config.viewports.map(saveViewportIndexes);
 
@@ -104,7 +99,7 @@ function delegateScenarios (config) {
     }
     scenarios.push(scenario);
 
-    if (!config.isReference && scenario.hasOwnProperty('variants')) {
+    if (!config.isReference && _.has(scenario, 'variants')) {
       scenario.variants.forEach(function (variant) {
         // var variantLabelSafe = makeSafe(variant.label);
         variant._parent = scenario;
@@ -113,9 +108,9 @@ function delegateScenarios (config) {
     }
   });
 
-  var scenarioViewId = 0;
+  let scenarioViewId = 0;
   scenarios.forEach(function (scenario) {
-    var desiredViewportsForScenario = config.viewports;
+    let desiredViewportsForScenario = config.viewports;
 
     if (scenario.viewports && scenario.viewports.length > 0) {
       desiredViewportsForScenario = scenario.viewports;
@@ -133,32 +128,24 @@ function delegateScenarios (config) {
 
   const asyncCaptureLimit = config.asyncCaptureLimit === 0 ? 1 : config.asyncCaptureLimit || CONCURRENCY_DEFAULT;
 
-  if (/chrom./i.test(config.engine)) {
-    const PORT = (config.startingPort || CHROMY_STARTING_PORT_NUMBER);
-    var getFreePorts = require('./getFreePorts');
-    return getFreePorts(PORT, scenarioViews.length).then(freeports => {
-      console.log('These ports will be used:', JSON.stringify(freeports));
-      scenarioViews.forEach((scenarioView, i) => {
-        scenarioView.assignedPort = freeports[i];
-      });
-      return pMap(scenarioViews, runChromy, { concurrency: asyncCaptureLimit });
-    });
-  } else if (config.engine.startsWith('puppet')) {
+  if (config.engine.startsWith('puppet')) {
     return pMap(scenarioViews, runPuppet, { concurrency: asyncCaptureLimit });
+  } else if (/chrom./i.test(config.engine)) {
+    logger.error('Chromy is no longer supported in version 5+. Please use version 4.x.x for chromy support.');
   } else {
     logger.error(`Engine "${(typeof config.engine === 'string' && config.engine) || 'undefined'}" not recognized! If you require PhantomJS or Slimer support please use backstopjs@3.8.8 or earlier.`);
   }
 }
 
 function writeCompareConfigFile (comparePairsFileName, compareConfig) {
-  var compareConfigJSON = JSON.stringify(compareConfig, null, 2);
+  const compareConfigJSON = JSON.stringify(compareConfig, null, 2);
   ensureDirectoryPath(comparePairsFileName);
   return fs.writeFile(comparePairsFileName, compareConfigJSON);
 }
 
 function flatMapTestPairs (rawTestPairs) {
   return rawTestPairs.reduce((acc, result) => {
-    var testPairs = result.testPairs;
+    let testPairs = result.testPairs;
     if (!testPairs) {
       testPairs = {
         diff: {
@@ -194,10 +181,6 @@ module.exports = function (config, isReference) {
       };
       return writeCompareConfigFile(config.tempCompareConfigFileName, result);
     });
-
-  if (/chrom./i.test(config.engine)) {
-    promise.then(() => Chromy.cleanup());
-  }
 
   return promise;
 };
