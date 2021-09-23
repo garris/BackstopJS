@@ -47,7 +47,7 @@ function decorateConfigForCapture (config, isReference) {
   }
 
   const screenshotNow = new Date();
-  let screenshotDateTime = screenshotDateTime = screenshotNow.getFullYear() + pad(screenshotNow.getMonth() + 1) + pad(screenshotNow.getDate());
+  let screenshotDateTime = screenshotNow.getFullYear() + pad(screenshotNow.getMonth() + 1) + pad(screenshotNow.getDate());
   screenshotDateTime = configJSON.dynamicTestId ? configJSON.dynamicTestId : screenshotDateTime;
   configJSON.screenshotDateTime = screenshotDateTime;
   config.screenshotDateTime = screenshotDateTime;
