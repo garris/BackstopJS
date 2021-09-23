@@ -1,13 +1,20 @@
 /* eslint no-console: off */
 'use strict';
 
-var path = require('path');
-var express = require('express');
-var backstop = require('../core/runner');
-var PROJECT_PATH = process.cwd();
-var PATH_TO_CONFIG = path.resolve(PROJECT_PATH, 'backstop');
-var _config = require(PATH_TO_CONFIG);
-var { modifyJsonpReport } = require('../core/util/remote');
+const parseArgs = require('minimist');
+const argsOptions = parseArgs(process.argv.slice(2), {
+  string: ['config']
+});
+const PROJECT_PATH = argsOptions._[0];
+const PATH_TO_CONFIG = argsOptions.config;
+const _config = require(argsOptions.config);
+
+const path = require('path');
+const express = require('express');
+const backstop = require('../core/runner');
+const { modifyJsonpReport } = require('../core/util/remote');
+
+const booleanizeArg = incrementalFlag => [true, 'true'].includes(incrementalFlag);
 
 module.exports = function (app) {
   app._backstop = app._backstop || {};
@@ -26,7 +33,7 @@ module.exports = function (app) {
     next();
   });
 
-  app.post('/dtest/:testId/:scenarioId', (req, res) => {
+  app.post(['/dtest/:testId/:scenarioId', '/dref/:testId/:scenarioId'], (req, res) => {
     app._backstop.testCtr++;
 
     if (!(req.params.testId in app._backstop.tests)) {
@@ -43,9 +50,9 @@ module.exports = function (app) {
     );
     console.log('Loading dynamic config template at ' + PATH_TO_CONFIG);
 
-    var config = JSON.parse(JSON.stringify(_config));
+    const config = JSON.parse(JSON.stringify(_config));
     config.dynamicTestId = req.params.testId;
-    var s = Object.assign({}, config.scenarios[0], req.body.scenario);
+    const s = Object.assign({}, config.scenarios[0], req.body.scenario);
     s.label = req.body.name;
     s.url = s.url
       .replace(/{origin}/, req.body.origin)
@@ -53,7 +60,7 @@ module.exports = function (app) {
       .replace(/{scenarioId}/, req.params.scenarioId);
     config.scenarios[0] = s;
 
-    var result = {
+    const result = {
       label: s.label,
       surl: s.url,
       testId: req.params.testId,
@@ -61,7 +68,8 @@ module.exports = function (app) {
       vid: app._backstop.testCtr
     };
 
-    backstop('test', { config }).then(
+    const command = req.path.includes('/dref/') ? 'reference' : 'test';
+    backstop(command, { config, i: booleanizeArg(req.body.i) }).then(
       () => {
         result.ok = true;
         res.send(JSON.stringify(result));
@@ -100,9 +108,7 @@ module.exports = function (app) {
       });
 
       const reportConfigFilename = path.join(
-        PROJECT_PATH,
-        'backstop_data',
-        'html_report',
+        _config.paths.html_report,
         'config.js'
       );
       await modifyJsonpReport({

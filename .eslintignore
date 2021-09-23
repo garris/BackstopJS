@@ -3,3 +3,8 @@ config.js
 diff.js
 diverged.js
 divergedWorker.js
+**/examples/**
+**/old_splash_page_v2.0/**
+**/dist/**
+**/angular.min.js
+**/js/vendor/**

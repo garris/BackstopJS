@@ -1,10 +1,9 @@
-const MERGE_IMG_SEGMENT_HEIGHT = 2000;
 const puppeteer = require('puppeteer');
 
-const mergeImg = require('merge-img');
 const fs = require('./fs');
 const path = require('path');
 const chalk = require('chalk');
+const _ = require('lodash');
 const ensureDirectoryPath = require('./ensureDirectoryPath');
 const injectBackstopTools = require('../../capture/backstopTools.js');
 const engineTools = require('./engineTools');
@@ -74,10 +73,16 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
 
   // --- set up console output and ready event ---
   const readyEvent = scenario.readyEvent || config.readyEvent;
-  let readyResolve, readyPromise;
+  const readyTimeout = scenario.readyTimeout || config.readyTimeout || 30000;
+  let readyResolve, readyPromise, readyTimeoutTimer;
   if (readyEvent) {
     readyPromise = new Promise(resolve => {
       readyResolve = resolve;
+      // fire the ready event after the readyTimeout
+      readyTimeoutTimer = setTimeout(() => {
+        console.error(chalk.red(`ReadyEvent not detected within readyTimeout limit. (${readyTimeout} ms)`), scenario.url);
+        resolve();
+      }, readyTimeout);
     });
   }
 
@@ -91,8 +96,8 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     }
   });
 
-  let chromeVersion = await page.evaluate(_ => {
-    let v = navigator.userAgent.match(/Chrom(e|ium)\/([0-9]+)\./);
+  const chromeVersion = await page.evaluate(_ => {
+    const v = navigator.userAgent.match(/Chrom(e|ium)\/([0-9]+)\./);
     return v ? parseInt(v[2], 10) : 0;
   });
 
@@ -103,9 +108,9 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
   let result;
   const puppetCommands = async () => {
     // --- BEFORE SCRIPT ---
-    var onBeforeScript = scenario.onBeforeScript || config.onBeforeScript;
+    const onBeforeScript = scenario.onBeforeScript || config.onBeforeScript;
     if (onBeforeScript) {
-      var beforeScriptPath = path.resolve(engineScriptsPath, onBeforeScript);
+      const beforeScriptPath = path.resolve(engineScriptsPath, onBeforeScript);
       if (fs.existsSync(beforeScriptPath)) {
         await require(beforeScriptPath)(page, scenario, viewport, isReference, browser, config);
       } else {
@@ -114,7 +119,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     }
 
     //  --- OPEN URL ---
-    var url = scenario.url;
+    let url = scenario.url;
     if (isReference && scenario.referenceUrl) {
       url = scenario.referenceUrl;
     }
@@ -128,22 +133,26 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
 
       await readyPromise;
 
+      clearTimeout(readyTimeoutTimer);
+
       await page.evaluate(_ => console.info('readyEvent ok'));
     }
 
     // --- WAIT FOR SELECTOR ---
     if (scenario.readySelector) {
-      await page.waitFor(scenario.readySelector);
+      await page.waitForSelector(scenario.readySelector, {
+        timeout: readyTimeout
+      });
     }
     //
 
     // --- DELAY ---
     if (scenario.delay > 0) {
-      await page.waitFor(scenario.delay);
+      await page.waitForTimeout(scenario.delay);
     }
 
     // --- REMOVE SELECTORS ---
-    if (scenario.hasOwnProperty('removeSelectors')) {
+    if (_.has(scenario, 'removeSelectors')) {
       const removeSelectors = async () => {
         return Promise.all(
           scenario.removeSelectors.map(async (selector) => {
@@ -162,9 +171,9 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     }
 
     //  --- ON READY SCRIPT ---
-    var onReadyScript = scenario.onReadyScript || config.onReadyScript;
+    const onReadyScript = scenario.onReadyScript || config.onReadyScript;
     if (onReadyScript) {
-      var readyScriptPath = path.resolve(engineScriptsPath, onReadyScript);
+      const readyScriptPath = path.resolve(engineScriptsPath, onReadyScript);
       if (fs.existsSync(readyScriptPath)) {
         await require(readyScriptPath)(page, scenario, viewport, isReference, browser, config);
       } else {
@@ -176,7 +185,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     await injectBackstopTools(page);
 
     // --- HIDE SELECTORS ---
-    if (scenario.hasOwnProperty('hideSelectors')) {
+    if (_.has(scenario, 'hideSelectors')) {
       const hideSelectors = async () => {
         return Promise.all(
           scenario.hideSelectors.map(async (selector) => {
@@ -193,7 +202,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     }
 
     // --- HANDLE NO-SELECTORS ---
-    if (!scenario.hasOwnProperty('selectors') || !scenario.selectors.length) {
+    if (!_.has(scenario, 'selectors') || !scenario.selectors.length) {
       scenario.selectors = [DOCUMENT_SELECTOR];
     }
 
@@ -256,9 +265,9 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     testPair.engineErrorMsg = error.message;
 
     compareConfig = {
-      testPairs: [ testPair ]
+      testPairs: [testPair]
     };
-    fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
+    await fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
   }
 
   return Promise.resolve(compareConfig);
@@ -276,11 +285,11 @@ async function delegateSelectors (
   selectors,
   selectorMap
 ) {
-  let compareConfig = { testPairs: [] };
+  const compareConfig = { testPairs: [] };
   let captureDocument = false;
   let captureViewport = false;
-  let captureList = [];
-  let captureJobs = [];
+  const captureList = [];
+  const captureJobs = [];
 
   selectors.forEach(function (selector, selectorIndex) {
     const testPair = engineTools.generateTestPair(config, scenario, viewport, variantOrScenarioLabelSafe, scenarioLabelSafe, selectorIndex, selector);
@@ -301,20 +310,20 @@ async function delegateSelectors (
   });
 
   if (captureDocument) {
-    captureJobs.push(function () { return captureScreenshot(page, browser, captureDocument, selectorMap, config, []); });
+    captureJobs.push(function () { return captureScreenshot(page, browser, captureDocument, selectorMap, config, [], viewport); });
   }
   // TODO: push captureViewport into captureList (instead of calling captureScreenshot()) to improve perf.
   if (captureViewport) {
-    captureJobs.push(function () { return captureScreenshot(page, browser, captureViewport, selectorMap, config, []); });
+    captureJobs.push(function () { return captureScreenshot(page, browser, captureViewport, selectorMap, config, [], viewport); });
   }
   if (captureList.length) {
-    captureJobs.push(function () { return captureScreenshot(page, browser, null, selectorMap, config, captureList); });
+    captureJobs.push(function () { return captureScreenshot(page, browser, null, selectorMap, config, captureList, viewport); });
   }
 
   return new Promise(function (resolve, reject) {
-    var job = null;
-    var errors = [];
-    var next = function () {
+    let job = null;
+    const errors = [];
+    const next = function () {
       if (captureJobs.length === 0) {
         if (errors.length === 0) {
           resolve();
@@ -341,78 +350,21 @@ async function delegateSelectors (
   }).then(_ => compareConfig);
 }
 
-async function captureScreenshot (page, browser, selector, selectorMap, config, selectors) {
+async function captureScreenshot (page, browser, selector, selectorMap, config, selectors, viewport) {
   let filePath;
-  let fullPage = (selector === NOCLIP_SELECTOR || selector === DOCUMENT_SELECTOR);
+  const fullPage = (selector === NOCLIP_SELECTOR || selector === DOCUMENT_SELECTOR);
   if (selector) {
     filePath = selectorMap[selector].filePath;
     ensureDirectoryPath(filePath);
 
-    /*
-      Setting config.mergeImgHack == true will use an alternate screen grab method which
-      takes multple screenshots at periodic scroll positions then stitches them all togther
-      into one single screenshot.
-     */
-    if (fullPage && config.mergeImgHack) {
-      // Safer version of `document` selector
-      // see https://github.com/garris/BackstopJS/issues/820
-      try {
-        const screenHeight = typeof config.mergeImgHack === 'number' ? config.mergeImgHack : MERGE_IMG_SEGMENT_HEIGHT;
-
-        const bodyHandle = await page.$('body');
-        const { width, height: totalHeight } = await bodyHandle.boundingBox();
-
-        const screens = [];
-        let cumHeight = 0;
-        for (let i = 0; i * screenHeight < totalHeight; i++) {
-          cumHeight += screenHeight;
-          console.log(`screenshot part ${i} (${Math.min(cumHeight, totalHeight)} / ${totalHeight})`);
-          const screen = await page.screenshot({
-            path: totalHeight > screenHeight ? undefined : filePath, // if only 1 screen is needed with save immediately
-            fullPage: false,
-            clip: {
-              x: 0,
-              y: i * screenHeight,
-              width,
-              height:
-                cumHeight > totalHeight
-                  ? Math.ceil(screenHeight - (cumHeight - totalHeight))
-                  : screenHeight
-            }
-          });
-          screens.push(screen);
-        }
-
-        // if there was only 1 screen we already saved the file during screenshot
-        if (screens.length > 1) {
-          const img = await mergeImg(screens, {
-            direction: true
-          });
-
-          // Note: mergeImg relies on an old version of Jimp without writeAsync support
-          // See https://github.com/preco21/merge-img/issues/6
-          await new Promise((resolve, reject) => {
-            img.write(filePath, err => {
-              if (err) return reject(err);
-              resolve();
-            });
-          });
-        }
-        await bodyHandle.dispose();
-      } catch (e) {
-        console.log(chalk.red(`Error capturing..`), e);
-        return fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
-      }
-    } else {
-      try {
-        await page.screenshot({
-          path: filePath,
-          fullPage: fullPage
-        });
-      } catch (e) {
-        console.log(chalk.red(`Error capturing..`), e);
-        return fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
-      }
+    try {
+      await page.screenshot({
+        path: filePath,
+        fullPage: fullPage
+      });
+    } catch (e) {
+      console.log(chalk.red('Error capturing..'), e);
+      return fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
     }
   } else {
     // OTHER-SELECTOR screenshot
@@ -421,8 +373,26 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
       if (el) {
         const box = await el.boundingBox();
         if (box) {
-          var type = config.puppeteerOffscreenCaptureFix ? page : el;
-          var params = config.puppeteerOffscreenCaptureFix ? { path: path, clip: box } : { path: path };
+          // Resize the viewport to screenshot elements outside of the viewport
+          if (config.useBoundingBoxViewportForSelectors !== false) {
+            const bodyHandle = await page.$('body');
+            const boundingBox = await bodyHandle.boundingBox();
+
+            await page.setViewport({
+              width: Math.max(viewport.width, Math.ceil(boundingBox.width)),
+              height: Math.max(viewport.height, Math.ceil(boundingBox.height))
+            });
+          }
+
+          const type = config.puppeteerOffscreenCaptureFix ? page : el;
+          const params = config.puppeteerOffscreenCaptureFix
+            ? {
+                captureBeyondViewport: false,
+                path: path,
+                clip: box
+              }
+            : { captureBeyondViewport: false, path: path };
+
           await type.screenshot(params);
         } else {
           console.log(chalk.yellow(`Element not visible for capturing: ${s}`));
@@ -435,18 +405,17 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
     };
 
     const selectorsShot = async () => {
-      return Promise.all(
-        selectors.map(async selector => {
-          filePath = selectorMap[selector].filePath;
-          ensureDirectoryPath(filePath);
-          try {
-            await selectorShot(selector, filePath);
-          } catch (e) {
-            console.log(chalk.red(`Error capturing Element ${selector}`), e);
-            return fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
-          }
-        })
-      );
+      for (let i = 0; i < selectors.length; i++) {
+        const selector = selectors[i];
+        filePath = selectorMap[selector].filePath;
+        ensureDirectoryPath(filePath);
+        try {
+          await selectorShot(selector, filePath);
+        } catch (e) {
+          console.log(chalk.red(`Error capturing Element ${selector}`), e);
+          return fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
+        }
+      }
     };
     await selectorsShot();
   }
@@ -454,7 +423,7 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
 
 // handle relative file name
 function translateUrl (url) {
-  const RE = new RegExp('^[./]');
+  const RE = /^[./]/;
   if (RE.test(url)) {
     const fileUrl = 'file://' + path.join(process.cwd(), url);
     console.log('Relative filename detected -- translating to ' + fileUrl);

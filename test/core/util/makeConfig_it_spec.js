@@ -38,7 +38,9 @@ const expectedConfig = {
   defaultMisMatchThreshold: 0.1,
   debug: false,
   resembleOutputOptions: undefined,
-  dockerCommandTemplate: undefined
+  dockerCommandTemplate: undefined,
+  archivePath: path.resolve('backstop_data/reports'),
+  archiveReport: false
 };
 
 describe('make config it', function () {

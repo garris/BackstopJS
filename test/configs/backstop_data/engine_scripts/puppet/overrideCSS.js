@@ -1,9 +1,9 @@
-const BACKSTOP_TEST_CSS_OVERRIDE = `html {background-image: none;}`;
+const BACKSTOP_TEST_CSS_OVERRIDE = 'html {background-image: none;}';
 
-module.exports = function (page, scenario) {
+module.exports = async (page, scenario) => {
   // inject arbitrary css to override styles
-  page.evaluate(`window._styleData = '${BACKSTOP_TEST_CSS_OVERRIDE}'`);
-  page.evaluate(() => {
+  await page.evaluate(`window._styleData = '${BACKSTOP_TEST_CSS_OVERRIDE}'`);
+  await page.evaluate(() => {
     const style = document.createElement('style');
     style.type = 'text/css';
     const styleNode = document.createTextNode(window._styleData);

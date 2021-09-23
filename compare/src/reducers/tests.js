@@ -27,8 +27,8 @@ const tests = (state = {}, action) => {
       if (action.value.length > 0) {
         return Object.assign({}, state, {
           filtered: state.all.filter(e => {
-            let fileName = e.pair.fileName.toLowerCase();
-            let label = e.pair.label.toLowerCase();
+            const fileName = e.pair.fileName.toLowerCase();
+            const label = e.pair.label.toLowerCase();
 
             if (state.filterStatus !== 'all') {
               if (
@@ -46,6 +46,7 @@ const tests = (state = {}, action) => {
                 return true;
               }
             }
+            return false;
           })
         });
       }

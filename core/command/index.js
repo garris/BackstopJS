@@ -1,5 +1,6 @@
-var path = require('path');
-var logger = require('../util/logger')('COMMAND');
+const path = require('path');
+const _ = require('lodash');
+const logger = require('../util/logger')('COMMAND');
 
 /*
  * Each file included in this folder (except `index.js`) is a command and must export the following object
@@ -11,7 +12,7 @@ var logger = require('../util/logger')('COMMAND');
  */
 
 /* Each and every command defined, including commands used in before/after */
-var commandNames = [
+const commandNames = [
   'init',
   'remote',
   'openReport',
@@ -24,7 +25,7 @@ var commandNames = [
 ];
 
 /* Commands that are only exposed to higher levels */
-var exposedCommandNames = [
+const exposedCommandNames = [
   'init',
   'remote',
   'reference',
@@ -41,7 +42,7 @@ function toObjectReducer (object, command) {
   return object;
 }
 
-var commands = commandNames
+const commands = commandNames
   .map(function requireCommand (commandName) {
     return {
       name: commandName,
@@ -55,7 +56,7 @@ var commands = commandNames
         config.perf[command.name] = { started: new Date() };
         logger.info('Executing core for "' + command.name + '"');
 
-        var promise = command.commandDefinition.execute(config);
+        let promise = command.commandDefinition.execute(config);
 
         // If the command didn't return a promise, assume it resolved already
         if (!promise) {
@@ -66,7 +67,7 @@ var commands = commandNames
         // Do the catch separately or the main runner
         // won't be able to catch it a second time
         promise.catch(function (error) {
-          var perf = (new Date() - config.perf[command.name].started) / 1000;
+          const perf = (new Date() - config.perf[command.name].started) / 1000;
           logger.error('Command "' + command.name + '" ended with an error after [' + perf + 's]');
           logger.error(error);
         });
@@ -75,7 +76,7 @@ var commands = commandNames
           if (/openReport/.test(command.name)) {
             return;
           }
-          var perf = (new Date() - config.perf[command.name].started) / 1000;
+          const perf = (new Date() - config.perf[command.name].started) / 1000;
           logger.success('Command "' + command.name + '" successfully executed in [' + perf + 's]');
           return result;
         });
@@ -84,9 +85,9 @@ var commands = commandNames
   })
   .reduce(toObjectReducer, {});
 
-var exposedCommands = exposedCommandNames
+const exposedCommands = exposedCommandNames
   .filter(function commandIsDefined (commandName) {
-    return commands.hasOwnProperty(commandName);
+    return _.has(commands, commandName);
   })
   .map(function (commandName) {
     return {
@@ -97,8 +98,8 @@ var exposedCommands = exposedCommandNames
   .reduce(toObjectReducer, {});
 
 function execute (commandName, config) {
-  if (!exposedCommands.hasOwnProperty(commandName)) {
-    if (commandName.charAt(0) === '_' && commands.hasOwnProperty(commandName.substring(1))) {
+  if (!_.has(exposedCommands, commandName)) {
+    if (commandName.charAt(0) === '_' && _.has(commands, commandName.substring(1))) {
       commandName = commandName.substring(1);
     } else {
       throw new Error('The command "' + commandName + '" is not exposed publicly.');

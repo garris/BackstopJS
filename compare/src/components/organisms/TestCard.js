@@ -49,8 +49,8 @@ function isRemoteOption () {
 
 export default class TestCard extends React.Component {
   render () {
-    let { pair: info, status } = this.props.test;
-    let onlyText = this.props.onlyText;
+    const { pair: info, status } = this.props.test;
+    const onlyText = this.props.onlyText;
 
     return (
       <CardWrapper id={this.props.id} status={status}>

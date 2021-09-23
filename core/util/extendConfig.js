@@ -1,7 +1,7 @@
-var path = require('path');
-var temp = require('temp');
-var fs = require('fs');
-var hash = require('object-hash');
+const path = require('path');
+const temp = require('temp');
+const fs = require('fs');
+const hash = require('object-hash');
 const tmpdir = require('os').tmpdir();
 const version = require('../../package.json').version;
 
@@ -58,9 +58,12 @@ function ci (config, userConfig) {
 function htmlReport (config, userConfig) {
   config.html_report = path.join(config.projectPath, 'backstop_data', 'html_report');
   config.openReport = userConfig.openReport === undefined ? true : userConfig.openReport;
+  config.archivePath = path.join(config.projectPath, 'backstop_data', 'reports');
+  config.archiveReport = userConfig.archiveReport === undefined ? false : userConfig.archiveReport;
 
   if (userConfig.paths) {
     config.html_report = userConfig.paths.html_report || config.html_report;
+    config.archivePath = userConfig.paths.reports_archive || config.archivePath;
   }
 
   config.compareConfigFileName = path.join(config.html_report, 'config.js');
@@ -82,11 +85,11 @@ function comparePaths (config) {
 }
 
 function captureConfigPaths (config) {
-  var captureDir = path.join(tmpdir, 'capture');
+  const captureDir = path.join(tmpdir, 'capture');
   if (!fs.existsSync(captureDir)) {
     fs.mkdirSync(captureDir);
   }
-  var configHash = hash(config);
+  const configHash = hash(config);
   config.captureConfigFileName = path.join(tmpdir, 'capture', configHash + '.json');
   config.captureConfigFileNameDefault = path.join(config.backstop, 'capture', 'config.default.json');
 }

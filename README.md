@@ -5,8 +5,10 @@
 
 **BackstopJS automates visual regression testing of your responsive web UI by comparing DOM screenshots over time.**
 
-## Breaking News
+## News
 **EmberJS users** -- check out our ember-backstop test helper! https://github.com/garris/ember-backstop
+
+**Want to learn how to Backstop from a pro?** Check out [visual regression testing with BackstopJS on udemy.com](https://www.udemy.com/course/visual-regression-testing-with-backstopjs/) by [Walmyr Filho](https://www.udemy.com/user/walmyr/)
 
 ## Backstop Features
 
@@ -22,7 +24,7 @@
 - Integrated Docker rendering -- to eliminate cross-platform rendering shenanigans
 - CLI reports
 - Render tests with **Chrome Headless**
-- Simulate user interactions with **Puppeteer** and **ChromyJS** scripts
+- Simulate user interactions with **Puppeteer** scripts
 - JUnit reports
 - Plays nice with CI and source control
 - Run globally or locally as a standalone package app or `require('backstopjs')` right into your node app
@@ -100,6 +102,21 @@ $ backstop init
 
 By default, BackstopJS places `backstop.json` in the root of your project. And also by default, BackstopJS looks for this file when invoked.
 
+Pass a `--config=<configFilePathStr>` argument to test using a different config file.
+
+**JS based config file**
+
+You may use a javascript based config file to allow connents in your config. Be sure to _export your config object as a node module_.
+
+Example: Create a backstop.config.js
+
+```
+module.exports = { Same object as backstop.json }
+```
+
+and then `backstop test --config="backstop.config.js"`
+
+
 #### Required config properties
 
 As a new user setting up tests for your project, you will be primarily concerned with these properties...
@@ -124,10 +141,6 @@ $ backstop test
 This will create a new set of bitmaps in `bitmaps_test/<timestamp>/`
 
 Once the test bitmaps are generated, a report comparing the most recent test bitmaps against the current reference bitmaps will display.
-
-Pass a `--config=<configFilePathStr>` argument to test using a different config file.
-
-**Tip** To use a js-module as a config file, just explicitly specify your config filepath and point to a `.js` file. _Just be sure to export your config object as a node module._
 
 Pass a `--filter=<scenarioLabelRegex>` argument to just run scenarios matching your scenario label.
 
@@ -162,6 +175,7 @@ url                      // [required] The url of your app state
 referenceUrl             // Specify a different state or environment when creating reference.
 readyEvent               // Wait until this string has been logged to the console.
 readySelector            // Wait until this selector exists before continuing.
+readyTimeout             // Timeout for readyEvent and readySelector (default: 30000ms)
 delay                    // Wait for x milliseconds
 hideSelectors            // Array of selectors set to visibility: hidden
 removeSelectors          // Array of selectors set to display: none
@@ -171,13 +185,14 @@ hoverSelector            // Move the pointer over the specified DOM element prio
 hoverSelectors           // *Puppeteer only* takes array of selectors -- simulates multiple sequential hover interactions.
 clickSelector            // Click the specified DOM element prior to screen shot.
 clickSelectors           // *Puppeteer only* takes array of selectors -- simulates multiple sequential click interactions.
-postInteractionWait      // Wait for a selector after interacting with hoverSelector or clickSelector (optionally accepts wait time in ms. Idea for use with a click or hover element transition. available with default onReadyScript)
+postInteractionWait      // Wait for a selector after interacting with hoverSelector or clickSelector (optionally accepts wait time in ms. Ideal for use with a click or hover element transition. available with default onReadyScript)
 scrollToSelector         // Scrolls the specified DOM element into view prior to screen shot (available with default onReadyScript)
 selectors                // Array of selectors to capture. Defaults to document if omitted. Use "viewport" to capture the viewport size. See Targeting elements in the next section for more info...
 selectorExpansion        // See Targeting elements in the next section for more info...
 misMatchThreshold        // Percentage of different pixels allowed to pass test
 requireSameDimensions    // If set to true -- any change in selector size will trigger a test failure.
 viewports                // An array of screen size objects your DOM will be tested against. This configuration will override the viewports property assigned at the config root.
+archiveReport            // If set to true -- all test reports will be archived(copied) (in `reports` folder)   
 ```
 
 
@@ -199,7 +214,7 @@ hoverSelectors: [".my-nav-menu-item",".my-nav-menu-dropdown-item"],
 
 ### Key Press interactions
 BackstopJS ships with an onReady script that allows user to key press on selectors...
-NOTE: Supports Chromy and Puppeteer and takes arrays of selectors and key press values.
+NOTE: Supports Puppeteer and takes arrays of selectors and key press values.
 
 ```json
 scenarios: [
@@ -225,7 +240,7 @@ cookiePath: "backstop_data/engine_scripts/cookies.json",
 ```
 _note: path is relative to your current working directory_
 
-Pro tip:  If your app uses a lot of cookies then do yourself a favor and download this extension for chrome. It adds a tab to your dev-tools so you can download all your cookies as a JSON file that you can directly use with BackstopJS  https://chrome.google.com/webstore/detail/cookie-inspector/jgbbilmfbammlbbhmmgaagdkbkepnijn?hl=en
+Pro tip:  If you want an easy way to manually export cookies from your browser then download this chrome extension. You can directly use the output cookie files with BackstopJS  https://chrome.google.com/webstore/detail/%E3%82%AF%E3%83%83%E3%82%AD%E3%83%BCjson%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E5%87%BA%E5%8A%9B-for-puppet/nmckokihipjgplolmcmjakknndddifde
 
 
 
@@ -443,7 +458,7 @@ Inside `filename.js`, structure it like this:
 
 ```js
 // onBefore example (puppeteer engine)
-module.exports = async (page, scenario, vp) => {
+module.exports = async (page, scenario, vp, isReference) => {
   await require('./loadCookies')(page, scenario);
 
   // Example: set user agent
@@ -468,7 +483,7 @@ module.exports = async (page, scenario, vp) => {
 
 #### Setting the base path for custom onBefore and onReady scripts
 
-By default the base path is a folder called `engine_scripts` inside your BackstopJS installation directory. You can override this by setting the `paths.scripts` property in your `backstop.json` file to point to somewhere in your project directory (recommended).
+By default, the base path is a folder called `engine_scripts` inside your BackstopJS installation directory. You can override this by setting the `paths.scripts` property in your `backstop.json` file to point to somewhere in your project directory (recommended).
 
 ```json
 "paths": {
@@ -478,14 +493,14 @@ By default the base path is a folder called `engine_scripts` inside your Backsto
 
 #### onBeforeScript/onReadyScript available variables
 
-onBefore(engine, scenario, viewport, isReference, Engine, config)
+onBefore(page, scenario, viewport, isReference, Engine, config)
 
 ```
-engine:      chromy or puppeteer engine instance
+engine:      browser page object
 scenario:    currently running scenario config
 viewport:    viewport info
 isReference: whether scenario contains reference URL property
-Engine:      Static class reference (Chromy or Puppeteer)
+Engine:      Static class reference (Puppeteer)
 config:      the whole config object
 ```
 
@@ -559,25 +574,21 @@ By default, BackstopJS saves generated resources into the `backstop_data` direct
     "engine_scripts": "backstop_data/engine_scripts",
     "html_report": "backstop_data/html_report",
     "json_report": "backstop_data/json_report",
-    "ci_report": "backstop_data/ci_report"
+    "ci_report": "backstop_data/ci_report",
+    "reports_archive": "backstop_data/reports",
   }
   ...
 ```
 
 ### Changing the rendering engine
-Puppeteer is currently the default value and will be installed by default. You could choose to use Chromy as well.
+Puppeteer is currently the default value and will be installed by default.
 
 #### Chrome-Headless (The latest webkit library)
-To use chrome headless you have two options for scripting engines, the default _puppeteer_ (https://github.com/GoogleChrome/puppeteer) or the very cool _chromy.js_ (https://github.com/OnetapInc/chromy) library.
+To use chrome headless you can currently use _puppeteer_ (https://github.com/GoogleChrome/puppeteer).
 
 
 ```json
 "engine": "puppeteer"
-```
-or
-
-```json
-"engine": "chromy"
 ```
 
 ### Setting Puppeteer option flags
@@ -598,44 +609,6 @@ You can add more settings (or override the defaults) with the engineOptions prop
 ```
 
 More info here: [Puppeteer on github](https://github.com/GoogleChrome/puppeteer).
-
-
-### Setting Chromy option flags
-Chromy enables a lot of behavior via constructor options.  See Chromy documentation for more info.
-
-**NOTE:** Backstop sets defaults for many Chromy properties. Setting a parameter value with engineOptions will override any default value set by backstop. _But please watch out for the following..._
-- (TLDR) Setting `port` as a chromy option flag is _very_ _very_ not advised. Instead, consider changing the `startingPort` property in the Backstop configuration. e.g. `"startingPort": 9333`
-- Setting `chromeFlags` will override all chromeFlags properties set by backstop -- **EXCEPT FOR `--window-size`***...  (i.e. `--window-size` flag will be added by backstop if not found in chromeFlags)
-- Setting `--window-size` explicitly in `chromeFlags` will override values used in your viewport settings.
-
-
-An example config below...
-
-```js
-"engineOptions": {
-  "waitTimeout": 120000,
-  "chromePath": "/path/to/chrome",
-  "chromeFlags": ["--disable-gpu", "--force-device-scale-factor=1"]
-}
-```
-
-### Using Chromy static functions
-To access use of Chromys static functions (such as addCustomDevice) the static chromy reference is sent as the fifth parameter to your onBefore/onReady scripts.
-
-Example usage:
-
-```js
-module.exports = function (chromy, scenario, vp, isReference, chromyStatic) {
-  if(vp.label === "phone") {
-    chromyStatic.addCustomDevice({ name: "some-phone", /.../ });
-    chromy.emulate("some-phone");
-  }
-}
-```
-For more info, see the [Chromy script documentation](https://github.com/OnetapInc/chromy).
-
-
-
 
 ### Using Docker for testing across different environments
 We've found that different environments can render the same webpage in slightly different ways -- in particular with text. E.G. see the text in this example rendering slightly differently between Linux and Mac...
@@ -662,13 +635,17 @@ const backstop = require('backstopjs');
 backstop('test', {docker: true});
 ```
 
-The above flag will cause BackstopJS to hit your Docker local client, spin up the BackstopJS container at https://hub.docker.com/r/backstopjs/backstopjs/ and execute your test.
+The above flag will cause BackstopJS to hit your Docker local client, spin up a BackstopJS container from https://hub.docker.com/r/backstopjs/backstopjs/ and execute your test. By default, Backstop will attemt to use a Docker image with the same version number specified in your `package.js`.
+
+
+####Changing the default Docker command
 
 If the default docker command or image does not work for you, you can customize the command to run BackstopJS with Docker by changing the `dockerCommandTemplate` config option. The default is:
 
 ```sh
 "dockerCommandTemplate": "docker run --rm -it --mount type=bind,source=\"{cwd}\",target=/src backstopjs/backstopjs:{version} {backstopCommand} {args}"
 ```
+
 
 *Tip: to run BackstopJS in Docker in an environment where the output is piped (e.g. CI server or an IDE's output window), remove the -t parameter (change the default to "docker run --rm -i --mount...)*
 
@@ -708,7 +685,7 @@ Using Backstop as a locally installed standalone app looks like this....
 npm install backstopjs
 
 # Then, run commands by directly calling the cli
-./node_modules/backstopjs/cli/index.js test --config=<myConfigPath>
+./node_modules/.bin/backstop test --config=<myConfigPath>
 ```
 
 The more interesting case is calling backstop from another node app...
@@ -837,7 +814,7 @@ $ backstop reference
 optional parameters
 `--config=<configFilePath>`   point to a specific config file
 `--filter=<scenario.name>`    filter on scenario.name via regex string
-`--i`                         incremental flag -- use if you don't want BackstopJS do first delete all files in your reference directory
+`--i`                         incremental flag -- use if you don't want BackstopJS to first delete all files in your reference directory
 
 
 ### Modifying output settings of image-diffs
@@ -845,6 +822,8 @@ optional parameters
 By specifying `resembleOutputOptions` in your backstop.json file you can modify the image-diffs transparency, errorcolor, etc. (See [Resemble.js outputSettings](https://github.com/Huddle/Resemble.js) for the full list.)
 
 Instead of calling resemble`s ignoreAntialiasing(), you may set it as a property in the config. (See [example](examples/simpleReactApp/backstop.json))
+
+Per default, Backstop uses Resemble's misMatchPercentage value. However, this value only detects mismatches above 0.01%. If you need more precision and want to use a `misMatchThreshold` below `0.01` (e.g. for large screenshots or small changes), you can set `usePreciseMatching` in the `resembleOutputOptions`. (See [example](examples/simpleReactApp/backstop.json))
 
 ```json
 "resembleOutputOptions": {
@@ -871,7 +850,7 @@ _Of course you can alternatively change your default config to save these files 
 
 
 ### Changing screenshot filename formats
-One of the things Backstop does for you is manage all your screenshot files.  Backstop uses a specific file-nameing scheme to make this work.  Changing this scheme is of course NOT RECOMMENDED.  That said -- if you have an overwhelming need, then you can modify this behavior using the `fileNameTemplate` property. The default pattern is shown below where the labels in braces are replaced with internal values during runtime.
+One of the things Backstop does for you is manage all your screenshot files.  Backstop uses a specific file-naming scheme to make this work.  Changing this scheme is of course NOT RECOMMENDED.  That said -- if you have an overwhelming need, then you can modify this behavior using the `fileNameTemplate` property. The default pattern is shown below where the labels in braces are replaced with internal values during runtime.
 
 ```js
 {
@@ -882,24 +861,6 @@ One of the things Backstop does for you is manage all your screenshot files.  Ba
 ```
 
 
-### Alternate way of taking a FULL PAGE SCREENSHOT
-Puppeteer has an unexpected way of implementing full-screen bitmap captures -- the current approach rerenders viewport contents and takes a single fullpage screenshot.  This is totally fine in most cases -- however some Backstop users have run into issues where this approach causes some of the scenario state to be lost (e.g. a hover state).  Our friend @sballesteros was kind enough to create a workaround for this. The alternate approach captures multiple areas of your screen (without rerendering) and then magically stitches the multiple shots together, giving you a reliable fullscreen representation.
-
-This approach will likely become the default method -- but until then -- if you're having issues with current full-screen capture, go ahead and try the alternate way with this...
-
-```js
-{
-  // ...
-  mergeImgHack: true,
-  // ...
-}
-```
-Let us know [here](https://github.com/garris/BackstopJS/issues/820) if this works for you!
-
-
-
-
-
 ## Developing, bug fixing, contributing...
 
 First off, You are awesome! Thanks for your interest, time and hard work!  Here are some tips...
@@ -907,7 +868,7 @@ First off, You are awesome! Thanks for your interest, time and hard work!  Here 
 ### We use `eslint-config-semistandard`.
 Please run the linter before each submit, as follows. Thank you. 🙇🏽
 ```sh
-$ npm run lint --fix
+$ npm run lint -- --fix
 ```
 
 
@@ -922,27 +883,39 @@ Here's some suggestions if you want to work on the HTML report locally...
     ```
     cd test/configs/ && node ../../cli/index.js remote
     ```
-	- Open another shell and run a test with this...
+  - Open another shell and run a test with this...
 
-  	```
-  	npm run sanity-test
-  	```
-	- Your test report should display as designed.
-	- Then, make your UI changes and build with this...
+    ```
+    npm run sanity-test
+    ```
+  - Your test report should display as designed.
+  - Then, make your UI changes and build with this...
 
-  	```
-  	npm run build-and-copy-report-bundle
-  	```
-  	- No need to rerun a test, just refresh the browser window to view your UI changes.
-  	- Repeat the process until you're done.
-  	- When you are done, check it in and include the bundle as part of the checkin.
+    ```
+    npm run build-and-copy-report-bundle
+    ```
+    - No need to rerun a test, just refresh the browser window to view your UI changes.
+    - Repeat the process until you're done.
+    - When you are done, check it in and include the bundle as part of the checkin.
 
 - 👆 NOTE: As a convenience, `npm run build-and-copy-report-bundle` copies your newly built React bundle into `test/configs/backstop_data/html_report/` so you can then test your changes by simply refreshing your report in chrome.
 
 
 
+### Docker development
+Want to make sure your changes work with the `--docker` option? You can rebuild your local docker image from your current BackstopJS source.  From your BackstopJS root...
+```sh
+npm run build-docker
+```
+
+If you have access to Docker Hub @backstop/backstop, then this command will push a new public BackstopJS docker image with the current version tag...
+```sh
+npm run push-docker
+```
+
 ### SMOKE & FEATURE TESTS
 See the next section for running the SMOKE TEST -- Please make sure this is working before submitting any PR's.  Thanks!
+
   ```
   # From root directory
   # ---------------
@@ -966,17 +939,20 @@ See the next section for running the SMOKE TEST -- Please make sure this is work
 
 ### SANITY TEST: Does Backstop work in my environment?
 Run the following command from your Desktop, home or project directory to check that Backstop will install and run in your environment. _Please make sure you have node version 8 or above. Windows users: Powershell is recommended._
-```
-mkdir backstopSanityTest; cd backstopSanityTest; npm install backstopjs; node ./node_modules/backstopjs/cli/ init; node ./node_modules/backstopjs/cli/ test
 
 ```
-Here is a sanity test which also uses docker...
+mkdir backstopSanityTest; cd backstopSanityTest; npm install backstopjs; ./node_modules/.bin/backstop init; ./node_modules/.bin/backstop test
+
 ```
-mkdir backstopSanityTest; cd backstopSanityTest; npm install backstopjs; node ./node_modules/backstopjs/cli/ init; node ./node_modules/backstopjs/cli/ test --docker
+
+Here is a sanity test which also uses docker...
+
+```
+mkdir backstopSanityTest; cd backstopSanityTest; npm install backstopjs; ./node_modules/.bin/backstop init; ./node_modules/.bin/backstop test --docker
 ```
 
 ### SMOKE TEST: Are backstop features working ok?
-Run this command if you have made changes to the BackstopJS codebase and you want to make sure that you haven't hosed anything.
+Run this command if you have made changes to the BackstopJS codebase and you want to make sure that you haven't broken anything.
 ```
     # from the backstopjs directory
     npm run smoke-test
@@ -1006,7 +982,7 @@ https://github.com/garris/BackstopJS/issues/537#issuecomment-339710797
 This is a grey area for BackstopJS.  When you click a link to a new page inside of Chrome headless then you are unloading all your current app state and starting fresh with a new app state.  If this is your case, the best practice is to simply create a new BackstopJS scenario with the required URL state etc.  If you have some kind of situation which really requires this kind of behavior then it's doable -- take a look at this issue for inspiration... https://github.com/garris/BackstopJS/issues/657
 
 ### Chrome Zombies!
-Sometimes when developing scripts -- browser errors can actually cause Chrome-Headless and Chromy to lose their special connection to each other.  If you find that Chrome zombies are accumulating in your ENV spacetime continuum then please follow these steps:
+Sometimes when developing scripts -- browser errors can actually cause Chrome-Headless to lose their special connection to each other.  If you find that Chrome zombies are accumulating in your ENV spacetime continuum then please follow these steps:
 
    1) DON’T PANIC!
 
@@ -1048,7 +1024,8 @@ Be sure to use a config `id` in your config file. See https://github.com/garris/
 - [Angela Riggs](https://www.linkedin.com/in/angelariggs/detail/recent-activity/posts/) is a pioneer in the Visual Testing space and leader in cultivating a culture of quality for software teams.  Read about it [here](https://www.linkedin.com/pulse/visual-regression-testing-backstopjs-angela-riggs/) and [here](https://www.pnsqc.org/automated-visual-regression-testing-with-backstopjs/) and listen to her talk [here](https://www.linkedin.com/pulse/creating-culture-quality-angela-riggs/)
 - Check out [Marc Dacanay's](https://www.linkedin.com/in/marcdacanay/detail/recent-activity/posts/) BackstopJS articles -- he has a great intro as well as some great in-depth tips.
 - Here is a [cool project template for static sites](https://github.com/wlsf82/backstop-config) by Walmyr Filho [@wlsf82](https://github.com/wlsf82) https://twitter.com/walmyrlimaesilv
-- [A really good one on refactoring CSS with BackstopJS](https://hannesdotkaeuflerdotnet.herokuapp.com/posts/refactoring-css) by Hannes Käufler
+- Here is [an online course about visual regression testing with BackstopJS](https://www.udemy.com/course/visual-regression-testing-with-backstopjs/) by [Walmyr Filho](https://www.udemy.com/user/walmyr/)
+- [A really good one on refactoring CSS with BackstopJS](https://hannes.kaeufler.net/posts/refactoring-css) by Hannes Käufler
 - [A Simple grunt-backstopjs plugin](http://www.obqo.de/blog/2016/12/30/grunt-backstopjs/) - For the Grunt enthusiasts
 
 <!--
@@ -1094,8 +1071,6 @@ Be sure to use a config `id` in your config file. See https://github.com/garris/
     - [Changing the rendering engine](#changing-the-rendering-engine)
       - [Chrome-Headless (The latest webkit library)](#chrome-headless-the-latest-webkit-library)
     - [Setting Puppeteer option flags](#setting-puppeteer-option-flags)
-    - [Setting Chromy option flags](#setting-chromy-option-flags)
-    - [Using Chromy static functions](#using-chromy-static-functions)
     - [Using Docker for testing across different environments](#using-docker-for-testing-across-different-environments)
       - [Requirements for when you're using docker...](#requirements-for-when-youre-using-docker)
     - [Integration options (local install)](#integration-options-local-install)

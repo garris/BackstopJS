@@ -33,8 +33,8 @@ function ButtonsFilter (props) {
 
 class FiltersSwitch extends React.Component {
   render () {
-    let tests = this.props.tests;
-    let availableStatus = [
+    const tests = this.props.tests;
+    const availableStatus = [
       {
         id: 'all',
         label: 'all',

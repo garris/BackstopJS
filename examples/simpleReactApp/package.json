@@ -14,7 +14,7 @@
   "license": "MIT",
   "dependencies": {
     "moment": "^2.10.2",
-    "react": "^0.13.2"
+    "react": "^0.14.0"
   },
   "devDependencies": {
     "browserify": "^9.0.8",
