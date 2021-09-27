@@ -147,7 +147,8 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
 
       clearTimeout(readyTimeoutTimer);
 
-      await page.evaluate(_ => logger.info('reset', 'readyEvent ok'));
+      // can't use logger here -- this executes on the page
+      await page.evaluate(_ => console.info('readyEvent ok'));
     }
 
     // --- WAIT FOR SELECTOR ---
