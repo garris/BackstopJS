@@ -34,10 +34,24 @@ module.exports = function (args) {
   config._outputFileFormatSuffix = '.' + ((config.outputFormat && config.outputFormat.match(/jpg|jpeg/)) || 'png');
   config._configId = config.id || engineTools.genHash(config.backstopConfigFileName);
 
-  return processScenarioView(scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, config);
+  const logger = {
+    log (color, message, ...rest) {
+      console.log(chalk[color](message), ...rest);
+    },
+    error (color, message, ...rest) {
+      console.error(chalk[color](message), ...rest);
+    },
+    info (color, message, ...rest) {
+      console.info(chalk[color](message), ...rest);
+    },
+    warn (color, message, ...rest) {
+      console.warn(chalk[color](message), ...rest);
+    }
+  };
+  return processScenarioView(scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, config, logger);
 };
 
-async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, config) {
+async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, config, logger) {
   if (!config.paths) {
     config.paths = {};
   }
@@ -68,7 +82,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
   page.setDefaultNavigationTimeout(engineTools.getEngineOption(config, 'waitTimeout', TEST_TIMEOUT));
 
   if (isReference) {
-    console.log(chalk.blue('CREATING NEW REFERENCE FILE'));
+    logger.log('blue', 'CREATING NEW REFERENCE FILE');
   }
 
   // --- set up console output and ready event ---
@@ -80,7 +94,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
       readyResolve = resolve;
       // fire the ready event after the readyTimeout
       readyTimeoutTimer = setTimeout(() => {
-        console.error(chalk.red(`ReadyEvent not detected within readyTimeout limit. (${readyTimeout} ms)`), scenario.url);
+        logger.error('red', `ReadyEvent not detected within readyTimeout limit. (${readyTimeout} ms)`, scenario.url);
         resolve();
       }, readyTimeout);
     });
@@ -89,7 +103,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
   page.on('console', msg => {
     for (let i = 0; i < msg.args().length; ++i) {
       const line = msg.args()[i];
-      console.log(`Browser Console Log ${i}: ${line}`);
+      logger.log('reset', `Browser Console Log ${i}: ${line}`);
       if (readyEvent && new RegExp(readyEvent).test(line)) {
         readyResolve();
       }
@@ -102,7 +116,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
   });
 
   if (chromeVersion < MIN_CHROME_VERSION) {
-    console.warn(`***WARNING! CHROME VERSION ${MIN_CHROME_VERSION} OR GREATER IS REQUIRED. PLEASE UPDATE YOUR CHROME APP!***`);
+    logger.warn('reset', `***WARNING! CHROME VERSION ${MIN_CHROME_VERSION} OR GREATER IS REQUIRED. PLEASE UPDATE YOUR CHROME APP!***`);
   }
 
   let result;
@@ -114,7 +128,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
       if (fs.existsSync(beforeScriptPath)) {
         await require(beforeScriptPath)(page, scenario, viewport, isReference, browser, config);
       } else {
-        console.warn('WARNING: script not found: ' + beforeScriptPath);
+        logger.warn('reset', 'WARNING: script not found: ' + beforeScriptPath);
       }
     }
 
@@ -123,7 +137,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     if (isReference && scenario.referenceUrl) {
       url = scenario.referenceUrl;
     }
-    await page.goto(translateUrl(url));
+    await page.goto(translateUrl(url, logger));
 
     await injectBackstopTools(page);
 
@@ -135,7 +149,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
 
       clearTimeout(readyTimeoutTimer);
 
-      await page.evaluate(_ => console.info('readyEvent ok'));
+      await page.evaluate(_ => logger.info('reset', 'readyEvent ok'));
     }
 
     // --- WAIT FOR SELECTOR ---
@@ -177,7 +191,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
       if (fs.existsSync(readyScriptPath)) {
         await require(readyScriptPath)(page, scenario, viewport, isReference, browser, config);
       } else {
-        console.warn('WARNING: script not found: ' + readyScriptPath);
+        logger.warn('reset', 'WARNING: script not found: ' + readyScriptPath);
       }
     }
 
@@ -233,8 +247,8 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
 
   let error;
   await puppetCommands().catch(e => {
-    console.log(chalk.red(`Puppeteer encountered an error while running scenario "${scenario.label}"`));
-    console.log(chalk.red(e));
+    logger.log('red', `Puppeteer encountered an error while running scenario "${scenario.label}"`);
+    logger.log('red', e);
     error = e;
   });
 
@@ -250,7 +264,8 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
         scenarioLabelSafe,
         config,
         result.backstopSelectorsExp,
-        result.backstopSelectorsExpMap
+        result.backstopSelectorsExpMap,
+        logger
       );
     } catch (e) {
       error = e;
@@ -283,7 +298,8 @@ async function delegateSelectors (
   scenarioLabelSafe,
   config,
   selectors,
-  selectorMap
+  selectorMap,
+  logger
 ) {
   const compareConfig = { testPairs: [] };
   let captureDocument = false;
@@ -310,14 +326,14 @@ async function delegateSelectors (
   });
 
   if (captureDocument) {
-    captureJobs.push(function () { return captureScreenshot(page, browser, captureDocument, selectorMap, config, [], viewport); });
+    captureJobs.push(function () { return captureScreenshot(page, browser, captureDocument, selectorMap, config, [], viewport, logger); });
   }
   // TODO: push captureViewport into captureList (instead of calling captureScreenshot()) to improve perf.
   if (captureViewport) {
-    captureJobs.push(function () { return captureScreenshot(page, browser, captureViewport, selectorMap, config, [], viewport); });
+    captureJobs.push(function () { return captureScreenshot(page, browser, captureViewport, selectorMap, config, [], viewport, logger); });
   }
   if (captureList.length) {
-    captureJobs.push(function () { return captureScreenshot(page, browser, null, selectorMap, config, captureList, viewport); });
+    captureJobs.push(function () { return captureScreenshot(page, browser, null, selectorMap, config, captureList, viewport, logger); });
   }
 
   return new Promise(function (resolve, reject) {
@@ -334,7 +350,7 @@ async function delegateSelectors (
       }
       job = captureJobs.shift();
       job().catch(function (e) {
-        console.log(e);
+        logger.log('reset', e);
         errors.push(e);
       }).then(function () {
         next();
@@ -342,15 +358,15 @@ async function delegateSelectors (
     };
     next();
   }).then(async () => {
-    console.log(chalk.green('x Close Browser'));
+    logger.log('green', 'x Close Browser');
     await browser.close();
   }).catch(async (err) => {
-    console.log(chalk.red(err));
+    logger.log('red', err);
     await browser.close();
   }).then(_ => compareConfig);
 }
 
-async function captureScreenshot (page, browser, selector, selectorMap, config, selectors, viewport) {
+async function captureScreenshot (page, browser, selector, selectorMap, config, selectors, viewport, logger) {
   let filePath;
   const fullPage = (selector === NOCLIP_SELECTOR || selector === DOCUMENT_SELECTOR);
   if (selector) {
@@ -363,7 +379,7 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
         fullPage: fullPage
       });
     } catch (e) {
-      console.log(chalk.red('Error capturing..'), e);
+      logger.log('red', 'Error capturing..', e);
       return fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
     }
   } else {
@@ -395,11 +411,11 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
 
           await type.screenshot(params);
         } else {
-          console.log(chalk.yellow(`Element not visible for capturing: ${s}`));
+          logger.log('yellow', `Element not visible for capturing: ${s}`);
           return fs.copy(config.env.backstop + HIDDEN_SELECTOR_PATH, path);
         }
       } else {
-        console.log(chalk.magenta(`Element not found for capturing: ${s}`));
+        logger.log('magenta', `Element not found for capturing: ${s}`);
         return fs.copy(config.env.backstop + SELECTOR_NOT_FOUND_PATH, path);
       }
     };
@@ -412,7 +428,7 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
         try {
           await selectorShot(selector, filePath);
         } catch (e) {
-          console.log(chalk.red(`Error capturing Element ${selector}`), e);
+          logger.log('red', `Error capturing Element ${selector}`, e);
           return fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
         }
       }
@@ -422,11 +438,11 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
 }
 
 // handle relative file name
-function translateUrl (url) {
+function translateUrl (url, logger) {
   const RE = /^[./]/;
   if (RE.test(url)) {
     const fileUrl = 'file://' + path.join(process.cwd(), url);
-    console.log('Relative filename detected -- translating to ' + fileUrl);
+    logger.log('reset', 'Relative filename detected -- translating to ' + fileUrl);
     return fileUrl;
   } else {
     return url;
