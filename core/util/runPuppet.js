@@ -34,22 +34,20 @@ module.exports = function (args) {
   config._outputFileFormatSuffix = '.' + ((config.outputFormat && config.outputFormat.match(/jpg|jpeg/)) || 'png');
   config._configId = config.id || engineTools.genHash(config.backstopConfigFileName);
 
-  const logger = {
-    log (color, message, ...rest) {
-      console.log(chalk[color](message), ...rest);
-    },
-    error (color, message, ...rest) {
-      console.error(chalk[color](message), ...rest);
-    },
-    info (color, message, ...rest) {
-      console.info(chalk[color](message), ...rest);
-    },
-    warn (color, message, ...rest) {
-      console.warn(chalk[color](message), ...rest);
-    }
-  };
+  const logger = {};
+  Object.assign(logger, {
+    error: loggerAction.bind(logger, 'error'),
+    warn: loggerAction.bind(logger, 'warn'),
+    log: loggerAction.bind(logger, 'log'),
+    info: loggerAction.bind(logger, 'info')
+  });
+
   return processScenarioView(scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, config, logger);
 };
+
+function loggerAction (action, color, message, ...rest) {
+  console[action](chalk[color](message), ...rest);
+}
 
 async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, config, logger) {
   if (!config.paths) {
