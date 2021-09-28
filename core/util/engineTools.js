@@ -95,6 +95,19 @@ function generateTestPair (config, scenario, viewport, variantOrScenarioLabelSaf
     viewport.vIndex,
     viewport.label
   );
+  const testFilePath = config._bitmapsTestPath + '/' + config.screenshotDateTime + '/' + fileName;
+  const logFileName = getFilename(
+    config._fileNameTemplate,
+    '.log.json',
+    config._configId,
+    scenario.sIndex,
+    variantOrScenarioLabelSafe,
+    selectorIndex,
+    cleanedSelectorName,
+    viewport.vIndex,
+    viewport.label
+  );
+  const testLogFilePath = config._bitmapsTestPath + '/' + config.screenshotDateTime + '/' + logFileName;
   const referenceFilePath = config._bitmapsReferencePath + '/' + getFilename(
     config._fileNameTemplate,
     config._outputFileFormatSuffix,
@@ -106,11 +119,23 @@ function generateTestPair (config, scenario, viewport, variantOrScenarioLabelSaf
     viewport.vIndex,
     viewport.label
   );
-  const testFilePath = config._bitmapsTestPath + '/' + config.screenshotDateTime + '/' + fileName;
+  const referenceLogFilePath = config._bitmapsReferencePath + '/' + getFilename(
+    config._fileNameTemplate,
+    '.log.json',
+    config._configId,
+    scenario.sIndex,
+    scenarioLabelSafe,
+    selectorIndex,
+    cleanedSelectorName,
+    viewport.vIndex,
+    viewport.label
+  );
 
   return {
     reference: referenceFilePath,
+    referenceLog: referenceLogFilePath,
     test: testFilePath,
+    testLog: testLogFilePath,
     selector: selector,
     fileName: fileName,
     label: scenario.label,

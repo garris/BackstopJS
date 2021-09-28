@@ -34,7 +34,9 @@ module.exports = function (args) {
   config._outputFileFormatSuffix = '.' + ((config.outputFormat && config.outputFormat.match(/jpg|jpeg/)) || 'png');
   config._configId = config.id || engineTools.genHash(config.backstopConfigFileName);
 
-  const logger = {};
+  const logger = {
+    logged: []
+  };
   Object.assign(logger, {
     error: loggerAction.bind(logger, 'error'),
     warn: loggerAction.bind(logger, 'warn'),
@@ -46,6 +48,7 @@ module.exports = function (args) {
 };
 
 function loggerAction (action, color, message, ...rest) {
+  this.logged.push([action, color, message, rest]);
   console[action](chalk[color](message), ...rest);
 }
 
@@ -309,12 +312,14 @@ async function delegateSelectors (
   selectors.forEach(function (selector, selectorIndex) {
     const testPair = engineTools.generateTestPair(config, scenario, viewport, variantOrScenarioLabelSafe, scenarioLabelSafe, selectorIndex, selector);
     const filePath = config.isReference ? testPair.reference : testPair.test;
+    const logFilePath = config.isReference ? testPair.referenceLog : testPair.testLog;
 
     if (!config.isReference) {
       compareConfig.testPairs.push(testPair);
     }
 
     selectorMap[selector].filePath = filePath;
+    selectorMap[selector].logFilePath = logFilePath;
     if (selector === BODY_SELECTOR || selector === DOCUMENT_SELECTOR) {
       captureDocument = selector;
     } else if (selector === VIEWPORT_SELECTOR) {
@@ -366,24 +371,26 @@ async function delegateSelectors (
 }
 
 async function captureScreenshot (page, browser, selector, selectorMap, config, selectors, viewport, logger) {
-  let filePath;
+  let filePath, logFilePath;
   const fullPage = (selector === NOCLIP_SELECTOR || selector === DOCUMENT_SELECTOR);
   if (selector) {
     filePath = selectorMap[selector].filePath;
-    ensureDirectoryPath(filePath);
+    logFilePath = selectorMap[selector].logFilePath;
+    ensureDirectoryPath(filePath); // logs in same dir
 
     try {
       await page.screenshot({
         path: filePath,
         fullPage: fullPage
       });
+      await fs.writeFile(logFilePath, JSON.stringify(logger.logged));
     } catch (e) {
       logger.log('red', 'Error capturing..', e);
       return fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
     }
   } else {
     // OTHER-SELECTOR screenshot
-    const selectorShot = async (s, path) => {
+    const selectorShot = async (s, path, logFilePath) => {
       const el = await page.$(s);
       if (el) {
         const box = await el.boundingBox();
@@ -409,6 +416,7 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
             : { captureBeyondViewport: false, path: path };
 
           await type.screenshot(params);
+          await fs.writeFile(logFilePath, JSON.stringify(logger.logged));
         } else {
           logger.log('yellow', `Element not visible for capturing: ${s}`);
           return fs.copy(config.env.backstop + HIDDEN_SELECTOR_PATH, path);
@@ -423,9 +431,10 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
       for (let i = 0; i < selectors.length; i++) {
         const selector = selectors[i];
         filePath = selectorMap[selector].filePath;
+        logFilePath = selectorMap[selector].logFilePath;
         ensureDirectoryPath(filePath);
         try {
-          await selectorShot(selector, filePath);
+          await selectorShot(selector, filePath, logFilePath);
         } catch (e) {
           logger.log('red', `Error capturing Element ${selector}`, e);
           return fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
