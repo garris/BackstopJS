@@ -279,11 +279,13 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
   if (error) {
     const testPair = engineTools.generateTestPair(config, scenario, viewport, variantOrScenarioLabelSafe, scenarioLabelSafe, 0, `${scenario.selectors.join('__')}`);
     const filePath = config.isReference ? testPair.reference : testPair.test;
+    const logFilePath = config.isReference ? testPair.referenceLog : testPair.testLog;
     testPair.engineErrorMsg = error.message;
 
     compareConfig = {
       testPairs: [testPair]
     };
+    await fs.writeFile(logFilePath, JSON.stringify(logger.logged));
     await fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
   }
 
@@ -386,6 +388,7 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
       await fs.writeFile(logFilePath, JSON.stringify(logger.logged));
     } catch (e) {
       logger.log('red', 'Error capturing..', e);
+      await fs.writeFile(logFilePath, JSON.stringify(logger.logged));
       return fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
     }
   } else {
@@ -419,10 +422,12 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
           await fs.writeFile(logFilePath, JSON.stringify(logger.logged));
         } else {
           logger.log('yellow', `Element not visible for capturing: ${s}`);
+          await fs.writeFile(logFilePath, JSON.stringify(logger.logged));
           return fs.copy(config.env.backstop + HIDDEN_SELECTOR_PATH, path);
         }
       } else {
         logger.log('magenta', `Element not found for capturing: ${s}`);
+        await fs.writeFile(logFilePath, JSON.stringify(logger.logged));
         return fs.copy(config.env.backstop + SELECTOR_NOT_FOUND_PATH, path);
       }
     };
@@ -437,6 +442,7 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
           await selectorShot(selector, filePath, logFilePath);
         } catch (e) {
           logger.log('red', `Error capturing Element ${selector}`, e);
+          await fs.writeFile(logFilePath, JSON.stringify(logger.logged));
           return fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
         }
       }
