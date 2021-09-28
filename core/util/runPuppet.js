@@ -285,7 +285,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     compareConfig = {
       testPairs: [testPair]
     };
-    await fs.writeFile(logFilePath, JSON.stringify(logger.logged));
+    await writeScenarioLogs(config, logFilePath, logger);
     await fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
   }
 
@@ -385,10 +385,10 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
         path: filePath,
         fullPage: fullPage
       });
-      await fs.writeFile(logFilePath, JSON.stringify(logger.logged));
+      await writeScenarioLogs(config, logFilePath, logger);
     } catch (e) {
       logger.log('red', 'Error capturing..', e);
-      await fs.writeFile(logFilePath, JSON.stringify(logger.logged));
+      await writeScenarioLogs(config, logFilePath, logger);
       return fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
     }
   } else {
@@ -419,15 +419,15 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
             : { captureBeyondViewport: false, path: path };
 
           await type.screenshot(params);
-          await fs.writeFile(logFilePath, JSON.stringify(logger.logged));
+          await writeScenarioLogs(config, logFilePath, logger);
         } else {
           logger.log('yellow', `Element not visible for capturing: ${s}`);
-          await fs.writeFile(logFilePath, JSON.stringify(logger.logged));
+          await writeScenarioLogs(config, logFilePath, logger);
           return fs.copy(config.env.backstop + HIDDEN_SELECTOR_PATH, path);
         }
       } else {
         logger.log('magenta', `Element not found for capturing: ${s}`);
-        await fs.writeFile(logFilePath, JSON.stringify(logger.logged));
+        await writeScenarioLogs(config, logFilePath, logger);
         return fs.copy(config.env.backstop + SELECTOR_NOT_FOUND_PATH, path);
       }
     };
@@ -442,7 +442,7 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
           await selectorShot(selector, filePath, logFilePath);
         } catch (e) {
           logger.log('red', `Error capturing Element ${selector}`, e);
-          await fs.writeFile(logFilePath, JSON.stringify(logger.logged));
+          await writeScenarioLogs(config, logFilePath, logger);
           return fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
         }
       }
@@ -460,5 +460,13 @@ function translateUrl (url, logger) {
     return fileUrl;
   } else {
     return url;
+  }
+}
+
+function writeScenarioLogs (config, logFilePath, logger) {
+  if (config.scenarioLogsInReports) {
+    return fs.writeFile(logFilePath, JSON.stringify(logger.logged));
+  } else {
+    return Promise.resolve(true);
   }
 }
