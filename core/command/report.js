@@ -85,6 +85,8 @@ function writeBrowserReport (config, reporter) {
       const pair = test.pair;
       pair.reference = path.relative(report, toAbsolute(pair.reference));
       pair.test = path.relative(report, toAbsolute(pair.test));
+      pair.referenceLog = path.relative(report, toAbsolute(pair.referenceLog));
+      pair.testLog = path.relative(report, toAbsolute(pair.testLog));
 
       if (pair.diffImage) {
         pair.diffImage = path.relative(report, toAbsolute(pair.diffImage));
@@ -191,6 +193,10 @@ function writeJsonReport (config, reporter) {
       const pair = test.pair;
       pair.reference = path.relative(report, toAbsolute(pair.reference));
       pair.test = path.relative(report, toAbsolute(pair.test));
+      if (config.scenarioLogsInReports) {
+        pair.referenceLog = path.relative(report, toAbsolute(pair.referenceLog));
+        pair.testLog = path.relative(report, toAbsolute(pair.testLog));
+      }
 
       if (pair.diffImage) {
         pair.diffImage = path.relative(report, toAbsolute(pair.diffImage));
