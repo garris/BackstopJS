@@ -48,7 +48,7 @@ module.exports = function (args) {
 };
 
 function loggerAction (action, color, message, ...rest) {
-  this.logged.push([action, color, message, rest]);
+  this.logged.push([action, color, message.toString(), JSON.stringify(rest)]);
   console[action](chalk[color](message), ...rest);
 }
 
