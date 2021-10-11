@@ -64,7 +64,7 @@ export default class TestCard extends React.Component {
         <TextDetails info={info} />
         <TestImages info={info} status={status} />
         <ErrorMessages info={info} status={status} />
-        <LogDetails info={info} />
+        <LogDetails info={info} status={status} />
       </CardWrapper>
     );
   }

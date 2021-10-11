@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-import { openModal } from '../../actions';
+import { openLogModal } from '../../actions';
 
 const LogWrapper = styled.div`
   position: relative;
@@ -23,6 +23,11 @@ class LogDetails extends React.Component {
     };
   }
 
+  onClick (log) {
+    const { openLogModal } = this.props;
+    openLogModal(log);
+  }
+
   render () {
     const { referenceLog, testLog } = this.props.info;
     const { status } = this.props;
@@ -35,12 +40,16 @@ class LogDetails extends React.Component {
       <LogWrapper>
         {
           typeof referenceLog === 'object'
-            ? <Wrapper><button>Reference Log</button></Wrapper>
+            ? <Wrapper><button
+              onClick={ this.onClick.bind(this, referenceLog) }
+            >Reference Log</button></Wrapper>
             : <Wrapper></Wrapper>
         }
         {
           typeof testLog === 'object'
-            ? <Wrapper><button>Test Log</button></Wrapper>
+            ? <Wrapper><button
+              onClick={ this.onClick.bind(this, testLog) }
+            >Test Log</button></Wrapper>
             : <Wrapper></Wrapper>
         }
         {(status !== 'pass') &&
@@ -59,15 +68,14 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    openModal: value => {
-      dispatch(openModal(value));
+    openLogModal: value => {
+      dispatch(openLogModal(value));
     }
   };
 };
 
-// eslint-disable-next-line no-unused-vars
-const TestImagesContainer = connect(mapStateToProps, mapDispatchToProps)(
+const LogDetailsContainer = connect(mapStateToProps, mapDispatchToProps)(
   LogDetails
 );
 
-export default LogDetails;
+export default LogDetailsContainer;
