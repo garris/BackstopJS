@@ -192,8 +192,8 @@ selectorExpansion        // See Targeting elements in the next section for more 
 misMatchThreshold        // Percentage of different pixels allowed to pass test
 requireSameDimensions    // If set to true -- any change in selector size will trigger a test failure.
 viewports                // An array of screen size objects your DOM will be tested against. This configuration will override the viewports property assigned at the config root.
-archiveReport            // If set to true -- all test reports will be archived(copied) (in `reports` folder)   
 ```
+<!-- archiveReport            // If set to true -- all test reports will be archived(copied) (in `reports` folder)  -->  
 
 
 ### Testing click and hover interactions
@@ -575,10 +575,10 @@ By default, BackstopJS saves generated resources into the `backstop_data` direct
     "html_report": "backstop_data/html_report",
     "json_report": "backstop_data/json_report",
     "ci_report": "backstop_data/ci_report",
-    "reports_archive": "backstop_data/reports",
   }
   ...
 ```
+<!--     "reports_archive": "backstop_data/reports", -->
 
 ### Changing the rendering engine
 Puppeteer is currently the default value and will be installed by default.
