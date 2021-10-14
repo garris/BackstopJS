@@ -4,7 +4,9 @@
  
 ## [5.4.3] - 2021-08-24
 ### Added
-
+- added archive report feature (#1353)
+  - requested a housekeeping followup PR
+  - documentaiton will be commented until 2nd PR is submitted.
 
 
 ### Changed
