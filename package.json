@@ -34,7 +34,7 @@
     "build-docker": "PV=$(node -p -e \"require('./package.json').version\"); docker build docker -t backstopjs/backstopjs:$PV",
     "publish-docker": "PV=$(node -p -e \"require('./package.json').version\"); docker push backstopjs/backstopjs:$PV",
     "publish-npm": "npm publish",
-    "publish-all": "build-docker && publish-docker && publish-npm"
+    "publish-all": "npm run build-docker && publish-docker && publish-npm"
   },
   "lint-staged": {
     "compare/src/**/*.js": [
@@ -66,10 +66,10 @@
     "eslint-plugin-standard": "^4.1.0",
     "file-loader": "^2.0.0",
     "lint-staged": "^4.3.0",
-    "mocha": "^5.2.0",
+    "mocha": "^9.1.3",
     "mockery": "^1.4.0",
     "prettier": "^1.14.3",
-    "prettier-eslint-cli": "^4.7.1",
+    "prettier-eslint-cli": "^5.0.1",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-modal": "^3.0.3",
@@ -81,9 +81,9 @@
     "sinon": "^1.17.7",
     "styled-components": "^2.1.2",
     "url-loader": "^1.1.1",
-    "webpack": "^4.43.0",
-    "webpack-cli": "^3.1.2",
-    "webpack-dev-server": "^3.3.1"
+    "webpack": "^5.59.1",
+    "webpack-cli": "^4.9.1",
+    "webpack-dev-server": "^4.3.1"
   },
   "dependencies": {
     "chalk": "^1.1.3",
