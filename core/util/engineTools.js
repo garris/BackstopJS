@@ -119,7 +119,8 @@ function generateTestPair (config, scenario, viewport, variantOrScenarioLabelSaf
     url: scenario.url,
     referenceUrl: scenario.referenceUrl,
     expect: getScenarioExpect(scenario),
-    viewportLabel: viewport.label
+    viewportLabel: viewport.label,
+    metadata: scenario.metadata
   };
 }
 

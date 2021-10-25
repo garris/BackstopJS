@@ -31,7 +31,8 @@
       "selectors": [],
       "selectorExpansion": true,
       "misMatchThreshold" : 0.1,
-      "requireSameDimensions": true
+      "requireSameDimensions": true,
+      "metadata": ["TEST-1"]
     }
   ],
   "paths": {
