@@ -61,12 +61,9 @@ function archiveReport (config) {
 }
 
 function writeBrowserReport (config, reporter) {
-  let testConfig;
-  if (typeof config.args.config === 'object') {
-    testConfig = config.args.config;
-  } else {
-    testConfig = Object.assign({}, require(config.backstopConfigFileName));
-  }
+  const testConfig = (typeof config.args.config === 'object')
+    ? config.args.config
+    : Object.assign({}, require(config.backstopConfigFileName));
 
   let browserReporter = cloneDeep(reporter);
 
@@ -94,13 +91,15 @@ function writeBrowserReport (config, reporter) {
     const reportConfigFilename = toAbsolute(config.compareConfigFileName);
     const testReportJsonName = toAbsolute(config.bitmaps_test + '/' + config.screenshotDateTime + '/report.json');
 
-    // if this is a dynamic test then we assume browserReporter has one scenario. This scenario will be appended to any existing report.
+    // If this is a dynamic test then we assume browserReporter has one scenario with one or more viewport variants.
+    // This scenario with all viewport variants will be appended to any existing report.
     if (testConfig.dynamicTestId) {
       try {
         console.log('Attempting to open: ', testReportJsonName);
         const testReportJson = require(testReportJsonName);
-        testReportJson.tests = testReportJson.tests.filter(test => test.pair.fileName !== browserReporter.tests[0].pair.fileName);
-        testReportJson.tests.push(browserReporter.tests[0]);
+        const scenarioFileNames = browserReporter.tests.map(test => test.pair.fileName);
+        testReportJson.tests = testReportJson.tests.filter(test => !scenarioFileNames.includes(test.pair.fileName));
+        browserReporter.tests.map(test => testReportJson.tests.push(test));
         browserReporter = testReportJson;
       } catch (err) {
         console.log('Creating new report.');
@@ -110,21 +109,21 @@ function writeBrowserReport (config, reporter) {
     const jsonReport = JSON.stringify(browserReporter, null, 2);
     const jsonpReport = `report(${jsonReport});`;
 
-    const jsonConfgWrite = fs.writeFile(testReportJsonName, jsonReport).then(function () {
+    const jsonConfigWrite = fs.writeFile(testReportJsonName, jsonReport).then(function () {
       logger.log('Copied json report to: ' + testReportJsonName);
     }, function (err) {
       logger.error('Failed json report copy to: ' + testReportJsonName);
       throw err;
     });
 
-    const jsonpConfgWrite = fs.writeFile(toAbsolute(reportConfigFilename), jsonpReport).then(function () {
+    const jsonpConfigWrite = fs.writeFile(toAbsolute(reportConfigFilename), jsonpReport).then(function () {
       logger.log('Copied jsonp report to: ' + reportConfigFilename);
     }, function (err) {
       logger.error('Failed jsonp report copy to: ' + reportConfigFilename);
       throw err;
     });
 
-    const promises = [jsonpConfgWrite, jsonConfgWrite];
+    const promises = [jsonpConfigWrite, jsonConfigWrite];
 
     return allSettled(promises);
   }).then(function () {
@@ -175,7 +174,11 @@ function writeJunitReport (config, reporter) {
 }
 
 function writeJsonReport (config, reporter) {
-  const jsonReporter = cloneDeep(reporter);
+  const testConfig = (typeof config.args.config === 'object')
+    ? config.args.config
+    : Object.assign({}, require(config.backstopConfigFileName));
+
+  let jsonReporter = cloneDeep(reporter);
 
   function toAbsolute (p) {
     return (path.isAbsolute(p)) ? p : path.join(config.projectPath, p);
@@ -197,10 +200,27 @@ function writeJsonReport (config, reporter) {
       }
     });
 
-    return fs.writeFile(toAbsolute(config.compareJsonFileName), JSON.stringify(jsonReporter.getReport(), null, 2)).then(function () {
-      logger.log('Wrote Json report to: ' + toAbsolute(config.compareJsonFileName));
+    const jsonReportFileName = toAbsolute(config.compareJsonFileName);
+
+    // If this is a dynamic test then we assume jsonReporter has one scenario with one or more viewport variants.
+    // This scenario with all viewport variants will be appended to any existing report.
+    if (testConfig.dynamicTestId) {
+      try {
+        console.log('Attempting to open: ', jsonReportFileName);
+        const jsonReportJson = require(jsonReportFileName);
+        const scenarioFileNames = jsonReporter.tests.map(test => test.pair.fileName);
+        jsonReportJson.tests = jsonReportJson.tests.filter(test => !scenarioFileNames.includes(test.pair.fileName));
+        jsonReporter.tests.map(test => jsonReportJson.tests.push(test));
+        jsonReporter = jsonReportJson;
+      } catch (err) {
+        console.log('Creating new report.');
+      }
+    }
+
+    return fs.writeFile(jsonReportFileName, JSON.stringify(jsonReporter, null, 2)).then(function () {
+      logger.log('Wrote Json report to: ' + jsonReportFileName);
     }, function (err) {
-      logger.error('Failed writing Json report to: ' + toAbsolute(config.compareJsonFileName));
+      logger.error('Failed writing Json report to: ' + jsonReportFileName);
       throw err;
     });
   });
