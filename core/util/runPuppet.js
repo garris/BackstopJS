@@ -385,13 +385,10 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
           }
 
           const type = config.puppeteerOffscreenCaptureFix ? page : el;
-          const params = config.puppeteerOffscreenCaptureFix
-            ? {
-                captureBeyondViewport: false,
-                path: path,
-                clip: box
-              }
-            : { captureBeyondViewport: false, path: path };
+          const params = { captureBeyondViewport: config.captureBeyondViewport ?? false, path: path };
+          if (config.puppeteerOffscreenCaptureFix) {
+            params.clip = box;
+          }
 
           await type.screenshot(params);
         } else {
