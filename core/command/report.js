@@ -79,26 +79,30 @@ function writeBrowserReport (config, reporter) {
   return fs.copy(config.comparePath, toAbsolute(config.html_report)).then(function () {
     // Slurp in logs
     const promises = [];
-    _.forEach(browserReporter.tests, test => {
-      const pair = test.pair;
-      const referenceLog = toAbsolute(pair.referenceLog);
-      const testLog = toAbsolute(pair.testLog);
+    if (config.scenarioLogsInReports) {
+      _.forEach(browserReporter.tests, test => {
+        const pair = test.pair;
+        const referenceLog = toAbsolute(pair.referenceLog);
+        const testLog = toAbsolute(pair.testLog);
 
-      const referencePromise = fs.readFile(referenceLog).then(function (log) {
-        pair.referenceLog = JSON.parse(log);
-      }).catch(function (e) {
-        logger.log(`Ignoring error reading reference log: ${referenceLog}`);
-        // swallow log ingestion errors
+        const referencePromise = fs.readFile(referenceLog).then(function (log) {
+          pair.referenceLog = JSON.parse(log);
+        }).catch(function (e) {
+          logger.log(`Ignoring error reading reference log: ${referenceLog}`);
+          // swallow log ingestion errors
+        });
+        const testPromise = fs.readFile(testLog).then(function (log) {
+          pair.testLog = JSON.parse(log);
+        }).catch(function (e) {
+          logger.log(`Ignoring error reading test log: ${testLog}`);
+          // swallow log ingestion errors
+        });
+        promises.push(referencePromise, testPromise);
       });
-      const testPromise = fs.readFile(testLog).then(function (log) {
-        pair.testLog = JSON.parse(log);
-      }).catch(function (e) {
-        logger.log(`Ignoring error reading test log: ${testLog}`);
-        // swallow log ingestion errors
-      });
-      promises.push(referencePromise, testPromise);
-    });
-    return Promise.all(promises);
+      return Promise.all(promises);
+    } else {
+      return Promise.resolve(true);
+    }
   }).then(function () {
     logger.log('Resources copied');
 
