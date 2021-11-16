@@ -24,7 +24,7 @@
 - Integrated Docker rendering -- to eliminate cross-platform rendering shenanigans
 - CLI reports
 - Render tests with **Chrome Headless**
-- Simulate user interactions with **Puppeteer** scripts
+- Simulate user interactions with **Playwright** or **Puppeteer** scripts
 - JUnit reports
 - Plays nice with CI and source control
 - Run globally or locally as a standalone package app or `require('backstopjs')` right into your node app
@@ -106,7 +106,7 @@ Pass a `--config=<configFilePathStr>` argument to test using a different config 
 
 **JS based config file**
 
-You may use a javascript based config file to allow connents in your config. Be sure to _export your config object as a node module_.
+You may use a javascript based config file to allow comments in your config. Be sure to _export your config object as a node module_.
 
 Example: Create a backstop.config.js
 
@@ -182,9 +182,9 @@ removeSelectors          // Array of selectors set to display: none
 onReadyScript            // After the above conditions are met -- use this script to modify UI state prior to screen shots e.g. hovers, clicks etc.
 keyPressSelectors        // Takes array of selector and string values -- simulates multiple sequential keypress interactions.
 hoverSelector            // Move the pointer over the specified DOM element prior to screen shot.
-hoverSelectors           // *Puppeteer only* takes array of selectors -- simulates multiple sequential hover interactions.
+hoverSelectors           // *Playwright and Puppeteer only* takes array of selectors -- simulates multiple sequential hover interactions.
 clickSelector            // Click the specified DOM element prior to screen shot.
-clickSelectors           // *Puppeteer only* takes array of selectors -- simulates multiple sequential click interactions.
+clickSelectors           // *Playwright and Puppeteer only* takes array of selectors -- simulates multiple sequential click interactions.
 postInteractionWait      // Wait for a selector after interacting with hoverSelector or clickSelector (optionally accepts wait time in ms. Ideal for use with a click or hover element transition. available with default onReadyScript)
 scrollToSelector         // Scrolls the specified DOM element into view prior to screen shot (available with default onReadyScript)
 selectors                // Array of selectors to capture. Defaults to document if omitted. Use "viewport" to capture the viewport size. See Targeting elements in the next section for more info...
@@ -206,7 +206,7 @@ The above would tell BackstopJS to wait for your app to generate an element with
 
 You can use these properties independent of each other to easily test various click and or hover states in your app.  These are obviously simple scenarios -- if you have more complex needs then this example should serve as a pretty good starting point create your own onReady scripts.
 
-NOTE: Puppeteer version optionally takes `clickSelectors` & `hoverSelectors` as arrays of selectors...
+NOTE: Playwright and Puppeteer versions optionally take `clickSelectors` & `hoverSelectors` as arrays of selectors...
 ```js
 clickSelectors: [".my-hamburger-menu",".my-hamburger-item"],
 hoverSelectors: [".my-nav-menu-item",".my-nav-menu-dropdown-item"],
@@ -214,7 +214,7 @@ hoverSelectors: [".my-nav-menu-item",".my-nav-menu-dropdown-item"],
 
 ### Key Press interactions
 BackstopJS ships with an onReady script that allows user to key press on selectors...
-NOTE: Supports Puppeteer and takes arrays of selectors and key press values.
+NOTE: Supports both Playwright and Puppeteer and takes arrays of selectors and key press values.
 
 ```json
 scenarios: [
