@@ -8,7 +8,6 @@ const ensureDirectoryPath = require('./ensureDirectoryPath');
 const injectBackstopTools = require('../../capture/backstopTools.js');
 const engineTools = require('./engineTools');
 
-const MIN_CHROME_VERSION = 62;
 const TEST_TIMEOUT = 60000;
 const DEFAULT_FILENAME_TEMPLATE = '{configId}_{scenarioLabel}_{selectorIndex}_{selectorLabel}_{viewportIndex}_{viewportLabel}';
 const DEFAULT_BITMAPS_TEST_DIR = 'bitmaps_test';
@@ -106,15 +105,6 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
       }
     }
   });
-
-  const chromeVersion = await page.evaluate(_ => {
-    const v = navigator.userAgent.match(/Chrom(e|ium)\/([0-9]+)\./);
-    return v ? parseInt(v[2], 10) : 0;
-  });
-
-  if (chromeVersion < MIN_CHROME_VERSION) {
-    console.warn(`***WARNING! CHROME VERSION ${MIN_CHROME_VERSION} OR GREATER IS REQUIRED. PLEASE UPDATE YOUR CHROME APP!***`);
-  }
 
   let result;
   const playwrightCommands = async () => {
