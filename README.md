@@ -500,7 +500,7 @@ engine:      browser page object
 scenario:    currently running scenario config
 viewport:    viewport info
 isReference: whether scenario contains reference URL property
-Engine:      Static class reference (Puppeteer)
+Engine:      Static class reference (Puppeteer/Playwright)
 config:      the whole config object
 ```
 
@@ -581,18 +581,35 @@ By default, BackstopJS saves generated resources into the `backstop_data` direct
 <!--     "reports_archive": "backstop_data/reports", -->
 
 ### Changing the rendering engine
-Puppeteer is currently the default value and will be installed by default.
+Both Puppeteer and Playwright are installed by default, though the default configuration is set to Puppeteer.
 
 #### Chrome-Headless (The latest webkit library)
 To use chrome headless you can currently use _puppeteer_ (https://github.com/GoogleChrome/puppeteer).
-
 
 ```json
 "engine": "puppeteer"
 ```
 
-### Setting Puppeteer option flags
-Backstop sets two defaults for Puppeteer:
+#### Playwright
+To use firefox or webkit, you can currently use _playwright_ (https://github.com/microsoft/playwright).
+
+Be sure to also switch the onBefore and onReady scripts to the Playwright defaults.  Playwright supports setting `engineOptions.browser` to `chromium`, `firefox`, or `webkit`.
+
+```json
+  ...
+  "onBeforeScript": "playwright/onBefore.js",
+  "onReadyScript": "playwright/onReady.js",
+  ...
+  "engine": "playwright"
+  ...
+  "engineOptions": {
+    "browser": "chromium"
+  }
+  ...
+```
+
+### Setting Puppeteer and Playwright option flags
+Backstop sets two defaults for both Puppeteer and Playwright:
 
 ```json
 ignoreHTTPSErrors: true,
@@ -607,8 +624,9 @@ You can add more settings (or override the defaults) with the engineOptions prop
   "args": ["--no-sandbox", "--disable-setuid-sandbox"]
 }
 ```
-
-More info here: [Puppeteer on github](https://github.com/GoogleChrome/puppeteer).
+More info here:
+  * [Puppeteer on github](https://github.com/GoogleChrome/puppeteer).
+  * [Playwright on github](https://github.com/microsoft/playwright).
 
 ### Using Docker for testing across different environments
 We've found that different environments can render the same webpage in slightly different ways -- in particular with text. E.G. see the text in this example rendering slightly differently between Linux and Mac...
