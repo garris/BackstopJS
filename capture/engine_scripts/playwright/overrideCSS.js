@@ -11,7 +11,7 @@
  *
  */
 
-  const BACKSTOP_TEST_CSS_OVERRIDE = `
+const BACKSTOP_TEST_CSS_OVERRIDE = `
   html {
     background-image: none;
   }

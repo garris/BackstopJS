@@ -27,11 +27,9 @@ module.exports = async (page, scenario) => {
   }
 
   if (postInteractionWait) {
-    if (parseInt(postInteractionWait) > 0) 
-    {
+    if (parseInt(postInteractionWait) > 0) {
       await page.waitForTimeout(postInteractionWait);
-    }
-    else {
+    } else {
       await page.waitForSelector(postInteractionWait);
     }
   }

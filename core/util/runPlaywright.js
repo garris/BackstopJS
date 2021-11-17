@@ -61,7 +61,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
 
   let browserChoice = config.engineOptions.browser;
   if (!browserChoice) {
-    console.warn(chalk.yellow(`No Playwright browser specified, assuming Chromium.`));
+    console.warn(chalk.yellow('No Playwright browser specified, assuming Chromium.'));
     browserChoice = 'chromium';
   }
 
