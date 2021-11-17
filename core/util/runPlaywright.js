@@ -71,7 +71,9 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
   }
 
   const browser = await playwright[browserChoice].launch(playwrightArgs);
-  const browserContext = await browser.newContext({ ignoreHTTPSErrors: true });
+
+  const ignoreHTTPSErrors = config.engineOptions.ignoreHTTPSErrors ?? true;
+  const browserContext = await browser.newContext({ ignoreHTTPSErrors: ignoreHTTPSErrors });
   const page = await browserContext.newPage();
 
   await page.setViewportSize({ width: VP_W, height: VP_H });
