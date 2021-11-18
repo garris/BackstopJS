@@ -33,14 +33,14 @@ const argsOptions = parseArgs(process.argv.slice(2), {
 console.log('Dynamic test example.');
 console.log(`config: ${JSON.stringify(argsOptions, null, 2)}`);
 
-assert.ok(argsOptions.dynamicTestId, 'Hold on there: dynamicTestId must represent a unique identifyer (string or int) for each test run.');
+assert.ok(argsOptions.dynamicTestId, 'Hold on there: dynamicTestId must represent a unique identifier (string or int) for each test run.');
 
 /**
- * A config used to test explicity setting a config.
+ * A config used to test explicitly setting a config.
  * @type {Object}
  */
 const exampleConfig = {
-  i: true, // incremental flag -- surpresses cleaning reference directory durning reference command
+  i: true, // incremental flag -- suppresses cleaning reference directory during reference command
   config: {
     dynamicTestId: argsOptions.dynamicTestId, // when truthy backstop will assume one dynamic scenario which is appended to test report belonging to dynamicTestId
     id: argsOptions.testLabel,
@@ -49,6 +49,11 @@ const exampleConfig = {
         label: 'phone',
         width: 320,
         height: 480
+      },
+      {
+        label: 'tablet',
+        width: 1024,
+        height: 768
       }
     ],
     scenarios: [
@@ -62,9 +67,9 @@ const exampleConfig = {
       bitmaps_test: 'backstop_data/bitmaps_test',
       engine_scripts: 'backstop_data/engine_scripts',
       html_report: 'backstop_data/html_report',
-      ci_report: 'backstop_data/ci_report'
+      json_report: 'backstop_data/json_report'
     },
-    report: ['browser'],
+    report: ['browser', 'json'],
     engine: 'puppeteer',
     asyncCaptureLimit: 5,
     asyncCompareLimit: 50,
