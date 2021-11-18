@@ -9,6 +9,6 @@
     "httpOnly": false,
     "secure": false,
     "session": false,
-    "sameSite": "no_restriction"
+    "sameSite": "Lax"
   }
 ]
