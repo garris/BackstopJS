@@ -4,12 +4,13 @@
  
 ## [6.0.1] - 2021-11-17
 ### Added
-- PLAYRIGHT ENGINE OPTION
+- PLAYRIGHT ENGINE OPTION  thank you JB
 
 ### Changed
+- support for viewport variants with dynamic scenario mode to browser and json report (#1376)  thank you TW
 
 ### Fixed 
-
+- Fixed Puppeteer ENOENT Error When Image Stubbing (#1377)
 
 
 
