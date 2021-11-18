@@ -2,6 +2,18 @@
 # Change Log
 
  
+## [6.0.1] - 2021-11-17
+### Added
+- PLAYRIGHT ENGINE OPTION
+
+### Changed
+
+### Fixed 
+
+
+
+
+ 
 ## [5.4.3] - 2021-08-24
 ### Added
 - added archive report feature (#1353)
