@@ -72,7 +72,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
 
   const browser = await playwright[browserChoice].launch(playwrightArgs);
 
-  const ignoreHTTPSErrors = config.engineOptions.ignoreHTTPSErrors ?? true;
+  const ignoreHTTPSErrors = config.engineOptions.ignoreHTTPSErrors ? config.engineOptions.ignoreHTTPSErrors : true;
   const browserContext = await browser.newContext({ ignoreHTTPSErrors: ignoreHTTPSErrors });
   const page = await browserContext.newPage();
 
