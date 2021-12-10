@@ -2,6 +2,18 @@
 # Change Log
 
  
+## [6.0.4] - 2021-12-10
+### Added
+
+### Changed
+- Bump puppeteer to v12 (#1381)
+- Travis remove node 10, 12 test runs
+
+### Fixed 
+
+
+
+ 
 ## [6.0.1] - 2021-11-17
 ### Added
 - PLAYRIGHT ENGINE OPTION  thank you JB
