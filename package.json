@@ -34,7 +34,7 @@
     "build-docker": "PV=$(node -p -e \"require('./package.json').version\"); docker build docker -t backstopjs/backstopjs:$PV",
     "publish-docker": "PV=$(node -p -e \"require('./package.json').version\"); docker push backstopjs/backstopjs:$PV",
     "publish-npm": "npm publish",
-    "publish-all": "npm run build-docker && publish-docker && publish-npm"
+    "build-and-publish": "npm run publish-npm && build-docker && publish-docker"
   },
   "lint-staged": {
     "compare/src/**/*.js": [
