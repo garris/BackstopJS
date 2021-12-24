@@ -32,21 +32,21 @@ class LogDetails extends React.Component {
     const { referenceLog, testLog } = this.props.info;
     const { status } = this.props;
 
-    if (typeof testLog !== 'object' && typeof referenceLog !== 'object') {
+    if (!testLog && !referenceLog) {
       return null;
     }
 
     return (
       <LogWrapper>
         {
-          typeof referenceLog === 'object'
+          referenceLog
             ? <Wrapper><button
               onClick={ this.onClick.bind(this, referenceLog) }
             >Reference Log</button></Wrapper>
             : <Wrapper></Wrapper>
         }
         {
-          typeof testLog === 'object'
+          testLog
             ? <Wrapper><button
               onClick={ this.onClick.bind(this, testLog) }
             >Test Log</button></Wrapper>

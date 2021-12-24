@@ -65,34 +65,63 @@ const customStyles = {
 };
 
 class LogModal extends React.Component {
+  constructor (props) {
+    super(props);
+    this.state = { logLines: null };
+  }
+
   render () {
     const {
-      visible,
-      logs: jsonLogs
+      visible
+      // logs: logPath
     } = this.props.logs;
-    const {
-      closeModal
-    } = this.props;
 
-    const logs = jsonLogs && jsonLogs.map(it => it[2]).join('\n');
+    const logLines = this.state.logLines;
+    const loadedLogs = logLines && logLines.map(it => it[2]).join('\n');
+    const logs = loadedLogs || 'Loading Logs...';
 
     return (
       <Wrapper>
         <Modal
           isOpen={visible}
-          /* onAfterOpen={this.afterOpenModal} */
-          onRequestClose={closeModal}
+          onAfterOpen={this.afterOpenModal.bind(this)}
+          onRequestClose={this.clearAndCloseModal.bind(this)}
           style={customStyles}
           contentLabel="Example Modal"
         >
           <ModalHeader>
             <Logo />
-            <ButtonClose onClick={closeModal} />
+            <ButtonClose onClick={this.clearAndCloseModal.bind(this)} />
           </ModalHeader>
-          <TextArea>{ logs }</TextArea>
+          <TextArea value={logs}></TextArea>
         </Modal>
       </Wrapper>
     );
+  }
+
+  clearAndCloseModal () {
+    const {
+      closeModal
+    } = this.props;
+
+    this.setState({
+      logLines: null
+    });
+    closeModal();
+  }
+
+  afterOpenModal () {
+    const logPath = this.props.logs.logs;
+    fetch('../../' + logPath).then(async (response) => {
+      if (response.ok) {
+        const json = await response.json();
+        this.setState({
+          logLines: json
+        });
+      } else {
+        this.setState({ logLines: `error fetching logs: ${response.statusText}` });
+      }
+    });
   }
 }
 
