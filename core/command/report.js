@@ -85,6 +85,10 @@ function writeBrowserReport (config, reporter) {
         const referenceLog = toAbsolute(pair.referenceLog);
         const testLog = toAbsolute(pair.testLog);
 
+        const report = toAbsolute(config.html_report);
+        pair.referenceLog = path.relative(report, referenceLog);
+        pair.testLog = path.relative(report, testLog);
+
         const referencePromise = fs.readFile(referenceLog).catch(function (e) {
           logger.log(`Ignoring error reading reference log: ${referenceLog}`);
           delete pair.referenceLog;
@@ -111,8 +115,8 @@ function writeBrowserReport (config, reporter) {
     logger.log('Resources copied');
 
     // Fixing URLs in the configuration
-    const report = toAbsolute(config.html_report);
     _.forEach(browserReporter.tests, test => {
+      const report = toAbsolute(config.html_report);
       const pair = test.pair;
       pair.reference = path.relative(report, toAbsolute(pair.reference));
       pair.test = path.relative(report, toAbsolute(pair.test));

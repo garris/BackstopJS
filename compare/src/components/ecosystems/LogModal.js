@@ -112,7 +112,7 @@ class LogModal extends React.Component {
 
   afterOpenModal () {
     const logPath = this.props.logs.logs;
-    fetch('../../' + logPath).then(async (response) => {
+    fetch(logPath).then(async (response) => {
       if (response.ok) {
         const json = await response.json();
         this.setState({
