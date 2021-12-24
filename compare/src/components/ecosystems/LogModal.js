@@ -119,8 +119,16 @@ class LogModal extends React.Component {
           logLines: json
         });
       } else {
-        this.setState({ logLines: `error fetching logs: ${response.statusText}` });
+        this.setState({ logLines: [['', '', `error fetching logs: ${response.statusText}`]] });
       }
+    }).catch(err => {
+      const errorLines = [['', '', `error fetching logs: ${err.message}`]];
+      if (location.protocol.startsWith('file')) {
+        errorLines.push(['', '', 'I see you are loading via a file: URL.']);
+        errorLines.push(['', '', 'Logs are loaded via a secondary network request, which is blocked by the browser for file: URLs.']);
+        errorLines.push(['', '', 'Consider using `backstop remote` to serve via http instead.']);
+      }
+      this.setState({ logLines: errorLines });
     });
   }
 }
