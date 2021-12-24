@@ -85,22 +85,26 @@ function writeBrowserReport (config, reporter) {
         const referenceLog = toAbsolute(pair.referenceLog);
         const testLog = toAbsolute(pair.testLog);
 
-        const referencePromise = fs.readFile(referenceLog).then(function (log) {
-          pair.referenceLog = JSON.parse(log);
-        }).catch(function (e) {
+        const referencePromise = fs.readFile(referenceLog).catch(function (e) {
           logger.log(`Ignoring error reading reference log: ${referenceLog}`);
-          // swallow log ingestion errors
+          delete pair.referenceLog;
+          // remove non-existing log paths
         });
-        const testPromise = fs.readFile(testLog).then(function (log) {
-          pair.testLog = JSON.parse(log);
-        }).catch(function (e) {
+        const testPromise = fs.readFile(testLog).catch(function (e) {
           logger.log(`Ignoring error reading test log: ${testLog}`);
-          // swallow log ingestion errors
+          delete pair.testLog;
+          // remove non-existing log paths
         });
         promises.push(referencePromise, testPromise);
       });
       return Promise.all(promises);
     } else {
+      // don't pass log paths to client
+      _.forEach(browserReporter.tests, test => {
+        const pair = test.pair;
+        delete pair.referenceLog;
+        delete pair.testLog;
+      });
       return Promise.resolve(true);
     }
   }).then(function () {
