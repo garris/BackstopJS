@@ -7,6 +7,7 @@ const allSettled = require('../util/allSettled');
 const fs = require('../util/fs');
 const logger = require('../util/logger')('report');
 const compare = require('../util/compare/');
+const writeXrayReport = require('../util/writeXrayReport');
 
 function replaceInFile (file, search, replace) {
   return new Promise((resolve, reject) => {
@@ -30,13 +31,15 @@ function writeReport (config, reporter) {
 
   if (config.report && config.report.indexOf('CI') > -1 && config.ciReport.format === 'junit') {
     promises.push(writeJunitReport(config, reporter));
+  } else if (config.report && config.report.indexOf('Xray') > -1) {
+    logger.log('Initialize Xray report');
+    promises.push(writeXrayReport(config, reporter))
+  } else {
+    if (config.report && config.report.indexOf('json') > -1) {
+      promises.push(writeJsonReport(config, reporter));
+    }
+    promises.push(writeBrowserReport(config, reporter));
   }
-
-  if (config.report && config.report.indexOf('json') > -1) {
-    promises.push(writeJsonReport(config, reporter));
-  }
-
-  promises.push(writeBrowserReport(config, reporter));
 
   return allSettled(promises);
 }
