@@ -50,5 +50,6 @@
   "asyncCompareLimit": 50,
   "debug": false,
   "debugWindow": false,
-  "archiveReport": true
+  "archiveReport": true,
+  "scenarioLogsInReports": true
 }
