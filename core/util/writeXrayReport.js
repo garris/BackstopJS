@@ -22,6 +22,8 @@ module.exports = function (config, reporter) {
         'iterations': [],
         'testInfo': {}
       };
+      const metadata = testCase[0].pair.metadata;
+      const projectKey = metadata ? metadata[0].split('-')[0] : '';
 
       testCase.forEach((testedViewport) => {
         let { pair: { viewportLabel: name }, status } = testedViewport;
@@ -32,9 +34,9 @@ module.exports = function (config, reporter) {
         }
         xrayTestResult.iterations.push({ name, status });
       });
-
       xrayTestResult.status = testStatus;
-      xrayTestResult.testInfo.requirementKeys = testCase[0].pair.metadata;
+      xrayTestResult.testInfo.requirementKeys = metadata;
+      xrayTestResult.testInfo.projectKey = projectKey;
       xrayTestResult.testInfo.summary = testCase[0].pair.label;
       xrayTestResult.testInfo.type = "Generic";
       transformedTestCases.push(
@@ -42,13 +44,16 @@ module.exports = function (config, reporter) {
       );
     }
 
+    debugger;
     return transformedTestCases;
   }
 
   function transformToXrayJson (json) {
     const results = {}
     const namedTestCases = _.groupBy(json, 'pair.label');
-    return results.tests = transformTestCases(namedTestCases);
+
+    results.tests = transformTestCases(namedTestCases);
+    return results;
   }
 
   logger.log('Writing  Xray json report');
