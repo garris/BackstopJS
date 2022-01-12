@@ -11,7 +11,6 @@ import NavButtons from '../atoms/NavButtons';
 // molecules
 import TestImages from '../molecules/TestImages';
 import ApproveButton from '../molecules/ApproveButton';
-import LogDetails from '../molecules/LogDetails';
 
 const CardWrapper = styled.div`
   position: relative;
@@ -64,7 +63,6 @@ export default class TestCard extends React.Component {
         <TextDetails info={info} />
         <TestImages info={info} status={status} />
         <ErrorMessages info={info} status={status} />
-        <LogDetails info={info} status={status} />
       </CardWrapper>
     );
   }
