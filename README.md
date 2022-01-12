@@ -195,7 +195,7 @@ misMatchThreshold        // Percentage of different pixels allowed to pass test
 requireSameDimensions    // If set to true -- any change in selector size will trigger a test failure.
 viewports                // An array of screen size objects your DOM will be tested against. This configuration will override the viewports property assigned at the config root.
 ```
-<!-- archiveReport            // If set to true -- all test reports will be archived(copied) (in `reports` folder)  -->  
+<!-- archiveReport            // If set to true -- all test reports will be archived(copied) (in `reports` folder)  -->
 
 
 ### Testing click and hover interactions
@@ -386,6 +386,14 @@ There may also be elements which need to be completely removed during testing. F
 ]
 ```
 
+### Capturing Browser Console Logs
+
+Sometimes you need a little more information to debug misbehavior. If that information is in the browser console logs, it won't appear in a screenshot. To capture the bowser console logs along with the screenshots, set `scenarioLogsInReports`. ( _Note: In order to view the logs, you will have to serve the reports from an HTTP server. See _Serving Reports_ below._)
+
+```json
+"scenarioLogsInReports": true
+```
+
 ### Changing test sensitivity
 `"misMatchThreshold"` (percentage 0.00%-100.00%) will change the amount of difference BackstopJS will tolerate before marking a test screenshot as "failed".  The default setting is `0.1`, this may need to be adjusted based on the kinds of testing you're doing.
 
@@ -552,6 +560,10 @@ You may customize the testsuite name and/or a report file (xunit.xml) path to yo
 },
 ```
 
+### Serving Reports
+
+The reports can be served from any static file server, but if you don't have one already configured, `backstop remote` is built in. Make sure to run it from a second terminal window.
+
 ### BackstopJS and CLI return values
 Pro Tip: When run on the command line, the BackstopJS process will return a 0 if tests were successful and a 1 if anything failed. So you always have the flexibility of branching way up high in your CLI if needed -- e.g....
 
@@ -658,7 +670,7 @@ backstop('test', {docker: true});
 The above flag will cause BackstopJS to hit your Docker local client, spin up a BackstopJS container from https://hub.docker.com/r/backstopjs/backstopjs/ and execute your test. By default, Backstop will attemt to use a Docker image with the same version number specified in your `package.js`.
 
 
-####Changing the default Docker command
+#### Changing the default Docker command
 
 If the default docker command or image does not work for you, you can customize the command to run BackstopJS with Docker by changing the `dockerCommandTemplate` config option. The default is:
 
