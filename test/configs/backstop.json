@@ -30,7 +30,7 @@
       "postInteractionWait": 0,
       "selectors": [],
       "selectorExpansion": true,
-      "misMatchThreshold" : 0.1,
+      "misMatchThreshold": 0.1,
       "requireSameDimensions": true,
       "metadata": ["TEST-1"]
     }
@@ -46,6 +46,11 @@
   "engine": "puppet",
   "engineOptions": {
     "args": ["--no-sandbox"]
+  },
+  "customReport": {
+    "script": "customReports/xrayReport.js",
+    "reportLocation": "backstop_data/xray_report",
+    "reportName": "xrayReport.json"
   },
   "asyncCaptureLimit": 5,
   "asyncCompareLimit": 50,

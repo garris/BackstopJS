@@ -7,7 +7,6 @@ const allSettled = require('../util/allSettled');
 const fs = require('../util/fs');
 const logger = require('../util/logger')('report');
 const compare = require('../util/compare/');
-const writeXrayReport = require('../util/writeXrayReport');
 
 function replaceInFile (file, search, replace) {
   return new Promise((resolve, reject) => {
@@ -26,19 +25,32 @@ function replaceInFile (file, search, replace) {
   });
 }
 
+async function processCustomReport (config, reporter) {
+  const engineScriptsPath = config.engine_scripts;
+  const customReport = config.customReport;
+  if (customReport) {
+    const customReportScript = path.resolve(engineScriptsPath, customReport.script);
+    if (fs.existsSync(customReportScript)) {
+      return await require(customReportScript)(config, reporter);
+    } else {
+      console.warn('WARNING: reporting script not found: ' + customReportScript);
+    }
+  }
+}
+
 function writeReport (config, reporter) {
   const promises = [];
 
   if (config.report && config.report.indexOf('CI') > -1 && config.ciReport.format === 'junit') {
     promises.push(writeJunitReport(config, reporter));
-  } else if (config.report && config.report.indexOf('Xray') > -1) {
-    promises.push(writeXrayReport(config, reporter))
-  } else {
-    if (config.report && config.report.indexOf('json') > -1) {
-      promises.push(writeJsonReport(config, reporter));
-    }
-    promises.push(writeBrowserReport(config, reporter));
   }
+
+  if (config.report && config.report.indexOf('json') > -1) {
+    promises.push(writeJsonReport(config, reporter));
+  }
+
+  promises.push(writeBrowserReport(config, reporter));
+  promises.push(processCustomReport(config, reporter));
 
   return allSettled(promises);
 }

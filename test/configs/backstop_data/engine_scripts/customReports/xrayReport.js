@@ -1,12 +1,11 @@
-const fs = require('../util/fs');
+const { writeFile } = require('fs');
+const { ensureDir } = require('fs-extra');
 const path = require('path');
-const logger = require('../util/logger')('Xray report');
 const _ = require('lodash');
 const cloneDeep = require('lodash/cloneDeep');
-const { stat } = require('fs');
+const util = require('util');
 
 module.exports = function (config, reporter) {
-  const jsonReporter = cloneDeep(reporter);
 
   function toAbsolute (p) {
     return path.isAbsolute(p) ? p : path.join(config.projectPath, p);
@@ -44,7 +43,6 @@ module.exports = function (config, reporter) {
       );
     }
 
-    debugger;
     return transformedTestCases;
   }
 
@@ -56,17 +54,20 @@ module.exports = function (config, reporter) {
     return results;
   }
 
-  logger.log('Writing  Xray json report');
+  const jsonReporter = cloneDeep(reporter);
+  const ensureDirPromise = util.promisify(ensureDir);
+  const writeFilePromise = util.promisify(writeFile);
 
-  return fs.ensureDir(toAbsolute(config.json_report)).then(function () {
+  return ensureDirPromise(toAbsolute(config.customReport.reportLocation)).then(function () {
     const res = transformToXrayJson(jsonReporter.tests);
+    const reportPath = toAbsolute(path.join(config.customReport.reportLocation, config.customReport.reportName));
 
-    return fs.writeFile(toAbsolute(config.compareJsonFileName), JSON.stringify(res, null, 2)).then(
+    return writeFilePromise(reportPath, JSON.stringify(res, null, 2)).then(
       function () {
-        logger.log('Wrote Xray Json report to: ' + toAbsolute(config.compareJsonFileName));
+        console.log('Wrote Xray report to: ' + reportPath);
       },
       function (err) {
-        logger.error('Failed writing Xray Json report to: ' + toAbsolute(config.compareJsonFileName));
+        console.error('Failed writing Xray report to: ' + reportPath);
         throw err;
       }
     );

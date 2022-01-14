@@ -113,14 +113,11 @@ function generateTestPair (config, scenario, viewport, variantOrScenarioLabelSaf
     test: testFilePath,
     selector: selector,
     fileName: fileName,
-    label: scenario.label,
     requireSameDimensions: getRequireSameDimensions(scenario, config),
     misMatchThreshold: getMisMatchThreshHold(scenario, config),
-    url: scenario.url,
-    referenceUrl: scenario.referenceUrl,
     expect: getScenarioExpect(scenario),
-    viewportLabel: viewport.label,
-    metadata: scenario.metadata
+    veportLabel: viewport.label,
+    ...scenario
   };
 }
 
