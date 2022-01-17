@@ -23,7 +23,7 @@ function extendConfig (config, userConfig) {
   config.asyncCompareLimit = userConfig.asyncCompareLimit;
   config.backstopVersion = version;
   config.dockerCommandTemplate = userConfig.dockerCommandTemplate;
-  config.customReport = userConfig.customReport;
+  config.customReports = userConfig.customReports;
   return config;
 }
 

@@ -5,7 +5,7 @@ const _ = require('lodash');
 const cloneDeep = require('lodash/cloneDeep');
 const util = require('util');
 
-module.exports = function (config, reporter) {
+module.exports = function (config, reporter, resultName) {
 
   function toAbsolute (p) {
     return path.isAbsolute(p) ? p : path.join(config.projectPath, p);
@@ -58,9 +58,9 @@ module.exports = function (config, reporter) {
   const ensureDirPromise = util.promisify(ensureDir);
   const writeFilePromise = util.promisify(writeFile);
 
-  return ensureDirPromise(toAbsolute(config.customReport.reportLocation)).then(function () {
+  return ensureDirPromise(toAbsolute(config.customReports.reportLocation)).then(function () {
     const res = transformToXrayJson(jsonReporter.tests);
-    const reportPath = toAbsolute(path.join(config.customReport.reportLocation, config.customReport.reportName));
+    const reportPath = toAbsolute(path.join(config.customReports.reportLocation, resultName));
 
     return writeFilePromise(reportPath, JSON.stringify(res, null, 2)).then(
       function () {
