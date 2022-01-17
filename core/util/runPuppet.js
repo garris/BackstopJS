@@ -34,10 +34,25 @@ module.exports = function (args) {
   config._outputFileFormatSuffix = '.' + ((config.outputFormat && config.outputFormat.match(/jpg|jpeg/)) || 'png');
   config._configId = config.id || engineTools.genHash(config.backstopConfigFileName);
 
-  return processScenarioView(scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, config);
+  const logger = {
+    logged: []
+  };
+  Object.assign(logger, {
+    error: loggerAction.bind(logger, 'error'),
+    warn: loggerAction.bind(logger, 'warn'),
+    log: loggerAction.bind(logger, 'log'),
+    info: loggerAction.bind(logger, 'info')
+  });
+
+  return processScenarioView(scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, config, logger);
 };
 
-async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, config) {
+function loggerAction (action, color, message, ...rest) {
+  this.logged.push([action, color, message.toString(), JSON.stringify(rest)]);
+  console[action](chalk[color](message), ...rest);
+}
+
+async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, config, logger) {
   if (!config.paths) {
     config.paths = {};
   }
@@ -68,7 +83,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
   page.setDefaultNavigationTimeout(engineTools.getEngineOption(config, 'waitTimeout', TEST_TIMEOUT));
 
   if (isReference) {
-    console.log(chalk.blue('CREATING NEW REFERENCE FILE'));
+    logger.log('blue', 'CREATING NEW REFERENCE FILE');
   }
 
   // --- set up console output and ready event ---
@@ -80,7 +95,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
       readyResolve = resolve;
       // fire the ready event after the readyTimeout
       readyTimeoutTimer = setTimeout(() => {
-        console.error(chalk.red(`ReadyEvent not detected within readyTimeout limit. (${readyTimeout} ms)`), scenario.url);
+        logger.error('red', `ReadyEvent not detected within readyTimeout limit. (${readyTimeout} ms)`, scenario.url);
         resolve();
       }, readyTimeout);
     });
@@ -89,7 +104,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
   page.on('console', msg => {
     for (let i = 0; i < msg.args().length; ++i) {
       const line = msg.args()[i];
-      console.log(`Browser Console Log ${i}: ${line}`);
+      logger.log('reset', `Browser Console Log ${i}: ${line}`);
       if (readyEvent && new RegExp(readyEvent).test(line)) {
         readyResolve();
       }
@@ -102,7 +117,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
   });
 
   if (chromeVersion < MIN_CHROME_VERSION) {
-    console.warn(`***WARNING! CHROME VERSION ${MIN_CHROME_VERSION} OR GREATER IS REQUIRED. PLEASE UPDATE YOUR CHROME APP!***`);
+    logger.warn('reset', `***WARNING! CHROME VERSION ${MIN_CHROME_VERSION} OR GREATER IS REQUIRED. PLEASE UPDATE YOUR CHROME APP!***`);
   }
 
   let result;
@@ -114,7 +129,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
       if (fs.existsSync(beforeScriptPath)) {
         await require(beforeScriptPath)(page, scenario, viewport, isReference, browser, config);
       } else {
-        console.warn('WARNING: script not found: ' + beforeScriptPath);
+        logger.warn('reset', 'WARNING: script not found: ' + beforeScriptPath);
       }
     }
 
@@ -123,7 +138,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     if (isReference && scenario.referenceUrl) {
       url = scenario.referenceUrl;
     }
-    await page.goto(translateUrl(url));
+    await page.goto(translateUrl(url, logger));
 
     await injectBackstopTools(page);
 
@@ -135,6 +150,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
 
       clearTimeout(readyTimeoutTimer);
 
+      // can't use logger here -- this executes on the page
       await page.evaluate(_ => console.info('readyEvent ok'));
     }
 
@@ -177,7 +193,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
       if (fs.existsSync(readyScriptPath)) {
         await require(readyScriptPath)(page, scenario, viewport, isReference, browser, config);
       } else {
-        console.warn('WARNING: script not found: ' + readyScriptPath);
+        logger.warn('reset', 'WARNING: script not found: ' + readyScriptPath);
       }
     }
 
@@ -233,8 +249,8 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
 
   let error;
   await puppetCommands().catch(e => {
-    console.log(chalk.red(`Puppeteer encountered an error while running scenario "${scenario.label}"`));
-    console.log(chalk.red(e));
+    logger.log('red', `Puppeteer encountered an error while running scenario "${scenario.label}"`);
+    logger.log('red', e);
     error = e;
   });
 
@@ -250,7 +266,8 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
         scenarioLabelSafe,
         config,
         result.backstopSelectorsExp,
-        result.backstopSelectorsExpMap
+        result.backstopSelectorsExpMap,
+        logger
       );
     } catch (e) {
       error = e;
@@ -262,11 +279,13 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
   if (error) {
     const testPair = engineTools.generateTestPair(config, scenario, viewport, variantOrScenarioLabelSafe, scenarioLabelSafe, 0, `${scenario.selectors.join('__')}`);
     const filePath = config.isReference ? testPair.reference : testPair.test;
+    const logFilePath = config.isReference ? testPair.referenceLog : testPair.testLog;
     testPair.engineErrorMsg = error.message;
 
     compareConfig = {
       testPairs: [testPair]
     };
+    await writeScenarioLogs(config, logFilePath, logger);
     await fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
   }
 
@@ -283,7 +302,8 @@ async function delegateSelectors (
   scenarioLabelSafe,
   config,
   selectors,
-  selectorMap
+  selectorMap,
+  logger
 ) {
   const compareConfig = { testPairs: [] };
   let captureDocument = false;
@@ -294,12 +314,14 @@ async function delegateSelectors (
   selectors.forEach(function (selector, selectorIndex) {
     const testPair = engineTools.generateTestPair(config, scenario, viewport, variantOrScenarioLabelSafe, scenarioLabelSafe, selectorIndex, selector);
     const filePath = config.isReference ? testPair.reference : testPair.test;
+    const logFilePath = config.isReference ? testPair.referenceLog : testPair.testLog;
 
     if (!config.isReference) {
       compareConfig.testPairs.push(testPair);
     }
 
     selectorMap[selector].filePath = filePath;
+    selectorMap[selector].logFilePath = logFilePath;
     if (selector === BODY_SELECTOR || selector === DOCUMENT_SELECTOR) {
       captureDocument = selector;
     } else if (selector === VIEWPORT_SELECTOR) {
@@ -310,14 +332,14 @@ async function delegateSelectors (
   });
 
   if (captureDocument) {
-    captureJobs.push(function () { return captureScreenshot(page, browser, captureDocument, selectorMap, config, [], viewport); });
+    captureJobs.push(function () { return captureScreenshot(page, browser, captureDocument, selectorMap, config, [], viewport, logger); });
   }
   // TODO: push captureViewport into captureList (instead of calling captureScreenshot()) to improve perf.
   if (captureViewport) {
-    captureJobs.push(function () { return captureScreenshot(page, browser, captureViewport, selectorMap, config, [], viewport); });
+    captureJobs.push(function () { return captureScreenshot(page, browser, captureViewport, selectorMap, config, [], viewport, logger); });
   }
   if (captureList.length) {
-    captureJobs.push(function () { return captureScreenshot(page, browser, null, selectorMap, config, captureList, viewport); });
+    captureJobs.push(function () { return captureScreenshot(page, browser, null, selectorMap, config, captureList, viewport, logger); });
   }
 
   return new Promise(function (resolve, reject) {
@@ -334,7 +356,7 @@ async function delegateSelectors (
       }
       job = captureJobs.shift();
       job().catch(function (e) {
-        console.log(e);
+        logger.log('reset', e);
         errors.push(e);
       }).then(function () {
         next();
@@ -342,33 +364,36 @@ async function delegateSelectors (
     };
     next();
   }).then(async () => {
-    console.log(chalk.green('x Close Browser'));
+    logger.log('green', 'x Close Browser');
     await browser.close();
   }).catch(async (err) => {
-    console.log(chalk.red(err));
+    logger.log('red', err);
     await browser.close();
   }).then(_ => compareConfig);
 }
 
-async function captureScreenshot (page, browser, selector, selectorMap, config, selectors, viewport) {
-  let filePath;
+async function captureScreenshot (page, browser, selector, selectorMap, config, selectors, viewport, logger) {
+  let filePath, logFilePath;
   const fullPage = (selector === NOCLIP_SELECTOR || selector === DOCUMENT_SELECTOR);
   if (selector) {
     filePath = selectorMap[selector].filePath;
-    ensureDirectoryPath(filePath);
+    logFilePath = selectorMap[selector].logFilePath;
+    ensureDirectoryPath(filePath); // logs in same dir
 
     try {
       await page.screenshot({
         path: filePath,
         fullPage: fullPage
       });
+      await writeScenarioLogs(config, logFilePath, logger);
     } catch (e) {
-      console.log(chalk.red('Error capturing..'), e);
+      logger.log('red', 'Error capturing..', e);
+      await writeScenarioLogs(config, logFilePath, logger);
       return fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
     }
   } else {
     // OTHER-SELECTOR screenshot
-    const selectorShot = async (s, path) => {
+    const selectorShot = async (s, path, logFilePath) => {
       const el = await page.$(s);
       if (el) {
         const box = await el.boundingBox();
@@ -394,12 +419,15 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
             : { captureBeyondViewport: false, path: path };
 
           await type.screenshot(params);
+          await writeScenarioLogs(config, logFilePath, logger);
         } else {
-          console.log(chalk.yellow(`Element not visible for capturing: ${s}`));
+          logger.log('yellow', `Element not visible for capturing: ${s}`);
+          await writeScenarioLogs(config, logFilePath, logger);
           return fs.copy(config.env.backstop + HIDDEN_SELECTOR_PATH, path);
         }
       } else {
-        console.log(chalk.magenta(`Element not found for capturing: ${s}`));
+        logger.log('magenta', `Element not found for capturing: ${s}`);
+        await writeScenarioLogs(config, logFilePath, logger);
         return fs.copy(config.env.backstop + SELECTOR_NOT_FOUND_PATH, path);
       }
     };
@@ -408,11 +436,13 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
       for (let i = 0; i < selectors.length; i++) {
         const selector = selectors[i];
         filePath = selectorMap[selector].filePath;
+        logFilePath = selectorMap[selector].logFilePath;
         ensureDirectoryPath(filePath);
         try {
-          await selectorShot(selector, filePath);
+          await selectorShot(selector, filePath, logFilePath);
         } catch (e) {
-          console.log(chalk.red(`Error capturing Element ${selector}`), e);
+          logger.log('red', `Error capturing Element ${selector}`, e);
+          await writeScenarioLogs(config, logFilePath, logger);
           return fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
         }
       }
@@ -422,13 +452,21 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
 }
 
 // handle relative file name
-function translateUrl (url) {
+function translateUrl (url, logger) {
   const RE = /^[./]/;
   if (RE.test(url)) {
     const fileUrl = 'file://' + path.join(process.cwd(), url);
-    console.log('Relative filename detected -- translating to ' + fileUrl);
+    logger.log('reset', 'Relative filename detected -- translating to ' + fileUrl);
     return fileUrl;
   } else {
     return url;
+  }
+}
+
+function writeScenarioLogs (config, logFilePath, logger) {
+  if (config.scenarioLogsInReports) {
+    return fs.writeFile(logFilePath, JSON.stringify(logger.logged));
+  } else {
+    return Promise.resolve(true);
   }
 }

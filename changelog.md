@@ -2,6 +2,31 @@
 # Change Log
 
  
+## [6.0.4] - 2021-12-10
+### Added
+
+### Changed
+- Bump puppeteer to v12 (#1381)
+- Travis remove node 10, 12 test runs
+
+### Fixed 
+
+
+
+ 
+## [6.0.1] - 2021-11-17
+### Added
+- PLAYRIGHT ENGINE OPTION  thank you JB
+
+### Changed
+- support for viewport variants with dynamic scenario mode to browser and json report (#1376)  thank you TW
+
+### Fixed 
+- Fixed Puppeteer ENOENT Error When Image Stubbing (#1377)
+
+
+
+ 
 ## [5.4.3] - 2021-08-24
 ### Added
 - added archive report feature (#1353)

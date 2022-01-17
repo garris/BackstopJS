@@ -260,5 +260,6 @@ module.exports = {
   asyncCaptureLimit: 10,
   asyncCompareLimit: 50,
   debug: false,
-  debugWindow: false
+  debugWindow: false,
+  scenarioLogsInReports: true
 };

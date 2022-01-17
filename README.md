@@ -6,6 +6,8 @@
 **BackstopJS automates visual regression testing of your responsive web UI by comparing DOM screenshots over time.**
 
 ## News
+**Backstop 6.0.1 -- now with Playwright engine!**   Many thanks to our friend @FrostyShosty who came out of nowhere and made it happen!
+
 **EmberJS users** -- check out our ember-backstop test helper! https://github.com/garris/ember-backstop
 
 **Want to learn how to Backstop from a pro?** Check out [visual regression testing with BackstopJS on udemy.com](https://www.udemy.com/course/visual-regression-testing-with-backstopjs/) by [Walmyr Filho](https://www.udemy.com/user/walmyr/)
@@ -24,7 +26,7 @@
 - Integrated Docker rendering -- to eliminate cross-platform rendering shenanigans
 - CLI reports
 - Render tests with **Chrome Headless**
-- Simulate user interactions with **Puppeteer** scripts
+- Simulate user interactions with **Playwright** or **Puppeteer** scripts
 - JUnit reports
 - Plays nice with CI and source control
 - Run globally or locally as a standalone package app or `require('backstopjs')` right into your node app
@@ -106,7 +108,7 @@ Pass a `--config=<configFilePathStr>` argument to test using a different config 
 
 **JS based config file**
 
-You may use a javascript based config file to allow connents in your config. Be sure to _export your config object as a node module_.
+You may use a javascript based config file to allow comments in your config. Be sure to _export your config object as a node module_.
 
 Example: Create a backstop.config.js
 
@@ -182,9 +184,9 @@ removeSelectors          // Array of selectors set to display: none
 onReadyScript            // After the above conditions are met -- use this script to modify UI state prior to screen shots e.g. hovers, clicks etc.
 keyPressSelectors        // Takes array of selector and string values -- simulates multiple sequential keypress interactions.
 hoverSelector            // Move the pointer over the specified DOM element prior to screen shot.
-hoverSelectors           // *Puppeteer only* takes array of selectors -- simulates multiple sequential hover interactions.
+hoverSelectors           // *Playwright and Puppeteer only* takes array of selectors -- simulates multiple sequential hover interactions.
 clickSelector            // Click the specified DOM element prior to screen shot.
-clickSelectors           // *Puppeteer only* takes array of selectors -- simulates multiple sequential click interactions.
+clickSelectors           // *Playwright and Puppeteer only* takes array of selectors -- simulates multiple sequential click interactions.
 postInteractionWait      // Wait for a selector after interacting with hoverSelector or clickSelector (optionally accepts wait time in ms. Ideal for use with a click or hover element transition. available with default onReadyScript)
 scrollToSelector         // Scrolls the specified DOM element into view prior to screen shot (available with default onReadyScript)
 selectors                // Array of selectors to capture. Defaults to document if omitted. Use "viewport" to capture the viewport size. See Targeting elements in the next section for more info...
@@ -206,7 +208,7 @@ The above would tell BackstopJS to wait for your app to generate an element with
 
 You can use these properties independent of each other to easily test various click and or hover states in your app.  These are obviously simple scenarios -- if you have more complex needs then this example should serve as a pretty good starting point create your own onReady scripts.
 
-NOTE: Puppeteer version optionally takes `clickSelectors` & `hoverSelectors` as arrays of selectors...
+NOTE: Playwright and Puppeteer versions optionally take `clickSelectors` & `hoverSelectors` as arrays of selectors...
 ```js
 clickSelectors: [".my-hamburger-menu",".my-hamburger-item"],
 hoverSelectors: [".my-nav-menu-item",".my-nav-menu-dropdown-item"],
@@ -214,7 +216,7 @@ hoverSelectors: [".my-nav-menu-item",".my-nav-menu-dropdown-item"],
 
 ### Key Press interactions
 BackstopJS ships with an onReady script that allows user to key press on selectors...
-NOTE: Supports Puppeteer and takes arrays of selectors and key press values.
+NOTE: Supports both Playwright and Puppeteer and takes arrays of selectors and key press values.
 
 ```json
 scenarios: [
@@ -500,7 +502,7 @@ engine:      browser page object
 scenario:    currently running scenario config
 viewport:    viewport info
 isReference: whether scenario contains reference URL property
-Engine:      Static class reference (Puppeteer)
+Engine:      Static class reference (Puppeteer/Playwright)
 config:      the whole config object
 ```
 
@@ -581,18 +583,35 @@ By default, BackstopJS saves generated resources into the `backstop_data` direct
 <!--     "reports_archive": "backstop_data/reports", -->
 
 ### Changing the rendering engine
-Puppeteer is currently the default value and will be installed by default.
+Both Puppeteer and Playwright are installed by default, though the default configuration is set to Puppeteer.
 
 #### Chrome-Headless (The latest webkit library)
 To use chrome headless you can currently use _puppeteer_ (https://github.com/GoogleChrome/puppeteer).
-
 
 ```json
 "engine": "puppeteer"
 ```
 
-### Setting Puppeteer option flags
-Backstop sets two defaults for Puppeteer:
+#### Playwright
+To use firefox or webkit, you can currently use _playwright_ (https://github.com/microsoft/playwright).
+
+Be sure to also switch the onBefore and onReady scripts to the Playwright defaults.  Playwright supports setting `engineOptions.browser` to `chromium`, `firefox`, or `webkit`.
+
+```json
+  ...
+  "onBeforeScript": "playwright/onBefore.js",
+  "onReadyScript": "playwright/onReady.js",
+  ...
+  "engine": "playwright"
+  ...
+  "engineOptions": {
+    "browser": "chromium"
+  }
+  ...
+```
+
+### Setting Puppeteer and Playwright option flags
+Backstop sets two defaults for both Puppeteer and Playwright:
 
 ```json
 ignoreHTTPSErrors: true,
@@ -607,8 +626,9 @@ You can add more settings (or override the defaults) with the engineOptions prop
   "args": ["--no-sandbox", "--disable-setuid-sandbox"]
 }
 ```
-
-More info here: [Puppeteer on github](https://github.com/GoogleChrome/puppeteer).
+More info here:
+  * [Puppeteer on github](https://github.com/GoogleChrome/puppeteer).
+  * [Playwright on github](https://github.com/microsoft/playwright).
 
 ### Using Docker for testing across different environments
 We've found that different environments can render the same webpage in slightly different ways -- in particular with text. E.G. see the text in this example rendering slightly differently between Linux and Mac...
