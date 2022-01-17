@@ -529,6 +529,36 @@ If you choose the CI-only reporting or even no reporting (CLI is always on) you 
 $ backstop openReport
 ```
 
+### Reporting in custom format
+
+To format tests output in a custom way you may provide a script that will transform data. Add below configuration to your test config.
+
+```json
+"customReports": {
+    "reports": [
+      {
+        "script": "customReports/customReport.js",
+        "name": "resultName.json"
+      }
+    ],
+    "reportLocation": "backstop_data/custom_report"
+  }
+```
+
+Your script `customReport.js` should take `config, reporter, resultName` as parameters and return a `Promise` when result is processed. 
+To see example see `/test/configs/backstop_data/engine_scripts/customReports/xrayReport.js`. It can also incorporate additional information passed within scenarios like below: 
+```json
+"scenarios": [
+    {
+      "label": "BackstopJstop_data/engine_scripts/cookies.json",
+      "url": "https://garris.github.io/BackstopJS/",
+      "metadata": ["TEST-1"]
+    }
+```
+
+
+
+Additionally 
 #### Test report integration with a build system like Jenkins/Travis
 
 The following config would enable the CI - report (*default: junit format*)

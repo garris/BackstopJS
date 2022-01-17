@@ -141,7 +141,7 @@ function generateTestPair (config, scenario, viewport, variantOrScenarioLabelSaf
     requireSameDimensions: getRequireSameDimensions(scenario, config),
     misMatchThreshold: getMisMatchThreshHold(scenario, config),
     expect: getScenarioExpect(scenario),
-    veportLabel: viewport.label,
+    viewportLabel: viewport.label,
     ...scenario
   };
 }
