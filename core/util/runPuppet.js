@@ -82,6 +82,11 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
   await page.setViewport({ width: VP_W, height: VP_H });
   page.setDefaultNavigationTimeout(engineTools.getEngineOption(config, 'waitTimeout', TEST_TIMEOUT));
 
+  // set up custom userAgent via scenario or config via `userAgent`
+  // if no userAgent is set, the browser's default will be taken ('')
+  const userAgent = scenario.userAgent || config.userAgent || '';
+  await page.setUserAgent(userAgent);
+
   if (isReference) {
     logger.log('blue', 'CREATING NEW REFERENCE FILE');
   }
