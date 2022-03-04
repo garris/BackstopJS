@@ -144,7 +144,8 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     // --- WAIT FOR SELECTOR ---
     if (scenario.readySelector) {
       await page.waitForSelector(scenario.readySelector, {
-        timeout: readyTimeout
+        timeout: readyTimeout,
+        state: 'attached'
       });
     }
     //
