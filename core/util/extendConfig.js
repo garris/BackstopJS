@@ -102,7 +102,7 @@ function comparePaths (config, userConfig) {
 function captureConfigPaths (config) {
   const captureDir = path.join(tmpdir, 'capture');
   if (!fs.existsSync(captureDir)) {
-    fs.mkdirSync(captureDir);
+    fs.ensureDir(captureDir);
   }
   const configHash = hash(config);
   config.captureConfigFileName = path.join(tmpdir, 'capture', configHash + '.json');
