@@ -498,7 +498,7 @@ By default, the base path is a folder called `engine_scripts` inside your Backst
 onBefore(page, scenario, viewport, isReference, Engine, config)
 
 ```
-engine:      browser page object
+page:      browser page object
 scenario:    currently running scenario config
 viewport:    viewport info
 isReference: whether scenario contains reference URL property
