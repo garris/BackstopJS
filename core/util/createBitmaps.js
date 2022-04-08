@@ -131,7 +131,7 @@ function delegateScenarios (config) {
 
   if (config.engine.startsWith('puppet')) {
     return pMap(scenarioViews, runPuppet, { concurrency: asyncCaptureLimit });
-  } else if (config.engine.startsWith('playwr')) {
+  } else if (config.engine.startsWith('play')) {
     return pMap(scenarioViews, runPlaywright, { concurrency: asyncCaptureLimit });
   } else if (/chrom./i.test(config.engine)) {
     logger.error('Chromy is no longer supported in version 5+. Please use version 4.x.x for chromy support.');
