@@ -37,7 +37,7 @@ export class LogDetails extends React.Component {
     if (!referenceLog && !testLog) return [];
     return (
       <span>
-        <Label>view log: </Label>
+        <Label>browser log: </Label>
         <Value>
         {
             testLog
