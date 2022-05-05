@@ -146,7 +146,6 @@ function delegateScenarios (config) {
           disposePlaywrightBrowser(browser).then(() => reject(e));
         });
       }, e => reject(e));
-
     });
   } else if (/chrom./i.test(config.engine)) {
     logger.error('Chromy is no longer supported in version 5+. Please use version 4.x.x for chromy support.');
