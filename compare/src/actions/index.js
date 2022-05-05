@@ -81,3 +81,17 @@ export const showScrubber = value => {
     value
   };
 };
+
+export const openLogModal = value => {
+  return {
+    type: 'OPEN_LOG_MODAL',
+    value
+  };
+};
+
+export const closeLogModal = value => {
+  return {
+    type: 'CLOSE_LOG_MODAL',
+    value
+  };
+};

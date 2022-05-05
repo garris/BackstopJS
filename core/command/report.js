@@ -74,11 +74,46 @@ function writeBrowserReport (config, reporter) {
   logger.log('Writing browser report');
 
   return fs.copy(config.comparePath, toAbsolute(config.html_report)).then(function () {
+    // Slurp in logs
+    const promises = [];
+    if (config.scenarioLogsInReports) {
+      _.forEach(browserReporter.tests, test => {
+        const pair = test.pair;
+        const referenceLog = toAbsolute(pair.referenceLog);
+        const testLog = toAbsolute(pair.testLog);
+
+        const report = toAbsolute(config.html_report);
+        pair.referenceLog = path.relative(report, referenceLog);
+        pair.testLog = path.relative(report, testLog);
+
+        const referencePromise = fs.readFile(referenceLog).catch(function (e) {
+          logger.log(`Ignoring error reading reference log: ${referenceLog}`);
+          delete pair.referenceLog;
+          // remove non-existing log paths
+        });
+        const testPromise = fs.readFile(testLog).catch(function (e) {
+          logger.log(`Ignoring error reading test log: ${testLog}`);
+          delete pair.testLog;
+          // remove non-existing log paths
+        });
+        promises.push(referencePromise, testPromise);
+      });
+      return Promise.all(promises);
+    } else {
+      // don't pass log paths to client
+      _.forEach(browserReporter.tests, test => {
+        const pair = test.pair;
+        delete pair.referenceLog;
+        delete pair.testLog;
+      });
+      return Promise.resolve(true);
+    }
+  }).then(function () {
     logger.log('Resources copied');
 
     // Fixing URLs in the configuration
-    const report = toAbsolute(config.html_report);
     _.forEach(browserReporter.tests, test => {
+      const report = toAbsolute(config.html_report);
       const pair = test.pair;
       pair.reference = path.relative(report, toAbsolute(pair.reference));
       pair.test = path.relative(report, toAbsolute(pair.test));
@@ -194,6 +229,8 @@ function writeJsonReport (config, reporter) {
       const pair = test.pair;
       pair.reference = path.relative(report, toAbsolute(pair.reference));
       pair.test = path.relative(report, toAbsolute(pair.test));
+      pair.referenceLog = path.relative(report, toAbsolute(pair.referenceLog));
+      pair.testLog = path.relative(report, toAbsolute(pair.testLog));
 
       if (pair.diffImage) {
         pair.diffImage = path.relative(report, toAbsolute(pair.diffImage));

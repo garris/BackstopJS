@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 import DiffDetails from './DiffDetails';
 import UrlDetails from './UrlDetails';
+import LogDetails from './LogDetails';
 
 import { colors, fonts } from '../../styles';
 
@@ -72,7 +73,9 @@ class TextDetails extends React.Component {
       selector,
       diff,
       url,
-      referenceUrl
+      referenceUrl,
+      referenceLog,
+      testLog
     } = this.props.info;
     const { settings } = this.props;
     const { showPanel } = this.state;
@@ -103,6 +106,11 @@ class TextDetails extends React.Component {
             <Value>{fileName} </Value>
           </Row>
           <Row>
+            {
+              ((referenceLog || testLog) &&
+                <LogDetails referenceLog={referenceLog} testLog={testLog} />
+              )
+            }
             <UrlDetails url={url} referenceUrl={referenceUrl} />
             <DiffDetails diff={diff} />
           </Row>
