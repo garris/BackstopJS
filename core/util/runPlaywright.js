@@ -254,7 +254,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     try {
       compareConfig = await delegateSelectors(
         page,
-        browser,
+        browserContext,
         scenario,
         viewport,
         variantOrScenarioLabelSafe,
