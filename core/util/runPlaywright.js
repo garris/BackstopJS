@@ -20,10 +20,34 @@ const DOCUMENT_SELECTOR = 'document';
 const NOCLIP_SELECTOR = 'body:noclip';
 const VIEWPORT_SELECTOR = 'viewport';
 
-module.exports = function (args) {
+module.exports.createPlaywrightBrowser = async function (config) {
+  console.log('Creating Browser');
+  let browserChoice = config.engineOptions.browser;
+  if (!browserChoice) {
+    console.warn(chalk.yellow('No Playwright browser specified, assuming Chromium.'));
+    browserChoice = 'chromium';
+  }
+
+  if (!playwright[browserChoice]) {
+    console.error(chalk.red(`Unsupported playwright browser "${browserChoice}"`));
+    return;
+  }
+
+  const playwrightArgs = Object.assign(
+    {},
+    {
+      headless: !config.debugWindow
+    },
+    config.engineOptions
+  );
+  return await playwright[browserChoice].launch(playwrightArgs);
+};
+
+module.exports.runPlaywright = function (args) {
   const scenario = args.scenario;
   const viewport = args.viewport;
   const config = args.config;
+  const browser = args._playwrightBrowser;
   const scenarioLabelSafe = engineTools.makeSafe(scenario.label);
   const variantOrScenarioLabelSafe = scenario._parent ? engineTools.makeSafe(scenario._parent.label) : scenarioLabelSafe;
 
@@ -33,10 +57,15 @@ module.exports = function (args) {
   config._outputFileFormatSuffix = '.' + ((config.outputFormat && config.outputFormat.match(/jpg|jpeg/)) || 'png');
   config._configId = config.id || engineTools.genHash(config.backstopConfigFileName);
 
-  return processScenarioView(scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, config);
+  return processScenarioView(scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, config, browser);
 };
 
-async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, config) {
+module.exports.disposePlaywrightBrowser = async function (browser) {
+  console.log('Disposing Browser');
+  await browser.close();
+};
+
+async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, config, browser) {
   if (!config.paths) {
     config.paths = {};
   }
@@ -50,27 +79,6 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
 
   const VP_W = viewport.width || viewport.viewport.width;
   const VP_H = viewport.height || viewport.viewport.height;
-
-  const playwrightArgs = Object.assign(
-    {},
-    {
-      headless: !config.debugWindow
-    },
-    config.engineOptions
-  );
-
-  let browserChoice = config.engineOptions.browser;
-  if (!browserChoice) {
-    console.warn(chalk.yellow('No Playwright browser specified, assuming Chromium.'));
-    browserChoice = 'chromium';
-  }
-
-  if (!playwright[browserChoice]) {
-    console.error(chalk.red(`Unsupported playwright browser "${browserChoice}"`));
-    return;
-  }
-
-  const browser = await playwright[browserChoice].launch(playwrightArgs);
 
   const ignoreHTTPSErrors = config.engineOptions.ignoreHTTPSErrors ? config.engineOptions.ignoreHTTPSErrors : true;
   const browserContext = await browser.newContext({ ignoreHTTPSErrors: ignoreHTTPSErrors });
@@ -259,7 +267,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
       error = e;
     }
   } else {
-    await browser.close();
+    await browserContext.close();
   }
 
   if (error) {
@@ -279,7 +287,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
 // TODO: Should be in engineTools
 async function delegateSelectors (
   page,
-  browser,
+  browserContext,
   scenario,
   viewport,
   variantOrScenarioLabelSafe,
@@ -313,14 +321,14 @@ async function delegateSelectors (
   });
 
   if (captureDocument) {
-    captureJobs.push(function () { return captureScreenshot(page, browser, captureDocument, selectorMap, config, [], viewport); });
+    captureJobs.push(function () { return captureScreenshot(page, browserContext, captureDocument, selectorMap, config, [], viewport); });
   }
   // TODO: push captureViewport into captureList (instead of calling captureScreenshot()) to improve perf.
   if (captureViewport) {
-    captureJobs.push(function () { return captureScreenshot(page, browser, captureViewport, selectorMap, config, [], viewport); });
+    captureJobs.push(function () { return captureScreenshot(page, browserContext, captureViewport, selectorMap, config, [], viewport); });
   }
   if (captureList.length) {
-    captureJobs.push(function () { return captureScreenshot(page, browser, null, selectorMap, config, captureList, viewport); });
+    captureJobs.push(function () { return captureScreenshot(page, browserContext, null, selectorMap, config, captureList, viewport); });
   }
 
   return new Promise(function (resolve, reject) {
@@ -346,14 +354,14 @@ async function delegateSelectors (
     next();
   }).then(async () => {
     console.log(chalk.green('x Close Browser'));
-    await browser.close();
+    await browserContext.close();
   }).catch(async (err) => {
     console.log(chalk.red(err));
-    await browser.close();
+    await browserContext.close();
   }).then(_ => compareConfig);
 }
 
-async function captureScreenshot (page, browser, selector, selectorMap, config, selectors, viewport) {
+async function captureScreenshot (page, browserContext, selector, selectorMap, config, selectors, viewport) {
   let filePath;
   const fullPage = (selector === NOCLIP_SELECTOR || selector === DOCUMENT_SELECTOR);
   if (selector) {

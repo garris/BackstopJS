@@ -4,7 +4,7 @@ const _ = require('lodash');
 const pMap = require('p-map');
 
 const runPuppet = require('./runPuppet');
-const runPlaywright = require('./runPlaywright');
+const { createPlaywrightBrowser, runPlaywright, disposePlaywrightBrowser } = require('./runPlaywright');
 
 const ensureDirectoryPath = require('./ensureDirectoryPath');
 const logger = require('./logger')('createBitmaps');
@@ -132,7 +132,21 @@ function delegateScenarios (config) {
   if (config.engine.startsWith('puppet')) {
     return pMap(scenarioViews, runPuppet, { concurrency: asyncCaptureLimit });
   } else if (config.engine.startsWith('play')) {
-    return pMap(scenarioViews, runPlaywright, { concurrency: asyncCaptureLimit });
+    return new Promise((resolve, reject) => {
+      createPlaywrightBrowser(config).then(browser => {
+        console.log('Browser created');
+
+        for (const view of scenarioViews) {
+          view._playwrightBrowser = browser;
+        }
+
+        pMap(scenarioViews, runPlaywright, { concurrency: asyncCaptureLimit }).then(out => {
+          disposePlaywrightBrowser(browser).then(() => resolve(out));
+        }, e => {
+          disposePlaywrightBrowser(browser).then(() => reject(e));
+        });
+      }, e => reject(e));
+    });
   } else if (/chrom./i.test(config.engine)) {
     logger.error('Chromy is no longer supported in version 5+. Please use version 4.x.x for chromy support.');
   } else {
