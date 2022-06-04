@@ -1,5 +1,5 @@
 {
-  "id": "backstop_default",
+  "id": "backstop_playwright",
   "viewports": [
     {
       "label": "phone",
