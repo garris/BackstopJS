@@ -33,8 +33,8 @@
     "build-and-copy-report-bundle": "npm run build-compare && npm run copy-report-bundle",
     "remote": "cd test/configs/ && node ../../cli/index.js remote",
     "stop": "curl http://localhost:3000/stop",
-    "build-docker": "PV=$(node -p -e \"require('./package.json').version\"); docker build docker -t backstopjs/backstopjs:$PV",
-    "publish-docker": "PV=$(node -p -e \"require('./package.json').version\"); docker push backstopjs/backstopjs:$PV",
+    "build-docker": "PV=$(node -p -e \"require('./package.json').version\"); docker build docker -t backstopjs/backstopjs:$PV; docker build docker -t backstopjs/backstopjs:latest",
+    "publish-docker": "PV=$(node -p -e \"require('./package.json').version\"); docker push backstopjs/backstopjs:$PV; docker push backstopjs/backstopjs:latest",
     "publish-npm": "npm publish",
     "build-and-publish": "npm run publish-npm && npm run build-docker && npm run publish-docker"
   },
