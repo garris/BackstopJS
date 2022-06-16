@@ -81,7 +81,15 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
   const VP_H = viewport.height || viewport.viewport.height;
 
   const ignoreHTTPSErrors = config.engineOptions.ignoreHTTPSErrors ? config.engineOptions.ignoreHTTPSErrors : true;
-  const browserContext = await browser.newContext({ ignoreHTTPSErrors: ignoreHTTPSErrors });
+
+  // set up custom userAgent via scenario or config via `userAgent`
+  // if no userAgent is set, the browser's default will be taken ('')
+  const userAgent = scenario.userAgent || config.userAgent || '';
+
+  const browserContext = await browser.newContext({
+    ignoreHTTPSErrors: ignoreHTTPSErrors,
+    userAgent: userAgent
+  });
   const page = await browserContext.newPage();
 
   await page.setViewportSize({ width: VP_W, height: VP_H });

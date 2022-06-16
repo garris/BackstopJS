@@ -22,6 +22,7 @@
     "build-compare": "cp ./node_modules/diverged/src/diverged.js ./compare/output/ && cp ./node_modules/diff/dist/diff.js ./compare/output/ && webpack --config ./compare/webpack.config.js && npm run lint",
     "dev-compare": "webpack-dev-server --content-base ./compare/output --config ./compare/webpack.config.js",
     "integration-test": "rm -rf newdir && mkdir newdir && cd newdir && node ../cli/index.js genConfig && node ../cli/index.js reference && node ../cli/index.js test && node -e \"require(\"../\")(\"test\")\"",
+    "ua-test": "cd test/configs/ && node ../../cli/index.js reference -i --config=backstop_userAgent",
     "smoke-test": "cd test/configs/ && node ../../cli/index.js test --config=backstop_features",
     "smoke-test-docker": "cd test/configs/ && node ../../cli/index.js test --config=backstop_features --docker",
     "sanity-test": "cd test/configs/ && node ../../cli/index.js test",

@@ -194,6 +194,7 @@ selectorExpansion        // See Targeting elements in the next section for more 
 misMatchThreshold        // Percentage of different pixels allowed to pass test
 requireSameDimensions    // If set to true -- any change in selector size will trigger a test failure.
 viewports                // An array of screen size objects your DOM will be tested against. This configuration will override the viewports property assigned at the config root.
+userAgent                // Set custom userAgent. This configuration will override the userAgent property assigned at the config root.
 ```
 <!-- archiveReport            // If set to true -- all test reports will be archived(copied) (in `reports` folder)  -->
 
@@ -244,6 +245,25 @@ _note: path is relative to your current working directory_
 
 Pro tip:  If you want an easy way to manually export cookies from your browser then download this chrome extension. You can directly use the output cookie files with BackstopJS  https://chrome.google.com/webstore/detail/%E3%82%AF%E3%83%83%E3%82%AD%E3%83%BCjson%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E5%87%BA%E5%8A%9B-for-puppet/nmckokihipjgplolmcmjakknndddifde
 
+
+### Setting custom userAgent
+BackstopJS allows setting a custom userAgent. This can be helpful to exclude via analytics or the page uses userAgent parsing that needs to be emulated.
+
+This is a safer way than using it than via `page.setUserAgent` in `onBefore` since this works for both engines (Puppeteer/Playwright).
+
+Root config:
+```json
+userAgent: "custom ua string"
+```
+
+For scenario (overrides root config):
+```json
+scenarios: [
+  {
+    "userAgent": "custom ua string"
+  }
+]
+```
 
 
 
@@ -472,7 +492,7 @@ module.exports = async (page, scenario, vp, isReference) => {
   await require('./loadCookies')(page, scenario);
 
   // Example: set user agent
-  await page.setUserAgent('some user agent string here');
+  await page.setUserAgent('some user agent string here'); // See documentation on setting custom userAgent
 
 };
 
@@ -1070,7 +1090,8 @@ Be sure to use a config `id` in your config file. See https://github.com/garris/
 - (RECOMMENDED Updated for version 2) Regression testing with BackstopJS, in-depth tutorial by [Angela Riggs](https://twitter.com/AngelaRiggs_) http://www.metaltoad.com/blog/regression-testing-backstopjs
 
 - [BackstopJS](#backstopjs)
-  - [Version 3 Features](#version-3-features)
+  - [News](#news)
+  - [Backstop Features](#backstop-features)
   - [Install BackstopJS now](#install-backstopjs-now)
   - [Contents](#contents)
   - [The BackstopJS workflow](#the-backstopjs-workflow)
@@ -1086,7 +1107,9 @@ Be sure to use a config `id` in your config file. See https://github.com/garris/
   - [Using BackstopJS](#using-backstopjs)
     - [Advanced Scenarios](#advanced-scenarios)
     - [Testing click and hover interactions](#testing-click-and-hover-interactions)
+    - [Key Press interactions](#key-press-interactions)
     - [Setting cookies](#setting-cookies)
+    - [Setting custom userAgent](#setting-custom-useragent)
     - [Targeting elements](#targeting-elements)
       - [selectorExpansion](#selectorexpansion)
       - [expect](#expect)
@@ -1102,13 +1125,16 @@ Be sure to use a config `id` in your config file. See https://github.com/garris/
     - [Comparing different endpoints (e.g. comparing staging and production)](#comparing-different-endpoints-eg-comparing-staging-and-production)
     - [Running custom scripts](#running-custom-scripts)
       - [Setting the base path for custom onBefore and onReady scripts](#setting-the-base-path-for-custom-onbefore-and-onready-scripts)
+      - [onBeforeScript/onReadyScript available variables](#onbeforescriptonreadyscript-available-variables)
     - [Reporting workflow tips](#reporting-workflow-tips)
       - [Test report integration with a build system like Jenkins/Travis](#test-report-integration-with-a-build-system-like-jenkinstravis)
+    - [BackstopJS and CLI return values](#backstopjs-and-cli-return-values)
       - [CLI error handling](#cli-error-handling)
     - [Setting the bitmap and script directory paths](#setting-the-bitmap-and-script-directory-paths)
     - [Changing the rendering engine](#changing-the-rendering-engine)
       - [Chrome-Headless (The latest webkit library)](#chrome-headless-the-latest-webkit-library)
-    - [Setting Puppeteer option flags](#setting-puppeteer-option-flags)
+      - [Playwright](#playwright)
+    - [Setting Puppeteer and Playwright option flags](#setting-puppeteer-and-playwright-option-flags)
     - [Using Docker for testing across different environments](#using-docker-for-testing-across-different-environments)
       - [Requirements for when you're using docker...](#requirements-for-when-youre-using-docker)
     - [Integration options (local install)](#integration-options-local-install)
@@ -1125,10 +1151,12 @@ Be sure to use a config `id` in your config file. See https://github.com/garris/
     - [Creating reference files](#creating-reference-files)
     - [Modifying output settings of image-diffs](#modifying-output-settings-of-image-diffs)
     - [Git Integration](#git-integration)
+    - [Changing screenshot filename formats](#changing-screenshot-filename-formats)
   - [Developing, bug fixing, contributing...](#developing-bug-fixing-contributing)
     - [We use `eslint-config-semistandard`.](#we-use-eslint-config-semistandard)
-    - [There is a BackstopJS SMOKE TEST](#there-is-a-backstopjs-smoke-test)
     - [HTML report development](#html-report-development)
+    - [Docker development](#docker-development)
+    - [SMOKE & FEATURE TESTS](#smoke--feature-tests)
   - [Troubleshooting](#troubleshooting)
     - [SANITY TEST: Does Backstop work in my environment?](#sanity-test-does-backstop-work-in-my-environment)
     - [SMOKE TEST: Are backstop features working ok?](#smoke-test-are-backstop-features-working-ok)
@@ -1139,8 +1167,6 @@ Be sure to use a config `id` in your config file. See https://github.com/garris/
     - [The dreaded: _command-not-found_ error...](#the-dreaded-command-not-found-error)
     - [Issues when installing](#issues-when-installing)
     - [Projects don't work when I share with other users or run in different environments.](#projects-dont-work-when-i-share-with-other-users-or-run-in-different-environments)
-      - [If you just upgraded to 2.x or 3.x](#if-you-just-upgraded-to-2x-or-3x)
-    - [Windows users...](#windows-users)
   - [Tutorials, Extensions and more](#tutorials-extensions-and-more)
   - [Credits](#credits)
 
