@@ -25,6 +25,26 @@ function replaceInFile (file, search, replace) {
   });
 }
 
+async function processCustomReports (config, reporter) {
+  const engineScriptsPath = config.engine_scripts;
+  const customReports = config.customReports.reports;
+  const results = [];
+
+  if (customReports) {
+    for (let i = 0; i < customReports.length; i++) {
+      const customReportScript = path.resolve(engineScriptsPath, customReports[i].script);
+
+      if (fs.existsSync(customReportScript)) {
+        const res = await require(customReportScript)(config, reporter, customReports[i].name);
+        results.push(res);
+      } else {
+        console.warn('WARNING: reporting script not found: ' + customReportScript);
+      }
+    }
+  }
+  return results;
+}
+
 function writeReport (config, reporter) {
   const promises = [];
 
@@ -37,6 +57,7 @@ function writeReport (config, reporter) {
   }
 
   promises.push(writeBrowserReport(config, reporter));
+  promises.push(processCustomReports(config, reporter));
 
   return allSettled(promises);
 }

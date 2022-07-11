@@ -9,7 +9,7 @@ ENV \
 RUN apt-get update && \
 	apt-get install -y git sudo software-properties-common
 
-RUN sudo npm install -g --unsafe-perm=true --allow-root backstopjs@${BACKSTOPJS_VERSION}
+RUN sudo npm install -g --unsafe-perm=true --allow-root https://github.com/justyna-olszak-wttech/BackstopJS.git#v6.0.4
 
 RUN wget https://dl-ssl.google.com/linux/linux_signing_key.pub && sudo apt-key add linux_signing_key.pub
 RUN sudo add-apt-repository "deb http://dl.google.com/linux/chrome/deb/ stable main"
