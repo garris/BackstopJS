@@ -46,7 +46,7 @@ module.exports = async function (page, scenario) {
       const result = await fetch(requestUrl, options);
 
       const buffer = await result.buffer();
-      let cleanedHeaders = result.headers._headers || {};
+      const cleanedHeaders = result.headers._headers || {};
       cleanedHeaders['content-security-policy'] = '';
       await request.respond({
         body: buffer,

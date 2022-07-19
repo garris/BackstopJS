@@ -21,7 +21,7 @@ const WrapperOption = styled.div`
 
 export default class SettingOption extends React.Component {
   render () {
-    let { label, value, onToggle } = this.props;
+    const { label, value, onToggle } = this.props;
 
     return (
       <WrapperOption>

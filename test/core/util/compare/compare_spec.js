@@ -2,10 +2,10 @@ const mockery = require('mockery');
 const sinon = require('sinon');
 
 describe('compare', function () {
-  var compare;
-  var compareHashes = sinon.stub();
-  var compareResemble = sinon.stub();
-  var error = new Error();
+  let compare;
+  const compareHashes = sinon.stub();
+  const compareResemble = sinon.stub();
+  const error = new Error();
 
   before(function () {
     mockery.enable({ warnOnUnregistered: false, warnOnReplace: false, useCleanCache: true });

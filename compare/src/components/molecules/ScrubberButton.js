@@ -39,7 +39,7 @@ const ButtonSD = styled.button`
 
 class ScrubberButton extends React.Component {
   onClick () {
-    let { openModal } = this.props;
+    const { openModal } = this.props;
     openModal(this.props.info);
   }
 

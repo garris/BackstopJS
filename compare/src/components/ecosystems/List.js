@@ -14,8 +14,8 @@ const ListWrapper = styled.section`
 
 class List extends React.Component {
   render () {
-    let { tests, settings } = this.props;
-    let onlyText =
+    const { tests, settings } = this.props;
+    const onlyText =
       !settings.refImage && !settings.testImage && !settings.diffImage;
 
     return (

@@ -1,12 +1,12 @@
-var compareHashes = require('./compare-hash');
-var compareResemble = require('./compare-resemble');
-var storeFailedDiff = require('./store-failed-diff.js');
+const compareHashes = require('./compare-hash');
+const compareResemble = require('./compare-resemble');
+const storeFailedDiff = require('./store-failed-diff.js');
 
 process.on('message', compare);
 
 function compare (data) {
-  var { referencePath, testPath, resembleOutputSettings, pair } = data;
-  var promise = compareHashes(referencePath, testPath)
+  const { referencePath, testPath, resembleOutputSettings, pair } = data;
+  const promise = compareHashes(referencePath, testPath)
     .catch(() => compareResemble(referencePath, testPath, pair.misMatchThreshold, resembleOutputSettings, pair.requireSameDimensions));
   promise
     .then(function (data) {

@@ -49,7 +49,7 @@ const Button = styled.button`
 
 export default class ButtonSettings extends React.Component {
   render () {
-    let isActive = this.props.active ? 'active' : '';
+    const isActive = this.props.active ? 'active' : '';
 
     return (
       <Button onClick={this.props.onClick} className={isActive}>

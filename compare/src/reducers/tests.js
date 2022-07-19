@@ -1,5 +1,14 @@
 const tests = (state = {}, action) => {
   switch (action.type) {
+    case 'APPROVE_TEST':
+      return Object.assign({}, state, {
+        all: state.all.map(test => {
+          if (test.pair && (test.pair.fileName === action.id)) {
+            return Object.assign({}, test, { status: 'pass' });
+          }
+          return test;
+        })
+      });
     case 'FILTER_TESTS':
       if (action.status !== 'all') {
         return Object.assign({}, state, {
@@ -18,8 +27,8 @@ const tests = (state = {}, action) => {
       if (action.value.length > 0) {
         return Object.assign({}, state, {
           filtered: state.all.filter(e => {
-            let fileName = e.pair.fileName.toLowerCase();
-            let label = e.pair.label.toLowerCase();
+            const fileName = e.pair.fileName.toLowerCase();
+            const label = e.pair.label.toLowerCase();
 
             if (state.filterStatus !== 'all') {
               if (
@@ -37,6 +46,7 @@ const tests = (state = {}, action) => {
                 return true;
               }
             }
+            return false;
           })
         });
       }

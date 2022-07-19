@@ -1,14 +1,32 @@
-var path = require('path');
-var chalk = require('chalk');
-var cloneDeep = require('lodash/cloneDeep');
+const path = require('path');
+const chalk = require('chalk');
+const _ = require('lodash');
+const cloneDeep = require('lodash/cloneDeep');
 
-var allSettled = require('../util/allSettled');
-var fs = require('../util/fs');
-var logger = require('../util/logger')('report');
-var compare = require('../util/compare/');
+const allSettled = require('../util/allSettled');
+const fs = require('../util/fs');
+const logger = require('../util/logger')('report');
+const compare = require('../util/compare/');
+
+function replaceInFile (file, search, replace) {
+  return new Promise((resolve, reject) => {
+    fs.readFile(file, 'utf8', function (err, data) {
+      if (err) {
+        reject(err);
+      }
+      const result = data.replace(search, replace);
+
+      fs.writeFile(file, result, 'utf8', function (err) {
+        if (err) reject(err);
+      }).then(() => {
+        resolve();
+      });
+    });
+  });
+}
 
 function writeReport (config, reporter) {
-  var promises = [];
+  const promises = [];
 
   if (config.report && config.report.indexOf('CI') > -1 && config.ciReport.format === 'junit') {
     promises.push(writeJunitReport(config, reporter));
@@ -23,40 +41,133 @@ function writeReport (config, reporter) {
   return allSettled(promises);
 }
 
-function writeBrowserReport (config, reporter) {
-  var browserReporter = cloneDeep(reporter);
+function archiveReport (config) {
+  let archivePath = path.join(config.archivePath, config.screenshotDateTime);
+
   function toAbsolute (p) {
     return (path.isAbsolute(p)) ? p : path.join(config.projectPath, p);
   }
+
+  archivePath = toAbsolute(archivePath);
+
+  return fs.copy(toAbsolute(config.html_report), archivePath).then(function () {
+    const file = path.join(archivePath, path.basename(config.compareConfigFileName));
+    // replace the "..\\" with "..\\..\\" in the config.js files
+    // on windows double escape in order to work properly
+    const search = path.sep.replace(/\\/g, '\\\\\\\\');
+    const replace = path.sep.replace(/\\/g, '\\\\');
+    return replaceInFile(file, new RegExp(`"..${search}`, 'g'), `"..${replace}..${replace}`);
+  });
+}
+
+function writeBrowserReport (config, reporter) {
+  const testConfig = (typeof config.args.config === 'object')
+    ? config.args.config
+    : Object.assign({}, require(config.backstopConfigFileName));
+
+  let browserReporter = cloneDeep(reporter);
+
+  function toAbsolute (p) {
+    return (path.isAbsolute(p)) ? p : path.join(config.projectPath, p);
+  }
+
   logger.log('Writing browser report');
 
   return fs.copy(config.comparePath, toAbsolute(config.html_report)).then(function () {
+    // Slurp in logs
+    const promises = [];
+    if (config.scenarioLogsInReports) {
+      _.forEach(browserReporter.tests, test => {
+        const pair = test.pair;
+        const referenceLog = toAbsolute(pair.referenceLog);
+        const testLog = toAbsolute(pair.testLog);
+
+        const report = toAbsolute(config.html_report);
+        pair.referenceLog = path.relative(report, referenceLog);
+        pair.testLog = path.relative(report, testLog);
+
+        const referencePromise = fs.readFile(referenceLog).catch(function (e) {
+          logger.log(`Ignoring error reading reference log: ${referenceLog}`);
+          delete pair.referenceLog;
+          // remove non-existing log paths
+        });
+        const testPromise = fs.readFile(testLog).catch(function (e) {
+          logger.log(`Ignoring error reading test log: ${testLog}`);
+          delete pair.testLog;
+          // remove non-existing log paths
+        });
+        promises.push(referencePromise, testPromise);
+      });
+      return Promise.all(promises);
+    } else {
+      // don't pass log paths to client
+      _.forEach(browserReporter.tests, test => {
+        const pair = test.pair;
+        delete pair.referenceLog;
+        delete pair.testLog;
+      });
+      return Promise.resolve(true);
+    }
+  }).then(function () {
     logger.log('Resources copied');
 
     // Fixing URLs in the configuration
-    var report = toAbsolute(config.html_report);
-    for (var i in browserReporter.tests) {
-      if (browserReporter.tests.hasOwnProperty(i)) {
-        var pair = browserReporter.tests[i].pair;
-        pair.reference = path.relative(report, toAbsolute(pair.reference));
-        pair.test = path.relative(report, toAbsolute(pair.test));
+    _.forEach(browserReporter.tests, test => {
+      const report = toAbsolute(config.html_report);
+      const pair = test.pair;
+      pair.reference = path.relative(report, toAbsolute(pair.reference));
+      pair.test = path.relative(report, toAbsolute(pair.test));
 
-        if (pair.diffImage) {
-          pair.diffImage = path.relative(report, toAbsolute(pair.diffImage));
-        }
+      if (pair.diffImage) {
+        pair.diffImage = path.relative(report, toAbsolute(pair.diffImage));
+      }
+    });
+
+    const reportConfigFilename = toAbsolute(config.compareConfigFileName);
+    const testReportJsonName = toAbsolute(config.bitmaps_test + '/' + config.screenshotDateTime + '/report.json');
+
+    // If this is a dynamic test then we assume browserReporter has one scenario with one or more viewport variants.
+    // This scenario with all viewport variants will be appended to any existing report.
+    if (testConfig.dynamicTestId) {
+      try {
+        console.log('Attempting to open: ', testReportJsonName);
+        const testReportJson = require(testReportJsonName);
+        const scenarioFileNames = browserReporter.tests.map(test => test.pair.fileName);
+        testReportJson.tests = testReportJson.tests.filter(test => !scenarioFileNames.includes(test.pair.fileName));
+        browserReporter.tests.map(test => testReportJson.tests.push(test));
+        browserReporter = testReportJson;
+      } catch (err) {
+        console.log('Creating new report.');
       }
     }
 
-    var jsonp = 'report(' + JSON.stringify(browserReporter, null, 2) + ');';
-    return fs.writeFile(toAbsolute(config.compareConfigFileName), jsonp).then(function () {
-      logger.log('Copied configuration to: ' + toAbsolute(config.compareConfigFileName));
+    const jsonReport = JSON.stringify(browserReporter, null, 2);
+    const jsonpReport = `report(${jsonReport});`;
+
+    const jsonConfigWrite = fs.writeFile(testReportJsonName, jsonReport).then(function () {
+      logger.log('Copied json report to: ' + testReportJsonName);
     }, function (err) {
-      logger.error('Failed configuration copy');
+      logger.error('Failed json report copy to: ' + testReportJsonName);
       throw err;
     });
+
+    const jsonpConfigWrite = fs.writeFile(toAbsolute(reportConfigFilename), jsonpReport).then(function () {
+      logger.log('Copied jsonp report to: ' + reportConfigFilename);
+    }, function (err) {
+      logger.error('Failed jsonp report copy to: ' + reportConfigFilename);
+      throw err;
+    });
+
+    const promises = [jsonpConfigWrite, jsonConfigWrite];
+
+    return allSettled(promises);
   }).then(function () {
+    if (config.archiveReport) {
+      archiveReport(config);
+    }
+
     if (config.openReport && config.report && config.report.indexOf('browser') > -1) {
-      var executeCommand = require('./index');
+      const executeCommand = require('./index');
       return executeCommand('_openReport', config);
     }
   });
@@ -65,31 +176,26 @@ function writeBrowserReport (config, reporter) {
 function writeJunitReport (config, reporter) {
   logger.log('Writing jUnit Report');
 
-  var builder = require('junit-report-builder');
-  var suite = builder.testSuite()
+  const builder = require('junit-report-builder');
+  const suite = builder.testSuite()
     .name(reporter.testSuite);
 
-  for (var i in reporter.tests) {
-    if (!reporter.tests.hasOwnProperty(i)) {
-      continue;
-    }
-
-    var test = reporter.tests[i];
-    var testCase = suite.testCase()
+  _.forEach(reporter.tests, test => {
+    const testCase = suite.testCase()
       .className(test.pair.selector)
       .name(' ›› ' + test.pair.label);
 
     if (!test.passed()) {
-      var error = 'Design deviation ›› ' + test.pair.label + ' (' + test.pair.selector + ') component';
+      const error = 'Design deviation ›› ' + test.pair.label + ' (' + test.pair.selector + ') component';
       testCase.failure(error);
       testCase.error(error);
     }
-  }
+  });
 
   return new Promise(function (resolve, reject) {
-    var testReportFilename = config.testReportFileName || config.ciReport.testReportFileName;
+    let testReportFilename = config.testReportFileName || config.ciReport.testReportFileName;
     testReportFilename = testReportFilename.replace(/\.xml$/, '') + '.xml';
-    var destination = path.join(config.ci_report, testReportFilename);
+    const destination = path.join(config.ci_report, testReportFilename);
 
     try {
       builder.writeTo(destination);
@@ -103,32 +209,55 @@ function writeJunitReport (config, reporter) {
 }
 
 function writeJsonReport (config, reporter) {
-  var jsonReporter = cloneDeep(reporter);
+  const testConfig = (typeof config.args.config === 'object')
+    ? config.args.config
+    : Object.assign({}, require(config.backstopConfigFileName));
+
+  let jsonReporter = cloneDeep(reporter);
+
   function toAbsolute (p) {
     return (path.isAbsolute(p)) ? p : path.join(config.projectPath, p);
   }
+
   logger.log('Writing json report');
   return fs.ensureDir(toAbsolute(config.json_report)).then(function () {
     logger.log('Resources copied');
 
     // Fixing URLs in the configuration
-    var report = toAbsolute(config.json_report);
-    for (var i in jsonReporter.tests) {
-      if (jsonReporter.tests.hasOwnProperty(i)) {
-        var pair = jsonReporter.tests[i].pair;
-        pair.reference = path.relative(report, toAbsolute(pair.reference));
-        pair.test = path.relative(report, toAbsolute(pair.test));
+    const report = toAbsolute(config.json_report);
+    _.forEach(jsonReporter.tests, test => {
+      const pair = test.pair;
+      pair.reference = path.relative(report, toAbsolute(pair.reference));
+      pair.test = path.relative(report, toAbsolute(pair.test));
+      pair.referenceLog = path.relative(report, toAbsolute(pair.referenceLog));
+      pair.testLog = path.relative(report, toAbsolute(pair.testLog));
 
-        if (pair.diffImage) {
-          pair.diffImage = path.relative(report, toAbsolute(pair.diffImage));
-        }
+      if (pair.diffImage) {
+        pair.diffImage = path.relative(report, toAbsolute(pair.diffImage));
+      }
+    });
+
+    const jsonReportFileName = toAbsolute(config.compareJsonFileName);
+
+    // If this is a dynamic test then we assume jsonReporter has one scenario with one or more viewport variants.
+    // This scenario with all viewport variants will be appended to any existing report.
+    if (testConfig.dynamicTestId) {
+      try {
+        console.log('Attempting to open: ', jsonReportFileName);
+        const jsonReportJson = require(jsonReportFileName);
+        const scenarioFileNames = jsonReporter.tests.map(test => test.pair.fileName);
+        jsonReportJson.tests = jsonReportJson.tests.filter(test => !scenarioFileNames.includes(test.pair.fileName));
+        jsonReporter.tests.map(test => jsonReportJson.tests.push(test));
+        jsonReporter = jsonReportJson;
+      } catch (err) {
+        console.log('Creating new report.');
       }
     }
 
-    return fs.writeFile(toAbsolute(config.compareJsonFileName), JSON.stringify(jsonReporter.getReport(), null, 2)).then(function () {
-      logger.log('Wrote Json report to: ' + toAbsolute(config.compareJsonFileName));
+    return fs.writeFile(jsonReportFileName, JSON.stringify(jsonReporter, null, 2)).then(function () {
+      logger.log('Wrote Json report to: ' + jsonReportFileName);
     }, function (err) {
-      logger.error('Failed writing Json report');
+      logger.error('Failed writing Json report to: ' + jsonReportFileName);
       throw err;
     });
   });
@@ -137,13 +266,13 @@ function writeJsonReport (config, reporter) {
 module.exports = {
   execute: function (config) {
     return compare(config).then(function (report) {
-      var failed = report.failed();
+      const failed = report.failed();
       logger.log('Test completed...');
       logger.log(chalk.green(report.passed() + ' Passed'));
       logger.log(chalk[(failed ? 'red' : 'green')](+failed + ' Failed'));
 
       return writeReport(config, report).then(function (results) {
-        for (var i = 0; i < results.length; i++) {
+        for (let i = 0; i < results.length; i++) {
           if (results[i].state !== 'fulfilled') {
             logger.error('Failed writing report with error: ' + results[i].value);
           }

@@ -1,0 +1,27 @@
+
+image: ubuntu:20.04
+
+before_script:
+  - export DEBIAN_FRONTEND=noninteractive
+  - apt-get update
+  - apt-get install curl wget -y
+  - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+  - apt-get install ./google-chrome-stable_current_amd64.deb  -y
+  - curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash
+  - . ~/.nvm/nvm.sh
+  - nvm --version
+  - nvm install $NODEJS
+  - node -v
+  - npm -v
+  - npm install
+
+tests:
+  script:
+    - npm run lint && npm run unit-test
+  parallel:
+    matrix:
+      - NODEJS:
+          - 10
+          - 12
+          - 14
+          - 16

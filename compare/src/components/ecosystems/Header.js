@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Sticky } from 'react-sticky';
 
-import Topbar from '../organisms/topbar';
+import Topbar from '../organisms/Topbar';
 import Toolbar from '../organisms/Toolbar';
 
 const HeaderWrapper = styled.section`

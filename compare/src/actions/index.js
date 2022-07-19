@@ -1,3 +1,10 @@
+export const approveTest = id => {
+  return {
+    type: 'APPROVE_TEST',
+    id
+  };
+};
+
 export const filterTests = status => {
   return {
     type: 'FILTER_TESTS',
@@ -71,6 +78,20 @@ export const showScrubberDivergedImage = value => {
 export const showScrubber = value => {
   return {
     type: 'SHOW_SCRUBBER',
+    value
+  };
+};
+
+export const openLogModal = value => {
+  return {
+    type: 'OPEN_LOG_MODAL',
+    value
+  };
+};
+
+export const closeLogModal = value => {
+  return {
+    type: 'CLOSE_LOG_MODAL',
     value
   };
 };

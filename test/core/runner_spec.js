@@ -1,5 +1,5 @@
-var mockery = require('mockery');
-var assert = require('assert');
+const mockery = require('mockery');
+const assert = require('assert');
 
 describe('the runner', function () {
   before(function () {

@@ -1,54 +1,49 @@
 #!/usr/bin/env node
 
-var parseArgs = require('minimist');
-var usage = require('./usage');
-var version = require('../package.json').version;
-var runner = require('../core/runner');
+const parseArgs = require('minimist');
+const usage = require('./usage');
+const version = require('../package.json').version;
+const runner = require('../core/runner');
 
-var argsOptions = parseArgs(process.argv.slice(2), {
-  boolean: ['h', 'help', 'v', 'version', 'i'],
-  string: ['config'],
-  default: {
-    config: 'backstop.json'
+main();
+
+function main () {
+  const argsOptions = parseArgs(process.argv.slice(2), {
+    boolean: ['h', 'help', 'v', 'version', 'i', 'docker'],
+    string: ['config'],
+    default: {
+      config: 'backstop.json'
+    }
+  });
+
+  // Catch errors from failing promises
+  process.on('unhandledRejection', function (error) {
+    console.error(error && error.stack);
+  });
+
+  if (argsOptions.h || argsOptions.help) {
+    console.log(usage);
+    return;
   }
-});
 
-// Catch errors from failing promises
-process.on('unhandledRejection', function (error) {
-  console.error(error && error.stack);
-});
+  if (argsOptions.v || argsOptions.version) {
+    console.log('BackstopJS v' + version);
+    return;
+  }
 
-if (argsOptions.h || argsOptions.help) {
-  console.log(usage);
-  process.exit();
-}
+  const commandName = argsOptions._[0];
 
-if (argsOptions.v || argsOptions.version) {
-  console.log('BackstopJS v' + version);
-  process.exit();
-}
+  if (!commandName) {
+    console.log(usage);
+  } else {
+    console.log('BackstopJS v' + version);
+    runner(commandName, argsOptions).catch(function () {
+      process.exitCode = 1;
+    });
 
-var commandName = argsOptions['_'][0];
-
-if (!commandName) {
-  console.log(usage);
-  process.exit();
-} else {
-  var exitCode = 0;
-  console.log('BackstopJS v' + version);
-  runner(commandName, argsOptions).catch(function () {
-    exitCode = 1;
-  });
-
-  /*
-   * Wait for the stdout buffer to drain.
-   */
-  process.on('exit', function (code) {
-    process.exit(code || exitCode);
-  });
-
-  process.on('uncaughtException', function (err) {
-    console.log('Uncaught exception:', err.message, err.stack);
-    throw err;
-  });
+    process.on('uncaughtException', function (err) {
+      console.log('Uncaught exception:', err.message, err.stack);
+      throw err;
+    });
+  }
 }

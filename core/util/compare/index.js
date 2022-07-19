@@ -1,23 +1,23 @@
-var path = require('path');
-var map = require('p-map');
-var fs = require('fs');
-var cp = require('child_process');
+const path = require('path');
+const map = require('p-map');
+const fs = require('fs');
+const cp = require('child_process');
 
-var Reporter = require('./../Reporter');
-var logger = require('./../logger')('compare');
-var storeFailedDiffStub = require('./store-failed-diff-stub.js');
+const Reporter = require('./../Reporter');
+const logger = require('./../logger')('compare');
+const storeFailedDiffStub = require('./store-failed-diff-stub.js');
 
-var ASYNC_COMPARE_LIMIT = 20;
+const ASYNC_COMPARE_LIMIT = 20;
 
 function comparePair (pair, report, config, compareConfig) {
-  var Test = report.addTest(pair);
+  const Test = report.addTest(pair);
 
-  var referencePath = pair.reference ? path.resolve(config.projectPath, pair.reference) : '';
-  var testPath = pair.test ? path.resolve(config.projectPath, pair.test) : '';
+  const referencePath = pair.reference ? path.resolve(config.projectPath, pair.reference) : '';
+  const testPath = pair.test ? path.resolve(config.projectPath, pair.test) : '';
 
   // TEST RUN ERROR/EXCEPTION
   if (!referencePath || !testPath) {
-    var MSG = `${pair.msg}: ${pair.error}. See scenario – ${pair.scenario.label} (${pair.viewport.label})`;
+    const MSG = `${pair.msg}: ${pair.error}. See scenario – ${pair.scenario.label} (${pair.viewport.label})`;
     Test.status = 'fail';
     logger.error(MSG);
     pair.error = MSG;
@@ -53,13 +53,13 @@ function comparePair (pair, report, config, compareConfig) {
     }
   }
 
-  var resembleOutputSettings = config.resembleOutputOptions;
+  const resembleOutputSettings = config.resembleOutputOptions;
   return compareImages(referencePath, testPath, pair, resembleOutputSettings, Test);
 }
 
 function compareImages (referencePath, testPath, pair, resembleOutputSettings, Test) {
   return new Promise(function (resolve, reject) {
-    var worker = cp.fork(require.resolve('./compare'));
+    const worker = cp.fork(require.resolve('./compare'));
     worker.send({
       referencePath: referencePath,
       testPath: testPath,
@@ -85,10 +85,10 @@ function compareImages (referencePath, testPath, pair, resembleOutputSettings, T
 }
 
 module.exports = function (config) {
-  var compareConfig = require(config.tempCompareConfigFileName).compareConfig;
+  const compareConfig = require(config.tempCompareConfigFileName).compareConfig;
 
-  var report = new Reporter(config.ciReport.testSuiteName);
-  var asyncCompareLimit = config.asyncCompareLimit || ASYNC_COMPARE_LIMIT;
+  const report = new Reporter(config.ciReport.testSuiteName);
+  const asyncCompareLimit = config.asyncCompareLimit || ASYNC_COMPARE_LIMIT;
   report.id = config.id;
 
   return map(compareConfig.testPairs, pair => comparePair(pair, report, config, compareConfig), { concurrency: asyncCompareLimit })

@@ -65,7 +65,7 @@ class SettingsPopup extends React.Component {
   }
 
   render () {
-    let { settings } = this.props;
+    const { settings } = this.props;
 
     return (
       <PopupWrapper>

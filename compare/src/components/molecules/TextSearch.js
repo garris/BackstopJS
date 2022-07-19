@@ -12,7 +12,7 @@ const InputWrapper = styled.div`
 
 class TextSearch extends React.Component {
   onChange (event) {
-    let value = event.target.value;
+    const value = event.target.value;
 
     if (value.length > 0) {
       this.props.findTest(value);

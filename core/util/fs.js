@@ -1,8 +1,8 @@
-var fs = require('fs');
-var fsExtra = require('fs-extra');
-var promisify = require('./promisify');
+const fs = require('fs');
+const fsExtra = require('fs-extra');
+const promisify = require('./promisify');
 
-var fsPromisified = {
+const fsPromisified = {
   readdir: promisify(fs.readdir),
   createWriteStream: fs.createWriteStream,
   existsSync: fs.existsSync,

@@ -13,34 +13,18 @@ function Reporter (testSuite) {
 }
 
 Reporter.prototype.addTest = function (pair) {
-  var t = new Test(pair);
+  const t = new Test(pair);
   this.tests.push(t);
 
   return t;
 };
 
 Reporter.prototype.passed = function () {
-  var count = 0;
-
-  for (var test in this.tests) {
-    if (this.tests.hasOwnProperty(test) && this.tests[test].passed()) {
-      count++;
-    }
-  }
-
-  return count;
+  return this.tests.filter(test => test.passed()).length;
 };
 
 Reporter.prototype.failed = function () {
-  var count = 0;
-
-  for (var test in this.tests) {
-    if (this.tests.hasOwnProperty(test) && !this.tests[test].passed()) {
-      count++;
-    }
-  }
-
-  return count;
+  return this.tests.filter(test => !test.passed()).length;
 };
 
 Reporter.prototype.getReport = function () {

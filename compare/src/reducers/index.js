@@ -2,14 +2,14 @@ import { combineReducers } from 'redux';
 import tests from './tests';
 import suiteInfo from './suiteInfo';
 import layoutSettings from './layoutSettings';
-import availableStatus from './availableStatus';
 import scrubber from './scrubber';
+import logs from './logs';
 
 const rootReducer = combineReducers({
   suiteInfo,
   tests,
-  availableStatus,
   scrubber,
+  logs,
   layoutSettings
 });
 

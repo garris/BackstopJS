@@ -42,6 +42,14 @@ a:hover {
   visibility: hidden;
   transform: translateZ(200px);
 }
+.hideLemur .lemurInYourFace {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateZ(200px);
+}
+.hideOctocat .github-icon {
+  visibility: hidden;
+}
 .lemurInYourFace {
   transition: transform 750ms ease, opacity 750ms ease, visibility 800ms ease;
   width: 50%;
@@ -82,7 +90,7 @@ a:hover {
 .casper {
   color: #BD10E0;
 }
-.chromy {
+.chrome {
   color: #9013FE;
 }
 
@@ -107,5 +115,3 @@ h1, p { font-size: 1em; color: #666; font-weight: 300}
 @media (min-width: 1200px) {
   h1, p { font-size: 2.1rem; }
 }
-
-
