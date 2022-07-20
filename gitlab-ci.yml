@@ -18,10 +18,15 @@ before_script:
 tests:
   script:
     - npm run lint && npm run unit-test
+    - npm run sanity-test
+    - npm run smoke-test
+  artifacts:
+    when: always
+    paths:
+      - test/configs/backstop_data
+    expire_in: 1 month
   parallel:
     matrix:
       - NODEJS:
-          - 10
-          - 12
           - 14
           - 16

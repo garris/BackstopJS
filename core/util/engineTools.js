@@ -136,8 +136,8 @@ function generateTestPair (config, scenario, viewport, variantOrScenarioLabelSaf
     referenceLog: referenceLogFilePath,
     test: testFilePath,
     testLog: testLogFilePath,
-    selector: selector,
-    fileName: fileName,
+    selector,
+    fileName,
     label: scenario.label,
     requireSameDimensions: getRequireSameDimensions(scenario, config),
     misMatchThreshold: getMisMatchThreshHold(scenario, config),
@@ -149,15 +149,15 @@ function generateTestPair (config, scenario, viewport, variantOrScenarioLabelSaf
 }
 
 module.exports = {
-  generateTestPair: generateTestPair,
-  getMisMatchThreshHold: getMisMatchThreshHold,
-  getRequireSameDimensions: getRequireSameDimensions,
-  ensureFileSuffix: ensureFileSuffix,
-  glueStringsWithSlash: glueStringsWithSlash,
-  genHash: genHash,
-  makeSafe: makeSafe,
-  getFilename: getFilename,
-  getEngineOption: getEngineOption,
-  getSelectorName: getSelectorName,
-  getScenarioExpect: getScenarioExpect
+  generateTestPair,
+  getMisMatchThreshHold,
+  getRequireSameDimensions,
+  ensureFileSuffix,
+  glueStringsWithSlash,
+  genHash,
+  makeSafe,
+  getFilename,
+  getEngineOption,
+  getSelectorName,
+  getScenarioExpect
 };

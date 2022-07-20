@@ -61,10 +61,10 @@ function compareImages (referencePath, testPath, pair, resembleOutputSettings, T
   return new Promise(function (resolve, reject) {
     const worker = cp.fork(require.resolve('./compare'));
     worker.send({
-      referencePath: referencePath,
-      testPath: testPath,
-      resembleOutputSettings: resembleOutputSettings,
-      pair: pair
+      referencePath,
+      testPath,
+      resembleOutputSettings,
+      pair
     });
 
     worker.on('message', function (data) {

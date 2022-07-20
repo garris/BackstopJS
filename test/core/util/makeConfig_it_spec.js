@@ -21,7 +21,10 @@ const expectedConfig = {
   html_report: path.resolve('backstop_data/html_report'),
   openReport: true,
   comparePath: path.resolve(backstopDir, 'compare/output'),
-  captureConfigFileNameDefault: path.resolve(backstopDir, 'capture/config.default.json'),
+  captureConfigFileNameDefault: path.resolve(
+    backstopDir,
+    'capture/config.default.json'
+  ),
   engine: null,
   engine_scripts: path.resolve('backstop_data/engine_scripts'),
   engine_scripts_default: path.resolve(backstopDir, 'capture/engine_scripts'),
@@ -38,6 +41,7 @@ const expectedConfig = {
   defaultMisMatchThreshold: 0.1,
   debug: false,
   resembleOutputOptions: undefined,
+  scenarioLogsInReports: undefined,
   dockerCommandTemplate: undefined,
   archivePath: path.resolve('backstop_data/reports'),
   archiveReport: false

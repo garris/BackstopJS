@@ -82,7 +82,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
 
   const ignoreHTTPSErrors = config.engineOptions.ignoreHTTPSErrors ? config.engineOptions.ignoreHTTPSErrors : true;
   const storageState = config.engineOptions.storageState ? config.engineOptions.storageState : {};
-  const browserContext = await browser.newContext({ ignoreHTTPSErrors: ignoreHTTPSErrors, storageState: storageState });
+  const browserContext = await browser.newContext({ ignoreHTTPSErrors, storageState });
   const page = await browserContext.newPage();
 
   await page.setViewportSize({ width: VP_W, height: VP_H });
@@ -372,7 +372,7 @@ async function captureScreenshot (page, browserContext, selector, selectorMap, c
     try {
       await page.screenshot({
         path: filePath,
-        fullPage: fullPage
+        fullPage
       });
     } catch (e) {
       console.log(chalk.red('Error capturing..'), e);
@@ -397,7 +397,7 @@ async function captureScreenshot (page, browserContext, selector, selectorMap, c
           }
 
           const type = el;
-          const params = { captureBeyondViewport: false, path: path };
+          const params = { captureBeyondViewport: false, path };
 
           await type.screenshot(params);
         } else {
