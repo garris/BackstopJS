@@ -7,7 +7,7 @@ describe('the runner', function () {
       return { command, args };
     });
     mockery.registerMock('./command/', function (command, config) {
-      return Promise.resolve({ command: command, config: config });
+      return Promise.resolve({ command, config });
     });
     mockery.enable({ warnOnUnregistered: false });
   });

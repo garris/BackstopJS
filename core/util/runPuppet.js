@@ -383,7 +383,7 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
     try {
       await page.screenshot({
         path: filePath,
-        fullPage: fullPage
+        fullPage
       });
       await writeScenarioLogs(config, logFilePath, logger);
     } catch (e) {
@@ -413,10 +413,10 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
           const params = config.puppeteerOffscreenCaptureFix
             ? {
                 captureBeyondViewport: false,
-                path: path,
+                path,
                 clip: box
               }
-            : { captureBeyondViewport: false, path: path };
+            : { captureBeyondViewport: false, path };
 
           await type.screenshot(params);
           await writeScenarioLogs(config, logFilePath, logger);
