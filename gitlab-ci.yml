@@ -1,5 +1,5 @@
 
-image: ubuntu:20.04
+image: ubuntu:22.04
 
 before_script:
   - export DEBIAN_FRONTEND=noninteractive
