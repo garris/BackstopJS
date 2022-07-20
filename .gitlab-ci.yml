@@ -17,7 +17,8 @@ before_script:
 
 tests:
   script:
-    - npm run lint && npm run unit-test
+    - npm run lint
+    - npm run unit-test
     - npm run sanity-test
     - npm run smoke-test
   artifacts:
