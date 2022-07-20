@@ -615,6 +615,8 @@ To use firefox or webkit, you can currently use _playwright_ (https://github.com
 
 Be sure to also switch the onBefore and onReady scripts to the Playwright defaults.  Playwright supports setting `engineOptions.browser` to `chromium`, `firefox`, or `webkit`.
 
+The [storageState](https://playwright.dev/docs/api/class-browsercontext#browser-context-storage-state) config property is supported via the `engineOptions` object in backstop config. This sets cookies _and_ localStorage variables in the Playwright engine before tests are run. Very useful taking screenshots of pages that require authentication.
+
 ```json
   ...
   "onBeforeScript": "playwright/onBefore.js",
@@ -623,7 +625,8 @@ Be sure to also switch the onBefore and onReady scripts to the Playwright defaul
   "engine": "playwright"
   ...
   "engineOptions": {
-    "browser": "chromium"
+    "browser": "chromium",
+    "storageState": "/path/to/cookies-and-local-storage-file.json"
   }
   ...
 ```

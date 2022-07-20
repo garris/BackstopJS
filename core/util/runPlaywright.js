@@ -81,7 +81,8 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
   const VP_H = viewport.height || viewport.viewport.height;
 
   const ignoreHTTPSErrors = config.engineOptions.ignoreHTTPSErrors ? config.engineOptions.ignoreHTTPSErrors : true;
-  const browserContext = await browser.newContext({ ignoreHTTPSErrors: ignoreHTTPSErrors });
+  const storageState = config.engineOptions.storageState ? config.engineOptions.storageState : {};
+  const browserContext = await browser.newContext({ ignoreHTTPSErrors: ignoreHTTPSErrors, storageState: storageState });
   const page = await browserContext.newPage();
 
   await page.setViewportSize({ width: VP_W, height: VP_H });
