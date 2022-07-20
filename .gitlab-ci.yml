@@ -3,7 +3,6 @@ image: node:$NODEJS
 before_script:
   - node -v
   - npm -v
-  - npm install
 
 tests:
   script:
