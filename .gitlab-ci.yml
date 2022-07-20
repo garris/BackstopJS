@@ -1,5 +1,4 @@
-
-image: ubuntu:20.04
+image: ubuntu:22.04
 
 before_script:
   - export DEBIAN_FRONTEND=noninteractive
@@ -11,6 +10,7 @@ before_script:
   - . ~/.nvm/nvm.sh
   - nvm --version
   - nvm install $NODEJS
+  - npm install -g npm
   - node -v
   - npm -v
   - npm install
