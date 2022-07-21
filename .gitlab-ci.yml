@@ -1,0 +1,23 @@
+image: node:$NODEJS
+
+# Select what we should cache
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - node_modules/
+
+before_script:
+  - node -v
+  - npm -v
+  - npm install
+
+tests:
+  script:
+    - npm run lint
+    - npm run unit-test
+  parallel:
+    matrix:
+      - NODEJS:
+          - 14
+          - 16
+          - 18
