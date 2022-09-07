@@ -22,7 +22,11 @@ module.exports = async (page, scenario) => {
   if (clickSelector) {
     for (const clickSelectorIndex of [].concat(clickSelector)) {
       await page.waitFor(clickSelectorIndex);
-      await page.click(clickSelectorIndex);
+      await page.evaluate(clickSelectorIndex => {
+				for (var element of document.querySelectorAll(clickSelectorIndex)) {
+					element.click();
+				}
+			}, clickSelectorIndex);
     }
   }
 
