@@ -32,7 +32,7 @@
     "copy-report-bundle": "mkdir -p test/configs/backstop_data/html_report && cp compare/output/index_bundle.js test/configs/backstop_data/html_report/",
     "build-and-copy-report-bundle": "npm run build-compare && npm run copy-report-bundle",
     "remote": "cd test/configs/ && node ../../cli/index.js remote",
-    "stop": "curl http://localhost:3000/stop",
+    "stop": "cd test/configs/ && node ../../cli/index.js stop",
     "build-docker": "PV=$(node -p -e \"require('./package.json').version\"); docker build docker -t backstopjs/backstopjs:$PV; docker build docker -t backstopjs/backstopjs:latest",
     "publish-docker": "PV=$(node -p -e \"require('./package.json').version\"); docker push backstopjs/backstopjs:$PV; docker push backstopjs/backstopjs:latest",
     "publish-npm": "npm publish",
@@ -105,7 +105,7 @@
     "playwright": "^1.23.4",
     "portfinder": "^1.0.28",
     "puppeteer": "^15.4.0",
-    "super-simple-web-server": "^1.1.2",
+    "super-simple-web-server": "garris/superSimpleExpressServer#b6b9684514caa7b95d0920be2d56946e5e636693",
     "temp": "^0.9.4"
   }
 }

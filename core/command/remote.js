@@ -1,6 +1,7 @@
 const logger = require('../util/logger')('remote');
 const path = require('path');
 const { exec } = require('child_process');
+const getRemotePort = require('../util/getRemotePort');
 const ssws = require.resolve('super-simple-web-server');
 
 module.exports = {
@@ -9,7 +10,8 @@ module.exports = {
     const projectPath = path.resolve(config.projectPath);
 
     return new Promise(function (resolve, reject) {
-      const commandStr = `node ${ssws} ${projectPath} ${MIDDLEWARE_PATH} --config=${config.backstopConfigFileName}`;
+      const port = getRemotePort();
+      const commandStr = `SSWS_HTTP_PORT=${port} node ${ssws} ${projectPath} ${MIDDLEWARE_PATH} --config=${config.backstopConfigFileName}`;
 
       logger.log(`Starting remote with: ${commandStr}`);
 
