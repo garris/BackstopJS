@@ -1,11 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
+import getRemotePort from '../../../../core/util/getRemotePort';
 import { approveTest, filterTests } from '../../actions';
 import { colors, fonts } from '../../styles';
 
 const REMOTE_HOST = 'http://127.0.0.1';
-const REMOTE_PORT = 3000;
+const REMOTE_PORT = getRemotePort();
 const APPROVE_STATUS_TO_LABEL_MAP = Object.freeze({
   INITIAL: 'Approve',
   PENDING: 'Pending...',
