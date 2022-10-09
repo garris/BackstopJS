@@ -7,27 +7,27 @@ module.exports = async (page, scenario) => {
 
   if (keyPressSelector) {
     for (const keyPressSelectorItem of [].concat(keyPressSelector)) {
-      await page.waitFor(keyPressSelectorItem.selector);
+      await page.waitForSelector(keyPressSelectorItem.selector);
       await page.type(keyPressSelectorItem.selector, keyPressSelectorItem.keyPress);
     }
   }
 
   if (hoverSelector) {
-    await page.waitFor(hoverSelector);
+    await page.waitForSelector(hoverSelector);
     await page.hover(hoverSelector);
   }
 
   if (clickSelector) {
-    await page.waitFor(clickSelector);
+    await page.waitForSelector(clickSelector);
     await page.click(clickSelector);
   }
 
   if (postInteractionWait) {
-    await page.waitFor(postInteractionWait);
+    await page.waitForTimeout(postInteractionWait);
   }
 
   if (scrollToSelector) {
-    await page.waitFor(scrollToSelector);
+    await page.waitForSelector(scrollToSelector);
     await page.evaluate(scrollToSelector => {
       document.querySelector(scrollToSelector).scrollIntoView();
     }, scrollToSelector);
