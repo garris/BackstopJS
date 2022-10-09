@@ -31,9 +31,16 @@ module.exports = async (page, scenario) => {
   }
 
   if (scrollToSelector) {
-    await page.waitFor(scrollToSelector);
+   await page.waitFor(scrollToSelector);
+    if (scrollToSelector.startsWith('//')){
+      await page.evaluate(scrollToSelector => {
+        document.evaluate(scrollToSelector, document, null, XPathResult.ANY_TYPE, null ).iterateNext().scrollIntoView();
+      }, scrollToSelector);
+    }else{
+
     await page.evaluate(scrollToSelector => {
       document.querySelector(scrollToSelector).scrollIntoView();
     }, scrollToSelector);
+  }
   }
 };
