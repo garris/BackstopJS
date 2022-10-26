@@ -138,7 +138,9 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     if (isReference && scenario.referenceUrl) {
       url = scenario.referenceUrl;
     }
-    await page.goto(translateUrl(url, logger));
+
+    const gotoParameters = scenario?.engineOptions?.gotoParameters || config?.engineOptions?.gotoParameters || {};
+    await page.goto(translateUrl(url, logger), gotoParameters);
 
     await injectBackstopTools(page);
 
