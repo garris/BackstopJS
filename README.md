@@ -194,6 +194,7 @@ selectorExpansion        // See Targeting elements in the next section for more 
 misMatchThreshold        // Percentage of different pixels allowed to pass test
 requireSameDimensions    // If set to true -- any change in selector size will trigger a test failure.
 viewports                // An array of screen size objects your DOM will be tested against. This configuration will override the viewports property assigned at the config root.
+gotoParameters           // An array of settings passed to page.goto(url, parameters) function.
 ```
 <!-- archiveReport            // If set to true -- all test reports will be archived(copied) (in `reports` folder)  -->
 
@@ -644,7 +645,8 @@ You can add more settings (or override the defaults) with the engineOptions prop
 ```json
 "engineOptions": {
   "ignoreHTTPSErrors": false,
-  "args": ["--no-sandbox", "--disable-setuid-sandbox"]
+  "args": ["--no-sandbox", "--disable-setuid-sandbox"],
+  "gotoParameters": { "waitUntil": "networkidle0" },
 }
 ```
 More info here:
