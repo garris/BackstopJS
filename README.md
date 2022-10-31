@@ -388,7 +388,7 @@ There may also be elements which need to be completely removed during testing. F
 
 ### Capturing Browser Console Logs
 
-Sometimes you need a little more information to debug misbehavior. If that information is in the browser console logs, it won't appear in a screenshot. To capture the bowser console logs along with the screenshots, set `scenarioLogsInReports`. ( _Note: In order to view the logs, you will have to serve the reports from an HTTP server. See _Serving Reports_ below._)
+Sometimes you need a little more information to debug misbehavior. If that information is in the browser console logs, it won't appear in a screenshot. To capture the browser console logs along with the screenshots, set `scenarioLogsInReports`. ( _Note: In order to view the logs, you will have to serve the reports from an HTTP server. See [Interactive Web Reporting](#interactive-web-reporting) below._)
 
 ```json
 "scenarioLogsInReports": true
