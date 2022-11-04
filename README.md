@@ -1011,6 +1011,8 @@ You have the option of displaying the Chrome window as tests are running.  This 
 "debugWindow": true
 ```
 
+When `debugWindow` is enabled on macOS, the system may show many firewall popups. This is because Puppeteer's Chromium application is not code-signed. As the exact steps to work around this may change with different macOS versions, see [[problem] Mac OS Firewall popup on every launch of puppeteer #4752](https://github.com/puppeteer/puppeteer/issues/4752) until this is fixed upstream. As of macOS Monterey 12.4, [these steps](https://github.com/puppeteer/puppeteer/issues/4752#issuecomment-1099647133) are the most current to run.
+
 For all engines there is also the `debug` setting.  This enables verbose console output.This will also output your source payload to the terminal so you can make sure to check that the server is sending what you expect. 😉
 
 ```json
