@@ -420,6 +420,13 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
               }
             : { captureBeyondViewport: false, path };
 
+          if(config.puppeteerOffscreenCaptureFix) {
+            const pageHeight = await page.evaluate("document.body.scrollHeight");
+            await type.setViewport(
+              Object.assign({}, type.viewport(), {height: parseInt(pageHeight) })
+            );
+          }
+
           await type.screenshot(params);
           await writeScenarioLogs(config, logFilePath, logger);
         } else {
