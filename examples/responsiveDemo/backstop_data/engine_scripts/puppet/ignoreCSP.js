@@ -36,7 +36,7 @@ module.exports = async function (page, scenario) {
       const cookies = cookiesList.map(cookie => `${cookie.name}=${cookie.value}`).join('; ');
       const headers = Object.assign(request.headers(), { cookie: cookies });
       const options = {
-        headers: headers,
+        headers,
         body: request.postData(),
         method: request.method(),
         follow: 20,
