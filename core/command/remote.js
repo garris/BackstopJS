@@ -12,11 +12,11 @@ module.exports = {
     return new Promise(function (resolve, reject) {
       const port = getRemotePort();
       const commandStr = `node ${ssws} ${projectPath} ${MIDDLEWARE_PATH} --config=${config.backstopConfigFileName}`;
-      const env = {'SSWS_HTTP_PORT': port};
+      const env = { SSWS_HTTP_PORT: port };
 
       logger.log(`Starting remote with: ${commandStr} with env ${JSON.stringify(env)}`);
 
-      const child = exec(commandStr, {env: env});
+      const child = exec(commandStr, { env });
 
       child.stdout.on('data', logger.log);
 
