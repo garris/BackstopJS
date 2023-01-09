@@ -12,9 +12,6 @@ const TEST_TIMEOUT = 60000;
 const DEFAULT_FILENAME_TEMPLATE = '{configId}_{scenarioLabel}_{selectorIndex}_{selectorLabel}_{viewportIndex}_{viewportLabel}';
 const DEFAULT_BITMAPS_TEST_DIR = 'bitmaps_test';
 const DEFAULT_BITMAPS_REFERENCE_DIR = 'bitmaps_reference';
-const SELECTOR_NOT_FOUND_PATH = '/capture/resources/notFound.png';
-const HIDDEN_SELECTOR_PATH = '/capture/resources/notVisible.png';
-const ERROR_SELECTOR_PATH = '/capture/resources/unexpectedErrorSm.png';
 const BODY_SELECTOR = 'body';
 const DOCUMENT_SELECTOR = 'document';
 const NOCLIP_SELECTOR = 'body:noclip';
@@ -281,7 +278,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     compareConfig = {
       testPairs: [testPair]
     };
-    await fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
+    await fs.copy(config.env.backstop + engineTools.getUnexpectedErrorImagePath(filePath), filePath);
   }
 
   return Promise.resolve(compareConfig);
@@ -378,7 +375,7 @@ async function captureScreenshot (page, browserContext, selector, selectorMap, c
       });
     } catch (e) {
       console.log(chalk.red('Error capturing..'), e);
-      return fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
+      return fs.copy(config.env.backstop + engineTools.getUnexpectedErrorImagePath(filePath), filePath);
     }
   } else {
     // OTHER-SELECTOR screenshot
@@ -404,11 +401,11 @@ async function captureScreenshot (page, browserContext, selector, selectorMap, c
           await type.screenshot(params);
         } else {
           console.log(chalk.yellow(`Element not visible for capturing: ${s}`));
-          return fs.copy(config.env.backstop + HIDDEN_SELECTOR_PATH, path);
+          return fs.copy(config.env.backstop + engineTools.getNotVisibleImagePath(path), path);
         }
       } else {
         console.log(chalk.magenta(`Element not found for capturing: ${s}`));
-        return fs.copy(config.env.backstop + SELECTOR_NOT_FOUND_PATH, path);
+        return fs.copy(config.env.backstop + engineTools.getNotFoundImagePath(path), path);
       }
     };
 
@@ -421,7 +418,7 @@ async function captureScreenshot (page, browserContext, selector, selectorMap, c
           await selectorShot(selector, filePath);
         } catch (e) {
           console.log(chalk.red(`Error capturing Element ${selector}`), e);
-          return fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
+          return fs.copy(config.env.backstop + engineTools.getUnexpectedErrorImagePath(filePath), filePath);
         }
       }
     };

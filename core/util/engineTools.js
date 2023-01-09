@@ -1,3 +1,21 @@
+function getUnexpectedErrorImagePath (filePath) {
+  return filePath.endsWith('.png')
+    ? '/capture/resources/unexpectedErrorSm.png'
+    : '/capture/resources/unexpectedErrorSm.jpg';
+}
+
+function getNotVisibleImagePath (filePath) {
+  return filePath.endsWith('.png')
+    ? '/capture/resources/notVisible.png'
+    : '/capture/resources/notVisible.jpg';
+}
+
+function getNotFoundImagePath (filePath) {
+  return filePath.endsWith('.png')
+    ? '/capture/resources/notFound.png'
+    : '/capture/resources/notFound.jpg';
+}
+
 function getMisMatchThreshHold (scenario, config) {
   if (typeof scenario.misMatchThreshold !== 'undefined') { return scenario.misMatchThreshold; }
   if (typeof config.misMatchThreshold !== 'undefined') { return config.misMatchThreshold; }
@@ -159,5 +177,8 @@ module.exports = {
   getFilename,
   getEngineOption,
   getSelectorName,
-  getScenarioExpect
+  getScenarioExpect,
+  getNotVisibleImagePath,
+  getNotFoundImagePath,
+  getUnexpectedErrorImagePath
 };

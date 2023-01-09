@@ -13,9 +13,6 @@ const TEST_TIMEOUT = 60000;
 const DEFAULT_FILENAME_TEMPLATE = '{configId}_{scenarioLabel}_{selectorIndex}_{selectorLabel}_{viewportIndex}_{viewportLabel}';
 const DEFAULT_BITMAPS_TEST_DIR = 'bitmaps_test';
 const DEFAULT_BITMAPS_REFERENCE_DIR = 'bitmaps_reference';
-const SELECTOR_NOT_FOUND_PATH = '/capture/resources/notFound.png';
-const HIDDEN_SELECTOR_PATH = '/capture/resources/notVisible.png';
-const ERROR_SELECTOR_PATH = '/capture/resources/unexpectedErrorSm.png';
 const BODY_SELECTOR = 'body';
 const DOCUMENT_SELECTOR = 'document';
 const NOCLIP_SELECTOR = 'body:noclip';
@@ -288,7 +285,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
       testPairs: [testPair]
     };
     await writeScenarioLogs(config, logFilePath, logger);
-    await fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
+    await fs.copy(config.env.backstop + engineTools.getUnexpectedErrorImagePath(filePath), filePath);
   }
 
   return Promise.resolve(compareConfig);
@@ -391,7 +388,7 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
     } catch (e) {
       logger.log('red', 'Error capturing..', e);
       await writeScenarioLogs(config, logFilePath, logger);
-      return fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
+      return fs.copy(config.env.backstop + engineTools.getUnexpectedErrorImagePath(filePath), filePath);
     }
   } else {
     // OTHER-SELECTOR screenshot
@@ -425,12 +422,12 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
         } else {
           logger.log('yellow', `Element not visible for capturing: ${s}`);
           await writeScenarioLogs(config, logFilePath, logger);
-          return fs.copy(config.env.backstop + HIDDEN_SELECTOR_PATH, path);
+          return fs.copy(config.env.backstop + engineTools.getNotVisibleImagePath(path), path);
         }
       } else {
         logger.log('magenta', `Element not found for capturing: ${s}`);
         await writeScenarioLogs(config, logFilePath, logger);
-        return fs.copy(config.env.backstop + SELECTOR_NOT_FOUND_PATH, path);
+        return fs.copy(config.env.backstop + engineTools.getNotFoundImagePath(path), path);
       }
     };
 
@@ -445,7 +442,7 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
         } catch (e) {
           logger.log('red', `Error capturing Element ${selector}`, e);
           await writeScenarioLogs(config, logFilePath, logger);
-          return fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
+          return fs.copy(config.env.backstop + engineTools.getUnexpectedErrorImagePath(filePath), filePath);
         }
       }
     };
