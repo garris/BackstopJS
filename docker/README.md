@@ -74,3 +74,38 @@ docker run --rm -v $(pwd):/src -it --entrypoint=bash backstopjs/backstopjs
 
 ## Jenkins Guide
 You could get a Jenkins Guide here: [Jenkins Guide](../examples/Jenkins)
+
+## MultiArch Build
+
+Your docker setup should have buildx support to be able to build that.
+
+```
+docker buildx create --name mybuilder --use --bootstrap
+```
+
+Build + Push:
+
+```
+export BACKSTOPJS_VERSION=6.1.4
+docker buildx build --push --build-arg BACKSTOPJS_VERSION --platform linux/amd64,linux/arm64 --tag backstopjs/backstopjs:$BACKSTOPJS_VERSION docker
+
+```
+
+### local load to your registry
+
+build + load it to your registry (load does not support more than 1 platform, push does https://github.com/docker/buildx/issues/59):
+
+AMD64:
+
+```
+export BACKSTOPJS_VERSION=6.1.4
+docker buildx build --build-arg BACKSTOPJS_VERSION --platform linux/amd64 --load --tag backstopjs/backstopjs:$BACKSTOPJS_VERSION docker
+```
+
+ARM64:
+
+```
+export BACKSTOPJS_VERSION=6.1.4
+docker buildx build --build-arg BACKSTOPJS_VERSION --platform linux/arm64 --load --tag backstopjs/backstopjs:$BACKSTOPJS_VERSION docker
+```
+

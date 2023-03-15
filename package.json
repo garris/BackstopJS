@@ -33,8 +33,8 @@
     "build-and-copy-report-bundle": "npm run build-compare && npm run copy-report-bundle",
     "remote": "cd test/configs/ && node ../../cli/index.js remote",
     "stop": "cd test/configs/ && node ../../cli/index.js stop",
-    "build-docker": "PV=$(node -p -e \"require('./package.json').version\"); echo $PV; docker build docker -t backstopjs/backstopjs:$PV --build-arg BACKSTOPJS_VERSION=$PV; docker build docker -t backstopjs/backstopjs:latest --build-arg BACKSTOPJS_VERSION=$PV",
-    "publish-docker": "PV=$(node -p -e \"require('./package.json').version\"); docker push backstopjs/backstopjs:$PV; docker push backstopjs/backstopjs:latest",
+    "build-docker": "PV=$(node -p -e \"require('./package.json').version\"); echo $PV; docker buildx build --platform linux/amd64,linux/arm64 -t backstopjs/backstopjs:$PV --build-arg BACKSTOPJS_VERSION=$PV docker; docker buildx build --platform linux/amd64,linux/arm64 -t backstopjs/backstopjs:latest --build-arg BACKSTOPJS_VERSION=$PV docker",
+    "publish-docker": "PV=$(node -p -e \"require('./package.json').version\"); docker buildx build --push --platform linux/amd64,linux/arm64 -t backstopjs/backstopjs:$PV --build-arg BACKSTOPJS_VERSION=$PV docker; docker buildx build --push --platform linux/amd64,linux/arm64 -t backstopjs/backstopjs:latest --build-arg BACKSTOPJS_VERSION=$PV docker",
     "publish-npm": "npm publish",
     "build-and-publish": "npm run publish-npm && npm run build-docker && npm run publish-docker"
   },
