@@ -690,7 +690,7 @@ The above flag will cause BackstopJS to hit your Docker local client, spin up a 
 If the default docker command or image does not work for you, you can customize the command to run BackstopJS with Docker by changing the `dockerCommandTemplate` config option. The default is:
 
 ```sh
-"dockerCommandTemplate": "docker run --rm -it --mount type=bind,source=\"{cwd}\",target=/src backstopjs/backstopjs:{version} {backstopCommand} {args}"
+"dockerCommandTemplate": "docker run --rm -it --user $(id -u):$(id -g) --mount type=bind,source=\"{cwd}\",target=/src backstopjs/backstopjs:{version} {backstopCommand} {args}"
 ```
 
 
