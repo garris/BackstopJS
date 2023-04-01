@@ -12,7 +12,9 @@ RUN apt-get -qq update >/dev/null && apt-get install -qq fonts-liberation chromi
 USER root
 # skip download, we already have it installed
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
-RUN npm install -g --unsafe-perm=true --allow-root backstopjs@${BACKSTOPJS_VERSION}
+# playwright shared browser path (does install a 2nd chromium - can't be skipped)
+ENV PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers
+RUN mkdir ${PLAYWRIGHT_BROWSERS_PATH} && npm install -g --unsafe-perm=true --allow-root backstopjs@${BACKSTOPJS_VERSION}
 RUN rm -rf /var/lib/apt/lists/* && apt-get -qq clean >/dev/null
 
 USER node
