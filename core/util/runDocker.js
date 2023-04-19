@@ -2,7 +2,7 @@ const { spawn } = require('child_process');
 const version = require('../../package').version;
 const fs = require('./fs');
 
-const DEFAULT_DOCKER_COMMAND_TEMPLATE = 'docker run --rm -it --user $(id -u):$(id -g) --mount type=bind,source="{cwd}",target=/src backstopjs/backstopjs:{version} {backstopCommand} {args}';
+const DEFAULT_DOCKER_COMMAND_TEMPLATE = 'docker run --rm -it --mount type=bind,source="{cwd}",target=/src backstopjs/backstopjs:{version} {backstopCommand} {args}';
 
 module.exports.shouldRunDocker = (config) => config.args.docker;
 
