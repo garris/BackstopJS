@@ -14,12 +14,14 @@
   ],
   "onBeforeScript": "puppet/onBefore.js",
   "onReadyScript": "puppet/onReady.js",
+  "localStorageData": "Does not have precedence over the values in scenarios"
   "scenarios": [
     {
       "label": "BackstopJS Homepage",
       "cookiePath": "backstop_data/engine_scripts/cookies.json",
       "url": "https://garris.github.io/BackstopJS/",
       "referenceUrl": "",
+      "localStorageData": "backstop_data/engine_scripts/localStorage.json"
       "readyEvent": "",
       "readySelector": "",
       "delay": 0,
