@@ -67,11 +67,13 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
   const VP_W = viewport.width || viewport.viewport.width;
   const VP_H = viewport.height || viewport.viewport.height;
 
+  const headless = typeof config.debugWindow === "string" ? config.debugWindow : !config.debugWindow;
+
   const puppeteerArgs = Object.assign(
     {},
     {
       ignoreHTTPSErrors: true,
-      headless: !config.debugWindow
+      headless: headless
     },
     config.engineOptions
   );
