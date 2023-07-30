@@ -18,7 +18,7 @@ module.exports = {
 
       const child = exec(commandStr, { env: { ...env, 'PATH': process.env.PATH } }, (error) => {
         if (error) {
-          console.log("Error running backstop remote:", error);
+          logger.log("Error running backstop remote:", error);
         }
       });
 
