@@ -102,7 +102,7 @@ $ backstop init
 
 ### Working with your config file
 
-By default, BackstopJS places `backstop.json` in the root of your project. And also by default, BackstopJS looks for this file when invoked.
+By default, BackstopJS places `backstop.config.js` in the root of your project. And also by default, BackstopJS looks for this file when invoked.
 
 Pass a `--config=<configFilePathStr>` argument to test using a different config file.
 
@@ -113,7 +113,7 @@ You may use a javascript based config file to allow comments in your config. Be 
 Example: Create a backstop.config.js
 
 ```
-module.exports = { Same object as backstop.json }
+module.exports = { Same object as backstop.config.js }
 ```
 
 and then `backstop test --config="backstop.config.js"`
@@ -494,7 +494,7 @@ module.exports = async (page, scenario, vp) => {
 
 #### Setting the base path for custom onBefore and onReady scripts
 
-By default, the base path is a folder called `engine_scripts` inside your BackstopJS installation directory. You can override this by setting the `paths.scripts` property in your `backstop.json` file to point to somewhere in your project directory (recommended).
+By default, the base path is a folder called `engine_scripts` inside your BackstopJS installation directory. You can override this by setting the `paths.scripts` property in your `backstop.config.js` file to point to somewhere in your project directory (recommended).
 
 ```json
 "paths": {
@@ -587,7 +587,7 @@ node ./backstopjs/cli/ test  && echo 'passed' || echo 'failed'
 When a layout error is found in CLI mode, BackstopJS will let you know in a general report displayed in the console. In addition, BackstopJS will return a 1 (error) to the calling CLI process.
 
 ### Setting the bitmap and script directory paths
-By default, BackstopJS saves generated resources into the `backstop_data` directory in parallel with your `backstop.json` config file. The location of the various resource types are configurable so they can easily be moved inside or outside your source control or file sharing environment. See below for options...
+By default, BackstopJS saves generated resources into the `backstop_data` directory in parallel with your `backstop.config.js` config file. The location of the various resource types are configurable so they can easily be moved inside or outside your source control or file sharing environment. See below for options...
 
 **Tip**: these file paths are relative to your current working directory._
 
@@ -872,11 +872,11 @@ optional parameters
 
 ### Modifying output settings of image-diffs
 
-By specifying `resembleOutputOptions` in your backstop.json file you can modify the image-diffs transparency, errorcolor, etc. (See [Resemble.js outputSettings](https://github.com/Huddle/Resemble.js) for the full list.)
+By specifying `resembleOutputOptions` in your backstop.config.js file you can modify the image-diffs transparency, errorcolor, etc. (See [Resemble.js outputSettings](https://github.com/Huddle/Resemble.js) for the full list.)
 
-Instead of calling resemble`s ignoreAntialiasing(), you may set it as a property in the config. (See [example](examples/simpleReactApp/backstop.json))
+Instead of calling resemble`s ignoreAntialiasing(), you may set it as a property in the config. (See [example](examples/simpleReactApp/backstop.config.js))
 
-Per default, Backstop uses Resemble's misMatchPercentage value. However, this value only detects mismatches above 0.01%. If you need more precision and want to use a `misMatchThreshold` below `0.01` (e.g. for large screenshots or small changes), you can set `usePreciseMatching` in the `resembleOutputOptions`. (See [example](examples/simpleReactApp/backstop.json))
+Per default, Backstop uses Resemble's misMatchPercentage value. However, this value only detects mismatches above 0.01%. If you need more precision and want to use a `misMatchThreshold` below `0.01` (e.g. for large screenshots or small changes), you can set `usePreciseMatching` in the `resembleOutputOptions`. (See [example](examples/simpleReactApp/backstop.config.js))
 
 ```json
 "resembleOutputOptions": {

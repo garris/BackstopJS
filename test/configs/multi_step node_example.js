@@ -2,7 +2,7 @@ const backstop = require('../../core/runner');
 
 console.log('Running a multi-step Backstop test. vvv');
 
-// this will run `backstop test` with default config file (./backstop.json in current directory)
+// this will run `backstop test` with default config file (./backstop.config.js in current directory)
 backstop('test')
   .catch(approveChanges)
   .then(() => {

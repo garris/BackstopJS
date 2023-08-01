@@ -16,12 +16,12 @@ module.exports = function (command, options) {
         v: false,
         version: false,
         i: false,
-        config: 'backstop.json'
+        config: 'backstop.config.js'
     },
     backstop: '/Users/gshipon/Development/BackstopJS',
     projectPath: '/Users/gshipon/Development/BackstopJS/test/configs/test_TBD',
     perf: { init: { started: 2018-09-23T04:01:09.673Z } },
-    backstopConfigFileName: '/Users/gshipon/Development/BackstopJS/test/configs/test_TBD/backstop.json',
+    backstopConfigFileName: '/Users/gshipon/Development/BackstopJS/test/configs/test_TBD/backstop.config.js',
     bitmaps_reference: '/Users/gshipon/Development/BackstopJS/test/configs/test_TBD/backstop_data/bitmaps_reference',
     bitmaps_test: '/Users/gshipon/Development/BackstopJS/test/configs/test_TBD/backstop_data/bitmaps_test',
     ci_report: '/Users/gshipon/Development/BackstopJS/test/configs/test_TBD/backstop_data/ci_report',

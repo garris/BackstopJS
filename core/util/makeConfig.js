@@ -26,7 +26,7 @@ function loadProjectConfig (command, options, config) {
       config.backstopConfigFileName = path.join(config.projectPath, customConfigPath);
     }
   } else {
-    config.backstopConfigFileName = path.join(config.projectPath, 'backstop.json');
+    config.backstopConfigFileName = path.join(config.projectPath, 'backstop.config.js');
   }
 
   let userConfig = {};

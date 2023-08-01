@@ -12,7 +12,7 @@ then Build...
 Then open index.html in your browser.
 
 **Note:** ignore antialiasing is used here. 
-See backstop.json: `"resembleOutputOptions": {"ignoreAntialiasing": true}`
+See backstop.config.js: `"resembleOutputOptions": {"ignoreAntialiasing": true}`
 
 ---
 

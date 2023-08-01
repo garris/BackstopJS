@@ -12,7 +12,7 @@ function main () {
     boolean: ['h', 'help', 'v', 'version', 'i', 'docker'],
     string: ['config'],
     default: {
-      config: 'backstop.json'
+      config: 'backstop.config.js'
     }
   });
 

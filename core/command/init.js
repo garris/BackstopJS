@@ -11,7 +11,7 @@ module.exports = {
       logger.log("Copying '" + config.engine_scripts_default + "' to '" + config.engine_scripts + "'");
       promises.push(fs.copy(config.engine_scripts_default, config.engine_scripts));
     } else {
-      logger.error('ERROR: Can\'t generate a scripts directory. No \'engine_scripts\' path property was found in backstop.json.');
+      logger.error('ERROR: Can\'t generate a scripts directory. No \'engine_scripts\' path property was found in backstop.config.js.');
     }
 
     // Copies a boilerplate config file to the current config file location.
