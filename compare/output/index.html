@@ -32,6 +32,40 @@
         display: none;
       }
 
+      .header #dg--test-button {
+        background-color: #8d9100;
+        border: none;
+        cursor: pointer;
+        box-shadow: 0 3px 6px 0 rgba(0,0,0,0.16);
+        transition-property: background-color, opacity, box-shadow;
+        transition-duration: 0.3s;
+        color: #FFFFFF;
+        border-radius: 3px;
+        margin: 0 0 0 15px;
+        padding: 0px 30px;
+        height: 100%;
+        border-color: currentcolor;
+        background-image: none;
+        font-size: 20px;
+        font-family: latoregular;
+        vertical-align: top;
+        opacity: 0.5;
+      }
+
+      .header #dg--test-button:hover {
+        background-color: #edf500;
+        0 4px 5px 0 rgba(0,0,0,0.14),0 1px 10px 0 rgba(0,0,0,0.12),0 2px 4px -1px rgba(0,0,0,0.3)
+      }
+
+      div[id*="test"] > div > div > button {
+        padding: 5px 15px;
+        transition: background-color 0.3s, color 0.3s;
+      }
+
+      div[id*="test"] > div > div > button:hover {
+        color: rgb(255,255,255);
+      }
+
     </style>
   </head>
   <body style="background-color: #E2E7EA">
@@ -45,5 +79,6 @@
     </script>
     <script src="config.js"></script>
     <script src="index_bundle.js"></script>
+    <script src="run_tests_button.js"></script>
   </body>
 </html>
