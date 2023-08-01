@@ -18,6 +18,7 @@ module.exports = {
         resp.on('end', () => {
           if (BACKSTOP_REPORT_SIGNATURE_RE.test(data)) {
             logger.log(`Remote found. Open http://127.0.0.1:${port}/${config.compareReportURL}?remote in your browser.`);
+            resolve();
             // logger.log('Remote found. Opening ' + remoteReportUrl);
             // resolve(open(remoteReportUrl, { wait: false }));
           } else {
