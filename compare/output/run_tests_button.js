@@ -8,9 +8,9 @@ function addTestButton() {
   testButton.classList.add('darkreader');
   testButton.appendChild(buttonText);
   testButton.addEventListener("click", async function() {
+    testButton.disabled = true;
+    testButton.classList.toggle("running", true);
     try {
-      testButton.disabled = true;
-      testButton.classList.toggle("running", true);
       const response = await fetch('http://localhost:3000/test', {
         method: 'POST',
         headers: {
@@ -31,7 +31,4 @@ function addTestButton() {
   });
 
   settingsHeader.prepend(testButton);
-  setTimeout(() => {
-    console.log('adding button');
-  }, 500);
 }
