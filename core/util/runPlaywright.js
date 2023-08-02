@@ -33,10 +33,12 @@ module.exports.createPlaywrightBrowser = async function (config) {
     return;
   }
 
+  const headless = typeof config.debugWindow === "string" ? config.debugWindow : !config.debugWindow;
+
   const playwrightArgs = Object.assign(
     {},
     {
-      headless: !config.debugWindow
+      headless: headless
     },
     config.engineOptions
   );
