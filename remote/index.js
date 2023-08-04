@@ -123,9 +123,29 @@ module.exports = function (app) {
     }
   });
 
-  app.post('/test', async (req, res) => {
+  app.post('/ref', async (req, res) => {
+    const filter = req.query.filter || '';
+    const config = JSON.parse(JSON.stringify(_config));
     try {
-      await backstop('test');
+      await backstop('reference', {
+        config,
+        filter
+      });
+      res.send('OK');
+    } catch (err) {
+      console.log(err);
+      res.send('FAILED ' + err);
+    }
+  });
+
+  app.post('/test', async (req, res) => {
+    const filter = req.query.filter || '';
+    const config = JSON.parse(JSON.stringify(_config));
+    try {
+      await backstop('test', {
+        config,
+        filter
+      });
       res.send('OK');
     } catch (err) {
       console.log(err);

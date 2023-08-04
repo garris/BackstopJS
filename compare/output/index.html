@@ -40,8 +40,7 @@
         display: none;
       }
 
-      .header #dg--test-button {
-        background-color: #8d9100;
+      .header .dg--button {
         border: none;
         cursor: pointer;
         box-shadow: 0 3px 6px 0 rgba(0,0,0,0.16);
@@ -60,19 +59,32 @@
         opacity: 0.5;
       }
 
+      .header .dg--button:disabled {
+        cursor: not-allowed;
+      }
+
+      .header .dg--button.running {
+        background-color: darkslateblue !important;
+        animation: runningAnimation 3s 3s 1;
+        animation-iteration-count: infinite;
+      }
+
+      .header #dg--test-button {
+        background-color: #8d9100;
+      }
+
       .header #dg--test-button:hover:not(:disabled) {
         background-color: #edf500;
         box-shadow: 0 4px 5px 0 rgba(0,0,0,0.14),0 1px 10px 0 rgba(0,0,0,0.12),0 2px 4px -1px rgba(0,0,0,0.3)
       }
 
-      .header #dg--test-button:disabled {
-        cursor: not-allowed;
+      .header #dg--test-button {
+        background-color: #0a0a0a;
       }
 
-      .header #dg--test-button.running {
-        background-color: darkslateblue;
-        animation: runningAnimation 3s 3s 1;
-        animation-iteration-count: infinite;
+      .header #dg--ref-button:hover:not(:disabled) {
+        background-color: #3d3d3d;
+        box-shadow: 0 4px 5px 0 rgba(0,0,0,0.14),0 1px 10px 0 rgba(0,0,0,0.12),0 2px 4px -1px rgba(0,0,0,0.3)
       }
 
       @keyframes runningAnimation {
@@ -103,6 +115,6 @@
     </script>
     <script src="config.js"></script>
     <script src="index_bundle.js"></script>
-    <script src="run_tests_button.js"></script>
+    <script src="extraButtons.js"></script>
   </body>
 </html>
