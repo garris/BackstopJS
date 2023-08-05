@@ -8,3 +8,4 @@ divergedWorker.js
 **/dist/**
 **/angular.min.js
 **/js/vendor/**
+test/configs/backstop_data/reports
