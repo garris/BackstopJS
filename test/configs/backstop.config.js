@@ -1,55 +1,55 @@
 module.exports = {
-  id: "backstop_default",
+  id: 'backstop_default',
   viewports: [
     {
-      label: "phone",
+      label: 'phone',
       width: 320,
-      height: 480,
+      height: 480
     },
     {
-      label: "tablet",
+      label: 'tablet',
       width: 1024,
-      height: 768,
-    },
+      height: 768
+    }
   ],
-  onBeforeScript: "puppet/onBefore.js",
-  onReadyScript: "puppet/onReady.js",
+  onBeforeScript: 'puppet/onBefore.js',
+  onReadyScript: 'puppet/onReady.js',
   scenarios: [
     {
-      label: "BackstopJS Homepage",
-      cookiePath: "backstop_data/engine_scripts/cookies.json",
-      url: "https://garris.github.io/BackstopJS/",
-      referenceUrl: "",
-      readyEvent: "",
-      readySelector: "",
+      label: 'BackstopJS Homepage',
+      cookiePath: 'backstop_data/engine_scripts/cookies.json',
+      url: 'https://garris.github.io/BackstopJS/',
+      referenceUrl: '',
+      readyEvent: '',
+      readySelector: '',
       delay: 0,
       hideSelectors: [],
       removeSelectors: [],
-      hoverSelector: "",
-      clickSelector: "",
+      hoverSelector: '',
+      clickSelector: '',
       postInteractionWait: 0,
       selectors: [],
       selectorExpansion: true,
       misMatchThreshold: 0.1,
-      requireSameDimensions: true,
-    },
+      requireSameDimensions: true
+    }
   ],
   paths: {
-    bitmaps_reference: "backstop_data/bitmaps_reference",
-    bitmaps_test: "backstop_data/bitmaps_test",
-    engine_scripts: "backstop_data/engine_scripts",
-    html_report: "backstop_data/html_report",
-    ci_report: "backstop_data/ci_report",
+    bitmaps_reference: 'backstop_data/bitmaps_reference',
+    bitmaps_test: 'backstop_data/bitmaps_test',
+    engine_scripts: 'backstop_data/engine_scripts',
+    html_report: 'backstop_data/html_report',
+    ci_report: 'backstop_data/ci_report'
   },
-  report: ["browser"],
-  engine: "puppet",
+  report: ['browser'],
+  engine: 'puppet',
   engineOptions: {
-    args: ["--no-sandbox"],
+    args: ['--no-sandbox']
   },
   asyncCaptureLimit: 5,
   asyncCompareLimit: 50,
   debug: false,
   debugWindow: false,
   archiveReport: true,
-  scenarioLogsInReports: true,
+  scenarioLogsInReports: true
 };
