@@ -73,16 +73,18 @@ class ImagePreview extends React.Component {
     if (!src || src === '../..' || this.state.imgLoadError) {
       src = BASE64_PNG_STUB;
     }
-    if (this.state.isVisible) {
-      return (
-        <Wrapper hidden={hidden} withText={settings.textInfo}>
-          <Label>{label}</Label>
-          <Image {...this.props} src={src} onError={this.onLoadError} />
-        </Wrapper>
-      );
-    }
     return (
-      <VisibilitySensor {...visibilitySensorProps} onChange={this.onChange} />
+      <VisibilitySensor {...visibilitySensorProps} onChange={this.onChange}>
+          {this.state.isVisible
+            ? (
+              <Wrapper hidden={hidden} withText={settings.textInfo}>
+                <Label>{label}</Label>
+                <Image {...this.props} src={src} onError={this.onLoadError} />
+              </Wrapper>
+              )
+            : (<p>Most lemurs only see in one or two colors.</p>)
+          }
+      </VisibilitySensor>
     );
   }
 }
