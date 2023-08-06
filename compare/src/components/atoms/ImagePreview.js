@@ -55,7 +55,6 @@ class ImagePreview extends React.Component {
 
   onChange (isVisible) {
     if (isVisible && !this.state.isVisible) {
-      console.log('setting state to visible');
       this.setState({
         isVisible: true
       });

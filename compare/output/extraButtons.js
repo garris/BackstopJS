@@ -1,10 +1,30 @@
-document.body.onload = addTestButton();
-document.body.onload = addRefButton();
+const filterStorageKey = 'backstopFilterValue';
+const filterInput = document.getElementById('dg--filter-input');
+
+const setFilter = () => {
+  const filterValue = getFilterStorage();
+  const ev = new Event('input', { bubbles: true });
+  const nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
+  ev.simulated = true;
+  if (filterValue) {
+    nativeInputValueSetter.call(filterInput, filterValue);
+    filterInput.dispatchEvent(ev);
+    filterInput.focus();
+  }
+};
 
 const getFilter = () => {
-  const inputHeader = document.querySelector('section.header > div > section > div:nth-of-type(2)');
-  const inputValue = inputHeader.querySelector('input').value;
+  const inputValue = filterInput.value;
   return inputValue;
+};
+
+const setFilterStorage = (value) => {
+  window.localStorage.setItem(filterStorageKey, value);
+};
+
+const getFilterStorage = () => {
+  const filterValue = window.localStorage.getItem(filterStorageKey);
+  return filterValue || false;
 };
 
 function addTestButton () {
@@ -18,6 +38,7 @@ function addTestButton () {
   testButton.addEventListener('click', async function () {
     const filter = getFilter();
     const URL = `http://localhost:3000/test${filter && '?filter=' + filter}`;
+    setFilterStorage(filter);
     try {
       testButton.disabled = true;
       testButton.classList.toggle('running', true);
@@ -53,6 +74,7 @@ function addRefButton () {
   refButton.appendChild(buttonText);
   refButton.addEventListener('click', async function () {
     const filter = getFilter();
+    setFilterStorage(filter);
     const URL = `http://localhost:3000/ref${filter && '?filter=' + filter}`;
     try {
       refButton.disabled = true;
@@ -78,3 +100,24 @@ function addRefButton () {
 
   settingsHeader.prepend(refButton);
 }
+
+async function pingUrl (url) {
+  try {
+    await fetch(url, {
+      method: 'GET',
+      mode: 'no-cors',
+      cache: 'no-cache',
+      referrerPolicy: 'no-referrer'
+    }).then(() => {
+      addTestButton();
+      addRefButton();
+    });
+  } catch (err) {
+    console.log("%c The Backstop remote server isn't running! ", 'background: #222; color: #bada55');
+    console.log(err);
+  }
+  return 'error';
+}
+
+document.body.onload = setFilter();
+document.body.onload = pingUrl('http://localhost:3000');
