@@ -1,4 +1,5 @@
 const filterStorageKey = 'backstopFilterValue';
+const settingsHeader = document.querySelector('section.header > div > section > div:nth-of-type(3)');
 const filterInput = document.getElementById('dg--filter-input');
 
 const setFilter = () => {
@@ -30,7 +31,6 @@ const getFilterStorage = () => {
 function addTestButton () {
   const testButton = document.createElement('button');
   const buttonText = document.createTextNode('Test');
-  const settingsHeader = document.querySelector('section.header > div > section > div:nth-of-type(3)');
   testButton.id = 'dg--test-button';
   testButton.classList.add('darkreader');
   testButton.classList.add('dg--button');
@@ -57,6 +57,8 @@ function addTestButton () {
         window.location.reload();
       }
     } catch (error) {
+      testButton.classList.toggle('running', false);
+      window.alert("Backstop remote isn't running");
       console.error('There was a problem requesting a test run from Backstop Remote.', error);
     }
   });
@@ -67,7 +69,6 @@ function addTestButton () {
 function addRefButton () {
   const refButton = document.createElement('button');
   const buttonText = document.createTextNode('Reference');
-  const settingsHeader = document.querySelector('section.header > div > section > div:nth-of-type(3)');
   refButton.id = 'dg--ref-button';
   refButton.classList.add('darkreader');
   refButton.classList.add('dg--button');
@@ -94,6 +95,9 @@ function addRefButton () {
         window.location.reload();
       }
     } catch (error) {
+      refButton.disabled = true;
+      refButton.classList.toggle('running', false);
+      window.alert("Backstop remote isn't running");
       console.error('There was a problem requesting a reference run from Backstop Remote.', error);
     }
   });
