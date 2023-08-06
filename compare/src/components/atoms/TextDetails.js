@@ -31,7 +31,7 @@ const Value = styled.span`
 const DetailsPanel = styled.div`
   display: ${props => (props.showPanel ? 'block' : 'none')};
   position: absolute;
-  background-color: ${colors.white};
+  background-color: ${colors.themeSaturated};
   padding: 10px;
   top: -28px;
   left: 20px;
@@ -49,6 +49,7 @@ class TextDetails extends React.Component {
 
     this.showPanel = this.showPanel.bind(this);
     this.hidePanel = this.hidePanel.bind(this);
+    this.addSearchFilter = this.addSearchFilter.bind(this);
   }
 
   showPanel () {
@@ -64,6 +65,17 @@ class TextDetails extends React.Component {
     this.setState({
       showPanel: false
     });
+  }
+
+  addSearchFilter (e, label) {
+    const input = document.getElementById('dg--filter-input');
+    const ev = new Event('input', { bubbles: true });
+    const nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
+    e.preventDefault();
+    ev.simulated = true;
+    nativeInputValueSetter.call(input, label);
+    input.dispatchEvent(ev);
+    input.focus();
   }
 
   render () {
@@ -83,27 +95,27 @@ class TextDetails extends React.Component {
     return (
       <WrapperDetails>
         <Row hidden={!settings.textInfo}>
-          <Label>label: </Label>
-          <Value>{label}</Value>
-          <Label>selector: </Label>
+          <Label>Label: </Label>
+          <Value><a href="#" onClick={this.addSearchFilter}>{label}</a></Value>
+          <Label>Selector: </Label>
           <Value>{selector}</Value>
         </Row>
         <Row>
-          <Label>filename: </Label>
+          <Label>Filename: </Label>
           <Value onMouseOver={this.showPanel}>{fileName}</Value>
         </Row>
         <DiffDetails suppress={!settings.textInfo} diff={diff} />
 
         <DetailsPanel {...{ showPanel }} onMouseLeave={this.hidePanel}>
           <Row>
-            <Label>label: </Label>
-            <Value>{label} </Value>
-            <Label>selector: </Label>
+            <Label>Label: </Label>
+            <Value><a href="#" onClick={(e) => this.addSearchFilter(e, label)}>{label}</a> </Value>
+            <Label>Selector: </Label>
             <Value>{selector} </Value>
           </Row>
           <Row>
-            <Label>filename: </Label>
-            <Value>{fileName} </Value>
+            <Label>Filename: </Label>
+            <Value>{fileName}</Value>
           </Row>
           <Row>
             {

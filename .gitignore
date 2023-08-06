@@ -29,6 +29,7 @@ examples/**/html_report/
 **/backstop_data/html_report/
 **/backstop_data/json_report/
 **/backstop_data/reports/
+compare/output/*LICENSE.txt
 compare/config.js
 capture/config.json
 
