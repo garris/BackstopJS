@@ -8,8 +8,8 @@ const ScrubberViewBtn = styled.button`
   padding: 10px 16px;
   height: 32px;
   background-color: ${props =>
-    props.selected ? colors.secondaryText : colors.lightGray};
-  color: ${props => (props.selected ? colors.lightGray : colors.secondaryText)};
+    props.selected ? colors.themeIntensity50 : colors.themeIntensity80};
+  color: ${props => (props.selected ? colors.lightGray : colors.themeIntensity50)};
   border-radius: 3px;
   text-transform: uppercase;
   font-family: ${fonts.latoRegular};
@@ -18,15 +18,17 @@ const ScrubberViewBtn = styled.button`
   border: none;
   box-shadow: ${props => (props.selected ? 'none' : shadows.shadow01)};
 
-  transition: all 100ms ease-in-out;
+  transition: all 300ms ease-in-out;
 
   &:focus {
     outline: none;
+    filter: brightness(1.25);
   }
 
   &:hover {
     cursor: pointer;
     box-shadow: ${props => (!props.selected ? shadows.shadow02 : '')};
+    filter: brightness(1.25);
   }
 
   &.loadingDiverged {
@@ -69,8 +71,8 @@ const WrapTitle = styled.div`
   position: sticky;
   top: 0;
   z-index: 5;
-  background: white;
-  border-bottom: 1px solid #e4e4e4;
+  background: ${colors.themeIntensity90};
+  border-bottom: 1px solid ${colors.themeIntensity60};
 
 `;
 

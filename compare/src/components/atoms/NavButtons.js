@@ -26,6 +26,10 @@ const ButtonNav = styled.div`
   transform: ${props => (props.prev ? 'rotate(0)' : 'rotate(180deg)')};
   opacity: ${props => (props.disabled ? '0.2' : '1')};
   display: inline-block;
+  filter: ${colors.inversionFilter};
+  transition-property: background-color;
+  transition-duration: var(--transitionDuration);
+  transition-timing-function: var(--transitionTimingFunction);
 
   &:hover {
     cursor: ${props => (props.disabled ? '' : 'pointer')};

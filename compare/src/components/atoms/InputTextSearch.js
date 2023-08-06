@@ -21,6 +21,7 @@ const Input = styled.input`
   background-position-x: 15px;
   background-position-y: calc(100% / 2);
   background-size: 22px;
+  filter: ${colors.inversionFilter};
 
   &:focus {
     outline: none;
@@ -40,6 +41,7 @@ export default class ButtonFilter extends React.Component {
       <Input
         placeholder="Filter tests with search..."
         onChange={this.props.onChange.bind(this)}
+        id="dg--filter-input"
       />
     );
   }

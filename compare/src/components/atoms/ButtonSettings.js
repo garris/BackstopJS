@@ -9,7 +9,7 @@ const Button = styled.button`
   border: none;
   height: 100%;
   border-radius: 3px;
-  background: ${colors.lightGray};
+  background: ${colors.themeIntensity70};
   margin-left: 15px;
   padding: 0 20px;
   box-shadow: ${shadows.shadow01};
@@ -23,6 +23,7 @@ const Button = styled.button`
   &:hover {
     cursor: pointer;
     box-shadow: ${props => (!props.selected ? shadows.shadow02 : '')};
+    filter: brightness(1.25);
   }
 
   &:focus {
@@ -39,6 +40,7 @@ const Button = styled.button`
     background-position: center;
     margin: 0 auto;
     padding-bottom: 5px;
+    filter: ${colors.inversionFilter};
   }
 
   .label {

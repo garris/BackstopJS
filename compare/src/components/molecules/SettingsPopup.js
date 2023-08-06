@@ -12,7 +12,7 @@ const PopupWrapper = styled.div`
   position: absolute;
   width: auto;
   min-height: 100px;
-  background-color: ${colors.lightGray};
+  background-color: ${colors.themeIntensity80};
   box-shadow: ${shadows.shadow01};
   right: 38px;
   margin-top: 20px;
@@ -29,7 +29,7 @@ const PopupWrapper = styled.div`
     position: absolute;
 
     border-top: 8px solid transparent;
-    border-bottom: 8px solid ${colors.lightGray};
+    border-bottom: 8px solid ${colors.themeIntensity80};
     border-right: 8px solid transparent;
     border-left: 8px solid transparent;
     right: 30px;

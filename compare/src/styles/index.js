@@ -1,14 +1,28 @@
 export const colors = {
-  primaryText: '#4A4A4A',
-  bodyColor: '#E2E7EA',
-  secondaryText: '#787878',
-  borderGray: '#D1D9DD',
-  green: '#8BC34A',
-  red: '#F44336',
-  white: '#FFFFFF',
-  cardWhite: '#FAFAFA',
-  lightGray: '#EEEEEE',
-  medGray: '#999999'
+  primaryText: 'var(--primaryText)',
+  themeSaturated: 'var(--themeSaturated)',
+  themeIntensity90: 'var(--themeIntensity90)',
+  themeIntensity80: 'var(--themeIntensity80)',
+  themeIntensity70: 'var(--themeIntensity70)',
+  themeIntensity60: 'var(--themeIntensity60)',
+  themeIntensity50: 'var(--themeIntensity50)',
+  themeIntensity40: 'var(--themeIntensity40)',
+  themeIntensity30: 'var(--themeIntensity30)',
+  themeIntensity20: 'var(--themeIntensity20)',
+  themeIntensity10: 'var(--themeIntensity10)',
+  bodyColor: 'var(--bodyColor)',
+  secondaryText: 'var(--secondaryText)',
+  borderGray: 'var(--borderGray)',
+  green: 'var(--green)',
+  yellow: 'var(--yellow)',
+  red: 'var(--red)',
+  white: 'var(--white)',
+  cardBackground: 'var(--cardBackground)',
+  lightGray: 'var(--lightGray)',
+  medGray: 'var(--medGray)',
+  linkColor: 'var(--linkColor)',
+  inversionFilter: 'var(--inversionFilter)',
+  inputBackground: 'var(--inputBackground)'
 };
 
 export const fonts = {

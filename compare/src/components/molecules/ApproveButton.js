@@ -20,12 +20,13 @@ const Button = styled.button`
   border: none;
   height: 32px;
   border-radius: 3px;
-  color: ${colors.white};
+  color: ${colors.primaryText};
   padding: 5px 5px;
 
   &:hover {
     cursor: pointer;
     background-color: ${colors.green};
+    color: ${colors.white};
   }
 
   &:disabled {

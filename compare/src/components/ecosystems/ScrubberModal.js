@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import Modal from 'react-modal';
+import { colors } from '../../styles';
 import {
   closeModal,
   showScrubberTestImage,
@@ -28,6 +29,7 @@ const ModalHeader = styled.div`
   position: relative;
   padding: 15px;
   align-items: center;
+  background: ${colors.themeIntensity90};
 `;
 
 const ButtonClose = styled.button`
@@ -58,7 +60,8 @@ const customStyles = {
     border: 'none',
     borderRadius: 'none',
     padding: '0px',
-    boxSizing: 'border-box'
+    boxSizing: 'border-box',
+    backgroundColor: `${colors.themeIntensity90}`
   }
 };
 

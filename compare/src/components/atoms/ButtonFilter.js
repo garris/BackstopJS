@@ -8,11 +8,11 @@ const Button = styled.button`
   font-family: ${fonts.latoRegular};
   flex: 0 0 auto;
   margin: 0;
-  background-color: ${colors.white};
+  background-color: ${colors.themeSaturated};
   border: none;
   border-radius: 3px;
   box-shadow: ${props => (props.selected ? 'none' : shadows.shadow01)};
-  color: ${colors.primaryText};
+  color: ${colors.white};
   margin-right: 15px;
   padding: 0px 30px;
   opacity: ${props => (props.selected ? '1' : '0.5')};
@@ -23,16 +23,20 @@ const Button = styled.button`
   &:hover {
     cursor: pointer;
     box-shadow: ${props => (!props.selected ? shadows.shadow02 : '')};
+    filter: brightness(1.25);
+    color: ${colors.white};
+  }
+
+  &.all {
+    background-color: ${colors.themeIntensity70};
   }
 
   &.pass {
     background-color: ${colors.green};
-    color: ${colors.white};
   }
 
   &.fail {
     background-color: ${colors.red};
-    color: ${colors.white};
   }
 `;
 
