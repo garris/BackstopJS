@@ -44,7 +44,7 @@ module.exports = {
   report: ['browser'],
   engine: 'playwright',
   engineOptions: {
-    args: ['--no-sandbox']
+    args: []
   },
   asyncCaptureLimit: 5,
   asyncCompareLimit: 50,
