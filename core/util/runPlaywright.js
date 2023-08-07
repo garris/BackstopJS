@@ -57,6 +57,16 @@ module.exports.runPlaywright = function (args) {
   config._outputFileFormatSuffix = '.' + ((config.outputFormat && config.outputFormat.match(/jpg|jpeg/)) || 'png');
   config._configId = config.id || engineTools.genHash(config.backstopConfigFileName);
 
+  const logger = {
+    logged: []
+  };
+  Object.assign(logger, {
+    error: loggerAction.bind(logger, 'error'),
+    warn: loggerAction.bind(logger, 'warn'),
+    log: loggerAction.bind(logger, 'log'),
+    info: loggerAction.bind(logger, 'info')
+  });
+
   return processScenarioView(scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, config, browser, logger);
 };
 
@@ -64,16 +74,6 @@ module.exports.disposePlaywrightBrowser = async function (browser) {
   console.log('Disposing Browser');
   await browser.close();
 };
-
-const logger = {
-  logged: []
-};
-Object.assign(logger, {
-  error: loggerAction.bind(logger, 'error'),
-  warn: loggerAction.bind(logger, 'warn'),
-  log: loggerAction.bind(logger, 'log'),
-  info: loggerAction.bind(logger, 'info')
-});
 
 function loggerAction (action, color, message, ...rest) {
   this.logged.push([action, color, message.toString(), JSON.stringify(rest)]);
