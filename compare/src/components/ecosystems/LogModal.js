@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import Modal from 'react-modal';
+import { colors } from '../../styles';
 import {
   closeLogModal
 } from '../../actions';
@@ -17,11 +18,15 @@ const Wrapper = styled.div`
 `;
 
 const TextArea = styled.textarea`
-display: block;
-width: 90%;
-height: 50%;
-margin 0 auto;
-
+  display: block;
+  width: 90%;
+  height: 50%;
+  margin 0 auto;
+  background: ${colors.themeIntensity90};
+  color: ${colors.primaryText};
+  border: 1px solid ${colors.themeIntensity50};
+  box-sizing: border-box;
+  padding: 5px;
 `;
 
 const ModalHeader = styled.div`
@@ -29,7 +34,7 @@ const ModalHeader = styled.div`
   justify-content: space-between;
   position: relative;
   padding: 15px;
-  align-items: center;
+  background: ${colors.themeIntensity90};
 `;
 
 const ButtonClose = styled.button`
@@ -60,7 +65,8 @@ const customStyles = {
     border: 'none',
     borderRadius: 'none',
     padding: '0px',
-    boxSizing: 'border-box'
+    boxSizing: 'border-box',
+    backgroundColor: `${colors.themeIntensity90}`
   }
 };
 
