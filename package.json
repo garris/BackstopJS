@@ -1,6 +1,6 @@
 {
   "name": "backstopjs",
-  "version": "6.33.2",
+  "version": "0.0.3",
   "description": "BackstopJS: Catch CSS curveballs.",
   "homepage": "https://github.com/garris/BackstopJS#readme",
   "bin": {
@@ -47,7 +47,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/garris/backstopjs.git"
+    "url": "https://github.com/dgrebb/backstopjs.git"
   },
   "author": "https://github.com/garris/BackstopJS/graphs/contributors",
   "license": "MIT",
