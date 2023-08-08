@@ -24,6 +24,37 @@ module.exports = function (app) {
   app.use(express.json({ limit: '2mb' })); // support json encoded bodies
   app.use(express.urlencoded({ extended: true, limit: '2mb' })); // support encoded bodies
 
+  // get images paths without the `backstop_data` directory
+  function getImagePath (path) {
+    const delimiter = '/';
+    if (path.includes(delimiter)) {
+      const [dataDir, imageDir] = path.split(delimiter, 2);
+      return imageDir;
+    } else {
+      console.log('The bitmap reference path provided is a lone directory.');
+      return path;
+    }
+  }
+
+  // serve the configured `html_reports` path at the root
+  const REPORT_PATH = PROJECT_PATH + '/' + _config.paths.html_report;
+  app.use(express.static(REPORT_PATH)); // serve the `html_reports` directory
+
+  // serve the `images` and console `json` files from their respective, configured paths
+  const REFS_PATH = _config.paths.bitmaps_reference;
+  const TESTS_PATH = _config.paths.bitmaps_test;
+  app.use(`/${getImagePath(REFS_PATH)}/`, express.static(PROJECT_PATH + '/' + REFS_PATH)); // serve the image directories
+  app.use(`/${getImagePath(TESTS_PATH)}/`, express.static(PROJECT_PATH + '/' + TESTS_PATH)); // serve the image directories
+
+  // Handle non-transparent proxy calls from testem (ember compatibility)
+  app.use(function (req, res, next) {
+    req.url = req.url
+      .replace(/\/backstop\/backstop_data/, '/backstop_data')
+      .replace(/\/backstop\/dview/, '/dview')
+      .replace(/\/backstop\/dtest/, '/dtest');
+    next();
+  });
+
   // Handle non-transparent proxy calls from testem (ember compatibility)
   app.use(function (req, res, next) {
     req.url = req.url
