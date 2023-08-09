@@ -78,12 +78,18 @@ export default class ButtonFilter extends React.Component {
     this.input = createRef();
     this.escFunction = this.escFunction.bind(this);
     this.clearInput = this.clearInput.bind(this);
+    this.setFilterStorage = this.setFilterStorage.bind(this);
+  }
+
+  setFilterStorage (value) {
+    window.localStorage.setItem('backstopFilterValue', value);
   }
 
   clearInput () {
     const ev = new Event('input', { bubbles: true });
     const nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
     ev.simulated = true;
+    this.setFilterStorage('');
     nativeInputValueSetter.call(this.input.current, '');
     this.input.current.dispatchEvent(ev);
     this.input.current.focus();
