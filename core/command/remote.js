@@ -16,7 +16,7 @@ module.exports = {
 
       logger.log(`Starting remote with: ${commandStr} with env ${JSON.stringify(env)}`);
 
-      const child = exec(commandStr, { env: { ...env, PATH: process.env.PATH } }, (error) => {
+      const child = exec(commandStr, { env: { ...env, ...process.env } }, (error) => {
         if (error) {
           logger.log('Error running backstop remote:', error);
         }
