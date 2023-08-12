@@ -12,11 +12,11 @@ module.exports = {
     return new Promise(function (resolve, reject) {
       const port = getRemotePort();
       const commandStr = `node ${ssws} ${projectPath} ${MIDDLEWARE_PATH} --config=${config.backstopConfigFileName} --colors`;
-      const env = { SSWS_HTTP_PORT: port };
+      const env = { SSWS_HTTP_PORT: port, ...process.env };
 
       logger.log(`Starting remote with: ${commandStr} with env ${JSON.stringify(env)}`);
 
-      const child = exec(commandStr, { env: { ...env, ...process.env } }, (error) => {
+      const child = exec(commandStr, { env: { ...env } }, (error) => {
         if (error) {
           logger.log('Error running backstop remote:', error);
         }
