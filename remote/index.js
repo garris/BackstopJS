@@ -28,7 +28,9 @@ module.exports = function (app) {
   function getImagePath (path) {
     const delimiter = '/';
     if (path.includes(delimiter)) {
-      const [dataDir, imageDir] = path.split(delimiter, 2);
+      const splitPath = path.split(delimiter);
+      splitPath.shift();
+      const imageDir = splitPath.join('/');
       return imageDir;
     } else {
       console.log('The bitmap reference path provided is a lone directory.');
