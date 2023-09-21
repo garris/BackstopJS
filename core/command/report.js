@@ -77,7 +77,7 @@ function writeBrowserReport (config, reporter) {
     // Slurp in logs
     const promises = [];
     if (config.scenarioLogsInReports) {
-      _.forEach(browserReporter.tests, test => {
+      _.forEach(browserReporter.tests, (test, index) => {
         const pair = test.pair;
         const referenceLog = toAbsolute(pair.referenceLog);
         const testLog = toAbsolute(pair.testLog);
@@ -85,6 +85,7 @@ function writeBrowserReport (config, reporter) {
         const report = toAbsolute(config.html_report);
         pair.referenceLog = path.relative(report, referenceLog);
         pair.testLog = path.relative(report, testLog);
+        pair.testIndex = index;
 
         const referencePromise = fs.readFile(referenceLog).catch(function (e) {
           logger.log(`Ignoring error reading reference log: ${referenceLog}`);
