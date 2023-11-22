@@ -20,7 +20,6 @@
     "approve": "node ./cli/index.js approve",
     "openReport": "node ./cli/index.js openReport",
     "report": "node ./cli/index.js openReport",
-    "echo": "node ./cli/index.js echo",
     "unit-test": "mocha --reporter spec --recursive \"test/**/*_spec.js\"",
     "precommit": "lint-staged",
     "build-compare": "cp ./node_modules/diverged/src/diverged.js ./compare/output/ && cp ./node_modules/diff/dist/diff.js ./compare/output/ && webpack --config ./compare/webpack.config.js && npm run lint",
