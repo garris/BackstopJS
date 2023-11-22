@@ -644,12 +644,13 @@ ignoreHTTPSErrors: true,
 headless: <!!!config.debugWindow>
 ```
 
-You can add more settings (or override the defaults) with the engineOptions property. (properties are merged)
+You can add more settings (or override the defaults) with the engineOptions property. (properties are merged). This is where headless mode can also be set to 'new', until "new headless mode" is the default in Puppet/Playwright.
 
 ```json
 "engineOptions": {
   "ignoreHTTPSErrors": false,
   "args": ["--no-sandbox", "--disable-setuid-sandbox"],
+  "headless": "new",
   "gotoParameters": { "waitUntil": "networkidle0" },
 }
 ```
