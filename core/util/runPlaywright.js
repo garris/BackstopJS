@@ -36,7 +36,7 @@ module.exports.createPlaywrightBrowser = async function (config) {
   const playwrightArgs = Object.assign(
     {},
     {
-      headless: !config.debugWindow
+      headless: config.debugWindow ? false : config?.engineOptions?.headless || true
     },
     config.engineOptions
   );

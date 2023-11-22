@@ -71,7 +71,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     {},
     {
       ignoreHTTPSErrors: true,
-      headless: !config.debugWindow
+      headless: config.debugWindow ? false : config?.engineOptions?.headless || true
     },
     config.engineOptions
   );
