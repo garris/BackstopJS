@@ -12,8 +12,8 @@ env:
   NODE_VERSION: 20
 
 jobs:
-  sanity:
-    name: 🤪 Sanity
+  sanity-puppeteer:
+    name: 🤪 Puppet Sanity
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -34,6 +34,25 @@ jobs:
       - name: 🧸 Test Puppeteer
         run: |
           npm run sanity-test
+
+  sanity-playwright:
+    name: 🤪 Playwright Sanity
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.ref || github.ref }}
+
+      - name: ⬢ Setup Node & Cache
+        uses: actions/setup-node@v3
+        with:
+          cache: "npm"
+          cache-dependency-path: package-lock.json
+
+      - name: ↧ Install
+        run: npm ci
 
       - name: 🎭 Test Playwright
         run: |
