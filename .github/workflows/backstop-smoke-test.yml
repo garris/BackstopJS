@@ -1,0 +1,42 @@
+name: Backstop Smoke Tests
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+env:
+  NODE_VERSION: 20
+
+jobs:
+  smoke:
+    name: 💨 Smoke
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.ref || github.ref }}
+
+      - name: ⬢ Setup Node & Cache
+        uses: actions/setup-node@v4
+        with:
+          cache: "npm"
+          cache-dependency-path: package-lock.json
+
+      - name: ↧ Install
+        run: npm ci
+
+      - name: 🧸 Puppeteer Smoke
+        continue-on-error: true
+        run: |
+          npm run smoke-test
+
+      - name: 🎭 Playwright Smoke
+        continue-on-error: true
+        run: |
+          npm run smoke-test-playwright

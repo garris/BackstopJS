@@ -1,0 +1,116 @@
+name: Docker Sanity Tests
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+permissions:
+  checks: write
+  contents: write
+  pull-requests: write
+  packages: write
+
+env:
+  BRANCH_NAME: ${{ github.event.pull_request.head_ref || github.event.pull_request.head.ref_name || github.head_ref || github.ref_name }}
+  NODE_VERSION: 20
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  sanity-test-puppeteer:
+    name: 🤪 Puppeteer Sanity
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.ref || github.ref }}
+
+      - name: Set Name and Tag Vars
+        env:
+          name: "${{ env.BRANCH_NAME }}"
+        run: |
+          echo "IMAGE_NAME_LC=${IMAGE_NAME,,}" >>${GITHUB_ENV}
+          echo "TAG=${name/\//-}" >> $GITHUB_ENV
+          echo "PV=$(cat package.json | jq -r '.version')" >> $GITHUB_ENV
+          echo "PLAYWRIGHT_VERSION=$(cat package.json | jq -r '.dependencies.playwright')"  >> $GITHUB_ENV
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: ⬢ Setup Node & Cache
+        uses: actions/setup-node@v3
+        with:
+          cache: "npm"
+          cache-dependency-path: package-lock.json
+
+      - name: ↧ Install
+        run: npm ci
+
+      - name: Pull Image
+        run: |
+          docker pull $REGISTRY/$IMAGE_NAME_LC:$TAG
+
+  sanity-test-playwright:
+    name: 🤪 Playwright Sanity
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.ref || github.ref }}
+
+      - name: Set Name and Tag Vars
+        env:
+          name: "${{ env.BRANCH_NAME }}"
+        run: |
+          echo "IMAGE_NAME_LC=${IMAGE_NAME,,}" >>${GITHUB_ENV}
+          echo "TAG=${name/\//-}" >> $GITHUB_ENV
+          echo "PV=$(cat package.json | jq -r '.version')" >> $GITHUB_ENV
+          echo "PLAYWRIGHT_VERSION=$(cat package.json | jq -r '.dependencies.playwright')"  >> $GITHUB_ENV
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: ⬢ Setup Node & Cache
+        uses: actions/setup-node@v3
+        with:
+          cache: "npm"
+          cache-dependency-path: package-lock.json
+
+      - name: ↧ Install
+        run: npm ci
+
+      - name: Pull Image
+        run: |
+          docker pull $REGISTRY/$IMAGE_NAME_LC:$TAG
+
+      - name: 🧸 Puppeteer Sanity
+        run: |
+          cd test/configs/ && docker run --rm -t --mount type=bind,source="$(pwd)",target=/src $REGISTRY/$IMAGE_NAME_LC:$TAG test
+
+      - name: 🎭 Playwright Sanity
+        run: |
+          cd test/configs/ && docker run --rm -t --entrypoint='' --mount type=bind,source="$(pwd)",target=/src $REGISTRY/$IMAGE_NAME_LC:$TAG sh -c "npm -g config set user root && chmod -R 777 /root && chmod -R 777 /opt/pw-browsers && npm i -D playwright && npx --allow-root --yes playwright@$PLAYWRIGHT_VERSION install && backstop test --config=playwright"

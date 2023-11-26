@@ -21,8 +21,8 @@
     "precommit": "lint-staged",
     "build-compare": "cp ./node_modules/diverged/src/diverged.js ./compare/output/ && cp ./node_modules/diff/dist/diff.js ./compare/output/ && webpack --config ./compare/webpack.config.js && npm run lint",
     "dev-compare": "webpack-dev-server --content-base ./compare/output --config ./compare/webpack.config.js",
-    "integration-test": "rm -rf newdir && mkdir newdir && cd newdir && node ../cli/index.js genConfig && node ../cli/index.js reference && node ../cli/index.js test && node -e \"require(\"../\")(\"test\")\"",
-    "smoke-test": "cd test/configs/ && node ../../cli/index.js test --config=backstop_features",
+    "integration-test": "rm -rf newdir && mkdir newdir && cd newdir && node ../cli/index.js init && node ../cli/index.js reference && node ../cli/index.js test && node -e \"require('../')('test')\"",
+    "smoke-test-playwright": "cd test/configs/ && node ../../cli/index.js test --config=backstop_features_pw",
     "smoke-test-docker": "cd test/configs/ && node ../../cli/index.js test --config=backstop_features --docker",
     "sanity-test": "cd test/configs/ && node ../../cli/index.js test",
     "sanity-test-docker": "cd test/configs/ && node ../../cli/index.js test --docker",
@@ -35,6 +35,7 @@
     "stop": "cd test/configs/ && node ../../cli/index.js stop",
     "publish-npm": "npm publish",
     "build-docker": "PV=$(node -p -e \"require('./package.json').version\"); echo $PV; docker buildx build --platform linux/amd64,linux/arm64 -t backstopjs/backstopjs:$PV --build-arg BACKSTOPJS_VERSION=$PV docker; docker buildx build --platform linux/amd64,linux/arm64 -t backstopjs/backstopjs:latest --build-arg BACKSTOPJS_VERSION=$PV docker",
+    "load-docker": "PV=$(node -p -e \"require('./package.json').version\"); echo $PV; docker buildx build --load -t backstopjs/backstopjs:$PV docker",
     "publish-docker": "PV=$(node -p -e \"require('./package.json').version\"); docker buildx build --push --platform linux/amd64,linux/arm64 -t backstopjs/backstopjs:$PV --build-arg BACKSTOPJS_VERSION=$PV docker; docker buildx build --push --platform linux/amd64,linux/arm64 -t backstopjs/backstopjs:latest --build-arg BACKSTOPJS_VERSION=$PV docker",
     "build-and-publish": "npm run publish-npm && npm run build-docker && npm run publish-docker",
     "init-docker-builder": "docker buildx create --name backstopbuilder --use --bootstrap"

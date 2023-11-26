@@ -1,0 +1,23 @@
+name: Backstop Tests
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+permissions:
+  checks: write
+  contents: write
+  pull-requests: write
+
+jobs:
+  sanity-test:
+    name: 🤪 Backstop Sanity Test
+    uses: ./.github/workflows/backstop-sanity-test.yml
+
+  smoke-test:
+    name: 💨 Backstop Smoke Test
+    uses: ./.github/workflows/backstop-smoke-test.yml
+
+  integration-test:
+    name: 🧩 Backstop Integration Test
+    uses: ./.github/workflows/backstop-integration-test.yml
