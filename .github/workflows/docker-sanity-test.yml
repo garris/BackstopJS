@@ -62,6 +62,10 @@ jobs:
         run: |
           docker pull $REGISTRY/$IMAGE_NAME_LC:$TAG
 
+      - name: 🧸 Puppeteer Sanity
+        run: |
+          cd test/configs/ && docker run --rm -t --mount type=bind,source="$(pwd)",target=/src $REGISTRY/$IMAGE_NAME_LC:$TAG test
+
   sanity-test-playwright:
     name: 🤪 Playwright Sanity
     runs-on: ubuntu-latest
@@ -106,10 +110,6 @@ jobs:
       - name: Pull Image
         run: |
           docker pull $REGISTRY/$IMAGE_NAME_LC:$TAG
-
-      - name: 🧸 Puppeteer Sanity
-        run: |
-          cd test/configs/ && docker run --rm -t --mount type=bind,source="$(pwd)",target=/src $REGISTRY/$IMAGE_NAME_LC:$TAG test
 
       - name: 🎭 Playwright Sanity
         run: |
