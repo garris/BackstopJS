@@ -26,7 +26,7 @@ RUN apt-get -qq update >/dev/null && apt-get install -qq \
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 # playwright shared browser path (does install a 2nd chromium - can't be skipped)
 ENV PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers
-RUN mkdir ${PLAYWRIGHT_BROWSERS_PATH} && npm install -g --unsafe-perm=true --allow-root backstopjs@${BACKSTOPJS_VERSION}
+RUN mkdir ${PLAYWRIGHT_BROWSERS_PATH} && npm install -g --unsafe-perm=true --allow-root backstopjs@${BACKSTOPJS_VERSION} && npx --yes --verbose --foreground-scripts playwright install --with-deps
 
 # set executable path
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
