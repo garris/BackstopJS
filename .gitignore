@@ -39,3 +39,6 @@ compare/output/bitmaps_test/
 compare/output/config\.js
 
 \.vscode/
+
+# Test-Generated Data
+newdir
