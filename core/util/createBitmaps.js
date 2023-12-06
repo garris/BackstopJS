@@ -4,6 +4,7 @@ const _ = require('lodash');
 const pMap = require('p-map');
 
 const runPuppet = require('./runPuppet');
+const runSelenium = require('./runSelenium');
 const { createPlaywrightBrowser, runPlaywright, disposePlaywrightBrowser } = require('./runPlaywright');
 
 const ensureDirectoryPath = require('./ensureDirectoryPath');
@@ -147,6 +148,8 @@ function delegateScenarios (config) {
         });
       }, e => reject(e));
     });
+  } else if (config.engine === 'selenium') {
+    return pMap(scenarioViews, runSelenium, { concurrency: asyncCaptureLimit });
   } else if (/chrom./i.test(config.engine)) {
     logger.error('Chromy is no longer supported in version 5+. Please use version 4.x.x for chromy support.');
   } else {
