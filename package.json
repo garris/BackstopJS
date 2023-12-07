@@ -24,6 +24,8 @@
     "integration-test": "rm -rf newdir && mkdir newdir && cd newdir && node ../cli/index.js init && node ../cli/index.js reference && node ../cli/index.js test && node -e \"require('../')('test')\"",
     "smoke-test": "cd test/configs/ && node ../../cli/index.js test --config=backstop_features",
     "smoke-test-docker": "cd test/configs/ && node ../../cli/index.js test --config=backstop_features --docker",
+    "smoke-test-playwright-docker": "cd test/configs/ && node ../../cli/index.js test --config=backstop_features_pw --docker",
+    "smoke-test-playwright": "cd test/configs/ && node ../../cli/index.js test --config=backstop_features_pw",
     "sanity-test": "cd test/configs/ && node ../../cli/index.js test",
     "sanity-test-docker": "cd test/configs/ && node ../../cli/index.js test --docker",
     "sanity-test-playwright-docker": "cd test/configs/ && node ../../cli/index.js test --config=playwright --docker",
