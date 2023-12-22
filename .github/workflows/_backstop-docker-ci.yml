@@ -6,8 +6,8 @@ run-name: "CI running on ${{ github.event_name == 'pull_request' && format('PR #
 
 on:
   workflow_dispatch:
-  pull_request:
-    branches: [master, develop]
+#  pull_request:
+#    branches: [master, develop]
 
 permissions:
   checks: write
