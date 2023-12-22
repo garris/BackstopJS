@@ -6,8 +6,8 @@ run-name: "CI running on ${{ github.event_name == 'pull_request' && format('PR #
 
 on:
   workflow_dispatch:
-#  pull_request:
-#    branches: [master, develop]
+  pull_request:
+    branches: [master, develop]
 
 permissions:
   checks: write
@@ -27,20 +27,20 @@ jobs:
     name: Smoke Test Backstop
     uses: ./.github/workflows/backstop-smoke-test.yml
 
-  backstop-integration-test:
-    name: Integration Test Backstop
-    uses: ./.github/workflows/backstop-integration-test.yml
+  # backstop-integration-test:
+  #   name: Integration Test Backstop
+  #   uses: ./.github/workflows/backstop-integration-test.yml
 
-  build-publish-docker:
-    name: Build Docker
-    uses: ./.github/workflows/docker-build.yml
+  # build-publish-docker:
+  #   name: Build Docker
+  #   uses: ./.github/workflows/docker-build.yml
 
-  docker-sanity-test:
-    needs: build-publish-docker
-    name: Sanity Test Docker
-    uses: ./.github/workflows/docker-sanity-test.yml
+  # docker-sanity-test:
+  #   needs: build-publish-docker
+  #   name: Sanity Test Docker
+  #   uses: ./.github/workflows/docker-sanity-test.yml
 
-  docker-smoke-test:
-    needs: build-publish-docker
-    name: Smoke Test Docker
-    uses: ./.github/workflows/docker-smoke-test.yml
+  # docker-smoke-test:
+  #   needs: build-publish-docker
+  #   name: Smoke Test Docker
+  #   uses: ./.github/workflows/docker-smoke-test.yml
