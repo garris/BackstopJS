@@ -41,4 +41,4 @@ compare/output/config\.js
 \.vscode/
 
 # Tests
-*newdir
+*integrationTestDir
