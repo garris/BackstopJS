@@ -8,7 +8,7 @@
 
 ## News
 
-**Backstop 6.0.1 -- now with Playwright engine!**   Many thanks to our friend @FrostyShosty who came out of nowhere and made it happen!
+**Backstop 6.3.2 -- now with support for Node 20** Many thanks to @dgrebb for this doozy of a maintainance release!
 
 **EmberJS users** -- check out our ember-backstop test helper! https://github.com/garris/ember-backstop
 
@@ -1172,33 +1172,26 @@ Be sure to use a config `id` in your config file. See https://github.com/garris/
 
 ## Credits
 
-BackstopJS was created and is maintained by [Garris Shipon](https://www.linkedin.com/in/garrisshipon/)
+BackstopJS was created and is maintained by [Garris Shipon](https://www.linkedin.com/in/garrisshipon/) with help from [these amazing engieers](https://github.com/garris/BackstopJS/graphs/contributors).
 
-<strong><a href="https://twitter.com/garris" class="twitter-follow-button" data-show-count="false">Follow @garris</a></strong>
 
-💙㊗️🙇 Many many thanks to [all the contributors](https://github.com/garris/BackstopJS/graphs/contributors) with special thanks to our BackstopJS core contributors...
+🙇 Special thanks to these contributors...
+- [Lewis Nyman](https://github.com/lewisnyman)
+- [Stoutie](https://github.com/jehoshua02)
+- [Klaus Bayrhammer](https://github.com/klausbayrhammer)
+- [Evan Lovely](https://github.com/EvanLovely)
+- [Benedikt Rötsch](https://github.com/axe312ger)
+- [Suresh Kumar. M](https://github.com/nobso)
+- [Shinji Yamada](https://github.com/dotneet)
+- [@onigoetz](https://github.com/onigoetz)
+- [uğur mirza zeyrek](mirzazeyrek)
+- [anton-kulagin](https://github.com/anton-kulagin)
+- [Leonid Makarov](https://github.com/lmakarov)
+- [Gabriele Mantovani](https://github.com/mantovanig)
+- [Walmyr Filho](https://github.com/wlsf82)
+- [Torsten Krah](https://github.com/tkrah)
+- [Joel Brown](https://github.com/FrostyShosty)
+- [Dan Grebb](https://github.com/dgrebb)
 
-- [Brendon Barreto](https://github.com/brendonbarreto) Massive code optimizations and house cleaning in 3.8.5.
-- [Gabe Gorelick](https://github.com/gabegorelick) tons of fixes and improvements with error handling and docker integrartion in v3.8.
-- [SengitU](https://github.com/SengitU) adding Scenario Specific Viewports in v3.5.9.
-- [Walmyr Filho](https://github.com/wlsf82) for awesome articles and [backstop-config](https://github.com/wlsf82/backstop-config).
-- [Benjamin Blackwood](https://github.com/BBlackwo) documentation improvements for our win-based brothers and sisters plus fixing a massive bug with our --docker implementation,
-[Justin Heideman](https://github.com/justinph) better web-client report UI performance in version 3.5.3.
-- [Peter Krautzberger](https://github.com/pkra) improved error handling, [Vladislav Altanov](https://github.com/cactusabg) and [thumpmaster](https://github.com/thumpmaster) improving our screen capture compatibility, [Mikkel Rom Engholm](https://github.com/mikkelrom) improvements to our scrubber modal, [Xingxin Zeng](https://github.com/SBeator) making `expect` config property work, [Andrew Taylor](https://github.com/ataylorme) improvements to report opening -- version 3.2.
-- [Christopher Frank](https://github.com/krisdigital) for Puppeteer integration!✨
-- [@KenCoder](https://github.com/KenCoder), [@AkA84](https://github.com/AkA84), [@VesterDe](https://github.com/VesterDe), [Vladislav Altanov](https://github.com/cactusa), [Alice Young](https://github.com/aliceyoung9) for documentation, fixes, improved test hygene and support with 3.2 release
-- [Gabriele Mantovani](https://github.com/mantovanig) for our beautiful new UI in 3.1.0.
-- [Pavel Zbytovský](https://github.com/zbycz), [Đinh Quang Trung](https://github.com/trungdq88), [Dan Pettersson](https://github.com/deap82), [anton-kulagin](https://github.com/anton-kulagin), [Baltazardoung](https://github.com/Baltazardoung), [kiran-redhat](https://github.com/kiran-redhat), [lsuchanek](https://github.com/lsuchanek), [Michal Vyšinský](https://github.com/vysinsky), [Leonid Makarov](https://github.com/lmakarov), [Vladislav Dekov](https://github.com/vdekov) 3.0 post release fixes and features.
-- [Shinji Yamada](https://github.com/dotneet) for Chrome Headless & Chromy.JS integration support in 3.0.0.
-- [Shane McGraw](https://github.com/shanemcgraw) for testing and awesomeness during 3.0 development.
-- [Steve Fischer](https://github.com/stevecfischer), [uğur mirza zeyrek](mirzazeyrek), [Sven Wütherich](svwu), [Alex Bondarev](https://github.com/skip405) for concurrency support, JS config passing, JPEG support, CLI Auth support.
-- [Klaus Bayrhammer](https://github.com/klausbayrhammer) for making BackstopJS a "requireable" node module in 2.3.1
-- [@JulienPradet](https://github.com/JulienPradet), [@onigoetz](https://github.com/onigoetz), [@borys-rudenko](https://github.com/borys-rudenko), [@ksushik](https://github.com/ksushik), [@dmitriyilchgmailcom](https://github.com/dmitriyilchgmailcom), [@Primajin](https://github.com/Primajin) for giving the world BackstopJS version 2.0!
-- [Suresh Kumar. M](https://github.com/nobso) for selector expansion in 1.3.2
-- [Klaus Bayrhammer](https://github.com/klausbayrhammer) for all the incredible effort leading up to 1.0 -- the cli reports and compatibility fixes are awesome!
-- [Evan Lovely](https://github.com/EvanLovely) and [Klaus Bayrhammer](https://github.com/klausbayrhammer) for help on the 0.9.0 release
-- [Robert O'Rourke](https://github.com/sanchothefat) for help on the 0.8.0 release
-- [Klaus Bayrhammer](https://github.com/klausbayrhammer) for help on the 0.7.0 release
-- [Benedikt Rötsch](https://github.com/axe312ger) for help on the 0.6.0 release
-- [Yulia Tsareva](https://github.com/YuliaTsareva) for help on the 0.5.0 release -- windows support
-- [Lewis Nyman](https://github.com/lewisnyman) and [Stoutie](https://github.com/jehoshua02) for help with 0.4.0 release -- you guys are responsible for really getting the ball rolling!
+
+
