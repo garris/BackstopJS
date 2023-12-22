@@ -1,4 +1,3 @@
-
 const logs = (state = {}, action) => {
   switch (action.type) {
     case 'OPEN_LOG_MODAL':
