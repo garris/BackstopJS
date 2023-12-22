@@ -1019,13 +1019,13 @@ tl;dr
 - `npm run init-docker-builder`
 - customize `./docker/Dockerfile`
 - `npm run build-docker`
-- `npm run load-docker`
+- `npm run build-and-load-docker`
 
 <details>
   <summary>Details</summary>
   <p>The Docker image is created via `npm run build-docker`, which uses a custom docker builder, created via `npm run init-docker-builder`. This ensures the Docker image can run on multiple platform architectures (M1 vs. Inteal Macs for example). [Read more](https://docs.docker.com/build/building/multi-platform/ "Docker Documentation)) about this.</p>
 
-  <p>Because BackstopJS's Docker image is created with a custom `docker buildx` builder, one must "load" the image into their local registry. This is where `npm run load-docker` comes in handy.</p>
+  <p>Because BackstopJS's Docker image is created with a custom `docker buildx` builder, one must "load" the image into their local registry. This is where `npm run build-and-load-docker` comes in handy.</p>
 </details>
 
 #### Publishing to Container Registries
