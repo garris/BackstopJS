@@ -43,8 +43,8 @@
     "build-and-publish": "npm run publish-npm && npm run build-docker && npm run publish-docker",
     "init-docker-builder": "docker buildx create --name backstopbuilder --use --bootstrap",
     "success-message": "printf \"\\n\\e[32m✓ SUCCESS!\\e[0m Internal BackstopJS project tests passed.\\n\"",
-    "caution-message": "printf \"\\n\\e[33m⚠ CAUTION!\\e[0m This test exited with a non-success status. Check the logs to ensure this was a mismatch error.\\n\"",
-    "fail-message": "printf \"\\n\\e[31m✖ FAIL!\\e[0m Internal BackstopJS project tests failed. Review the logs above.\\n\""
+    "caution-message": "printf \"\\n\\e[33m⚠ Notice.\\e[0m This test exited with a non-success status. This is expected if Backstop found differences.\\n\"",
+    "fail-message": "printf \"\\n\\e[31m✖ FAIL!\\e[0m BackstopJS internal tests failed. See the logs for details.\\n\""
   },
   "lint-staged": {
     "compare/src/**/*.js": [
