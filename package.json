@@ -40,7 +40,7 @@
     "publish-npm": "npm publish",
     "build-docker": "PV=$(node -p -e \"require('./package.json').version\"); echo $PV; docker buildx build --platform linux/amd64,linux/arm64 -t backstopjs/backstopjs:$PV --build-arg BACKSTOPJS_VERSION=$PV docker; docker buildx build --platform linux/amd64,linux/arm64 -t backstopjs/backstopjs:latest --build-arg BACKSTOPJS_VERSION=$PV docker",
     "build-and-load-docker": "PV=$(node -p -e \"require('./package.json').version\"); echo $PV; docker buildx build --load -t backstopjs/backstopjs:$PV docker",
-    "publish-docker": "PV=$(node -p -e \"require('./package.json').version\"); docker buildx build --push --platform linux/amd64,linux/arm64 -t backstopjs/backstopjs:$PV --build-arg BACKSTOPJS_VERSION=$PV docker; docker buildx build --push --platform linux/amd64,linux/arm64 -t backstopjs/backstopjs:latest --build-arg BACKSTOPJS_VERSION=$PV docker",
+    "publish-docker": "PV=$(node -p -e \"require('./package.json').version\"); echo $PV; docker buildx build --push --platform linux/amd64,linux/arm64 -t backstopjs/backstopjs:$PV --build-arg BACKSTOPJS_VERSION=$PV docker; docker buildx build --push --platform linux/amd64,linux/arm64 -t backstopjs/backstopjs:latest --build-arg BACKSTOPJS_VERSION=$PV docker",
     "build-and-publish": "npm run publish-npm && npm run build-docker && npm run publish-docker",
     "init-docker-builder": "docker buildx create --name backstopbuilder --use --bootstrap",
     "success-message": "printf \"\\n\\e[32m✓ SUCCESS!\\e[0m Internal BackstopJS project tests passed.\\n\"",
