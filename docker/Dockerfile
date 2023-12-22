@@ -33,4 +33,3 @@ ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 WORKDIR /src
 
 ENTRYPOINT ["backstop"]
-
