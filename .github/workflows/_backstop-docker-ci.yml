@@ -12,13 +12,14 @@ on:
     branches: [master, develop]
 
 permissions:
+  actions: write
   checks: write
   contents: write
   pull-requests: write
   packages: write
 
 env:
-  BRANCH_NAME: ${{ github.event.pull_request.head.ref || github.head_ref || github.ref_name }}
+  BRANCH_NAME: ${{ github.event.pull_request.head.sha || github.head_ref || github.ref_name }}
 
 jobs:
   backstop-sanity-test:
