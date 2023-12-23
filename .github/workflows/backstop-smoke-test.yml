@@ -5,6 +5,7 @@ on:
   workflow_call:
 
 permissions:
+  actions: write
   contents: write
   pull-requests: write
 
