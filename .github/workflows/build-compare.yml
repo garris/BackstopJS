@@ -1,11 +1,10 @@
-name: Backstop Integration Tests
+name: Build Compare Test
 
 on:
   workflow_dispatch:
   workflow_call:
 
 permissions:
-  actions: write
   contents: write
   pull-requests: write
 
@@ -13,8 +12,8 @@ env:
   NODE_VERSION: 20
 
 jobs:
-  integration:
-    name: 🧩 Integration
+  build-compare:
+    name: 🚜 Build Compare
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -32,6 +31,6 @@ jobs:
       - name: ↧ Install
         run: npm ci
 
-      - name: "𓋏 Run `npm run integration-test`"
+      - name: "Run `npm run build-compare`"
         run: |
-          npm run integration-test
+          npm run build-compare
