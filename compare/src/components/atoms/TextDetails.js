@@ -22,7 +22,7 @@ const Label = styled.span`
 `;
 
 const Value = styled.span`
-  font-family ${fonts.latoBold};
+  font-family: ${fonts.latoBold};
   color: ${colors.primaryText};
   font-size: 14px;
   padding-right: 20px;
