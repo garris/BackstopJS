@@ -4,7 +4,7 @@
 
 ![I'm in your webapps -- checkin your screens](http://garris.github.io/BackstopJS/assets/memes/im-in-ur-webapps-checking-ur-screens.jpg)
 
-**BackstopJS automates visual regression testing of your responsive web UI by comparing DOM screenshots over time.**
+**BackstopJS automates visual regression testing of your webapp UI by automatically comparing screenshots**
 
 ## News
 
