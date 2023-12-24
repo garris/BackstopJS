@@ -669,7 +669,10 @@ ignoreHTTPSErrors: true,
 headless: <!!!config.debugWindow>
 ```
 
-You can add more settings (or override the defaults) with the engineOptions property. (properties are merged). This is where headless mode can also be set to 'new', until "new headless mode" is the default in Puppet/Playwright.
+You can add more settings (or override the defaults) with the `engineOptions` property. (properties are merged). This is where headless mode can also be set to 'new', until "new headless mode" is less hacky and more supported by Playwright.
+
+> [!INFORMATION]
+> Puppeteer now runs in `new` headless mode by default, but can be set to `old` headless by passing `"headless": true` in the configuration file.
 
 ```json
 "engineOptions": {
