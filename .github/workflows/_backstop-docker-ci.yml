@@ -47,3 +47,7 @@ jobs:
   #   needs: build-publish-docker
   #   name: Smoke Test Docker
   #   uses: ./.github/workflows/docker-smoke-test.yml
+
+  # build-compare:
+  #   name: Build Compare UI
+  #   uses: ./.github/workflows/build-compare.yml
