@@ -23,7 +23,7 @@
     "precommit": "lint-staged",
     "build-compare": "cp ./node_modules/diverged/src/diverged.js ./compare/output/ && cp ./node_modules/diff/dist/diff.js ./compare/output/ && webpack --config ./compare/webpack.config.js && npm run -s lint",
     "dev-compare": "webpack-dev-server --content-base ./compare/output --config ./compare/webpack.config.js",
-    "integration-test": "rm -rf integrationTestDir && mkdir integrationTestDir && cd integrationTestDir && node ../cli/index.js init && node ../cli/index.js reference && node ../cli/index.js test && node -e \"require('../')('test')\" && npm --prefix ../../ run -s success-message || npm --prefix ../../ run -s fail-message",
+    "integration-test": "rm -rf integrationTestDir && mkdir integrationTestDir && cd integrationTestDir && node ../cli/index.js init && node ../cli/index.js reference && node ../cli/index.js test && node -e \"require('../')('test')\" && npm --prefix ../ run -s success-message || npm --prefix ../ run -s fail-message",
     "smoke-test": "cd test/configs/ && node ../../cli/index.js test --config=backstop_features && npm --prefix ../../ run -s success-message || npm --prefix ../../ run -s caution-message",
     "smoke-test-playwright": "cd test/configs/ && node ../../cli/index.js test --config=backstop_features_pw && npm --prefix ../../ run -s fail-message || npm --prefix ../../ run -s caution-message",
     "smoke-test-docker": "cd test/configs/ && node ../../cli/index.js test --config=backstop_features --docker && npm --prefix ../../ run -s fail-message || npm --prefix ../../ run -s caution-message",
