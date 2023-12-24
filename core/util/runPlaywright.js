@@ -57,12 +57,12 @@ module.exports.createPlaywrightBrowser = async function (config) {
   }
 
   /**
-   * If headless isn't defined, or it's not a boolean, proceed with sanitization
+   * If headless is defined, and it's not a boolean, proceed with sanitization
    * of `engineOptions`, setting Playwright to ignore its built in
-   * `--headless` flag, and pass the custom `--headless='string'` flag.
+   * `--headless` flag. Then, pass the custom `--headless='string'` flag.
    * NOTE: This is will fail if user defined `headless` mode
    * is an invalid option for Playwright, but is future-proof if they add something
-   * like 'old' headless mode when 'new' mode is default.
+   * like 'old' headless mode when 'new' mode is default. A warning is included for this case.
    */
   if (typeof headless !== 'undefined' && typeof headless !== 'boolean') {
     sanitizedEngineOptions = {
