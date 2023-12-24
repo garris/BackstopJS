@@ -42,7 +42,7 @@
     "ci_report": "backstop_data/ci_report"
   },
   "report": ["browser"],
-  "engine": "playwr",
+  "engine": "playwright",
   "engineOptions": {
     "args": ["--no-sandbox"]
   },
