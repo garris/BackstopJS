@@ -1,4 +1,6 @@
-[![Build Status](https://travis-ci.org/garris/BackstopJS.svg?branch=master)](https://travis-ci.org/garris/BackstopJS)
+![npm@latest](https://img.shields.io/npm/v/backstopjs/latest.svg) ![GitHub Repo stars](https://img.shields.io/github/stars/garris/backstopjs) ![GitHub contributors](https://img.shields.io/github/contributors/garris/backstopjs) ![downloads](https://img.shields.io/npm/dy/backstopjs) [![Backstop Sanity Tests](https://github.com/garris/BackstopJS/actions/workflows/backstop-sanity-test.yml/badge.svg)](https://github.com/garris/BackstopJS/actions/workflows/backstop-sanity-test.yml)
+
+
 
 # BackstopJS
 
