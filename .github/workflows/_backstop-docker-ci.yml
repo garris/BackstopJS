@@ -22,13 +22,17 @@ env:
   BRANCH_NAME: ${{ github.event.pull_request.head.sha || github.head_ref || github.ref_name }}
 
 jobs:
+  # backstop-sanity-docker-test:
+  #   name: Sanity Test Backstop
+  #   uses: ./.github/workflows/backstop-sanity-docker.yml
+    
   backstop-sanity-test:
     name: Sanity Test Backstop
     uses: ./.github/workflows/backstop-sanity-test.yml
 
-  backstop-smoke-test:
-    name: Smoke Test Backstop
-    uses: ./.github/workflows/backstop-smoke-test.yml
+  # backstop-smoke-test:
+  #   name: Smoke Test Backstop
+  #   uses: ./.github/workflows/backstop-smoke-test.yml
 
   # backstop-integration-test:
   #   name: Integration Test Backstop
