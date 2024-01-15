@@ -1,0 +1,1694 @@
+{
+  "testSuite": "BackstopJS",
+  "tests": [
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_Simple_0_document_0_phone.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_Simple_0_document_0_phone.png",
+        "selector": "document",
+        "fileName": "playwright_chromium_backstop_features_Simple_0_document_0_phone.png",
+        "label": "Simple",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "phone",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 27.306275406504067,
+          "misMatchPercentage": "27.31",
+          "analysisTime": 91
+        },
+        "diffImage": "../bitmaps_test/20240101-165424/failed_diff_playwright_chromium_backstop_features_Simple_0_document_0_phone.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_Simple_0_document_1_tablet.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_Simple_0_document_1_tablet.png",
+        "selector": "document",
+        "fileName": "playwright_chromium_backstop_features_Simple_0_document_1_tablet.png",
+        "label": "Simple",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 28.784272942131402,
+          "misMatchPercentage": "28.78",
+          "analysisTime": 176
+        },
+        "diffImage": "../bitmaps_test/20240101-165424/failed_diff_playwright_chromium_backstop_features_Simple_0_document_1_tablet.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_pkra_bug_test_0_pkratest_0_phone.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_pkra_bug_test_0_pkratest_0_phone.png",
+        "selector": "#pkratest",
+        "fileName": "playwright_chromium_backstop_features_pkra_bug_test_0_pkratest_0_phone.png",
+        "label": "pkra bug test",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "phone",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "misMatchPercentage": "0.00"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_pkra_bug_test_1_logoBlock_0_phone.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_pkra_bug_test_1_logoBlock_0_phone.png",
+        "selector": ".logoBlock",
+        "fileName": "playwright_chromium_backstop_features_pkra_bug_test_1_logoBlock_0_phone.png",
+        "label": "pkra bug test",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "phone",
+        "diff": {
+          "isSameDimensions": false,
+          "dimensionDifference": {
+            "width": -2,
+            "height": -1
+          },
+          "rawMisMatchPercentage": 95.18307322929172,
+          "misMatchPercentage": "95.18",
+          "analysisTime": 7
+        },
+        "diffImage": "../bitmaps_test/20240101-165424/failed_diff_playwright_chromium_backstop_features_pkra_bug_test_1_logoBlock_0_phone.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_pkra_bug_test_0_pkratest_1_tablet.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_pkra_bug_test_0_pkratest_1_tablet.png",
+        "selector": "#pkratest",
+        "fileName": "playwright_chromium_backstop_features_pkra_bug_test_0_pkratest_1_tablet.png",
+        "label": "pkra bug test",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "misMatchPercentage": "0.00"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_pkra_bug_test_1_logoBlock_1_tablet.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_pkra_bug_test_1_logoBlock_1_tablet.png",
+        "selector": ".logoBlock",
+        "fileName": "playwright_chromium_backstop_features_pkra_bug_test_1_logoBlock_1_tablet.png",
+        "label": "pkra bug test",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "diff": {
+          "isSameDimensions": false,
+          "dimensionDifference": {
+            "width": 0,
+            "height": -1
+          },
+          "rawMisMatchPercentage": 93.04712700235088,
+          "misMatchPercentage": "93.05",
+          "analysisTime": 48
+        },
+        "diffImage": "../bitmaps_test/20240101-165424/failed_diff_playwright_chromium_backstop_features_pkra_bug_test_1_logoBlock_1_tablet.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_delay_0_getItBlocknth-child3_0_phone.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_delay_0_getItBlocknth-child3_0_phone.png",
+        "selector": ".getItBlock:nth-child(3)",
+        "fileName": "playwright_chromium_backstop_features_delay_0_getItBlocknth-child3_0_phone.png",
+        "label": "delay",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html?delay",
+        "expect": 0,
+        "viewportLabel": "phone",
+        "diff": {
+          "isSameDimensions": false,
+          "dimensionDifference": {
+            "width": -2,
+            "height": -1
+          },
+          "rawMisMatchPercentage": 6.714235838352099,
+          "misMatchPercentage": "6.71",
+          "analysisTime": 59
+        },
+        "diffImage": "../bitmaps_test/20240101-165424/failed_diff_playwright_chromium_backstop_features_delay_0_getItBlocknth-child3_0_phone.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_delay_0_getItBlocknth-child3_1_tablet.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_delay_0_getItBlocknth-child3_1_tablet.png",
+        "selector": ".getItBlock:nth-child(3)",
+        "fileName": "playwright_chromium_backstop_features_delay_0_getItBlocknth-child3_1_tablet.png",
+        "label": "delay",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html?delay",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "diff": {
+          "isSameDimensions": false,
+          "dimensionDifference": {
+            "width": 0,
+            "height": -1
+          },
+          "rawMisMatchPercentage": 1.2312255458790862,
+          "misMatchPercentage": "1.23",
+          "analysisTime": 159
+        },
+        "diffImage": "../bitmaps_test/20240101-165424/failed_diff_playwright_chromium_backstop_features_delay_0_getItBlocknth-child3_1_tablet.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_readyEvent_0_moneyshot_0_phone.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_readyEvent_0_moneyshot_0_phone.png",
+        "selector": ".moneyshot",
+        "fileName": "playwright_chromium_backstop_features_readyEvent_0_moneyshot_0_phone.png",
+        "label": "readyEvent",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html?delay",
+        "expect": 0,
+        "viewportLabel": "phone",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 94.57952235772358,
+          "misMatchPercentage": "94.58",
+          "analysisTime": 81
+        },
+        "diffImage": "../bitmaps_test/20240101-165424/failed_diff_playwright_chromium_backstop_features_readyEvent_0_moneyshot_0_phone.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_readyEvent_0_moneyshot_1_tablet.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_readyEvent_0_moneyshot_1_tablet.png",
+        "selector": ".moneyshot",
+        "fileName": "playwright_chromium_backstop_features_readyEvent_0_moneyshot_1_tablet.png",
+        "label": "readyEvent",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html?delay",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 90.41757246376811,
+          "misMatchPercentage": "90.42",
+          "analysisTime": 43
+        },
+        "diffImage": "../bitmaps_test/20240101-165424/failed_diff_playwright_chromium_backstop_features_readyEvent_0_moneyshot_1_tablet.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_readyEventTimeout_0_moneyshot_0_phone.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_readyEventTimeout_0_moneyshot_0_phone.png",
+        "selector": ".moneyshot",
+        "fileName": "playwright_chromium_backstop_features_readyEventTimeout_0_moneyshot_0_phone.png",
+        "label": "readyEventTimeout",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html?delay",
+        "expect": 0,
+        "viewportLabel": "phone",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 97.92174796747967,
+          "misMatchPercentage": "97.92",
+          "analysisTime": 156
+        },
+        "diffImage": "../bitmaps_test/20240101-165424/failed_diff_playwright_chromium_backstop_features_readyEventTimeout_0_moneyshot_0_phone.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_readyEventTimeout_0_moneyshot_1_tablet.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_readyEventTimeout_0_moneyshot_1_tablet.png",
+        "selector": ".moneyshot",
+        "fileName": "playwright_chromium_backstop_features_readyEventTimeout_0_moneyshot_1_tablet.png",
+        "label": "readyEventTimeout",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html?delay",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 97.45579710144926,
+          "misMatchPercentage": "97.46",
+          "analysisTime": 209
+        },
+        "diffImage": "../bitmaps_test/20240101-165424/failed_diff_playwright_chromium_backstop_features_readyEventTimeout_0_moneyshot_1_tablet.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_readySelector_0_moneyshot_0_phone.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_readySelector_0_moneyshot_0_phone.png",
+        "selector": ".moneyshot",
+        "fileName": "playwright_chromium_backstop_features_readySelector_0_moneyshot_0_phone.png",
+        "label": "readySelector",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html?delay",
+        "expect": 0,
+        "viewportLabel": "phone",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 94.57952235772358,
+          "misMatchPercentage": "94.58",
+          "analysisTime": 17
+        },
+        "diffImage": "../bitmaps_test/20240101-165424/failed_diff_playwright_chromium_backstop_features_readySelector_0_moneyshot_0_phone.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_readySelector_0_moneyshot_1_tablet.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_readySelector_0_moneyshot_1_tablet.png",
+        "selector": ".moneyshot",
+        "fileName": "playwright_chromium_backstop_features_readySelector_0_moneyshot_1_tablet.png",
+        "label": "readySelector",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html?delay",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 90.41757246376811,
+          "misMatchPercentage": "90.42",
+          "analysisTime": 92
+        },
+        "diffImage": "../bitmaps_test/20240101-165424/failed_diff_playwright_chromium_backstop_features_readySelector_0_moneyshot_1_tablet.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_readySelectorTimeout_0_moneyshot_0_phone.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_readySelectorTimeout_0_moneyshot_0_phone.png",
+        "selector": ".moneyshot",
+        "fileName": "playwright_chromium_backstop_features_readySelectorTimeout_0_moneyshot_0_phone.png",
+        "label": "readySelectorTimeout",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html?delay",
+        "expect": 0,
+        "viewportLabel": "phone",
+        "engineErrorMsg": "page.waitForSelector: Timeout 2000ms exceeded.\nCall log:\n  \u001b[2m- waiting for locator('._the_lemur_is_ready_to_see_you_timeout') to be visible\u001b[22m\n",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "misMatchPercentage": "0.00"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_readySelectorTimeout_0_moneyshot_1_tablet.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_readySelectorTimeout_0_moneyshot_1_tablet.png",
+        "selector": ".moneyshot",
+        "fileName": "playwright_chromium_backstop_features_readySelectorTimeout_0_moneyshot_1_tablet.png",
+        "label": "readySelectorTimeout",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html?delay",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "engineErrorMsg": "page.waitForSelector: Timeout 2000ms exceeded.\nCall log:\n  \u001b[2m- waiting for locator('._the_lemur_is_ready_to_see_you_timeout') to be visible\u001b[22m\n",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "misMatchPercentage": "0.00"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_noDelay_0_getItBlocknth-child3_0_phone.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_noDelay_0_getItBlocknth-child3_0_phone.png",
+        "selector": ".getItBlock:nth-child(3)",
+        "fileName": "playwright_chromium_backstop_features_noDelay_0_getItBlocknth-child3_0_phone.png",
+        "label": "noDelay",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html?delay",
+        "expect": 0,
+        "viewportLabel": "phone",
+        "diff": {
+          "isSameDimensions": false,
+          "dimensionDifference": {
+            "width": -2,
+            "height": -1
+          },
+          "rawMisMatchPercentage": 1.9071310116086235,
+          "misMatchPercentage": "1.91",
+          "analysisTime": 68
+        },
+        "diffImage": "../bitmaps_test/20240101-165424/failed_diff_playwright_chromium_backstop_features_noDelay_0_getItBlocknth-child3_0_phone.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_noDelay_0_getItBlocknth-child3_1_tablet.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_noDelay_0_getItBlocknth-child3_1_tablet.png",
+        "selector": ".getItBlock:nth-child(3)",
+        "fileName": "playwright_chromium_backstop_features_noDelay_0_getItBlocknth-child3_1_tablet.png",
+        "label": "noDelay",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html?delay",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "diff": {
+          "isSameDimensions": false,
+          "dimensionDifference": {
+            "width": 0,
+            "height": -1
+          },
+          "rawMisMatchPercentage": 0.9579704657326771,
+          "misMatchPercentage": "0.96",
+          "analysisTime": 57
+        },
+        "diffImage": "../bitmaps_test/20240101-165424/failed_diff_playwright_chromium_backstop_features_noDelay_0_getItBlocknth-child3_1_tablet.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_expanded_0_getItBlock_0_phone.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_expanded_0_getItBlock_0_phone.png",
+        "selector": ".getItBlock",
+        "fileName": "playwright_chromium_backstop_features_expanded_0_getItBlock_0_phone.png",
+        "label": "expanded",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "phone",
+        "diff": {
+          "isSameDimensions": false,
+          "dimensionDifference": {
+            "width": -2,
+            "height": -1
+          },
+          "rawMisMatchPercentage": 49.909476287203034,
+          "misMatchPercentage": "49.91",
+          "analysisTime": 32
+        },
+        "diffImage": "../bitmaps_test/20240101-165424/failed_diff_playwright_chromium_backstop_features_expanded_0_getItBlock_0_phone.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_expanded_1_getItBlock__n1_0_phone.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_expanded_1_getItBlock__n1_0_phone.png",
+        "selector": ".getItBlock.__n1",
+        "fileName": "playwright_chromium_backstop_features_expanded_1_getItBlock__n1_0_phone.png",
+        "label": "expanded",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "phone",
+        "diff": {
+          "isSameDimensions": false,
+          "dimensionDifference": {
+            "width": -2,
+            "height": -1
+          },
+          "rawMisMatchPercentage": 5.14668039114771,
+          "misMatchPercentage": "5.15",
+          "analysisTime": 125
+        },
+        "diffImage": "../bitmaps_test/20240101-165424/failed_diff_playwright_chromium_backstop_features_expanded_1_getItBlock__n1_0_phone.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_expanded_2_getItBlock__n2_0_phone.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_expanded_2_getItBlock__n2_0_phone.png",
+        "selector": ".getItBlock.__n2",
+        "fileName": "playwright_chromium_backstop_features_expanded_2_getItBlock__n2_0_phone.png",
+        "label": "expanded",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "phone",
+        "diff": {
+          "isSameDimensions": false,
+          "dimensionDifference": {
+            "width": -2,
+            "height": -1
+          },
+          "rawMisMatchPercentage": 6.714235838352099,
+          "misMatchPercentage": "6.71",
+          "analysisTime": 89
+        },
+        "diffImage": "../bitmaps_test/20240101-165424/failed_diff_playwright_chromium_backstop_features_expanded_2_getItBlock__n2_0_phone.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_expanded_3_getItBlock__n3_0_phone.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_expanded_3_getItBlock__n3_0_phone.png",
+        "selector": ".getItBlock.__n3",
+        "fileName": "playwright_chromium_backstop_features_expanded_3_getItBlock__n3_0_phone.png",
+        "label": "expanded",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "phone",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "misMatchPercentage": "0.00"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_expanded_0_getItBlock_1_tablet.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_expanded_0_getItBlock_1_tablet.png",
+        "selector": ".getItBlock",
+        "fileName": "playwright_chromium_backstop_features_expanded_0_getItBlock_1_tablet.png",
+        "label": "expanded",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "diff": {
+          "isSameDimensions": false,
+          "dimensionDifference": {
+            "width": 0,
+            "height": -2
+          },
+          "rawMisMatchPercentage": 10.834375977478887,
+          "misMatchPercentage": "10.83",
+          "analysisTime": 70
+        },
+        "diffImage": "../bitmaps_test/20240101-165424/failed_diff_playwright_chromium_backstop_features_expanded_0_getItBlock_1_tablet.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_expanded_1_getItBlock__n1_1_tablet.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_expanded_1_getItBlock__n1_1_tablet.png",
+        "selector": ".getItBlock.__n1",
+        "fileName": "playwright_chromium_backstop_features_expanded_1_getItBlock__n1_1_tablet.png",
+        "label": "expanded",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 2.305584104145255,
+          "misMatchPercentage": "2.31",
+          "analysisTime": 52
+        },
+        "diffImage": "../bitmaps_test/20240101-165424/failed_diff_playwright_chromium_backstop_features_expanded_1_getItBlock__n1_1_tablet.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_expanded_2_getItBlock__n2_1_tablet.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_expanded_2_getItBlock__n2_1_tablet.png",
+        "selector": ".getItBlock.__n2",
+        "fileName": "playwright_chromium_backstop_features_expanded_2_getItBlock__n2_1_tablet.png",
+        "label": "expanded",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "diff": {
+          "isSameDimensions": false,
+          "dimensionDifference": {
+            "width": 0,
+            "height": -1
+          },
+          "rawMisMatchPercentage": 1.2312255458790862,
+          "misMatchPercentage": "1.23",
+          "analysisTime": 168
+        },
+        "diffImage": "../bitmaps_test/20240101-165424/failed_diff_playwright_chromium_backstop_features_expanded_2_getItBlock__n2_1_tablet.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_expanded_3_getItBlock__n3_1_tablet.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_expanded_3_getItBlock__n3_1_tablet.png",
+        "selector": ".getItBlock.__n3",
+        "fileName": "playwright_chromium_backstop_features_expanded_3_getItBlock__n3_1_tablet.png",
+        "label": "expanded",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "misMatchPercentage": "0.00"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_notExpanded_0_getItBlock_0_phone.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_notExpanded_0_getItBlock_0_phone.png",
+        "selector": ".getItBlock",
+        "fileName": "playwright_chromium_backstop_features_notExpanded_0_getItBlock_0_phone.png",
+        "label": "notExpanded",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "phone",
+        "diff": {
+          "isSameDimensions": false,
+          "dimensionDifference": {
+            "width": -2,
+            "height": -1
+          },
+          "rawMisMatchPercentage": 49.909476287203034,
+          "misMatchPercentage": "49.91",
+          "analysisTime": 133
+        },
+        "diffImage": "../bitmaps_test/20240101-165424/failed_diff_playwright_chromium_backstop_features_notExpanded_0_getItBlock_0_phone.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_notExpanded_0_getItBlock_1_tablet.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_notExpanded_0_getItBlock_1_tablet.png",
+        "selector": ".getItBlock",
+        "fileName": "playwright_chromium_backstop_features_notExpanded_0_getItBlock_1_tablet.png",
+        "label": "notExpanded",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "diff": {
+          "isSameDimensions": false,
+          "dimensionDifference": {
+            "width": 0,
+            "height": -2
+          },
+          "rawMisMatchPercentage": 10.834375977478887,
+          "misMatchPercentage": "10.83",
+          "analysisTime": 13
+        },
+        "diffImage": "../bitmaps_test/20240101-165424/failed_diff_playwright_chromium_backstop_features_notExpanded_0_getItBlock_1_tablet.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_expect_0_getItBlock_0_phone.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_expect_0_getItBlock_0_phone.png",
+        "selector": ".getItBlock",
+        "fileName": "playwright_chromium_backstop_features_expect_0_getItBlock_0_phone.png",
+        "label": "expect",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 4,
+        "viewportLabel": "phone",
+        "diff": {
+          "isSameDimensions": false,
+          "dimensionDifference": {
+            "width": -2,
+            "height": -1
+          },
+          "rawMisMatchPercentage": 49.909476287203034,
+          "misMatchPercentage": "49.91",
+          "analysisTime": 86
+        },
+        "diffImage": "../bitmaps_test/20240101-165424/failed_diff_playwright_chromium_backstop_features_expect_0_getItBlock_0_phone.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_expect_1_getItBlock__n1_0_phone.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_expect_1_getItBlock__n1_0_phone.png",
+        "selector": ".getItBlock.__n1",
+        "fileName": "playwright_chromium_backstop_features_expect_1_getItBlock__n1_0_phone.png",
+        "label": "expect",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 4,
+        "viewportLabel": "phone",
+        "diff": {
+          "isSameDimensions": false,
+          "dimensionDifference": {
+            "width": -2,
+            "height": -1
+          },
+          "rawMisMatchPercentage": 5.14668039114771,
+          "misMatchPercentage": "5.15",
+          "analysisTime": 11
+        },
+        "diffImage": "../bitmaps_test/20240101-165424/failed_diff_playwright_chromium_backstop_features_expect_1_getItBlock__n1_0_phone.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_expect_2_getItBlock__n2_0_phone.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_expect_2_getItBlock__n2_0_phone.png",
+        "selector": ".getItBlock.__n2",
+        "fileName": "playwright_chromium_backstop_features_expect_2_getItBlock__n2_0_phone.png",
+        "label": "expect",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 4,
+        "viewportLabel": "phone",
+        "diff": {
+          "isSameDimensions": false,
+          "dimensionDifference": {
+            "width": -2,
+            "height": -1
+          },
+          "rawMisMatchPercentage": 6.714235838352099,
+          "misMatchPercentage": "6.71",
+          "analysisTime": 97
+        },
+        "diffImage": "../bitmaps_test/20240101-165424/failed_diff_playwright_chromium_backstop_features_expect_2_getItBlock__n2_0_phone.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_expect_3_getItBlock__n3_0_phone.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_expect_3_getItBlock__n3_0_phone.png",
+        "selector": ".getItBlock.__n3",
+        "fileName": "playwright_chromium_backstop_features_expect_3_getItBlock__n3_0_phone.png",
+        "label": "expect",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 4,
+        "viewportLabel": "phone",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "misMatchPercentage": "0.00"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_expect_0_getItBlock_1_tablet.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_expect_0_getItBlock_1_tablet.png",
+        "selector": ".getItBlock",
+        "fileName": "playwright_chromium_backstop_features_expect_0_getItBlock_1_tablet.png",
+        "label": "expect",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 4,
+        "viewportLabel": "tablet",
+        "diff": {
+          "isSameDimensions": false,
+          "dimensionDifference": {
+            "width": 0,
+            "height": -2
+          },
+          "rawMisMatchPercentage": 10.834375977478887,
+          "misMatchPercentage": "10.83",
+          "analysisTime": 9
+        },
+        "diffImage": "../bitmaps_test/20240101-165424/failed_diff_playwright_chromium_backstop_features_expect_0_getItBlock_1_tablet.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_expect_1_getItBlock__n1_1_tablet.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_expect_1_getItBlock__n1_1_tablet.png",
+        "selector": ".getItBlock.__n1",
+        "fileName": "playwright_chromium_backstop_features_expect_1_getItBlock__n1_1_tablet.png",
+        "label": "expect",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 4,
+        "viewportLabel": "tablet",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 2.305584104145255,
+          "misMatchPercentage": "2.31",
+          "analysisTime": 83
+        },
+        "diffImage": "../bitmaps_test/20240101-165424/failed_diff_playwright_chromium_backstop_features_expect_1_getItBlock__n1_1_tablet.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_expect_2_getItBlock__n2_1_tablet.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_expect_2_getItBlock__n2_1_tablet.png",
+        "selector": ".getItBlock.__n2",
+        "fileName": "playwright_chromium_backstop_features_expect_2_getItBlock__n2_1_tablet.png",
+        "label": "expect",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 4,
+        "viewportLabel": "tablet",
+        "diff": {
+          "isSameDimensions": false,
+          "dimensionDifference": {
+            "width": 0,
+            "height": -1
+          },
+          "rawMisMatchPercentage": 1.2312255458790862,
+          "misMatchPercentage": "1.23",
+          "analysisTime": 186
+        },
+        "diffImage": "../bitmaps_test/20240101-165424/failed_diff_playwright_chromium_backstop_features_expect_2_getItBlock__n2_1_tablet.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_expect_3_getItBlock__n3_1_tablet.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_expect_3_getItBlock__n3_1_tablet.png",
+        "selector": ".getItBlock.__n3",
+        "fileName": "playwright_chromium_backstop_features_expect_3_getItBlock__n3_1_tablet.png",
+        "label": "expect",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 4,
+        "viewportLabel": "tablet",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "misMatchPercentage": "0.00"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_magicSelectors_0_document_0_phone.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_magicSelectors_0_document_0_phone.png",
+        "selector": "document",
+        "fileName": "playwright_chromium_backstop_features_magicSelectors_0_document_0_phone.png",
+        "label": "magicSelectors",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "phone",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 27.306275406504067,
+          "misMatchPercentage": "27.31",
+          "analysisTime": 118
+        },
+        "diffImage": "../bitmaps_test/20240101-165424/failed_diff_playwright_chromium_backstop_features_magicSelectors_0_document_0_phone.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_magicSelectors_1_viewport_0_phone.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_magicSelectors_1_viewport_0_phone.png",
+        "selector": "viewport",
+        "fileName": "playwright_chromium_backstop_features_magicSelectors_1_viewport_0_phone.png",
+        "label": "magicSelectors",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "phone",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 52.173177083333336,
+          "misMatchPercentage": "52.17",
+          "analysisTime": 47
+        },
+        "diffImage": "../bitmaps_test/20240101-165424/failed_diff_playwright_chromium_backstop_features_magicSelectors_1_viewport_0_phone.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_magicSelectors_0_document_1_tablet.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_magicSelectors_0_document_1_tablet.png",
+        "selector": "document",
+        "fileName": "playwright_chromium_backstop_features_magicSelectors_0_document_1_tablet.png",
+        "label": "magicSelectors",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 28.784272942131402,
+          "misMatchPercentage": "28.78",
+          "analysisTime": 84
+        },
+        "diffImage": "../bitmaps_test/20240101-165424/failed_diff_playwright_chromium_backstop_features_magicSelectors_0_document_1_tablet.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_magicSelectors_1_viewport_1_tablet.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_magicSelectors_1_viewport_1_tablet.png",
+        "selector": "viewport",
+        "fileName": "playwright_chromium_backstop_features_magicSelectors_1_viewport_1_tablet.png",
+        "label": "magicSelectors",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 47.43995666503906,
+          "misMatchPercentage": "47.44",
+          "analysisTime": 102
+        },
+        "diffImage": "../bitmaps_test/20240101-165424/failed_diff_playwright_chromium_backstop_features_magicSelectors_1_viewport_1_tablet.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_hideSelectors_0_document_0_phone.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_hideSelectors_0_document_0_phone.png",
+        "selector": "document",
+        "fileName": "playwright_chromium_backstop_features_hideSelectors_0_document_0_phone.png",
+        "label": "hideSelectors",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "phone",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 24.32005843495935,
+          "misMatchPercentage": "24.32",
+          "analysisTime": 108
+        },
+        "diffImage": "../bitmaps_test/20240101-165424/failed_diff_playwright_chromium_backstop_features_hideSelectors_0_document_0_phone.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_hideSelectors_0_document_1_tablet.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_hideSelectors_0_document_1_tablet.png",
+        "selector": "document",
+        "fileName": "playwright_chromium_backstop_features_hideSelectors_0_document_1_tablet.png",
+        "label": "hideSelectors",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 27.261163698433922,
+          "misMatchPercentage": "27.26",
+          "analysisTime": 53
+        },
+        "diffImage": "../bitmaps_test/20240101-165424/failed_diff_playwright_chromium_backstop_features_hideSelectors_0_document_1_tablet.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_removeSelectors_0_document_0_phone.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_removeSelectors_0_document_0_phone.png",
+        "selector": "document",
+        "fileName": "playwright_chromium_backstop_features_removeSelectors_0_document_0_phone.png",
+        "label": "removeSelectors",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "phone",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 52.51236979166667,
+          "misMatchPercentage": "52.51",
+          "analysisTime": 112
+        },
+        "diffImage": "../bitmaps_test/20240101-165424/failed_diff_playwright_chromium_backstop_features_removeSelectors_0_document_0_phone.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_removeSelectors_0_document_1_tablet.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_removeSelectors_0_document_1_tablet.png",
+        "selector": "document",
+        "fileName": "playwright_chromium_backstop_features_removeSelectors_0_document_1_tablet.png",
+        "label": "removeSelectors",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 51.86297098795573,
+          "misMatchPercentage": "51.86",
+          "analysisTime": 162
+        },
+        "diffImage": "../bitmaps_test/20240101-165424/failed_diff_playwright_chromium_backstop_features_removeSelectors_0_document_1_tablet.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_notFound_0_monkey_0_phone.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_notFound_0_monkey_0_phone.png",
+        "selector": ".monkey",
+        "fileName": "playwright_chromium_backstop_features_notFound_0_monkey_0_phone.png",
+        "label": "notFound",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "phone",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "misMatchPercentage": "0.00"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_notFound_0_monkey_1_tablet.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_notFound_0_monkey_1_tablet.png",
+        "selector": ".monkey",
+        "fileName": "playwright_chromium_backstop_features_notFound_0_monkey_1_tablet.png",
+        "label": "notFound",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "misMatchPercentage": "0.00"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_notVisible_0_noShow_0_phone.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_notVisible_0_noShow_0_phone.png",
+        "selector": "#noShow",
+        "fileName": "playwright_chromium_backstop_features_notVisible_0_noShow_0_phone.png",
+        "label": "notVisible",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "phone",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "misMatchPercentage": "0.00"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_notVisible_0_noShow_1_tablet.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_notVisible_0_noShow_1_tablet.png",
+        "selector": "#noShow",
+        "fileName": "playwright_chromium_backstop_features_notVisible_0_noShow_1_tablet.png",
+        "label": "notVisible",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "misMatchPercentage": "0.00"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_cookies_0_moneyshot_0_phone.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_cookies_0_moneyshot_0_phone.png",
+        "selector": ".moneyshot",
+        "fileName": "playwright_chromium_backstop_features_cookies_0_moneyshot_0_phone.png",
+        "label": "cookies",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html?cookie",
+        "expect": 0,
+        "viewportLabel": "phone",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 95.04798689138578,
+          "misMatchPercentage": "95.05",
+          "analysisTime": 47
+        },
+        "diffImage": "../bitmaps_test/20240101-165424/failed_diff_playwright_chromium_backstop_features_cookies_0_moneyshot_0_phone.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_cookies_0_moneyshot_1_tablet.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_cookies_0_moneyshot_1_tablet.png",
+        "selector": ".moneyshot",
+        "fileName": "playwright_chromium_backstop_features_cookies_0_moneyshot_1_tablet.png",
+        "label": "cookies",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html?cookie",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 90.51465346534654,
+          "misMatchPercentage": "90.51",
+          "analysisTime": 40
+        },
+        "diffImage": "../bitmaps_test/20240101-165424/failed_diff_playwright_chromium_backstop_features_cookies_0_moneyshot_1_tablet.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_hover_0_moneyshot_0_phone.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_hover_0_moneyshot_0_phone.png",
+        "selector": ".moneyshot",
+        "fileName": "playwright_chromium_backstop_features_hover_0_moneyshot_0_phone.png",
+        "label": "hover",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html?click",
+        "expect": 0,
+        "viewportLabel": "phone",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 94.60111788617887,
+          "misMatchPercentage": "94.60",
+          "analysisTime": 167
+        },
+        "diffImage": "../bitmaps_test/20240101-165424/failed_diff_playwright_chromium_backstop_features_hover_0_moneyshot_0_phone.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_hover_0_moneyshot_1_tablet.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_hover_0_moneyshot_1_tablet.png",
+        "selector": ".moneyshot",
+        "fileName": "playwright_chromium_backstop_features_hover_0_moneyshot_1_tablet.png",
+        "label": "hover",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html?click",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 90.4340579710145,
+          "misMatchPercentage": "90.43",
+          "analysisTime": 63
+        },
+        "diffImage": "../bitmaps_test/20240101-165424/failed_diff_playwright_chromium_backstop_features_hover_0_moneyshot_1_tablet.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_click_0_moneyshot_0_phone.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_click_0_moneyshot_0_phone.png",
+        "selector": ".moneyshot",
+        "fileName": "playwright_chromium_backstop_features_click_0_moneyshot_0_phone.png",
+        "label": "click",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html?click",
+        "expect": 0,
+        "viewportLabel": "phone",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 97.92174796747967,
+          "misMatchPercentage": "97.92",
+          "analysisTime": 54
+        },
+        "diffImage": "../bitmaps_test/20240101-165424/failed_diff_playwright_chromium_backstop_features_click_0_moneyshot_0_phone.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_click_0_moneyshot_1_tablet.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_click_0_moneyshot_1_tablet.png",
+        "selector": ".moneyshot",
+        "fileName": "playwright_chromium_backstop_features_click_0_moneyshot_1_tablet.png",
+        "label": "click",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html?click",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 97.45579710144926,
+          "misMatchPercentage": "97.46",
+          "analysisTime": 77
+        },
+        "diffImage": "../bitmaps_test/20240101-165424/failed_diff_playwright_chromium_backstop_features_click_0_moneyshot_1_tablet.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_scrollToSelector_0_lemurFace_0_phone.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_scrollToSelector_0_lemurFace_0_phone.png",
+        "selector": ".lemurFace",
+        "fileName": "playwright_chromium_backstop_features_scrollToSelector_0_lemurFace_0_phone.png",
+        "label": "scrollToSelector",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/test/configs/special_cases/scrollToSelector.html",
+        "expect": 0,
+        "viewportLabel": "phone",
+        "diff": {
+          "isSameDimensions": false,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 1
+          },
+          "rawMisMatchPercentage": 0,
+          "misMatchPercentage": "0.00",
+          "analysisTime": 57
+        },
+        "diffImage": "../bitmaps_test/20240101-165424/failed_diff_playwright_chromium_backstop_features_scrollToSelector_0_lemurFace_0_phone.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_scrollToSelector_0_lemurFace_1_tablet.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_scrollToSelector_0_lemurFace_1_tablet.png",
+        "selector": ".lemurFace",
+        "fileName": "playwright_chromium_backstop_features_scrollToSelector_0_lemurFace_1_tablet.png",
+        "label": "scrollToSelector",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/test/configs/special_cases/scrollToSelector.html",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "diff": {
+          "isSameDimensions": false,
+          "dimensionDifference": {
+            "width": 0,
+            "height": -1
+          },
+          "rawMisMatchPercentage": 0,
+          "misMatchPercentage": "0.00",
+          "analysisTime": 7
+        },
+        "diffImage": "../bitmaps_test/20240101-165424/failed_diff_playwright_chromium_backstop_features_scrollToSelector_0_lemurFace_1_tablet.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_scenarioSpecificViewports_0_document_0_Galaxy-S5.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_scenarioSpecificViewports_0_document_0_Galaxy-S5.png",
+        "selector": "document",
+        "fileName": "playwright_chromium_backstop_features_scenarioSpecificViewports_0_document_0_Galaxy-S5.png",
+        "label": "scenarioSpecificViewports",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "Galaxy-S5",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 36.33461718020541,
+          "misMatchPercentage": "36.33",
+          "analysisTime": 87
+        },
+        "diffImage": "../bitmaps_test/20240101-165424/failed_diff_playwright_chromium_backstop_features_scenarioSpecificViewports_0_document_0_Galaxy-S5.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_scenarioSpecificViewports_1_viewport_0_Galaxy-S5.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_scenarioSpecificViewports_1_viewport_0_Galaxy-S5.png",
+        "selector": "viewport",
+        "fileName": "playwright_chromium_backstop_features_scenarioSpecificViewports_1_viewport_0_Galaxy-S5.png",
+        "label": "scenarioSpecificViewports",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "Galaxy-S5",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 53.10850694444444,
+          "misMatchPercentage": "53.11",
+          "analysisTime": 59
+        },
+        "diffImage": "../bitmaps_test/20240101-165424/failed_diff_playwright_chromium_backstop_features_scenarioSpecificViewports_1_viewport_0_Galaxy-S5.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_scenarioSpecificViewports-withEmptyViewports_0_document_0_phone.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_scenarioSpecificViewports-withEmptyViewports_0_document_0_phone.png",
+        "selector": "document",
+        "fileName": "playwright_chromium_backstop_features_scenarioSpecificViewports-withEmptyViewports_0_document_0_phone.png",
+        "label": "scenarioSpecificViewports-withEmptyViewports",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "phone",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 27.306275406504067,
+          "misMatchPercentage": "27.31",
+          "analysisTime": 78
+        },
+        "diffImage": "../bitmaps_test/20240101-165424/failed_diff_playwright_chromium_backstop_features_scenarioSpecificViewports-withEmptyViewports_0_document_0_phone.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_scenarioSpecificViewports-withEmptyViewports_0_document_1_tablet.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_scenarioSpecificViewports-withEmptyViewports_0_document_1_tablet.png",
+        "selector": "document",
+        "fileName": "playwright_chromium_backstop_features_scenarioSpecificViewports-withEmptyViewports_0_document_1_tablet.png",
+        "label": "scenarioSpecificViewports-withEmptyViewports",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 28.784272942131402,
+          "misMatchPercentage": "28.78",
+          "analysisTime": 55
+        },
+        "diffImage": "../bitmaps_test/20240101-165424/failed_diff_playwright_chromium_backstop_features_scenarioSpecificViewports-withEmptyViewports_0_document_1_tablet.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_scenarioSpecificViewports-withMultipleViewports_0_document_0_Pixel-2.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_scenarioSpecificViewports-withMultipleViewports_0_document_0_Pixel-2.png",
+        "selector": "document",
+        "fileName": "playwright_chromium_backstop_features_scenarioSpecificViewports-withMultipleViewports_0_document_0_Pixel-2.png",
+        "label": "scenarioSpecificViewports-withMultipleViewports",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "Pixel-2",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 40.3777692406198,
+          "misMatchPercentage": "40.38",
+          "analysisTime": 29
+        },
+        "diffImage": "../bitmaps_test/20240101-165424/failed_diff_playwright_chromium_backstop_features_scenarioSpecificViewports-withMultipleViewports_0_document_0_Pixel-2.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_scenarioSpecificViewports-withMultipleViewports_0_document_1_Pixel2-XL.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_scenarioSpecificViewports-withMultipleViewports_0_document_1_Pixel2-XL.png",
+        "selector": "document",
+        "fileName": "playwright_chromium_backstop_features_scenarioSpecificViewports-withMultipleViewports_0_document_1_Pixel2-XL.png",
+        "label": "scenarioSpecificViewports-withMultipleViewports",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "Pixel2-XL",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 45.40760660776028,
+          "misMatchPercentage": "45.41",
+          "analysisTime": 26
+        },
+        "diffImage": "../bitmaps_test/20240101-165424/failed_diff_playwright_chromium_backstop_features_scenarioSpecificViewports-withMultipleViewports_0_document_1_Pixel2-XL.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_scenarioSpecificViewports-withMultipleViewports_0_document_2_iPhone-X.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_scenarioSpecificViewports-withMultipleViewports_0_document_2_iPhone-X.png",
+        "selector": "document",
+        "fileName": "playwright_chromium_backstop_features_scenarioSpecificViewports-withMultipleViewports_0_document_2_iPhone-X.png",
+        "label": "scenarioSpecificViewports-withMultipleViewports",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "iPhone-X",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 44.89954814042405,
+          "misMatchPercentage": "44.90",
+          "analysisTime": 32
+        },
+        "diffImage": "../bitmaps_test/20240101-165424/failed_diff_playwright_chromium_backstop_features_scenarioSpecificViewports-withMultipleViewports_0_document_2_iPhone-X.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_scenarioSpecificViewports-withMultipleViewports_0_document_3_iPad-Pro.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_scenarioSpecificViewports-withMultipleViewports_0_document_3_iPad-Pro.png",
+        "selector": "document",
+        "fileName": "playwright_chromium_backstop_features_scenarioSpecificViewports-withMultipleViewports_0_document_3_iPad-Pro.png",
+        "label": "scenarioSpecificViewports-withMultipleViewports",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "iPad-Pro",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 49.36566331899707,
+          "misMatchPercentage": "49.37",
+          "analysisTime": 52
+        },
+        "diffImage": "../bitmaps_test/20240101-165424/failed_diff_playwright_chromium_backstop_features_scenarioSpecificViewports-withMultipleViewports_0_document_3_iPad-Pro.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_scenarioSpecificViewports-withExpandSelector_0_getItBlock_0_iPad-Pro.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_scenarioSpecificViewports-withExpandSelector_0_getItBlock_0_iPad-Pro.png",
+        "selector": ".getItBlock",
+        "fileName": "playwright_chromium_backstop_features_scenarioSpecificViewports-withExpandSelector_0_getItBlock_0_iPad-Pro.png",
+        "label": "scenarioSpecificViewports-withExpandSelector",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "iPad-Pro",
+        "diff": {
+          "isSameDimensions": false,
+          "dimensionDifference": {
+            "width": 0,
+            "height": -2
+          },
+          "rawMisMatchPercentage": 13.662548222291731,
+          "misMatchPercentage": "13.66",
+          "analysisTime": 34
+        },
+        "diffImage": "../bitmaps_test/20240101-165424/failed_diff_playwright_chromium_backstop_features_scenarioSpecificViewports-withExpandSelector_0_getItBlock_0_iPad-Pro.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_scenarioSpecificViewports-withExpandSelector_1_getItBlock__n1_0_iPad-Pro.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_scenarioSpecificViewports-withExpandSelector_1_getItBlock__n1_0_iPad-Pro.png",
+        "selector": ".getItBlock.__n1",
+        "fileName": "playwright_chromium_backstop_features_scenarioSpecificViewports-withExpandSelector_1_getItBlock__n1_0_iPad-Pro.png",
+        "label": "scenarioSpecificViewports-withExpandSelector",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "iPad-Pro",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 2.300445357999315,
+          "misMatchPercentage": "2.30",
+          "analysisTime": 49
+        },
+        "diffImage": "../bitmaps_test/20240101-165424/failed_diff_playwright_chromium_backstop_features_scenarioSpecificViewports-withExpandSelector_1_getItBlock__n1_0_iPad-Pro.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_scenarioSpecificViewports-withExpandSelector_2_getItBlock__n2_0_iPad-Pro.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_scenarioSpecificViewports-withExpandSelector_2_getItBlock__n2_0_iPad-Pro.png",
+        "selector": ".getItBlock.__n2",
+        "fileName": "playwright_chromium_backstop_features_scenarioSpecificViewports-withExpandSelector_2_getItBlock__n2_0_iPad-Pro.png",
+        "label": "scenarioSpecificViewports-withExpandSelector",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "iPad-Pro",
+        "diff": {
+          "isSameDimensions": false,
+          "dimensionDifference": {
+            "width": 0,
+            "height": -1
+          },
+          "rawMisMatchPercentage": 1.2324876940552822,
+          "misMatchPercentage": "1.23",
+          "analysisTime": 96
+        },
+        "diffImage": "../bitmaps_test/20240101-165424/failed_diff_playwright_chromium_backstop_features_scenarioSpecificViewports-withExpandSelector_2_getItBlock__n2_0_iPad-Pro.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_scenarioSpecificViewports-withExpandSelector_3_getItBlock__n3_0_iPad-Pro.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_scenarioSpecificViewports-withExpandSelector_3_getItBlock__n3_0_iPad-Pro.png",
+        "selector": ".getItBlock.__n3",
+        "fileName": "playwright_chromium_backstop_features_scenarioSpecificViewports-withExpandSelector_3_getItBlock__n3_0_iPad-Pro.png",
+        "label": "scenarioSpecificViewports-withExpandSelector",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "iPad-Pro",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "misMatchPercentage": "0.00"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/playwright_chromium_backstop_features_keyPressSelector_0_dividnavbar_0_Desktop.png",
+        "test": "../bitmaps_test/20240101-165424/playwright_chromium_backstop_features_keyPressSelector_0_dividnavbar_0_Desktop.png",
+        "selector": "div[id=navbar]",
+        "fileName": "playwright_chromium_backstop_features_keyPressSelector_0_dividnavbar_0_Desktop.png",
+        "label": "keyPressSelector",
+        "misMatchThreshold": 5,
+        "url": "https://garris.github.io/BackstopJS/examples/featureTests/index.html",
+        "expect": 0,
+        "viewportLabel": "Desktop",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 12.058333333333334,
+          "misMatchPercentage": "12.06",
+          "analysisTime": 44
+        },
+        "diffImage": "../bitmaps_test/20240101-165424/failed_diff_playwright_chromium_backstop_features_keyPressSelector_0_dividnavbar_0_Desktop.png"
+      },
+      "status": "fail"
+    }
+  ],
+  "id": "playwright_chromium_backstop_features"
+}

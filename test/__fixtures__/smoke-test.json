@@ -1,0 +1,1761 @@
+{
+  "testSuite": "BackstopJS",
+  "tests": [
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_Simple_0_document_0_phone.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_Simple_0_document_0_phone.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_Simple_0_document_0_phone.log.json",
+        "selector": "document",
+        "fileName": "puppet_backstop_features_Simple_0_document_0_phone.png",
+        "label": "Simple",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "phone",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 3.750635162601626,
+          "misMatchPercentage": "3.75",
+          "analysisTime": 210
+        },
+        "diffImage": "../bitmaps_test/20240115-015541/failed_diff_puppet_backstop_features_Simple_0_document_0_phone.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_Simple_0_document_1_tablet.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_Simple_0_document_1_tablet.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_Simple_0_document_1_tablet.log.json",
+        "selector": "document",
+        "fileName": "puppet_backstop_features_Simple_0_document_1_tablet.png",
+        "label": "Simple",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 1.9487233813980136,
+          "misMatchPercentage": "1.95",
+          "analysisTime": 308
+        },
+        "diffImage": "../bitmaps_test/20240115-015541/failed_diff_puppet_backstop_features_Simple_0_document_1_tablet.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_pkra_bug_test_0_pkratest_0_phone.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_pkra_bug_test_0_pkratest_0_phone.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_pkra_bug_test_0_pkratest_0_phone.log.json",
+        "selector": "#pkratest",
+        "fileName": "puppet_backstop_features_pkra_bug_test_0_pkratest_0_phone.png",
+        "label": "pkra bug test",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "phone",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "misMatchPercentage": "0.00"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_pkra_bug_test_1_logoBlock_0_phone.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_pkra_bug_test_1_logoBlock_0_phone.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_pkra_bug_test_1_logoBlock_0_phone.log.json",
+        "selector": ".logoBlock",
+        "fileName": "puppet_backstop_features_pkra_bug_test_1_logoBlock_0_phone.png",
+        "label": "pkra bug test",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "phone",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 10.98556183301946,
+          "misMatchPercentage": "10.99",
+          "analysisTime": 32
+        },
+        "diffImage": "../bitmaps_test/20240115-015541/failed_diff_puppet_backstop_features_pkra_bug_test_1_logoBlock_0_phone.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_pkra_bug_test_0_pkratest_1_tablet.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_pkra_bug_test_0_pkratest_1_tablet.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_pkra_bug_test_0_pkratest_1_tablet.log.json",
+        "selector": "#pkratest",
+        "fileName": "puppet_backstop_features_pkra_bug_test_0_pkratest_1_tablet.png",
+        "label": "pkra bug test",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "misMatchPercentage": "0.00"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_pkra_bug_test_1_logoBlock_1_tablet.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_pkra_bug_test_1_logoBlock_1_tablet.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_pkra_bug_test_1_logoBlock_1_tablet.log.json",
+        "selector": ".logoBlock",
+        "fileName": "puppet_backstop_features_pkra_bug_test_1_logoBlock_1_tablet.png",
+        "label": "pkra bug test",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 1.2769485903814262,
+          "misMatchPercentage": "1.28",
+          "analysisTime": 78
+        },
+        "diffImage": "../bitmaps_test/20240115-015541/failed_diff_puppet_backstop_features_pkra_bug_test_1_logoBlock_1_tablet.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_delay_0_getItBlocknth-child3_0_phone.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_delay_0_getItBlocknth-child3_0_phone.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_delay_0_getItBlocknth-child3_0_phone.log.json",
+        "selector": ".getItBlock:nth-child(3)",
+        "fileName": "puppet_backstop_features_delay_0_getItBlocknth-child3_0_phone.png",
+        "label": "delay",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html?delay",
+        "expect": 0,
+        "viewportLabel": "phone",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 1.4108801415302963,
+          "misMatchPercentage": "1.41",
+          "analysisTime": 88
+        },
+        "diffImage": "../bitmaps_test/20240115-015541/failed_diff_puppet_backstop_features_delay_0_getItBlocknth-child3_0_phone.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_delay_0_getItBlocknth-child3_1_tablet.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_delay_0_getItBlocknth-child3_1_tablet.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_delay_0_getItBlocknth-child3_1_tablet.log.json",
+        "selector": ".getItBlock:nth-child(3)",
+        "fileName": "puppet_backstop_features_delay_0_getItBlocknth-child3_1_tablet.png",
+        "label": "delay",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html?delay",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 0.8469414944235087,
+          "misMatchPercentage": "0.85",
+          "analysisTime": 200
+        },
+        "diffImage": "../bitmaps_test/20240115-015541/failed_diff_puppet_backstop_features_delay_0_getItBlocknth-child3_1_tablet.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_readyEvent_0_moneyshot_0_phone.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_readyEvent_0_moneyshot_0_phone.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_readyEvent_0_moneyshot_0_phone.log.json",
+        "selector": ".moneyshot",
+        "fileName": "puppet_backstop_features_readyEvent_0_moneyshot_0_phone.png",
+        "label": "readyEvent",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html?delay",
+        "expect": 0,
+        "viewportLabel": "phone",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 3.010670731707317,
+          "misMatchPercentage": "3.01",
+          "analysisTime": 253
+        },
+        "diffImage": "../bitmaps_test/20240115-015541/failed_diff_puppet_backstop_features_readyEvent_0_moneyshot_0_phone.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_readyEvent_0_moneyshot_1_tablet.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_readyEvent_0_moneyshot_1_tablet.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_readyEvent_0_moneyshot_1_tablet.log.json",
+        "selector": ".moneyshot",
+        "fileName": "puppet_backstop_features_readyEvent_0_moneyshot_1_tablet.png",
+        "label": "readyEvent",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html?delay",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 0.780072463768116,
+          "misMatchPercentage": "0.78",
+          "analysisTime": 216
+        },
+        "diffImage": "../bitmaps_test/20240115-015541/failed_diff_puppet_backstop_features_readyEvent_0_moneyshot_1_tablet.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_readyEventTimeout_0_moneyshot_0_phone.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_readyEventTimeout_0_moneyshot_0_phone.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_readyEventTimeout_0_moneyshot_0_phone.log.json",
+        "selector": ".moneyshot",
+        "fileName": "puppet_backstop_features_readyEventTimeout_0_moneyshot_0_phone.png",
+        "label": "readyEventTimeout",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html?delay",
+        "expect": 0,
+        "viewportLabel": "phone",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 3.6280487804878048,
+          "misMatchPercentage": "3.63",
+          "analysisTime": 233
+        },
+        "diffImage": "../bitmaps_test/20240115-015541/failed_diff_puppet_backstop_features_readyEventTimeout_0_moneyshot_0_phone.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_readyEventTimeout_0_moneyshot_1_tablet.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_readyEventTimeout_0_moneyshot_1_tablet.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_readyEventTimeout_0_moneyshot_1_tablet.log.json",
+        "selector": ".moneyshot",
+        "fileName": "puppet_backstop_features_readyEventTimeout_0_moneyshot_1_tablet.png",
+        "label": "readyEventTimeout",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html?delay",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 0.8199275362318841,
+          "misMatchPercentage": "0.82",
+          "analysisTime": 286
+        },
+        "diffImage": "../bitmaps_test/20240115-015541/failed_diff_puppet_backstop_features_readyEventTimeout_0_moneyshot_1_tablet.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_readySelector_0_moneyshot_0_phone.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_readySelector_0_moneyshot_0_phone.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_readySelector_0_moneyshot_0_phone.log.json",
+        "selector": ".moneyshot",
+        "fileName": "puppet_backstop_features_readySelector_0_moneyshot_0_phone.png",
+        "label": "readySelector",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html?delay",
+        "expect": 0,
+        "viewportLabel": "phone",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 3.010670731707317,
+          "misMatchPercentage": "3.01",
+          "analysisTime": 57
+        },
+        "diffImage": "../bitmaps_test/20240115-015541/failed_diff_puppet_backstop_features_readySelector_0_moneyshot_0_phone.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_readySelector_0_moneyshot_1_tablet.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_readySelector_0_moneyshot_1_tablet.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_readySelector_0_moneyshot_1_tablet.log.json",
+        "selector": ".moneyshot",
+        "fileName": "puppet_backstop_features_readySelector_0_moneyshot_1_tablet.png",
+        "label": "readySelector",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html?delay",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 0.780072463768116,
+          "misMatchPercentage": "0.78",
+          "analysisTime": 163
+        },
+        "diffImage": "../bitmaps_test/20240115-015541/failed_diff_puppet_backstop_features_readySelector_0_moneyshot_1_tablet.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_readySelectorTimeout_0_moneyshot_0_phone.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_readySelectorTimeout_0_moneyshot_0_phone.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_readySelectorTimeout_0_moneyshot_0_phone.log.json",
+        "selector": ".moneyshot",
+        "fileName": "puppet_backstop_features_readySelectorTimeout_0_moneyshot_0_phone.png",
+        "label": "readySelectorTimeout",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html?delay",
+        "expect": 0,
+        "viewportLabel": "phone",
+        "engineErrorMsg": "Waiting for selector `._the_lemur_is_ready_to_see_you_timeout` failed: Waiting failed: 2000ms exceeded",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "misMatchPercentage": "0.00"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_readySelectorTimeout_0_moneyshot_1_tablet.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_readySelectorTimeout_0_moneyshot_1_tablet.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_readySelectorTimeout_0_moneyshot_1_tablet.log.json",
+        "selector": ".moneyshot",
+        "fileName": "puppet_backstop_features_readySelectorTimeout_0_moneyshot_1_tablet.png",
+        "label": "readySelectorTimeout",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html?delay",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "engineErrorMsg": "Waiting for selector `._the_lemur_is_ready_to_see_you_timeout` failed: Waiting failed: 2000ms exceeded",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "misMatchPercentage": "0.00"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_noDelay_0_getItBlocknth-child3_0_phone.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_noDelay_0_getItBlocknth-child3_0_phone.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_noDelay_0_getItBlocknth-child3_0_phone.log.json",
+        "selector": ".getItBlock:nth-child(3)",
+        "fileName": "puppet_backstop_features_noDelay_0_getItBlocknth-child3_0_phone.png",
+        "label": "noDelay",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html?delay",
+        "expect": 0,
+        "viewportLabel": "phone",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 1.4108801415302963,
+          "misMatchPercentage": "1.41",
+          "analysisTime": 63
+        },
+        "diffImage": "../bitmaps_test/20240115-015541/failed_diff_puppet_backstop_features_noDelay_0_getItBlocknth-child3_0_phone.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_noDelay_0_getItBlocknth-child3_1_tablet.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_noDelay_0_getItBlocknth-child3_1_tablet.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_noDelay_0_getItBlocknth-child3_1_tablet.log.json",
+        "selector": ".getItBlock:nth-child(3)",
+        "fileName": "puppet_backstop_features_noDelay_0_getItBlocknth-child3_1_tablet.png",
+        "label": "noDelay",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html?delay",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 0.8469414944235087,
+          "misMatchPercentage": "0.85",
+          "analysisTime": 181
+        },
+        "diffImage": "../bitmaps_test/20240115-015541/failed_diff_puppet_backstop_features_noDelay_0_getItBlocknth-child3_1_tablet.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_expanded_0_getItBlock_0_phone.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_expanded_0_getItBlock_0_phone.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_expanded_0_getItBlock_0_phone.log.json",
+        "selector": ".getItBlock",
+        "fileName": "puppet_backstop_features_expanded_0_getItBlock_0_phone.png",
+        "label": "expanded",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "phone",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 8.487737200143215,
+          "misMatchPercentage": "8.49",
+          "analysisTime": 34
+        },
+        "diffImage": "../bitmaps_test/20240115-015541/failed_diff_puppet_backstop_features_expanded_0_getItBlock_0_phone.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_expanded_1_getItBlock__n1_0_phone.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_expanded_1_getItBlock__n1_0_phone.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_expanded_1_getItBlock__n1_0_phone.log.json",
+        "selector": ".getItBlock.__n1",
+        "fileName": "puppet_backstop_features_expanded_1_getItBlock__n1_0_phone.png",
+        "label": "expanded",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "phone",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 3.715016708437761,
+          "misMatchPercentage": "3.72",
+          "analysisTime": 55
+        },
+        "diffImage": "../bitmaps_test/20240115-015541/failed_diff_puppet_backstop_features_expanded_1_getItBlock__n1_0_phone.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_expanded_2_getItBlock__n2_0_phone.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_expanded_2_getItBlock__n2_0_phone.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_expanded_2_getItBlock__n2_0_phone.log.json",
+        "selector": ".getItBlock.__n2",
+        "fileName": "puppet_backstop_features_expanded_2_getItBlock__n2_0_phone.png",
+        "label": "expanded",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "phone",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 1.4108801415302963,
+          "misMatchPercentage": "1.41",
+          "analysisTime": 130
+        },
+        "diffImage": "../bitmaps_test/20240115-015541/failed_diff_puppet_backstop_features_expanded_2_getItBlock__n2_0_phone.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_expanded_3_getItBlock__n3_0_phone.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_expanded_3_getItBlock__n3_0_phone.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_expanded_3_getItBlock__n3_0_phone.log.json",
+        "selector": ".getItBlock.__n3",
+        "fileName": "puppet_backstop_features_expanded_3_getItBlock__n3_0_phone.png",
+        "label": "expanded",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "phone",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "misMatchPercentage": "0.00"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_expanded_0_getItBlock_1_tablet.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_expanded_0_getItBlock_1_tablet.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_expanded_0_getItBlock_1_tablet.log.json",
+        "selector": ".getItBlock",
+        "fileName": "puppet_backstop_features_expanded_0_getItBlock_1_tablet.png",
+        "label": "expanded",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 5.729701952723536,
+          "misMatchPercentage": "5.73",
+          "analysisTime": 296
+        },
+        "diffImage": "../bitmaps_test/20240115-015541/failed_diff_puppet_backstop_features_expanded_0_getItBlock_1_tablet.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_expanded_1_getItBlock__n1_1_tablet.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_expanded_1_getItBlock__n1_1_tablet.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_expanded_1_getItBlock__n1_1_tablet.log.json",
+        "selector": ".getItBlock.__n1",
+        "fileName": "puppet_backstop_features_expanded_1_getItBlock__n1_1_tablet.png",
+        "label": "expanded",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 2.195101062007537,
+          "misMatchPercentage": "2.20",
+          "analysisTime": 157
+        },
+        "diffImage": "../bitmaps_test/20240115-015541/failed_diff_puppet_backstop_features_expanded_1_getItBlock__n1_1_tablet.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_expanded_2_getItBlock__n2_1_tablet.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_expanded_2_getItBlock__n2_1_tablet.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_expanded_2_getItBlock__n2_1_tablet.log.json",
+        "selector": ".getItBlock.__n2",
+        "fileName": "puppet_backstop_features_expanded_2_getItBlock__n2_1_tablet.png",
+        "label": "expanded",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 0.8469414944235087,
+          "misMatchPercentage": "0.85",
+          "analysisTime": 230
+        },
+        "diffImage": "../bitmaps_test/20240115-015541/failed_diff_puppet_backstop_features_expanded_2_getItBlock__n2_1_tablet.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_expanded_3_getItBlock__n3_1_tablet.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_expanded_3_getItBlock__n3_1_tablet.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_expanded_3_getItBlock__n3_1_tablet.log.json",
+        "selector": ".getItBlock.__n3",
+        "fileName": "puppet_backstop_features_expanded_3_getItBlock__n3_1_tablet.png",
+        "label": "expanded",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "misMatchPercentage": "0.00"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_notExpanded_0_getItBlock_0_phone.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_notExpanded_0_getItBlock_0_phone.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_notExpanded_0_getItBlock_0_phone.log.json",
+        "selector": ".getItBlock",
+        "fileName": "puppet_backstop_features_notExpanded_0_getItBlock_0_phone.png",
+        "label": "notExpanded",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "phone",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 8.487737200143215,
+          "misMatchPercentage": "8.49",
+          "analysisTime": 170
+        },
+        "diffImage": "../bitmaps_test/20240115-015541/failed_diff_puppet_backstop_features_notExpanded_0_getItBlock_0_phone.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_notExpanded_0_getItBlock_1_tablet.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_notExpanded_0_getItBlock_1_tablet.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_notExpanded_0_getItBlock_1_tablet.log.json",
+        "selector": ".getItBlock",
+        "fileName": "puppet_backstop_features_notExpanded_0_getItBlock_1_tablet.png",
+        "label": "notExpanded",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 5.729701952723536,
+          "misMatchPercentage": "5.73",
+          "analysisTime": 101
+        },
+        "diffImage": "../bitmaps_test/20240115-015541/failed_diff_puppet_backstop_features_notExpanded_0_getItBlock_1_tablet.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_expect_0_getItBlock_0_phone.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_expect_0_getItBlock_0_phone.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_expect_0_getItBlock_0_phone.log.json",
+        "selector": ".getItBlock",
+        "fileName": "puppet_backstop_features_expect_0_getItBlock_0_phone.png",
+        "label": "expect",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 4,
+        "viewportLabel": "phone",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 8.487737200143215,
+          "misMatchPercentage": "8.49",
+          "analysisTime": 101
+        },
+        "diffImage": "../bitmaps_test/20240115-015541/failed_diff_puppet_backstop_features_expect_0_getItBlock_0_phone.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_expect_1_getItBlock__n1_0_phone.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_expect_1_getItBlock__n1_0_phone.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_expect_1_getItBlock__n1_0_phone.log.json",
+        "selector": ".getItBlock.__n1",
+        "fileName": "puppet_backstop_features_expect_1_getItBlock__n1_0_phone.png",
+        "label": "expect",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 4,
+        "viewportLabel": "phone",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 3.715016708437761,
+          "misMatchPercentage": "3.72",
+          "analysisTime": 38
+        },
+        "diffImage": "../bitmaps_test/20240115-015541/failed_diff_puppet_backstop_features_expect_1_getItBlock__n1_0_phone.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_expect_2_getItBlock__n2_0_phone.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_expect_2_getItBlock__n2_0_phone.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_expect_2_getItBlock__n2_0_phone.log.json",
+        "selector": ".getItBlock.__n2",
+        "fileName": "puppet_backstop_features_expect_2_getItBlock__n2_0_phone.png",
+        "label": "expect",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 4,
+        "viewportLabel": "phone",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 1.4108801415302963,
+          "misMatchPercentage": "1.41",
+          "analysisTime": 134
+        },
+        "diffImage": "../bitmaps_test/20240115-015541/failed_diff_puppet_backstop_features_expect_2_getItBlock__n2_0_phone.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_expect_3_getItBlock__n3_0_phone.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_expect_3_getItBlock__n3_0_phone.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_expect_3_getItBlock__n3_0_phone.log.json",
+        "selector": ".getItBlock.__n3",
+        "fileName": "puppet_backstop_features_expect_3_getItBlock__n3_0_phone.png",
+        "label": "expect",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 4,
+        "viewportLabel": "phone",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "misMatchPercentage": "0.00"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_expect_0_getItBlock_1_tablet.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_expect_0_getItBlock_1_tablet.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_expect_0_getItBlock_1_tablet.log.json",
+        "selector": ".getItBlock",
+        "fileName": "puppet_backstop_features_expect_0_getItBlock_1_tablet.png",
+        "label": "expect",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 4,
+        "viewportLabel": "tablet",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 5.729701952723536,
+          "misMatchPercentage": "5.73",
+          "analysisTime": 294
+        },
+        "diffImage": "../bitmaps_test/20240115-015541/failed_diff_puppet_backstop_features_expect_0_getItBlock_1_tablet.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_expect_1_getItBlock__n1_1_tablet.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_expect_1_getItBlock__n1_1_tablet.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_expect_1_getItBlock__n1_1_tablet.log.json",
+        "selector": ".getItBlock.__n1",
+        "fileName": "puppet_backstop_features_expect_1_getItBlock__n1_1_tablet.png",
+        "label": "expect",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 4,
+        "viewportLabel": "tablet",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 2.195101062007537,
+          "misMatchPercentage": "2.20",
+          "analysisTime": 137
+        },
+        "diffImage": "../bitmaps_test/20240115-015541/failed_diff_puppet_backstop_features_expect_1_getItBlock__n1_1_tablet.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_expect_2_getItBlock__n2_1_tablet.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_expect_2_getItBlock__n2_1_tablet.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_expect_2_getItBlock__n2_1_tablet.log.json",
+        "selector": ".getItBlock.__n2",
+        "fileName": "puppet_backstop_features_expect_2_getItBlock__n2_1_tablet.png",
+        "label": "expect",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 4,
+        "viewportLabel": "tablet",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 0.8469414944235087,
+          "misMatchPercentage": "0.85",
+          "analysisTime": 159
+        },
+        "diffImage": "../bitmaps_test/20240115-015541/failed_diff_puppet_backstop_features_expect_2_getItBlock__n2_1_tablet.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_expect_3_getItBlock__n3_1_tablet.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_expect_3_getItBlock__n3_1_tablet.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_expect_3_getItBlock__n3_1_tablet.log.json",
+        "selector": ".getItBlock.__n3",
+        "fileName": "puppet_backstop_features_expect_3_getItBlock__n3_1_tablet.png",
+        "label": "expect",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 4,
+        "viewportLabel": "tablet",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "misMatchPercentage": "0.00"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_magicSelectors_0_document_0_phone.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_magicSelectors_0_document_0_phone.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_magicSelectors_0_document_0_phone.log.json",
+        "selector": "document",
+        "fileName": "puppet_backstop_features_magicSelectors_0_document_0_phone.png",
+        "label": "magicSelectors",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "phone",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 3.750635162601626,
+          "misMatchPercentage": "3.75",
+          "analysisTime": 174
+        },
+        "diffImage": "../bitmaps_test/20240115-015541/failed_diff_puppet_backstop_features_magicSelectors_0_document_0_phone.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_magicSelectors_1_viewport_0_phone.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_magicSelectors_1_viewport_0_phone.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_magicSelectors_1_viewport_0_phone.log.json",
+        "selector": "viewport",
+        "fileName": "puppet_backstop_features_magicSelectors_1_viewport_0_phone.png",
+        "label": "magicSelectors",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "phone",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 3.8776041666666665,
+          "misMatchPercentage": "3.88",
+          "analysisTime": 155
+        },
+        "diffImage": "../bitmaps_test/20240115-015541/failed_diff_puppet_backstop_features_magicSelectors_1_viewport_0_phone.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_magicSelectors_0_document_1_tablet.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_magicSelectors_0_document_1_tablet.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_magicSelectors_0_document_1_tablet.log.json",
+        "selector": "document",
+        "fileName": "puppet_backstop_features_magicSelectors_0_document_1_tablet.png",
+        "label": "magicSelectors",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 1.9487233813980136,
+          "misMatchPercentage": "1.95",
+          "analysisTime": 114
+        },
+        "diffImage": "../bitmaps_test/20240115-015541/failed_diff_puppet_backstop_features_magicSelectors_0_document_1_tablet.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_magicSelectors_1_viewport_1_tablet.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_magicSelectors_1_viewport_1_tablet.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_magicSelectors_1_viewport_1_tablet.log.json",
+        "selector": "viewport",
+        "fileName": "puppet_backstop_features_magicSelectors_1_viewport_1_tablet.png",
+        "label": "magicSelectors",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 1.7199198404947917,
+          "misMatchPercentage": "1.72",
+          "analysisTime": 90
+        },
+        "diffImage": "../bitmaps_test/20240115-015541/failed_diff_puppet_backstop_features_magicSelectors_1_viewport_1_tablet.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_hideSelectors_0_document_0_phone.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_hideSelectors_0_document_0_phone.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_hideSelectors_0_document_0_phone.log.json",
+        "selector": "document",
+        "fileName": "puppet_backstop_features_hideSelectors_0_document_0_phone.png",
+        "label": "hideSelectors",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "phone",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 0.5303607723577236,
+          "misMatchPercentage": "0.53",
+          "analysisTime": 218
+        },
+        "diffImage": "../bitmaps_test/20240115-015541/failed_diff_puppet_backstop_features_hideSelectors_0_document_0_phone.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_hideSelectors_0_document_1_tablet.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_hideSelectors_0_document_1_tablet.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_hideSelectors_0_document_1_tablet.log.json",
+        "selector": "document",
+        "fileName": "puppet_backstop_features_hideSelectors_0_document_1_tablet.png",
+        "label": "hideSelectors",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 0.25230973071046603,
+          "misMatchPercentage": "0.25",
+          "analysisTime": 174
+        },
+        "diffImage": "../bitmaps_test/20240115-015541/failed_diff_puppet_backstop_features_hideSelectors_0_document_1_tablet.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_removeSelectors_0_document_0_phone.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_removeSelectors_0_document_0_phone.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_removeSelectors_0_document_0_phone.log.json",
+        "selector": "document",
+        "fileName": "puppet_backstop_features_removeSelectors_0_document_0_phone.png",
+        "label": "removeSelectors",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "phone",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 1.0872395833333333,
+          "misMatchPercentage": "1.09",
+          "analysisTime": 136
+        },
+        "diffImage": "../bitmaps_test/20240115-015541/failed_diff_puppet_backstop_features_removeSelectors_0_document_0_phone.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_removeSelectors_0_document_1_tablet.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_removeSelectors_0_document_1_tablet.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_removeSelectors_0_document_1_tablet.log.json",
+        "selector": "document",
+        "fileName": "puppet_backstop_features_removeSelectors_0_document_1_tablet.png",
+        "label": "removeSelectors",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 0.4300435384114583,
+          "misMatchPercentage": "0.43",
+          "analysisTime": 303
+        },
+        "diffImage": "../bitmaps_test/20240115-015541/failed_diff_puppet_backstop_features_removeSelectors_0_document_1_tablet.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_notFound_0_monkey_0_phone.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_notFound_0_monkey_0_phone.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_notFound_0_monkey_0_phone.log.json",
+        "selector": ".monkey",
+        "fileName": "puppet_backstop_features_notFound_0_monkey_0_phone.png",
+        "label": "notFound",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "phone",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "misMatchPercentage": "0.00"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_notFound_0_monkey_1_tablet.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_notFound_0_monkey_1_tablet.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_notFound_0_monkey_1_tablet.log.json",
+        "selector": ".monkey",
+        "fileName": "puppet_backstop_features_notFound_0_monkey_1_tablet.png",
+        "label": "notFound",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "misMatchPercentage": "0.00"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_notVisible_0_noShow_0_phone.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_notVisible_0_noShow_0_phone.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_notVisible_0_noShow_0_phone.log.json",
+        "selector": "#noShow",
+        "fileName": "puppet_backstop_features_notVisible_0_noShow_0_phone.png",
+        "label": "notVisible",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "phone",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "misMatchPercentage": "0.00"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_notVisible_0_noShow_1_tablet.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_notVisible_0_noShow_1_tablet.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_notVisible_0_noShow_1_tablet.log.json",
+        "selector": "#noShow",
+        "fileName": "puppet_backstop_features_notVisible_0_noShow_1_tablet.png",
+        "label": "notVisible",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "misMatchPercentage": "0.00"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_cookies_0_moneyshot_0_phone.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_cookies_0_moneyshot_0_phone.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_cookies_0_moneyshot_0_phone.log.json",
+        "selector": ".moneyshot",
+        "fileName": "puppet_backstop_features_cookies_0_moneyshot_0_phone.png",
+        "label": "cookies",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html?cookie",
+        "expect": 0,
+        "viewportLabel": "phone",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 3.2806647940074907,
+          "misMatchPercentage": "3.28",
+          "analysisTime": 91
+        },
+        "diffImage": "../bitmaps_test/20240115-015541/failed_diff_puppet_backstop_features_cookies_0_moneyshot_0_phone.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_cookies_0_moneyshot_1_tablet.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_cookies_0_moneyshot_1_tablet.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_cookies_0_moneyshot_1_tablet.log.json",
+        "selector": ".moneyshot",
+        "fileName": "puppet_backstop_features_cookies_0_moneyshot_1_tablet.png",
+        "label": "cookies",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html?cookie",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 1.2706930693069307,
+          "misMatchPercentage": "1.27",
+          "analysisTime": 131
+        },
+        "diffImage": "../bitmaps_test/20240115-015541/failed_diff_puppet_backstop_features_cookies_0_moneyshot_1_tablet.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_hover_0_moneyshot_0_phone.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_hover_0_moneyshot_0_phone.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_hover_0_moneyshot_0_phone.log.json",
+        "selector": ".moneyshot",
+        "fileName": "puppet_backstop_features_hover_0_moneyshot_0_phone.png",
+        "label": "hover",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html?click",
+        "expect": 0,
+        "viewportLabel": "phone",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 3.039888211382114,
+          "misMatchPercentage": "3.04",
+          "analysisTime": 33
+        },
+        "diffImage": "../bitmaps_test/20240115-015541/failed_diff_puppet_backstop_features_hover_0_moneyshot_0_phone.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_hover_0_moneyshot_1_tablet.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_hover_0_moneyshot_1_tablet.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_hover_0_moneyshot_1_tablet.log.json",
+        "selector": ".moneyshot",
+        "fileName": "puppet_backstop_features_hover_0_moneyshot_1_tablet.png",
+        "label": "hover",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html?click",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 0.7996376811594202,
+          "misMatchPercentage": "0.80",
+          "analysisTime": 238
+        },
+        "diffImage": "../bitmaps_test/20240115-015541/failed_diff_puppet_backstop_features_hover_0_moneyshot_1_tablet.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_click_0_moneyshot_0_phone.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_click_0_moneyshot_0_phone.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_click_0_moneyshot_0_phone.log.json",
+        "selector": ".moneyshot",
+        "fileName": "puppet_backstop_features_click_0_moneyshot_0_phone.png",
+        "label": "click",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html?click",
+        "expect": 0,
+        "viewportLabel": "phone",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 10.240091463414634,
+          "misMatchPercentage": "10.24",
+          "analysisTime": 85
+        },
+        "diffImage": "../bitmaps_test/20240115-015541/failed_diff_puppet_backstop_features_click_0_moneyshot_0_phone.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_click_0_moneyshot_1_tablet.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_click_0_moneyshot_1_tablet.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_click_0_moneyshot_1_tablet.log.json",
+        "selector": ".moneyshot",
+        "fileName": "puppet_backstop_features_click_0_moneyshot_1_tablet.png",
+        "label": "click",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html?click",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 12.13876811594203,
+          "misMatchPercentage": "12.14",
+          "analysisTime": 149
+        },
+        "diffImage": "../bitmaps_test/20240115-015541/failed_diff_puppet_backstop_features_click_0_moneyshot_1_tablet.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_scrollToSelector_0_lemurFace_0_phone.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_scrollToSelector_0_lemurFace_0_phone.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_scrollToSelector_0_lemurFace_0_phone.log.json",
+        "selector": ".lemurFace",
+        "fileName": "puppet_backstop_features_scrollToSelector_0_lemurFace_0_phone.png",
+        "label": "scrollToSelector",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/test/configs/special_cases/scrollToSelector.html",
+        "expect": 0,
+        "viewportLabel": "phone",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 0,
+          "misMatchPercentage": "0.00",
+          "analysisTime": 35
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_scrollToSelector_0_lemurFace_1_tablet.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_scrollToSelector_0_lemurFace_1_tablet.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_scrollToSelector_0_lemurFace_1_tablet.log.json",
+        "selector": ".lemurFace",
+        "fileName": "puppet_backstop_features_scrollToSelector_0_lemurFace_1_tablet.png",
+        "label": "scrollToSelector",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/test/configs/special_cases/scrollToSelector.html",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 0,
+          "misMatchPercentage": "0.00",
+          "analysisTime": 17
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_scenarioSpecificViewports_0_document_0_Galaxy-S5.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_scenarioSpecificViewports_0_document_0_Galaxy-S5.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_scenarioSpecificViewports_0_document_0_Galaxy-S5.log.json",
+        "selector": "document",
+        "fileName": "puppet_backstop_features_scenarioSpecificViewports_0_document_0_Galaxy-S5.png",
+        "label": "scenarioSpecificViewports",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "Galaxy-S5",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 3.5775560224089635,
+          "misMatchPercentage": "3.58",
+          "analysisTime": 144
+        },
+        "diffImage": "../bitmaps_test/20240115-015541/failed_diff_puppet_backstop_features_scenarioSpecificViewports_0_document_0_Galaxy-S5.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_scenarioSpecificViewports_1_viewport_0_Galaxy-S5.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_scenarioSpecificViewports_1_viewport_0_Galaxy-S5.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_scenarioSpecificViewports_1_viewport_0_Galaxy-S5.log.json",
+        "selector": "viewport",
+        "fileName": "puppet_backstop_features_scenarioSpecificViewports_1_viewport_0_Galaxy-S5.png",
+        "label": "scenarioSpecificViewports",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "Galaxy-S5",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 4.380642361111111,
+          "misMatchPercentage": "4.38",
+          "analysisTime": 264
+        },
+        "diffImage": "../bitmaps_test/20240115-015541/failed_diff_puppet_backstop_features_scenarioSpecificViewports_1_viewport_0_Galaxy-S5.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_scenarioSpecificViewports-withEmptyViewports_0_document_0_phone.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_scenarioSpecificViewports-withEmptyViewports_0_document_0_phone.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_scenarioSpecificViewports-withEmptyViewports_0_document_0_phone.log.json",
+        "selector": "document",
+        "fileName": "puppet_backstop_features_scenarioSpecificViewports-withEmptyViewports_0_document_0_phone.png",
+        "label": "scenarioSpecificViewports-withEmptyViewports",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "phone",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 3.750635162601626,
+          "misMatchPercentage": "3.75",
+          "analysisTime": 119
+        },
+        "diffImage": "../bitmaps_test/20240115-015541/failed_diff_puppet_backstop_features_scenarioSpecificViewports-withEmptyViewports_0_document_0_phone.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_scenarioSpecificViewports-withEmptyViewports_0_document_1_tablet.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_scenarioSpecificViewports-withEmptyViewports_0_document_1_tablet.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_scenarioSpecificViewports-withEmptyViewports_0_document_1_tablet.log.json",
+        "selector": "document",
+        "fileName": "puppet_backstop_features_scenarioSpecificViewports-withEmptyViewports_0_document_1_tablet.png",
+        "label": "scenarioSpecificViewports-withEmptyViewports",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "tablet",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 1.9487233813980136,
+          "misMatchPercentage": "1.95",
+          "analysisTime": 86
+        },
+        "diffImage": "../bitmaps_test/20240115-015541/failed_diff_puppet_backstop_features_scenarioSpecificViewports-withEmptyViewports_0_document_1_tablet.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_scenarioSpecificViewports-withMultipleViewports_0_document_0_Pixel-2.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_scenarioSpecificViewports-withMultipleViewports_0_document_0_Pixel-2.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_scenarioSpecificViewports-withMultipleViewports_0_document_0_Pixel-2.log.json",
+        "selector": "document",
+        "fileName": "puppet_backstop_features_scenarioSpecificViewports-withMultipleViewports_0_document_0_Pixel-2.png",
+        "label": "scenarioSpecificViewports-withMultipleViewports",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "Pixel-2",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 3.1105135100525034,
+          "misMatchPercentage": "3.11",
+          "analysisTime": 112
+        },
+        "diffImage": "../bitmaps_test/20240115-015541/failed_diff_puppet_backstop_features_scenarioSpecificViewports-withMultipleViewports_0_document_0_Pixel-2.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_scenarioSpecificViewports-withMultipleViewports_0_document_1_Pixel2-XL.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_scenarioSpecificViewports-withMultipleViewports_0_document_1_Pixel2-XL.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_scenarioSpecificViewports-withMultipleViewports_0_document_1_Pixel2-XL.log.json",
+        "selector": "document",
+        "fileName": "puppet_backstop_features_scenarioSpecificViewports-withMultipleViewports_0_document_1_Pixel2-XL.png",
+        "label": "scenarioSpecificViewports-withMultipleViewports",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "Pixel2-XL",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 3.1105135100525034,
+          "misMatchPercentage": "3.11",
+          "analysisTime": 216
+        },
+        "diffImage": "../bitmaps_test/20240115-015541/failed_diff_puppet_backstop_features_scenarioSpecificViewports-withMultipleViewports_0_document_1_Pixel2-XL.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_scenarioSpecificViewports-withMultipleViewports_0_document_2_iPhone-X.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_scenarioSpecificViewports-withMultipleViewports_0_document_2_iPhone-X.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_scenarioSpecificViewports-withMultipleViewports_0_document_2_iPhone-X.log.json",
+        "selector": "document",
+        "fileName": "puppet_backstop_features_scenarioSpecificViewports-withMultipleViewports_0_document_2_iPhone-X.png",
+        "label": "scenarioSpecificViewports-withMultipleViewports",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "iPhone-X",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 3.484741049704553,
+          "misMatchPercentage": "3.48",
+          "analysisTime": 204
+        },
+        "diffImage": "../bitmaps_test/20240115-015541/failed_diff_puppet_backstop_features_scenarioSpecificViewports-withMultipleViewports_0_document_2_iPhone-X.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_scenarioSpecificViewports-withMultipleViewports_0_document_3_iPad-Pro.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_scenarioSpecificViewports-withMultipleViewports_0_document_3_iPad-Pro.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_scenarioSpecificViewports-withMultipleViewports_0_document_3_iPad-Pro.log.json",
+        "selector": "document",
+        "fileName": "puppet_backstop_features_scenarioSpecificViewports-withMultipleViewports_0_document_3_iPad-Pro.png",
+        "label": "scenarioSpecificViewports-withMultipleViewports",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "iPad-Pro",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 1.8674076912518303,
+          "misMatchPercentage": "1.87",
+          "analysisTime": 79
+        },
+        "diffImage": "../bitmaps_test/20240115-015541/failed_diff_puppet_backstop_features_scenarioSpecificViewports-withMultipleViewports_0_document_3_iPad-Pro.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_scenarioSpecificViewports-withExpandSelector_0_getItBlock_0_iPad-Pro.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_scenarioSpecificViewports-withExpandSelector_0_getItBlock_0_iPad-Pro.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_scenarioSpecificViewports-withExpandSelector_0_getItBlock_0_iPad-Pro.log.json",
+        "selector": ".getItBlock",
+        "fileName": "puppet_backstop_features_scenarioSpecificViewports-withExpandSelector_0_getItBlock_0_iPad-Pro.png",
+        "label": "scenarioSpecificViewports-withExpandSelector",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "iPad-Pro",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 5.729701952723536,
+          "misMatchPercentage": "5.73",
+          "analysisTime": 109
+        },
+        "diffImage": "../bitmaps_test/20240115-015541/failed_diff_puppet_backstop_features_scenarioSpecificViewports-withExpandSelector_0_getItBlock_0_iPad-Pro.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_scenarioSpecificViewports-withExpandSelector_1_getItBlock__n1_0_iPad-Pro.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_scenarioSpecificViewports-withExpandSelector_1_getItBlock__n1_0_iPad-Pro.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_scenarioSpecificViewports-withExpandSelector_1_getItBlock__n1_0_iPad-Pro.log.json",
+        "selector": ".getItBlock.__n1",
+        "fileName": "puppet_backstop_features_scenarioSpecificViewports-withExpandSelector_1_getItBlock__n1_0_iPad-Pro.png",
+        "label": "scenarioSpecificViewports-withExpandSelector",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "iPad-Pro",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 2.195101062007537,
+          "misMatchPercentage": "2.20",
+          "analysisTime": 84
+        },
+        "diffImage": "../bitmaps_test/20240115-015541/failed_diff_puppet_backstop_features_scenarioSpecificViewports-withExpandSelector_1_getItBlock__n1_0_iPad-Pro.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_scenarioSpecificViewports-withExpandSelector_2_getItBlock__n2_0_iPad-Pro.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_scenarioSpecificViewports-withExpandSelector_2_getItBlock__n2_0_iPad-Pro.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_scenarioSpecificViewports-withExpandSelector_2_getItBlock__n2_0_iPad-Pro.log.json",
+        "selector": ".getItBlock.__n2",
+        "fileName": "puppet_backstop_features_scenarioSpecificViewports-withExpandSelector_2_getItBlock__n2_0_iPad-Pro.png",
+        "label": "scenarioSpecificViewports-withExpandSelector",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "iPad-Pro",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 0.8469414944235087,
+          "misMatchPercentage": "0.85",
+          "analysisTime": 130
+        },
+        "diffImage": "../bitmaps_test/20240115-015541/failed_diff_puppet_backstop_features_scenarioSpecificViewports-withExpandSelector_2_getItBlock__n2_0_iPad-Pro.png"
+      },
+      "status": "fail"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_scenarioSpecificViewports-withExpandSelector_3_getItBlock__n3_0_iPad-Pro.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_scenarioSpecificViewports-withExpandSelector_3_getItBlock__n3_0_iPad-Pro.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_scenarioSpecificViewports-withExpandSelector_3_getItBlock__n3_0_iPad-Pro.log.json",
+        "selector": ".getItBlock.__n3",
+        "fileName": "puppet_backstop_features_scenarioSpecificViewports-withExpandSelector_3_getItBlock__n3_0_iPad-Pro.png",
+        "label": "scenarioSpecificViewports-withExpandSelector",
+        "misMatchThreshold": 0.1,
+        "url": "https://garris.github.io/BackstopJS/index.html",
+        "expect": 0,
+        "viewportLabel": "iPad-Pro",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "misMatchPercentage": "0.00"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "pair": {
+        "reference": "../bitmaps_reference/puppet_backstop_features_keyPressSelector_0_dividnavbar_0_Desktop.png",
+        "test": "../bitmaps_test/20240115-015541/puppet_backstop_features_keyPressSelector_0_dividnavbar_0_Desktop.png",
+        "testLog": "../bitmaps_test/20240115-015541/puppet_backstop_features_keyPressSelector_0_dividnavbar_0_Desktop.log.json",
+        "selector": "div[id=navbar]",
+        "fileName": "puppet_backstop_features_keyPressSelector_0_dividnavbar_0_Desktop.png",
+        "label": "keyPressSelector",
+        "misMatchThreshold": 5,
+        "url": "https://garris.github.io/BackstopJS/examples/featureTests/index.html",
+        "expect": 0,
+        "viewportLabel": "Desktop",
+        "diff": {
+          "isSameDimensions": true,
+          "dimensionDifference": {
+            "width": 0,
+            "height": 0
+          },
+          "rawMisMatchPercentage": 12.102777777777778,
+          "misMatchPercentage": "12.10",
+          "analysisTime": 57
+        },
+        "diffImage": "../bitmaps_test/20240115-015541/failed_diff_puppet_backstop_features_keyPressSelector_0_dividnavbar_0_Desktop.png"
+      },
+      "status": "fail"
+    }
+  ],
+  "id": "puppet_backstop_features"
+}
