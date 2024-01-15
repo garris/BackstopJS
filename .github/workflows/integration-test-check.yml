@@ -46,13 +46,13 @@ jobs:
           TEST_RESULT=$(diff <(jq 'walk(if type == "object" then with_entries(.value |= if type == "object" or type == "array" then . else "" end) else . end)' test/__fixtures__/integration-test.json) <(jq 'walk(if type == "object" then with_entries(.value |= if type == "object" or type == "array" then . else "" end) else . end)' ${TEST_REPORT_DIR}report.json))
           echo "TEST_RESULT=$TEST_RESULT" >> $GITHUB_ENV
           if [[ "$TEST_RESULT" != "" ]]; then
-            echo "# ❎ Integration Test Report Shapes Differ:" >> $GITHUB_STEP_SUMMARY
+            echo "# ❎ Report Differerent" >> $GITHUB_STEP_SUMMARY
             echo "## Failing Diff" >> $GITHUB_STEP_SUMMARY
             echo '```diff' >> $GITHUB_STEP_SUMMARY
             echo "${TEST_RESULT}" >> $GITHUB_STEP_SUMMARY
             echo '```' >> $GITHUB_STEP_SUMMARY
           else
-            echo "# ✅ Integration Test Report Shapes Match" >> $GITHUB_STEP_SUMMARY
+            echo "# ✅ Report Validated" >> $GITHUB_STEP_SUMMARY
           fi
 
       - name: "Full Integration Test Diff"

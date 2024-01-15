@@ -1,0 +1,21 @@
+name: Docker Test Checks
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+permissions:
+  actions: write
+  checks: write
+  contents: write
+  pull-requests: write
+  packages: write
+
+jobs:
+  sanity-test:
+    name: 💨 Docker Smoke Test
+    uses: ./.github/workflows/docker-smoke-test-checks.yml
+
+  smoke-test:
+    name: 🤪 Docker Sanity Test
+    uses: ./.github/workflows/docker-sanity-test-checks.yml

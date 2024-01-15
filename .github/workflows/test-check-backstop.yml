@@ -1,4 +1,4 @@
-name: Backstop Test Checks
+name: Test Checks
 
 on:
   workflow_dispatch:

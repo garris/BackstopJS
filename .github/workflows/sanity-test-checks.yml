@@ -46,12 +46,12 @@ jobs:
             <(jq 'walk(if type == "object" then with_entries(.value |= if type == "object" or type == "array" then . else "" end) else . end)' test/configs/backstop_data/bitmaps_test/**/report.json))
           echo "PUPPETEER_TEST_RESULT=$PUPPETEER_TEST_RESULT" >> $GITHUB_ENV
           if [[ "$PUPPETEER_TEST_RESULT" != "" ]]; then
-            echo "# ❎ Puppeteer Sanity Different" >> $GITHUB_STEP_SUMMARY
+            echo "# ❎ Report Different" >> $GITHUB_STEP_SUMMARY
             echo '```diff' >> $GITHUB_STEP_SUMMARY
             echo "${PUPPETEER_TEST_RESULT}" >> $GITHUB_STEP_SUMMARY
             echo '```' >> $GITHUB_STEP_SUMMARY
           else
-            echo "# ✅ Puppeteer Sanity Report Valid" >> $GITHUB_STEP_SUMMARY
+            echo "# ✅ Report Validated" >> $GITHUB_STEP_SUMMARY
           fi
 
       - name: "Full Sanity Report Diff"
@@ -112,12 +112,12 @@ jobs:
             <(jq 'walk(if type == "object" then with_entries(.value |= if type == "object" or type == "array" then . else "" end) else . end)' test/configs/backstop_data/bitmaps_test/**/report.json))
           echo "PLAYWRIGHT_TEST_RESULT=$PLAYWRIGHT_TEST_RESULT" >> $GITHUB_ENV
           if [[ "$PLAYWRIGHT_TEST_RESULT" != "" ]]; then
-            echo "# ❎ Playwright Sanity Report Different" >> $GITHUB_STEP_SUMMARY
+            echo "# ❎ Report Different" >> $GITHUB_STEP_SUMMARY
             echo '```diff' >> $GITHUB_STEP_SUMMARY
             echo "${PLAYWRIGHT_TEST_RESULT}" >> $GITHUB_STEP_SUMMARY
             echo '```' >> $GITHUB_STEP_SUMMARY
           else
-            echo "# ✅ Playwright Sanity Report Valid" >> $GITHUB_STEP_SUMMARY
+            echo "# ✅ Report Validated" >> $GITHUB_STEP_SUMMARY
           fi
 
       - name: "Full Sanity Report Diff"
