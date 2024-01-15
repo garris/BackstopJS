@@ -1,0 +1,199 @@
+name: Docker Sanity Test Checks
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+permissions:
+  actions: write
+  checks: write
+  contents: write
+  pull-requests: write
+  packages: write
+
+env:
+  BRANCH_NAME: ${{ github.event.pull_request.head_ref || github.event.pull_request.head.ref_name || github.head_ref || github.ref_name }}
+  NODE_VERSION: 20
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  sanity-test-puppeteer:
+    name: 🤪 Puppeteer
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          ref: ${{ github.event.pull_request.head.sha || github.ref }}
+
+      - name: Set Name and Tag Vars
+        env:
+          name: "${{ env.BRANCH_NAME }}"
+        run: |
+          echo "IMAGE_NAME_LC=${IMAGE_NAME,,}" >>${GITHUB_ENV}
+          echo "TAG=${name/\//-}" >> $GITHUB_ENV
+          echo "PV=$(cat package.json | jq -r '.version')" >> $GITHUB_ENV
+          echo "PLAYWRIGHT_VERSION=$(cat package.json | jq -r '.dependencies.playwright')"  >> $GITHUB_ENV
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: ⬢ Setup Node & Cache
+        uses: actions/setup-node@v4
+        with:
+          cache: "npm"
+          cache-dependency-path: package-lock.json
+
+      - name: ↧ Install
+        run: npm ci
+
+      - name: Pull Image
+        run: |
+          docker pull $REGISTRY/$IMAGE_NAME_LC:$TAG
+
+      - name: "𓋏 Run `backstop test` in Docker"
+        continue-on-error: true
+        run: |
+          set +e
+          cd test/configs/ && docker run --rm -t --mount type=bind,source="$(pwd)",target=/src $REGISTRY/$IMAGE_NAME_LC:$TAG test
+
+      - name: "Validate Puppeteer Docker Test Results"
+        continue-on-error: true
+        run: |
+          set +e
+          PUPPETEER_TEST_RESULT=$(diff -c <(jq 'walk(if type == "object" then with_entries(.value |= if type == "object" or type == "array" then . else "" end) else . end) | del(.tests[].pair.diff)' test/__fixtures__/sanity-test-docker.json) \
+            <(jq 'walk(if type == "object" then with_entries(.value |= if type == "object" or type == "array" then . else "" end) else . end) | del(.tests[].pair.diff)' test/configs/backstop_data/bitmaps_test/**/report.json))
+          echo "PUPPETEER_TEST_RESULT=$PUPPETEER_TEST_RESULT" >> $GITHUB_ENV
+          if [[ "$PUPPETEER_TEST_RESULT" != "" ]]; then
+            echo "# ❎ Puppeteer Smoke Different" >> $GITHUB_STEP_SUMMARY
+            echo '```diff' >> $GITHUB_STEP_SUMMARY
+            echo "${PUPPETEER_TEST_RESULT}" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+          else
+            echo "# ✅ Puppeteer Smoke Report Valid" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: "Full Smoke Report Diff"
+        id: diff
+        continue-on-error: true
+        run: |
+          set +e
+          FULL_TEST_DIFF=$(diff <(jq -S '.tests[]' test/__fixtures__/sanity-test-docker.json) <(jq -S '.tests[]' test/configs/backstop_data/bitmaps_test/**/report.json))
+          echo "## Unfiltered Diff" >> $GITHUB_STEP_SUMMARY
+          echo "<details>" >> $GITHUB_STEP_SUMMARY
+          echo "<summary>Expand Diff</summary>" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo '```diff' >> $GITHUB_STEP_SUMMARY
+          echo "${FULL_TEST_DIFF}" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "</details>" >> $GITHUB_STEP_SUMMARY
+
+      - name: "Report Validation Outcome"
+        run: |
+          if [[ "$PUPPETEER_TEST_RESULT" != "" ]]; then
+            exit 1
+          else
+            exit 0
+          fi
+
+  sanity-test-playwright:
+    name: 🤪 Playwright
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          ref: ${{ github.event.pull_request.head.sha || github.ref }}
+
+      - name: Set Name and Tag Vars
+        env:
+          name: "${{ env.BRANCH_NAME }}"
+        run: |
+          echo "IMAGE_NAME_LC=${IMAGE_NAME,,}" >>${GITHUB_ENV}
+          echo "TAG=${name/\//-}" >> $GITHUB_ENV
+          echo "PV=$(cat package.json | jq -r '.version')" >> $GITHUB_ENV
+          echo "PLAYWRIGHT_VERSION=$(cat package.json | jq -r '.dependencies.playwright')"  >> $GITHUB_ENV
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: ⬢ Setup Node & Cache
+        uses: actions/setup-node@v4
+        with:
+          cache: "npm"
+          cache-dependency-path: package-lock.json
+
+      - name: ↧ Install
+        run: npm ci --verbose --foreground-scripts
+
+      - name: Pull Image
+        run: |
+          docker pull $REGISTRY/$IMAGE_NAME_LC:$TAG
+
+      - name: "🎭 Run `backstop test --confg=playwright` in Docker"
+        continue-on-error: true
+        run: |
+          set +e
+          cd test/configs/ && docker run --rm -t --entrypoint='' --mount type=bind,source="$(pwd)",target=/src $REGISTRY/$IMAGE_NAME_LC:$TAG sh -c "chmod -R 777 /root && chmod -R 777 /opt/pw-browsers && npm --verbose --foreground-scripts i -D playwright && npx --verbose --foreground-scripts --yes playwright@$PLAYWRIGHT_VERSION install && backstop test --config=playwright"
+
+      - name: "Validate Playwright Docker Test Results"
+        continue-on-error: true
+        run: |
+          set +e
+          diff -c <(jq 'walk(if type == "object" then with_entries(.value |= if type == "object" or type == "array" then . else "" end) else . end) | del(.tests[].pair.diff)' test/__fixtures__/sanity-test-playwright-docker.json) \
+            <(jq 'walk(if type == "object" then with_entries(.value |= if type == "object" or type == "array" then . else "" end) else . end) | del(.tests[].pair.diff)' test/configs/backstop_data/bitmaps_test/**/report.json)
+          echo "PLAYWRIGHT_TEST_RESULT=$PLAYWRIGHT_TEST_RESULT" >> $GITHUB_ENV
+          if [[ "$PLAYWRIGHT_TEST_RESULT" != "" ]]; then
+            echo "# ❎ Playwright Sanity Report Different" >> $GITHUB_STEP_SUMMARY
+            echo '```diff' >> $GITHUB_STEP_SUMMARY
+            echo "${PLAYWRIGHT_TEST_RESULT}" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+          else
+            echo "# ✅ Playwright Sanity Report Valid" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: "Full Sanity Report Diff"
+        id: diff
+        continue-on-error: true
+        run: |
+          set +e
+          FULL_TEST_DIFF=$(diff <(jq -S '.tests[]' test/__fixtures__/sanity-test-playwright-docker.json) <(jq -S '.tests[]' test/configs/backstop_data/bitmaps_test/**/report.json))
+          echo "## Unfiltered Diff" >> $GITHUB_STEP_SUMMARY
+          echo "<details>" >> $GITHUB_STEP_SUMMARY
+          echo "<summary>Expand Diff</summary>" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo '```diff' >> $GITHUB_STEP_SUMMARY
+          echo "${FULL_TEST_DIFF}" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "</details>" >> $GITHUB_STEP_SUMMARY
+
+      - name: "Report Validation Outcome"
+        run: |
+          if [[ "$PLAYWRIGHT_TEST_RESULT" != "" ]]; then
+            exit 1
+          else
+            exit 0
+          fi

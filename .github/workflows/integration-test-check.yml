@@ -1,0 +1,80 @@
+name: Integration Test Check
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+permissions:
+  actions: write
+  contents: write
+  pull-requests: write
+
+env:
+  NODE_VERSION: 20
+
+jobs:
+  integration:
+    name: 🧩 Validate Integration Test Results
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          ref: ${{ github.event.pull_request.head.sha || github.ref }}
+
+      - name: ⬢ Setup Node & Cache
+        uses: actions/setup-node@v4
+        with:
+          cache: "npm"
+          cache-dependency-path: package-lock.json
+
+      - name: ↧ Install
+        run: npm ci
+
+      - name: "𓋏 Run `npm run integration-test`"
+        run: |
+          npm run integration-test
+
+      - name: "Validate Integration Test Results"
+        id: validate
+        continue-on-error: true
+        run: |
+          set +e
+          TEST_REPORT_DIR=$(ls -ltd integrationTestDir/backstop_data/bitmaps_test/*/ | grep '^d' | head -n 1 | awk '{print $NF}')
+          echo "TEST_REPORT_DIR=$TEST_REPORT_DIR" >> $GITHUB_ENV
+          TEST_RESULT=$(diff <(jq 'walk(if type == "object" then with_entries(.value |= if type == "object" or type == "array" then . else "" end) else . end)' test/__fixtures__/integration-test.json) <(jq 'walk(if type == "object" then with_entries(.value |= if type == "object" or type == "array" then . else "" end) else . end)' ${TEST_REPORT_DIR}report.json))
+          echo "TEST_RESULT=$TEST_RESULT" >> $GITHUB_ENV
+          if [[ "$TEST_RESULT" != "" ]]; then
+            echo "# ❎ Integration Test Report Shapes Differ:" >> $GITHUB_STEP_SUMMARY
+            echo "## Failing Diff" >> $GITHUB_STEP_SUMMARY
+            echo '```diff' >> $GITHUB_STEP_SUMMARY
+            echo "${TEST_RESULT}" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+          else
+            echo "# ✅ Integration Test Report Shapes Match" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: "Full Integration Test Diff"
+        id: diff
+        continue-on-error: true
+        run: |
+          set +e
+          FULL_TEST_DIFF=$(diff <(jq -S '.tests[]' test/__fixtures__/integration-test.json) <(jq -S '.tests[]' ${TEST_REPORT_DIR}report.json))
+          echo "## Unfiltered Diff" >> $GITHUB_STEP_SUMMARY
+          echo "<details>" >> $GITHUB_STEP_SUMMARY
+          echo "<summary>Expand Diff</summary>" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo '```diff' >> $GITHUB_STEP_SUMMARY
+          echo "${FULL_TEST_DIFF}" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "</details>" >> $GITHUB_STEP_SUMMARY
+
+      - name: "Test Results Validation Outcome"
+        run: |
+          if [[ "$TEST_RESULT" != "" ]]; then
+            exit 1
+          else
+            exit 0
+          fi
