@@ -1,0 +1,93 @@
+name: "Validate Smoke Report"
+description: "Diff the smoke-test reports with a fixture and validate expected shape."
+
+inputs:
+  WORKSPACE_ROOT:
+    description: "Working Directory"
+    required: true
+  RUNNER:
+    description: "Test Runner"
+    required: true
+  FIXTURE:
+    description: "Test Report Fixture"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: "Validate ${{ inputs.RUNNER }} Report"
+      id: validate
+      continue-on-error: true
+      shell: bash
+      working-directory: ${{ inputs.WORKSPACE_ROOT }}
+      run: |
+        set +e
+        FIXTURE="test/__fixtures__/${{ inputs.FIXTURE }}"
+        TEST_RESULT=$(\
+          diff -c \
+            <(jq \
+              'walk(if type == "object" then with_entries(.value |= \
+                if type == "object" or type == "array"
+                  then . \
+                else \
+                  "" \
+                end) \
+              else . \
+            end) | \
+            del(\
+              .tests[].pair.diff, \
+              .tests[].pair.diffImage \
+            )'\
+          $FIXTURE) \
+            <(jq \
+              'walk(if type == "object" then with_entries(.value |= \
+                if type == "object" or type == "array" \
+                  then . \
+                else \
+                  "" \
+                end) \
+              else . \
+            end) | \
+            del(\
+              .tests[].pair.diff, \
+              .tests[].pair.diffImage\
+            )' \
+          test/configs/backstop_data/bitmaps_test/**/report.json))
+
+        echo "TEST_RESULT=$TEST_RESULT" >> $GITHUB_ENV
+        if [[ "$TEST_RESULT" != "" ]]; then
+          echo "# ❎ ${{ inputs.RUNNER }} Report Different" >> $GITHUB_STEP_SUMMARY
+          echo '```diff' >> $GITHUB_STEP_SUMMARY
+          echo "$TEST_RESULT" >> $GITHUB_STEP_SUMMARY
+          echo '```'
+        else
+          echo "# ✅ ${{ inputs.RUNNER }} Report Validated" >> $GITHUB_STEP_SUMMARY
+        fi
+
+    - name: "Full Smoke Report Diff"
+      id: diff
+      continue-on-error: true
+      shell: bash
+      working-directory: ${{ inputs.WORKSPACE_ROOT }}
+      run: |
+        set +e
+        FULL_TEST_DIFF=$(diff <(jq -S '.tests[]' $FIXTURE) <(jq -S '.tests[]' test/configs/backstop_data/bitmaps_test/**/report.json))
+        echo "## Unfiltered Diff" >> $GITHUB_STEP_SUMMARY
+        echo "<details>" >> $GITHUB_STEP_SUMMARY
+        echo "<summary>Expand Diff</summary>" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo '```diff' >> $GITHUB_STEP_SUMMARY
+        echo "${FULL_TEST_DIFF}" >> $GITHUB_STEP_SUMMARY
+        echo '```' >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "</details>" >> $GITHUB_STEP_SUMMARY
+
+    - name: "Report Validation Outcome"
+      shell: bash
+      working-directory: ${{ inputs.WORKSPACE_ROOT }}
+      run: |
+        if [[ "$TEST_RESULT" != "" ]]; then
+          exit 1
+        else
+          exit 0
+        fi

@@ -1,0 +1,23 @@
+name: "Setup Base Workflow"
+description: "Checks out the BackstopJS repo at the calling or current branch with shallow history. Pulls Docker image by branch tag. Installs dependencies. Optionally sets up interactive remote debug shell."
+
+outputs:
+  WORKSPACE_ROOT:
+    description: "Export the root workspace for all workflows."
+    value: ${{ steps.workspace_root.outputs.WORKSPACE_ROOT }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set workspace root
+      id: workspace_root
+      shell: bash
+      run: |
+        WORKSPACE_ROOT=$GITHUB_WORKSPACE/repo
+        echo "WORKSPACE_ROOT=$WORKSPACE_ROOT" | tee -a $GITHUB_OUTPUT
+
+    - name: Checkout to workspace
+      shell: bash
+      run: |
+        git clone -b ${{ github.event.pull_request.head.sha || github.head_ref || github.ref_name || github.ref }} https://github.com/${{ github.repository }}.git ${{ steps.workspace_root.outputs.WORKSPACE_ROOT }}
+        ls ${{ steps.workspace_root.outputs.WORKSPACE_ROOT }}

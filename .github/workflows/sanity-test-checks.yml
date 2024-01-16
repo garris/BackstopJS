@@ -2,6 +2,7 @@ name: Sanity Test Checks
 
 on:
   workflow_dispatch:
+
   workflow_call:
 
 permissions:
@@ -17,129 +18,68 @@ jobs:
     name: 🤪 Puppeteer
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout actions
         uses: actions/checkout@v4
         with:
-          fetch-depth: 1
-          ref: ${{ github.event.pull_request.head.sha || github.ref }}
+          ref: ${{ github.event.pull_request.head.sha || github.head_ref || github.ref_name || github.ref }}
+          sparse-checkout: |
+            .github/actions
+          path: actions
 
-      - name: ⬢ Setup Node & Cache
-        uses: actions/setup-node@v4
+      - uses: ./actions/.github/actions/setup-base
+        id: base
+
+      - uses: ./actions/.github/actions/setup-node
+        id: node
         with:
-          cache: "npm"
-          cache-dependency-path: package-lock.json
-
-      - name: ↧ Install
-        run: npm ci
+          WORKSPACE_ROOT: ${{ steps.base.outputs.WORKSPACE_ROOT }}
 
       - name: "𓋏 Run `npm run sanity-test`"
         continue-on-error: true
+        shell: bash
+        working-directory: ${{ steps.base.outputs.WORKSPACE_ROOT }}
         run: |
           npm run sanity-test
 
-      - name: "Validate Puppeteer Report"
-        id: validate-puppeteer
-        continue-on-error: true
-        run: |
-          set +e
-          PUPPETEER_TEST_RESULT=$(diff -c <(jq 'walk(if type == "object" then with_entries(.value |= if type == "object" or type == "array" then . else "" end) else . end)' test/__fixtures__/sanity-test.json) \
-            <(jq 'walk(if type == "object" then with_entries(.value |= if type == "object" or type == "array" then . else "" end) else . end)' test/configs/backstop_data/bitmaps_test/**/report.json))
-          echo "PUPPETEER_TEST_RESULT=$PUPPETEER_TEST_RESULT" >> $GITHUB_ENV
-          if [[ "$PUPPETEER_TEST_RESULT" != "" ]]; then
-            echo "# ❎ Report Different" >> $GITHUB_STEP_SUMMARY
-            echo '```diff' >> $GITHUB_STEP_SUMMARY
-            echo "${PUPPETEER_TEST_RESULT}" >> $GITHUB_STEP_SUMMARY
-            echo '```' >> $GITHUB_STEP_SUMMARY
-          else
-            echo "# ✅ Report Validated" >> $GITHUB_STEP_SUMMARY
-          fi
-
-      - name: "Full Sanity Report Diff"
-        id: diff
-        continue-on-error: true
-        run: |
-          set +e
-          FULL_TEST_DIFF=$(diff <(jq -S '.tests[]' test/__fixtures__/sanity-test.json) <(jq -S '.tests[]' test/configs/backstop_data/bitmaps_test/**/report.json))
-          echo "## Unfiltered Diff" >> $GITHUB_STEP_SUMMARY
-          echo "<details>" >> $GITHUB_STEP_SUMMARY
-          echo "<summary>Expand Diff</summary>" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo '```diff' >> $GITHUB_STEP_SUMMARY
-          echo "${FULL_TEST_DIFF}" >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "</details>" >> $GITHUB_STEP_SUMMARY
-
-      - name: "Report Validation Outcome"
-        run: |
-          if [[ "$PUPPETEER_TEST_RESULT" != "" ]]; then
-            exit 1
-          else
-            exit 0
-          fi
+      - uses: ./actions/.github/actions/sanity-test-checks
+        with:
+          WORKSPACE_ROOT: ${{ steps.base.outputs.WORKSPACE_ROOT }}
+          RUNNER: "Puppeteer"
+          FIXTURE: "sanity-test.json"
 
   sanity-playwright:
     name: 🤪 Playwright
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout actions
         uses: actions/checkout@v4
         with:
-          fetch-depth: 1
-          ref: ${{ github.event.pull_request.head.sha || github.ref }}
+          ref: ${{ github.event.pull_request.head.sha || github.head_ref || github.ref_name || github.ref }}
+          sparse-checkout: |
+            .github/actions
+          path: actions
 
-      - name: ⬢ Setup Node & Cache
-        uses: actions/setup-node@v4
+      - uses: ./actions/.github/actions/setup-base
+        id: base
+
+      - uses: ./actions/.github/actions/setup-node
+        id: node
         with:
-          cache: "npm"
-          cache-dependency-path: package-lock.json
+          WORKSPACE_ROOT: ${{ steps.base.outputs.WORKSPACE_ROOT }}
 
-      - name: ↧ Install
-        run: npm ci
+      - uses: ./actions/.github/actions/cache-playwright
+        with:
+          WORKSPACE_ROOT: ${{ steps.base.outputs.WORKSPACE_ROOT }}
 
       - name: "🎭 Run `npm run sanity-test-playwright`"
         continue-on-error: true
+        shell: bash
+        working-directory: ${{ steps.base.outputs.WORKSPACE_ROOT }}
         run: |
-          npx playwright install --with-deps
           npm run sanity-test-playwright
 
-      - name: "Validate Playwright Report"
-        id: validate-playwright
-        continue-on-error: true
-        run: |
-          set +e
-          PLAYWRIGHT_TEST_RESULT=$(diff -c <(jq 'walk(if type == "object" then with_entries(.value |= if type == "object" or type == "array" then . else "" end) else . end)' test/__fixtures__/sanity-test-playwright.json) \
-            <(jq 'walk(if type == "object" then with_entries(.value |= if type == "object" or type == "array" then . else "" end) else . end)' test/configs/backstop_data/bitmaps_test/**/report.json))
-          echo "PLAYWRIGHT_TEST_RESULT=$PLAYWRIGHT_TEST_RESULT" >> $GITHUB_ENV
-          if [[ "$PLAYWRIGHT_TEST_RESULT" != "" ]]; then
-            echo "# ❎ Report Different" >> $GITHUB_STEP_SUMMARY
-            echo '```diff' >> $GITHUB_STEP_SUMMARY
-            echo "${PLAYWRIGHT_TEST_RESULT}" >> $GITHUB_STEP_SUMMARY
-            echo '```' >> $GITHUB_STEP_SUMMARY
-          else
-            echo "# ✅ Report Validated" >> $GITHUB_STEP_SUMMARY
-          fi
-
-      - name: "Full Sanity Report Diff"
-        id: diff
-        continue-on-error: true
-        run: |
-          set +e
-          FULL_TEST_DIFF=$(diff <(jq -S '.tests[]' test/__fixtures__/sanity-test-playwright.json) <(jq -S '.tests[]' test/configs/backstop_data/bitmaps_test/**/report.json))
-          echo "## Unfiltered Diff" >> $GITHUB_STEP_SUMMARY
-          echo "<details>" >> $GITHUB_STEP_SUMMARY
-          echo "<summary>Expand Diff</summary>" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo '```diff' >> $GITHUB_STEP_SUMMARY
-          echo "${FULL_TEST_DIFF}" >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "</details>" >> $GITHUB_STEP_SUMMARY
-
-      - name: "Report Validation Outcome"
-        run: |
-          if [[ "$PLAYWRIGHT_TEST_RESULT" != "" ]]; then
-            exit 1
-          else
-            exit 0
-          fi
+      - uses: ./actions/.github/actions/sanity-test-checks
+        with:
+          WORKSPACE_ROOT: ${{ steps.base.outputs.WORKSPACE_ROOT }}
+          RUNNER: "Playwright"
+          FIXTURE: "sanity-test-playwright.json"

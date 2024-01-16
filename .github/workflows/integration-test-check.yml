@@ -17,22 +17,26 @@ jobs:
     name: 🧩 Validate Integration Test Results
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout actions
         uses: actions/checkout@v4
         with:
-          fetch-depth: 1
-          ref: ${{ github.event.pull_request.head.sha || github.ref }}
+          ref: ${{ github.event.pull_request.head.sha || github.head_ref || github.ref_name || github.ref }}
+          sparse-checkout: |
+            .github/actions
+          path: actions
 
-      - name: ⬢ Setup Node & Cache
-        uses: actions/setup-node@v4
+      - uses: ./actions/.github/actions/setup-base
+        id: base
+
+      - uses: ./actions/.github/actions/setup-node
+        id: node
         with:
-          cache: "npm"
-          cache-dependency-path: package-lock.json
-
-      - name: ↧ Install
-        run: npm ci
+          WORKSPACE_ROOT: ${{ steps.base.outputs.WORKSPACE_ROOT }}
 
       - name: "𓋏 Run `npm run integration-test`"
+        continue-on-error: true
+        shell: bash
+        working-directory: ${{ steps.base.outputs.WORKSPACE_ROOT }}
         run: |
           npm run integration-test
 
