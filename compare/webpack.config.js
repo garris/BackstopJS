@@ -15,7 +15,15 @@ module.exports = {
         directory: path.join(__dirname, '../test/configs/backstop_data'),
         publicPath: '/'
       }
-    ]
+    ],
+    client: {
+      overlay: {
+        errors: true,
+        warnings: false,
+        runtimeErrors: true
+      }
+    },
+    webSocketServer: false
   },
   output: {
     path: path.resolve(__dirname, 'output'),
