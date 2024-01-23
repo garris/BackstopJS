@@ -1,7 +1,12 @@
+/**
+ * @description Retrieves the mismatch threshold based on the given scenario and configuration.
+ *
+ * @param {Object} scenario - The scenario object, which may contain a misMatchThresholdconfig property.
+ * @param {Object} config - The configuration object, which includes misMatchThreshold and defaultMisMatchThreshold properties.
+ * @returns {number} The mismatch threshold value.
+ */
 function getMisMatchThreshHold (scenario, config) {
-  if (typeof scenario.misMatchThreshold !== 'undefined') { return scenario.misMatchThreshold; }
-  if (typeof config.misMatchThreshold !== 'undefined') { return config.misMatchThreshold; }
-  return config.defaultMisMatchThreshold;
+  return scenario?.misMatchThresholdconfig || config?.misMatchThreshold || config?.defaultMisMatchThreshold || 0.1;
 }
 
 function ensureFileSuffix (filename, suffix) {
@@ -30,14 +35,15 @@ function genHash (str) {
   return hash.toString().replace(/^-/, 0);
 }
 
+/**
+ * @description Determines whether the same dimensions are required based on the given scenario and configuration.
+ *
+ * @param {Object} scenario - The scenario object, which may contain a requireSameDimensions property.
+ * @param {Object} config - The configuration object, which includes requireSameDimensions and defaultMisMatchThreshold properties.
+ * @returns {boolean} True if the same dimensions are required, otherwise false.
+ */
 function getRequireSameDimensions (scenario, config) {
-  if (scenario.requireSameDimensions !== undefined) {
-    return scenario.requireSameDimensions;
-  } else if (config.requireSameDimensions !== undefined) {
-    return config.requireSameDimensions;
-  } else {
-    return config.defaultRequireSameDimensions;
-  }
+  return scenario?.requireSameDimensions || config?.requireSameDimensions || config?.defaultMisMatchThreshold || true;
 }
 
 function getSelectorName (selector) {

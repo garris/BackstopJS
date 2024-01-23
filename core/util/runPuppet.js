@@ -21,10 +21,7 @@ const DOCUMENT_SELECTOR = 'document';
 const NOCLIP_SELECTOR = 'body:noclip';
 const VIEWPORT_SELECTOR = 'viewport';
 
-module.exports = function (args) {
-  const scenario = args.scenario;
-  const viewport = args.viewport;
-  const config = args.config;
+module.exports = function ({ scenario, viewport, config }) {
   const scenarioLabelSafe = engineTools.makeSafe(scenario.label);
   const variantOrScenarioLabelSafe = scenario._parent ? engineTools.makeSafe(scenario._parent.label) : scenarioLabelSafe;
 
@@ -53,6 +50,18 @@ function loggerAction (action, color, message, ...rest) {
 }
 
 async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, config, logger) {
+  const { globals = {} } = config;
+
+  /**
+   * @type {Object}
+   * @description Spread `globals` into the scenario.
+   * @default `scenario`
+   */
+  scenario = {
+    ...globals,
+    ...scenario
+  };
+
   if (!config.paths) {
     config.paths = {};
   }
