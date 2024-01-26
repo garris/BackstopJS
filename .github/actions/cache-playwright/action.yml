@@ -16,7 +16,7 @@ runs:
       run: echo "PLAYWRIGHT_VERSION=$(cat package.json | jq -r '.dependencies.playwright' || 'latest')" >> $GITHUB_ENV
 
     - name: Cache playwright binaries
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       id: playwright-cache
       with:
         path: |
