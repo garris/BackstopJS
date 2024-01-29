@@ -50,15 +50,15 @@ function loggerAction (action, color, message, ...rest) {
 }
 
 async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, config, logger) {
-  const { globals = {} } = config;
+  const { scenarioDefaults = {} } = config;
 
   /**
    * @type {Object}
-   * @description Spread `globals` into the scenario.
+   * @description Spread `scenarioDefaults` into the scenario.
    * @default `scenario`
    */
   scenario = {
-    ...globals,
+    ...scenarioDefaults,
     ...scenario
   };
 

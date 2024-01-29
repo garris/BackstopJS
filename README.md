@@ -201,7 +201,7 @@ Scenario properties, [which may be global](#global-scenario-properties), are des
 
 ### Global Scenario Properties
 
-One may opt to include any of the above properties at the "global" level, in the `globals` configuration object.
+One may opt to include any of the above properties at the "global" level, in the `scenarioDefaults` configuration object.
 
 <details>
   <summary>Expand Example</summary>
@@ -223,7 +223,7 @@ One may opt to include any of the above properties at the "global" level, in the
     ],
     "onBeforeScript": "playwright/onBefore.js",
     "onReadyScript": "playwright/onReady.js",
-    "globals": {
+    "scenarioDefaults": {
       "cookiePath": "backstop_data/engine_scripts/cookies.json",
       "url": "https://garris.github.io/BackstopJS/",
       "readySelector": "",
@@ -279,7 +279,7 @@ One may opt to include any of the above properties at the "global" level, in the
 </details>
 
 > [!IMPORTANT]
-> Global configuration is overridden at the `scenario` level. A scenario with `selectors: []` set as an empty array will yield zero selectors. E.g. `globals.selectors: [".fancy", ".global", ".classes"]` will be set to `[]`, as `scenario.selectors` takes precedence.
+> Global configuration is overridden at the `scenario` level. A scenario with `selectors: []` set as an empty array will yield zero selectors. E.g. `scenarioDefaults.selectors: [".fancy", ".global", ".classes"]` will be set to `[]`, as `scenario.selectors` takes precedence.
 
 ### Advanced Scenarios
 

@@ -123,15 +123,15 @@ module.exports.disposePlaywrightBrowser = async function (browser) {
 };
 
 async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, config, browser) {
-  const { engineOptions, globals = {} } = config;
+  const { engineOptions, scenarioDefaults = {} } = config;
 
   /**
    * @type {Object}
-   * @description Spread `globals` into the scenario.
+   * @description Spread `scenarioDefaults` into the scenario.
    * @default `scenario`
    */
   scenario = {
-    ...globals,
+    ...scenarioDefaults,
     ...scenario
   };
 
