@@ -104,11 +104,7 @@ module.exports.createPlaywrightBrowser = async function (config) {
   return await playwright[browserChoice].launch(playwrightArgs);
 };
 
-module.exports.runPlaywright = function (args) {
-  const scenario = args.scenario;
-  const viewport = args.viewport;
-  const config = args.config;
-  const browser = args._playwrightBrowser;
+module.exports.runPlaywright = function ({ scenario, viewport, config, _playwrightBrowser: browser }) {
   const scenarioLabelSafe = engineTools.makeSafe(scenario.label);
   const variantOrScenarioLabelSafe = scenario._parent ? engineTools.makeSafe(scenario._parent.label) : scenarioLabelSafe;
 
@@ -127,7 +123,18 @@ module.exports.disposePlaywrightBrowser = async function (browser) {
 };
 
 async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, config, browser) {
-  const { engineOptions } = config;
+  const { engineOptions, scenarioDefaults = {} } = config;
+
+  /**
+   * @type {Object}
+   * @description Spread `scenarioDefaults` into the scenario.
+   * @default `scenario`
+   */
+  scenario = {
+    ...scenarioDefaults,
+    ...scenario
+  };
+
   if (!config.paths) {
     config.paths = {};
   }
@@ -220,7 +227,6 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
         timeout: readyTimeout
       });
     }
-    //
 
     // --- DELAY ---
     if (scenario.delay > 0) {

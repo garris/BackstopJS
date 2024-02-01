@@ -58,6 +58,7 @@ npm install -g backstopjs
   - [Approving Changes](#approving-changes)
 - [Using BackstopJS](#using-backstopjs)
   - [Scenario Properties](#scenario-properties)
+  - [Global Scenario Properties](#global-scenario-properties)
   - [Advanced Scenarios](#advanced-scenarios)
 - [Developing, Bug Fixing, Contributing...](#developing-bug-fixing-contributing)
 - [Troubleshooting](#troubleshooting)
@@ -168,7 +169,7 @@ Pass a `--filter=<image_filename_regex>` argument to promote only the test captu
 
 ### Scenario Properties
 
-Scenario properties are described throughout this document and **processed sequentially in the following order...**
+Scenario properties, [which may be global](#global-scenario-properties), are described throughout this document and **processed sequentially in the following order...**
 
 | Property                 | Description                                                                                                                    |
 |--------------------------|--------------------------------------------------------------------------------------------------------------------------------|
@@ -197,6 +198,88 @@ Scenario properties are described throughout this document and **processed seque
 | `requireSameDimensions`  | If set to true -- any change in selector size will trigger a test failure.                                                    |
 | `viewports`              | An array of screen size objects your DOM will be tested against. This configuration will override the viewports property assigned at the config root. |
 | `gotoParameters`         | An array of settings passed to page.goto(url, parameters) function.                                                           |
+
+### Global Scenario Properties
+
+One may opt to include any of the above properties at the "global" level, in the `scenarioDefaults` configuration object.
+
+<details>
+  <summary>Expand Example</summary>
+
+  ```json
+  {
+    "id": "backstop_playwright",
+    "viewports": [
+      {
+        "label": "phone",
+        "width": 320,
+        "height": 480
+      },
+      {
+        "label": "tablet",
+        "width": 1024,
+        "height": 768
+      }
+    ],
+    "onBeforeScript": "playwright/onBefore.js",
+    "onReadyScript": "playwright/onReady.js",
+    "scenarioDefaults": {
+      "cookiePath": "backstop_data/engine_scripts/cookies.json",
+      "url": "https://garris.github.io/BackstopJS/",
+      "readySelector": "",
+      "delay": 0,
+      "hideSelectors": [".getItBlock"],
+      "removeSelectors": [".logoBlock"],
+      "hoverSelector": "",
+      "clickSelector": "",
+      "postInteractionWait": 1000,
+      "selectors": [],
+      "selectorExpansion": true,
+      "misMatchThreshold" : 0.1,
+      "requireSameDimensions": true
+    },
+    "scenarios": [
+      {
+        "label": "BackstopJS Homepage",
+        "cookiePath": "backstop_data/engine_scripts/cookies.json",
+        "url": "https://garris.github.io/BackstopJS/",
+        "referenceUrl": "",
+        "readyEvent": "",
+        "readySelector": "",
+        "delay": 0,
+        "hoverSelector": "",
+        "clickSelector": "",
+        "selectors": [],
+        "selectorExpansion": true,
+        "misMatchThreshold" : 0.1,
+        "requireSameDimensions": true
+      }
+    ],
+    "paths": {
+      "bitmaps_reference": "backstop_data/bitmaps_reference",
+      "bitmaps_test": "backstop_data/bitmaps_test",
+      "engine_scripts": "backstop_data/engine_scripts",
+      "html_report": "backstop_data/html_report",
+      "ci_report": "backstop_data/ci_report"
+    },
+    "report": ["browser"],
+    "engine": "playwright",
+    "engineOptions": {
+      "args": ["--no-sandbox"]
+    },
+    "asyncCaptureLimit": 5,
+    "asyncCompareLimit": 50,
+    "debug": false,
+    "debugWindow": false,
+    "archiveReport": true,
+    "scenarioLogsInReports": true
+  }
+  ```
+
+</details>
+
+> [!IMPORTANT]
+> Global configuration is overridden at the `scenario` level. A scenario with `selectors: []` set as an empty array will yield zero selectors. E.g. `scenarioDefaults.selectors: [".fancy", ".global", ".classes"]` will be set to `[]`, as `scenario.selectors` takes precedence.
 
 ### Advanced Scenarios
 
