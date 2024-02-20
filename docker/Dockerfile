@@ -18,9 +18,10 @@ RUN apt-get -qq update >/dev/null && apt-get install -qq \
   # korean
   fonts-unfonts-core fonts-unfonts-extra \
   # cjk + emoji font
-  fonts-noto-cjk fonts-noto-color-emoji \
+  fonts-noto-cjk fonts-noto-color-emoji 
+  #\
   # chromium
-  chromium >/dev/null && apt-get -qq clean >/dev/null && rm -rf /var/lib/apt/lists/*
+  #chromium >/dev/null && apt-get -qq clean >/dev/null && rm -rf /var/lib/apt/lists/*
 
 # skip download, we already have it installed
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
