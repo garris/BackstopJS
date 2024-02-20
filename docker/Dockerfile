@@ -7,7 +7,8 @@ ARG DEBIAN_FRONTEND=noninteractive
 ENV BACKSTOPJS_VERSION=$BACKSTOPJS_VERSION
 
 # install deps
-RUN apt-get -qq update >/dev/null && apt-get install -qq chromium
+RUN apt-get -qq update >/dev/null 
+# && apt-get install -qq chromium
   #fonts-liberation \
   # cyrillic
   #xfonts-cyrillic \
