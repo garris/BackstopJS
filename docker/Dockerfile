@@ -6,7 +6,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 ENV BACKSTOPJS_VERSION=$BACKSTOPJS_VERSION
 
-# install chromium and its deps
+# install deps
 RUN apt-get -qq update >/dev/null && apt-get install -qq \
   fonts-liberation \
   # cyrillic
@@ -18,9 +18,18 @@ RUN apt-get -qq update >/dev/null && apt-get install -qq \
   # korean
   fonts-unfonts-core fonts-unfonts-extra \
   # cjk + emoji font
-  fonts-noto-cjk fonts-noto-color-emoji \
+  fonts-noto-cjk fonts-noto-color-emoji
   # chromium
-  chromium >/dev/null && apt-get -qq clean >/dev/null && rm -rf /var/lib/apt/lists/*
+  # chromium >/dev/null && apt-get -qq clean >/dev/null && rm -rf /var/lib/apt/lists/*
+
+# install chromium and its deps
+#RUN apt-get install -qq chromium
+RUN apt-get -qq clean >/dev/null && rm -rf /var/lib/apt/lists/*
+
+
+
+
+
 
 # skip download, we already have it installed
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
