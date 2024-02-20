@@ -7,18 +7,19 @@ ARG DEBIAN_FRONTEND=noninteractive
 ENV BACKSTOPJS_VERSION=$BACKSTOPJS_VERSION
 
 # install chromium and its deps
-RUN apt-get -qq update >/dev/null && apt-get install -qq \
-  fonts-liberation \
+RUN apt-get -qq update >/dev/null 
+# && apt-get install -qq \
+  #fonts-liberation \
   # cyrillic
-  xfonts-cyrillic \
+  #xfonts-cyrillic \
   # chinese
-  xfonts-wqy fonts-wqy-zenhei fonts-arphic-ukai fonts-arphic-uming \
+  #xfonts-wqy fonts-wqy-zenhei fonts-arphic-ukai fonts-arphic-uming \
   # japanese
-  fonts-ipafont-mincho fonts-ipafont-gothic fonts-ipafont fonts-vlgothic \
+  #fonts-ipafont-mincho fonts-ipafont-gothic fonts-ipafont fonts-vlgothic \
   # korean
-  fonts-unfonts-core fonts-unfonts-extra \
+  #fonts-unfonts-core fonts-unfonts-extra \
   # cjk + emoji font
-  fonts-noto-cjk fonts-noto-color-emoji 
+  #fonts-noto-cjk fonts-noto-color-emoji 
   #\
   # chromium
   #chromium >/dev/null && apt-get -qq clean >/dev/null && rm -rf /var/lib/apt/lists/*
