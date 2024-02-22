@@ -42,7 +42,7 @@
     "publish-docker": "PV=$(node -p -e \"require('./package.json').version\"); echo $PV; docker buildx build --push --platform linux/amd64,linux/arm64 -t backstopjs/backstopjs:$PV --build-arg BACKSTOPJS_VERSION=$PV docker; docker buildx build --push --platform linux/amd64,linux/arm64 -t backstopjs/backstopjs:latest --build-arg BACKSTOPJS_VERSION=$PV docker",
     "build-and-publish": "npm run publish-npm && npm run publish-docker",
     "init-docker-builder": "docker buildx create --name backstopjsbuilder --use --bootstrap",
-    "burn-docker-builder": "docker buildx rm backstopjsbuilder; docker builder prune --all",
+    "burn-docker-builder": "sh ./docker/burn-docker-builder.sh",
     "success-message": "printf \"\\n\\e[32m✓ SUCCESS!\\e[0m BackstopJS internal testing passed.\\n\"",
     "caution-message": "printf \"\\n\\e[33m⚠ Notice.\\e[0m BackstopJS internal testing exited with a non-success status. This is expected when BackstopJS finds differences.\\n\"",
     "fail-message": "printf \"\\n\\e[31m✖ FAIL!\\e[0m BackstopJS internal testing failed. See logs for details.\\n\""
@@ -61,10 +61,10 @@
   "license": "MIT",
   "main": "core/runner.js",
   "devDependencies": {
-    "assert": "^2.1.0",
     "@babel/core": "^7.23.6",
     "@babel/preset-env": "^7.23.6",
     "@babel/preset-react": "^7.23.3",
+    "assert": "^2.1.0",
     "babel-loader": "^9.1.3",
     "backstop-twentytwenty": "^1.1.0",
     "eslint": "^8.56.0",
@@ -113,7 +113,7 @@
     "path": "^0.12.7",
     "playwright": "^1.40.1",
     "portfinder": "^1.0.32",
-    "puppeteer": "^21.6.0",
+    "puppeteer": "^22.1.0",
     "super-simple-web-server": "^1.1.4",
     "temp": "^0.9.4"
   }
