@@ -113,7 +113,7 @@
     "path": "^0.12.7",
     "playwright": "^1.40.1",
     "portfinder": "^1.0.32",
-    "puppeteer": "^21.6.0",
+    "puppeteer": "^22.1.0",
     "super-simple-web-server": "^1.1.4",
     "temp": "^0.9.4"
   }
