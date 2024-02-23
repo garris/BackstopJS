@@ -1,3 +1,5 @@
+name: NPM Push
+
 on:
   workflow_dispatch:
   workflow_call:
