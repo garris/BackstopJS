@@ -1,6 +1,6 @@
 {
   "name": "backstopjs",
-  "version": "6.3.16",
+  "version": "6.3.17",
   "description": "BackstopJS: Catch CSS curveballs.",
   "homepage": "https://github.com/garris/BackstopJS#readme",
   "bin": {
