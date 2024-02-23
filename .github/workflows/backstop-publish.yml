@@ -1,4 +1,5 @@
-name: 🚀 Backstop Publish
+name: Backstop Publish
+#doesnt work :(
 
 on:
   workflow_dispatch:
