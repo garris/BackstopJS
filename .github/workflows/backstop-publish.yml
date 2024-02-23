@@ -32,8 +32,8 @@ jobs:
       - name: Install
         run: npm ci
 
-      - name: "publish to npm"
+      - name: publish to npm
         run: npm publish
 
-      - name: "publish to dockerhub"
+      - name: publish to dockerhub
         uses: ./.github/workflows/dockerhub-build-push.yml
