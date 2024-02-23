@@ -36,4 +36,4 @@ jobs:
         run: npm publish
 
       - name: "publish to dockerhub"
-        uses: npm publish
+        uses: ./.github/workflows/dockerhub-build-push.yml
