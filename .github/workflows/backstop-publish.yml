@@ -33,7 +33,7 @@ jobs:
         run: npm ci
 
       - name: publish to npm
-        run: npm publish
+        uses: ./.github/workflows/npm-push.yml
 
       - name: publish to dockerhub
         uses: ./.github/workflows/dockerhub-build-push.yml
