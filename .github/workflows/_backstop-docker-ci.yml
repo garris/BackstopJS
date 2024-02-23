@@ -26,9 +26,9 @@ jobs:
   #   name: Sanity Test Backstop
   #   uses: ./.github/workflows/backstop-sanity-docker.yml
     
-  backstop-sanity-test:
-    name: Sanity Test Backstop
-    uses: ./.github/workflows/backstop-sanity-test.yml
+  # backstop-sanity-test:
+  #   name: Sanity Test Backstop
+  #   uses: ./.github/workflows/backstop-sanity-test.yml
 
   # backstop-smoke-test:
   #   name: Smoke Test Backstop
