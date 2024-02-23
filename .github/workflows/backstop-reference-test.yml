@@ -1,0 +1,38 @@
+name: Backstop Reference Test
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+permissions:
+  actions: write
+  contents: write
+  pull-requests: write
+
+env:
+  NODE_VERSION: 20
+
+jobs:
+  reference-test:
+    name: reference-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          ref: ${{ github.event.pull_request.head.sha || github.ref }}
+
+      - name: Setup Node & Cache
+        uses: actions/setup-node@v4
+        with:
+          cache: "npm"
+          cache-dependency-path: package-lock.json
+
+      - name: Install
+        run: npm ci
+
+      - name: "execute test"
+        run: npm run reference-test
+
+
