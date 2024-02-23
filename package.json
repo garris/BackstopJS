@@ -1,6 +1,6 @@
 {
   "name": "backstopjs",
-  "version": "6.3.14",
+  "version": "6.3.15",
   "description": "BackstopJS: Catch CSS curveballs.",
   "homepage": "https://github.com/garris/BackstopJS#readme",
   "bin": {
@@ -29,6 +29,7 @@
     "smoke-test-docker": "cd test/configs/ && node ../../cli/index.js test --config=backstop_features --docker && npm --prefix ../../ run -s fail-message || npm --prefix ../../ run -s caution-message",
     "smoke-test-playwright-docker": "cd test/configs/ && node ../../cli/index.js test --config=backstop_features_pw --docker && npm --prefix ../../ run -s fail-message || npm --prefix ../../ run -s caution-message",
     "sanity-test": "cd test/configs/ && node ../../cli/index.js test && npm --prefix ../../ run -s success-message || npm --prefix ../../ run -s caution-message",
+    "reference-test": "cd test/configs/ && node ../../cli/index.js reference && node ../../cli/index.js test",
     "sanity-test-playwright": "cd test/configs/ && node ../../cli/index.js test --config=playwright && npm --prefix ../../ run -s success-message || npm --prefix ../../ run -s caution-message",
     "sanity-test-docker": "cd test/configs/ && node ../../cli/index.js test --docker && npm --prefix ../../ run -s success-message || npm --prefix ../../ run -s caution-message",
     "sanity-test-playwright-docker": "cd test/configs/ && node ../../cli/index.js test --config=playwright --docker && npm --prefix ../../ run -s success-message || npm --prefix ../../ run -s caution-message",
