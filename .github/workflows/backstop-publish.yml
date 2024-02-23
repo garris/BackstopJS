@@ -1,4 +1,4 @@
-name: Backstop Publish
+name: 🚀 Backstop Publish
 
 on:
   workflow_dispatch:
@@ -17,21 +17,6 @@ jobs:
     name: publish-flow
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
-          ref: ${{ github.event.pull_request.head.sha || github.ref }}
-
-      - name: Setup Node & Cache
-        uses: actions/setup-node@v4
-        with:
-          cache: "npm"
-          cache-dependency-path: package-lock.json
-
-      - name: Install
-        run: npm ci
-
       - name: publish to npm
         uses: ./.github/workflows/npm-push.yml
 
