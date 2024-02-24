@@ -1,4 +1,4 @@
-name: Backstop Reference Test
+name: 🛞 Backstop Reference Test
 
 on:
   workflow_dispatch:
