@@ -14,15 +14,17 @@ permissions:
 env:
   NODE_VERSION: 20
 
-  runs-on: ubuntu-latest
-  
-  steps:
-  - run: echo "start workflow"
-  
-  - name: Checkout
-    uses: actions/checkout@v2
-  
-  - name: reference test
-    uses: ./.github/actions/backstop-reference-test.yml
+jobs:
+  test-push-npm-dockerhub:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - run: echo "start workflow"
+      
+      - name: Checkout
+        uses: actions/checkout@v2
+      
+      - name: reference test
+        uses: ./.github/actions/backstop-reference-test.yml
 
-  
+    
