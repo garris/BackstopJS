@@ -2,15 +2,6 @@ name: Test build & publish npm + docker
 
 on:
   workflow_dispatch:
-  workflow_call:
-    inputs:
-      config-path:
-        required: true
-        type: string
-    secrets:
-      envPAT:
-        required: true
-
         
 permissions:
   actions: write
