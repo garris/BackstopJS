@@ -20,9 +20,7 @@ jobs:
     steps:
     
     - name: Checkout
-      uses: actions/checkout@v4
-      with:
-          fetch-depth: 1
+      uses: actions/checkout@v2
     
     - name: reference test
       uses: ./.github/actions/backstop-reference-test.yml
