@@ -175,7 +175,9 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
 
     // --- DELAY ---
     if (scenario.delay > 0) {
-      await page.waitForTimeout(scenario.delay);
+      await new Promise(resolve => {
+        setTimeout(resolve, scenario.delay);
+      });
     }
 
     // --- REMOVE SELECTORS ---
