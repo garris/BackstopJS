@@ -1,12 +1,12 @@
 /**
  * @description Retrieves the mismatch threshold based on the given scenario and configuration.
  *
- * @param {Object} scenario - The scenario object, which may contain a misMatchThresholdconfig property.
+ * @param {Object} scenario - The scenario object, which may contain a misMatchThreshold property.
  * @param {Object} config - The configuration object, which includes misMatchThreshold and defaultMisMatchThreshold properties.
  * @returns {number} The mismatch threshold value.
  */
 function getMisMatchThreshHold (scenario, config) {
-  return scenario?.misMatchThresholdconfig || config?.misMatchThreshold || config?.defaultMisMatchThreshold || 0.1;
+  return scenario?.misMatchThreshold || config?.misMatchThreshold || config?.defaultMisMatchThreshold || 0.1;
 }
 
 function ensureFileSuffix (filename, suffix) {
