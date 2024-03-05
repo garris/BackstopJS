@@ -6,7 +6,7 @@
  * @returns {number} The mismatch threshold value.
  */
 function getMisMatchThreshHold (scenario, config) {
-  return scenario?.misMatchThreshold || config?.misMatchThreshold || config?.defaultMisMatchThreshold || 0.1;
+  return scenario?.misMatchThreshold ?? config?.misMatchThreshold ?? config?.defaultMisMatchThreshold ?? 0.1;
 }
 
 function ensureFileSuffix (filename, suffix) {
@@ -43,7 +43,7 @@ function genHash (str) {
  * @returns {boolean} True if the same dimensions are required, otherwise false.
  */
 function getRequireSameDimensions (scenario, config) {
-  return scenario?.requireSameDimensions || config?.requireSameDimensions || config?.defaultMisMatchThreshold || true;
+  return scenario?.requireSameDimensions ?? config?.requireSameDimensions ?? config?.defaultMisMatchThreshold ?? true;
 }
 
 function getSelectorName (selector) {
