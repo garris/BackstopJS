@@ -15,8 +15,11 @@ function loadProjectConfig (command, options, config) {
   if (options.testReportFileName) {
     config.testReportFileName = options.testReportFileName;
   }
+
+  // list of "config" files to search for
   const configFiles = ['backstop.json', 'backstop.js'];
 
+  // If a config file is specified in the options, add it to the list
   if (options.config && typeof options.config === 'string') {
     configFiles.unshift(options.config);
     configFiles.unshift(path.join(config.projectPath, options.config));
