@@ -11,9 +11,7 @@ function main () {
   const argsOptions = parseArgs(process.argv.slice(2), {
     boolean: ['h', 'help', 'v', 'version', 'i', 'docker'],
     string: ['config'],
-    default: {
-      config: 'backstop.json'
-    }
+    default: {}
   });
 
   // Catch errors from failing promises

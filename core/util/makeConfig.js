@@ -1,32 +1,38 @@
 const path = require('path');
+const fs = require('fs');
 const extendConfig = require('./extendConfig');
 
 const NON_CONFIG_COMMANDS = ['init', 'version', 'stop'];
 
-function projectPath (config) {
+function projectPath () {
   return process.cwd();
 }
 
 function loadProjectConfig (command, options, config) {
+  options = options || {}; // make sure options is an object
+
   // TEST REPORT FILE NAME
-  const customTestReportFileName = options && (options.testReportFileName || null);
-  if (customTestReportFileName) {
-    config.testReportFileName = options.testReportFileName || null;
+  if (options.testReportFileName) {
+    config.testReportFileName = options.testReportFileName;
+  }
+  const configFiles = ['backstop.json', 'backstop.js'];
+
+  if (options.config && typeof options.config === 'string') {
+    configFiles.unshift(options.config);
+    configFiles.unshift(path.join(config.projectPath, options.config));
   }
 
-  let customConfigPath = options && (options.backstopConfigFilePath || options.configPath);
-  if (options && typeof options.config === 'string' && !customConfigPath) {
-    customConfigPath = options.config;
-  }
-
-  if (customConfigPath) {
-    if (path.isAbsolute(customConfigPath)) {
-      config.backstopConfigFileName = customConfigPath;
-    } else {
-      config.backstopConfigFileName = path.join(config.projectPath, customConfigPath);
+  // Searching for the first existing config file
+  for (const configFile of configFiles) {
+    const configPath = path.join(config.projectPath, configFile);
+    if (fs.existsSync(configPath)) {
+      config.backstopConfigFileName = configPath;
+      break; // Stop searching once a valid config file is found
     }
-  } else {
-    config.backstopConfigFileName = path.join(config.projectPath, 'backstop.json');
+  }
+
+  if (!config.backstopConfigFileName) {
+    console.error('No config file found in project path: ', config.projectPath);
   }
 
   let userConfig = {};
