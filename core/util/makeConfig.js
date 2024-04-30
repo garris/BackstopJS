@@ -1,6 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const extendConfig = require('./extendConfig');
+const logger = require('../util/logger')('init');
 
 const NON_CONFIG_COMMANDS = ['init', 'version', 'stop'];
 
@@ -35,7 +36,9 @@ function loadProjectConfig (command, options, config) {
   }
 
   if (!config.backstopConfigFileName) {
-    console.error('No config file found in project path: ', config.projectPath);
+    logger.error('No config file found in project path: ' + config.projectPath);
+    logger.error('Looked for: ' + configFiles.join(', '));
+    process.exit(1);
   }
 
   let userConfig = {};
