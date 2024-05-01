@@ -92,7 +92,7 @@ function captureConfigPaths (config) {
   }
   const configHash = hash(config);
   config.captureConfigFileName = path.join(tmpdir, 'capture', configHash + '.json');
-  config.captureConfigFileNameDefault = path.join(config.backstop, 'capture', 'config.default.json');
+  config.captureConfigFileNameDefault = path.join(config.backstop, 'capture', 'config.default.js');
 }
 
 function engine (config, userConfig) {

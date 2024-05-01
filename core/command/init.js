@@ -14,9 +14,30 @@ module.exports = {
       logger.error('ERROR: Can\'t generate a scripts directory. No \'engine_scripts\' path property was found in backstop.json.');
     }
 
+    const resolveAndWriteConfigFile = (fileName, useJs) => {
+      const extension = useJs ? '.js' : '.json';
+      if (!fileName.endsWith(extension)) {
+        fileName += extension;
+      }
+
+      const writeFile = () => {
+        if (useJs) {
+          return fs.copy(config.captureConfigFileNameDefault, fileName);
+        } else {
+          const configContent = require(config.captureConfigFileNameDefault);
+          const jsonContent = JSON.stringify(configContent, null, 2);
+          return fs.writeFile(fileName, `module.exports = ${jsonContent};`);
+        }
+      };
+
+      return writeFile().then(() => fileName); // Return fileName after the operation
+    };
+
+    console.log(config);
+
     // Copies a boilerplate config file to the current config file location.
-    promises.push(fs.copy(config.captureConfigFileNameDefault, config.backstopConfigFileName).then(function () {
-      logger.log("Configuration file written at '" + config.backstopConfigFileName + "'");
+    promises.push(resolveAndWriteConfigFile(config.backstopConfigFileName, config.args.js).then(configFile => {
+      logger.log("Configuration file written at '" + configFile + "'");
     }, function (err) {
       throw err;
     }));

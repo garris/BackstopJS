@@ -23,7 +23,7 @@ const expectedConfig = {
   comparePath: path.resolve(backstopDir, 'compare/output'),
   captureConfigFileNameDefault: path.resolve(
     backstopDir,
-    'capture/config.default.json'
+    'capture/config.default.js'
   ),
   engine: null,
   engine_scripts: path.resolve('backstop_data/engine_scripts'),
