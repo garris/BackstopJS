@@ -114,13 +114,13 @@ Pass a `--config=<configFilePathStr>` argument to test using a different config 
 
 You may use a javascript based config file to allow comments in your config. Be sure to _export your config object as a node module_.
 
-Example: Create a backstop.config.js
+Example: Create a backstop.js
 
 ```
 module.exports = { Same object as backstop.json }
 ```
 
-and then `backstop test --config="backstop.config.js"`
+and then `backstop test --config="backstop.js"`
 
 #### Required Config Properties
 
@@ -913,13 +913,13 @@ backstop('test', {
 
 ```js
 backstop('test', {
-  config: require("./backstop.config.js")({
+  config: require("./backstop.js")({
     "foo": "bar"
   })
 });
 
 
-// Inside of `backstop.config.js` we export a function that returns the configuration object
+// Inside of `backstop.js` we export a function that returns the configuration object
 module.exports = options => {
   return {
     //you can access options.foo here
