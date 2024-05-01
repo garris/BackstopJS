@@ -104,6 +104,8 @@ BackstopJS can create a default configuration file and project scaffolding in yo
 backstop init
 ```
 
+Use `backstop init --js` to initialize the project with a `.js` configuration file.
+
 ### Working with Your Config File
 
 By default, BackstopJS places `backstop.json` in the root of your project. And also by default, BackstopJS looks for this file when invoked.
@@ -112,9 +114,9 @@ Pass a `--config=<configFilePathStr>` argument to test using a different config 
 
 **JS based config file**
 
-You may use a javascript based config file to allow comments in your config. Be sure to _export your config object as a node module_.
+You may use a javascript based config file to allow the use of comments and more complex configurations. Be sure to _export your config object as a node module_.
 
-Example: Create a backstop.config.js
+Example: Create a `backstop.config.js`
 
 ```
 module.exports = { Same object as backstop.json }
