@@ -43,7 +43,7 @@ function genHash (str) {
  * @returns {boolean} True if the same dimensions are required, otherwise false.
  */
 function getRequireSameDimensions (scenario, config) {
-  return scenario?.requireSameDimensions ?? config?.requireSameDimensions ?? config?.defaultMisMatchThreshold ?? true;
+  return scenario?.requireSameDimensions ?? config?.requireSameDimensions ?? config?.defaultRequireSameDimensions ?? true;
 }
 
 function getSelectorName (selector) {
