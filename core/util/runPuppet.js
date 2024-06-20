@@ -151,6 +151,19 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     const gotoParameters = scenario?.engineOptions?.gotoParameters || config?.engineOptions?.gotoParameters || {};
     await page.goto(translateUrl(url, logger), gotoParameters);
 
+    //  --- LOCAL STORAGE SCRIPT ---
+    if (scenario.localStorageData || config.localStorageData) {
+      var localStorageData = scenario.localStorageData || config.localStorageData;
+      var localStorageScript = path.resolve(engineScriptsPath, 'puppet/loadLocalStorage.js');
+
+      if (fs.existsSync(localStorageScript)) {
+        await require(localStorageScript)(page, scenario, localStorageData);
+        await page.reload();
+      } else {
+        console.warn('WARNING: script not found: ' + localStorageScript);
+      }
+    }
+
     await injectBackstopTools(page);
 
     //  --- WAIT FOR READY EVENT ---
