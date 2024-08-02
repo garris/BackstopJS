@@ -50,4 +50,4 @@ jobs:
 
       - name: 🐳 Build & Push to Docker Hub
         run: |
-          docker buildx build --push --platform linux/amd64,linux/arm64 -t backstopjs/backstopjs:$PV --build-arg BACKSTOPJS_VERSION=$PV docker
+          docker buildx build --push --platform linux/amd64,linux/arm64 -t backstopjs/backstopjs:$PV -t backstopjs/backstopjs:latest --build-arg BACKSTOPJS_VERSION=$PV docker
