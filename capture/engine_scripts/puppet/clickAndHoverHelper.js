@@ -26,6 +26,34 @@ module.exports = async (page, scenario) => {
     }
   }
 
+  // Force-load lazy images.
+  await page.evaluate(async(scenario) => {
+    let images = [];
+    const lazyImages = document.querySelectorAll('[loading="lazy"]');
+    lazyImages.forEach((image) => {
+      images.push(image);
+    });
+
+    async function loadImages(images) {
+      await images.reduce(async(promise, image) => {
+        // This line will wait for the last async function to finish.
+        // The first iteration uses an already resolved Promise
+        // so, it will immediately continue.
+        // https://stackoverflow.com/a/49499491/231914
+        await promise;
+        image.removeAttribute('loading');
+        const result = await image.decode();
+      }, Promise.resolve());
+    }
+
+    if (images.length) {
+      console.log('Loading ' + images.length + ' lazy elements.');
+    }
+    return loadImages(images);
+
+  }, scenario);
+
+  
   if (postInteractionWait) {
     await new Promise(resolve => {
       setTimeout(resolve, postInteractionWait);
