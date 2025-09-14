@@ -19,9 +19,7 @@ module.exports = {
       ];
       const env = { SSWS_HTTP_PORT: port };
 
-      logger.log(
-        `Starting remote with: ${process.execPath} ${args.join(' ')} with env ${JSON.stringify(env)}`
-      );
+      logger.log(`Starting remote with: ${process.execPath} ${args.join(' ')} with env ${JSON.stringify(env)}`);
 
       const child = spawn(process.execPath, args, {
         env: { ...process.env, ...env },
