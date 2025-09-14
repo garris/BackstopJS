@@ -9,7 +9,7 @@ module.exports = {
     const MIDDLEWARE_PATH = path.resolve(config.backstop, 'remote');
     const projectPath = path.resolve(config.projectPath);
 
-    return new Promise(function (resolve, reject) {
+    return new Promise(function (resolve) {
       const port = getRemotePort();
       const args = [
         ssws,
