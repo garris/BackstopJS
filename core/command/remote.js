@@ -22,7 +22,7 @@ module.exports = {
       logger.log(`Starting remote with: ${process.execPath} ${args.join(' ')} with env ${JSON.stringify(env)}`);
 
       const child = spawn(process.execPath, args, {
-        env: { ...process.env, ...env },
+        env: { ...env, PATH: process.env.PATH },
         stdio: ['ignore', 'pipe', 'pipe']
       });
 
