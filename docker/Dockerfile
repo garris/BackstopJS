@@ -1,5 +1,5 @@
 # use bullseye node base, as debian does provide a chromium for arm64 and amd64 flavour
-FROM node:20-bullseye
+FROM node:24-trixie
 
 ARG BACKSTOPJS_VERSION
 ARG DEBIAN_FRONTEND=noninteractive
