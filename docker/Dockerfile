@@ -8,9 +8,9 @@ ENV BACKSTOPJS_VERSION=$BACKSTOPJS_VERSION
 
 # install chromium and its deps
 RUN apt-get -qq update >/dev/null && apt-get install -qq \
-  fonts-liberation \
+  fonts-unifont fonts-liberation \
   # cyrillic
-  xfonts-cyrillic \
+  xfonts-cronyx-75dpi \
   # chinese
   xfonts-wqy fonts-wqy-zenhei fonts-arphic-ukai fonts-arphic-uming \
   # japanese
