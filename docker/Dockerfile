@@ -1,5 +1,5 @@
 # use bullseye node base, as debian does provide a chromium for arm64 and amd64 flavour
-FROM node:20-bullseye
+FROM node:24-bookworm
 
 ARG BACKSTOPJS_VERSION
 ARG DEBIAN_FRONTEND=noninteractive
@@ -8,9 +8,9 @@ ENV BACKSTOPJS_VERSION=$BACKSTOPJS_VERSION
 
 # install chromium and its deps
 RUN apt-get -qq update >/dev/null && apt-get install -qq \
-  fonts-liberation \
+  fonts-unifont fonts-liberation \
   # cyrillic
-  xfonts-cyrillic \
+  xfonts-cronyx-75dpi \
   # chinese
   xfonts-wqy fonts-wqy-zenhei fonts-arphic-ukai fonts-arphic-uming \
   # japanese
