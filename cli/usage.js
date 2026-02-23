@@ -3,6 +3,7 @@ const makeSpaces = require('../core/util/makeSpaces');
 
 const commandsDescription = {
   test: 'Create test screenshots and compare against the set you previously approved/referenced.',
+  liveCompare: 'Open reference and test URLs simultaneously, compare side-by-side with retry logic.',
   approve: 'Promotes all test bitmaps from last test run to reference bitmaps.',
   reference: 'Creates new reference screenshots. Deletes all existing reference files.',
   init: 'Generate BackstopJS boilerplate files in your CWD. NOTE: Overwrites existing config files!',

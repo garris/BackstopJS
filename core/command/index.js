@@ -19,6 +19,7 @@ const commandNames = [
   'reference',
   'report',
   'test',
+  'liveCompare',
   'approve',
   'version',
   'stop'
@@ -30,6 +31,7 @@ const exposedCommandNames = [
   'remote',
   'reference',
   'test',
+  'liveCompare',
   'openReport',
   'approve',
   'version',
