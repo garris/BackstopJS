@@ -45,6 +45,7 @@ async function preparePage (page, url, scenario, viewport, config, isReference, 
       readyResolve = resolve;
       readyTimeoutTimer = setTimeout(function () {
         logger.error('ReadyEvent not detected within readyTimeout limit. (' + readyTimeout + ' ms) ' + url);
+        page.removeListener('console', onConsole);
         resolve();
       }, readyTimeout);
     });
