@@ -80,12 +80,19 @@ module.exports = async function retryCompare (options) {
       setVPTest.call(testPage, { width: VP_W, height: VP_H })
     ]);
 
-    // Re-navigate and re-prepare both pages before re-capturing
+    // Re-navigate and re-prepare both pages before re-capturing.
+    // Wrapped in try-catch so a navigation failure (timeout, JS error) doesn't
+    // abort the entire retry loop and lose the best match found so far.
     logger.log(`Re-navigating both pages for retry ${retry + 1}...`);
-    await Promise.all([
-      preparePage(testPage, scenario.url, scenario, viewport, config, false, testBrowserOrContext, engineScriptsPath),
-      preparePage(refPage, scenario.referenceUrl, scenario, viewport, config, true, refBrowserOrContext, engineScriptsPath)
-    ]);
+    try {
+      await Promise.all([
+        preparePage(testPage, scenario.url, scenario, viewport, config, false, testBrowserOrContext, engineScriptsPath),
+        preparePage(refPage, scenario.referenceUrl, scenario, viewport, config, true, refBrowserOrContext, engineScriptsPath)
+      ]);
+    } catch (e) {
+      logger.log(`preparePage failed on retry ${retry + 1}: ${e.message}. Skipping to next retry...`);
+      continue;
+    }
 
     // Step 1: Re-capture from test page, compare against all reference screenshots
     const newTestBuffer = await captureScreenshot(testPage, selector, selectorMap, viewport, config);
