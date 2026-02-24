@@ -1,5 +1,4 @@
 const puppeteer = require('puppeteer');
-const { PNG } = require('pngjs');
 
 const fs = require('./fs');
 const path = require('path');
@@ -16,7 +15,6 @@ const DEFAULT_FILENAME_TEMPLATE = '{configId}_{scenarioLabel}_{selectorIndex}_{s
 const DEFAULT_BITMAPS_TEST_DIR = 'bitmaps_test';
 const DEFAULT_BITMAPS_REFERENCE_DIR = 'bitmaps_reference';
 const SELECTOR_NOT_FOUND_PATH = '/capture/resources/notFound.png';
-const HIDDEN_SELECTOR_PATH = '/capture/resources/notVisible.png';
 const ERROR_SELECTOR_PATH = '/capture/resources/unexpectedErrorSm.png';
 const BODY_SELECTOR = 'body';
 const DOCUMENT_SELECTOR = 'document';
@@ -24,7 +22,7 @@ const NOCLIP_SELECTOR = 'body:noclip';
 const VIEWPORT_SELECTOR = 'viewport';
 
 function loggerAction (action, color, message) {
-  var rest = Array.prototype.slice.call(arguments, 3);
+  const rest = Array.prototype.slice.call(arguments, 3);
   this.logged.push([action, color, message.toString(), JSON.stringify(rest)]);
   console[action](chalk[color](message), ...rest);
 }
@@ -276,7 +274,8 @@ async function processCompareView (scenario, variantOrScenarioLabelSafe, scenari
   const refSelectorMap = refResult.backstopSelectorsExpMap;
 
   const compareConfig = { testPairs: [] };
-  const maxNumDiffPixels = scenario.maxNumDiffPixels != null ? scenario.maxNumDiffPixels
+  const maxNumDiffPixels = scenario.maxNumDiffPixels != null
+    ? scenario.maxNumDiffPixels
     : (config.maxNumDiffPixels != null ? config.maxNumDiffPixels : 0);
 
   for (let selectorIndex = 0; selectorIndex < selectors.length; selectorIndex++) {

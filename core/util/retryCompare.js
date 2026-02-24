@@ -1,6 +1,4 @@
 const { PNG } = require('pngjs');
-const fs = require('./fs');
-const ensureDirectoryPath = require('./ensureDirectoryPath');
 const { compareBuffers, createCompositeImage } = require('./compare/pixelmatch-inline');
 const logger = require('./logger')('retryCompare');
 
@@ -31,15 +29,17 @@ module.exports = async function retryCompare (options) {
     captureScreenshot,
     refPage, testPage,
     selector, selectorMap, viewport, config, scenario,
-    initialRefBuffer, initialTestBuffer,
-    testPair
+    initialRefBuffer, initialTestBuffer
   } = options;
 
-  const maxRetries = scenario.compareRetries != null ? scenario.compareRetries
+  const maxRetries = scenario.compareRetries != null
+    ? scenario.compareRetries
     : (config.compareRetries != null ? config.compareRetries : 0);
-  const retryDelayMs = scenario.compareRetryDelay != null ? scenario.compareRetryDelay
+  const retryDelayMs = scenario.compareRetryDelay != null
+    ? scenario.compareRetryDelay
     : (config.compareRetryDelay != null ? config.compareRetryDelay : 5000);
-  const maxNumDiffPixels = scenario.maxNumDiffPixels != null ? scenario.maxNumDiffPixels
+  const maxNumDiffPixels = scenario.maxNumDiffPixels != null
+    ? scenario.maxNumDiffPixels
     : (config.maxNumDiffPixels != null ? config.maxNumDiffPixels : 0);
 
   const refScreenshots = [initialRefBuffer];
