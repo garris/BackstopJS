@@ -1,5 +1,5 @@
 const { PNG } = require('pngjs');
-const pixelmatch = require('pixelmatch').default;
+const pixelmatch = require('pixelmatch');
 
 function resizePng (png, targetHeight, targetWidth) {
   if (png.width === targetWidth && png.height === targetHeight) {
