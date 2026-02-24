@@ -10,6 +10,9 @@ const REF_IMG2 = path.join(__dirname, 'compare/refImage-2.png');
 // It attempts to re-capture screenshots and find a matching pair
 const retryCompare = require('../../../core/util/retryCompare');
 
+// Mock preparePage — no-op, avoids real browser navigation in unit tests
+const mockPreparePage = async function () {};
+
 describe('retryCompare', function () {
   this.timeout(10000); // Increase timeout for retry tests
 
@@ -30,7 +33,9 @@ describe('retryCompare', function () {
   };
 
   const baseScenario = {
-    label: 'Test Scenario'
+    label: 'Test Scenario',
+    url: 'http://test.example.com',
+    referenceUrl: 'http://ref.example.com'
   };
 
   it('should fail with no retries configured (assumes initial mismatch)', async function () {
@@ -39,6 +44,7 @@ describe('retryCompare', function () {
 
     const result = await retryCompare({
       captureScreenshot,
+      preparePage: mockPreparePage,
       refPage: {},
       testPage: {},
       selector: 'body',
@@ -47,7 +53,10 @@ describe('retryCompare', function () {
       config: { ...baseConfig, compareRetries: 0 },
       scenario: baseScenario,
       initialRefBuffer: buf1,
-      initialTestBuffer: buf2
+      initialTestBuffer: buf2,
+      refBrowserOrContext: {},
+      testBrowserOrContext: {},
+      engineScriptsPath: ''
     });
 
     assert.strictEqual(result.pass, false);
@@ -64,6 +73,7 @@ describe('retryCompare', function () {
 
     const result = await retryCompare({
       captureScreenshot,
+      preparePage: mockPreparePage,
       refPage: {},
       testPage: {},
       selector: 'body',
@@ -72,7 +82,10 @@ describe('retryCompare', function () {
       config: { ...baseConfig, compareRetries: 1, compareRetryDelay: 10 },
       scenario: baseScenario,
       initialRefBuffer: buf1,
-      initialTestBuffer: buf2 // Initial mismatch
+      initialTestBuffer: buf2, // Initial mismatch
+      refBrowserOrContext: {},
+      testBrowserOrContext: {},
+      engineScriptsPath: ''
     });
 
     assert.strictEqual(result.pass, true);
@@ -91,6 +104,7 @@ describe('retryCompare', function () {
 
     const result = await retryCompare({
       captureScreenshot,
+      preparePage: mockPreparePage,
       refPage: { isRef: true },
       testPage: { isTest: true },
       selector: 'body',
@@ -99,7 +113,10 @@ describe('retryCompare', function () {
       config: { ...baseConfig, compareRetries: 1, compareRetryDelay: 10 },
       scenario: baseScenario,
       initialRefBuffer: buf1,
-      initialTestBuffer: buf2
+      initialTestBuffer: buf2,
+      refBrowserOrContext: {},
+      testBrowserOrContext: {},
+      engineScriptsPath: ''
     });
 
     assert.strictEqual(result.pass, true);
@@ -126,6 +143,7 @@ describe('retryCompare', function () {
 
     const result = await retryCompare({
       captureScreenshot,
+      preparePage: mockPreparePage,
       refPage: {},
       testPage: {},
       selector: 'body',
@@ -134,7 +152,10 @@ describe('retryCompare', function () {
       config: { ...baseConfig, compareRetries: 2, compareRetryDelay: 10 },
       scenario: baseScenario,
       initialRefBuffer: buf1,
-      initialTestBuffer: buf2
+      initialTestBuffer: buf2,
+      refBrowserOrContext: {},
+      testBrowserOrContext: {},
+      engineScriptsPath: ''
     });
 
     assert.strictEqual(result.pass, false);
@@ -159,6 +180,7 @@ describe('retryCompare', function () {
 
     await retryCompare({
       captureScreenshot,
+      preparePage: mockPreparePage,
       refPage: {},
       testPage: {},
       selector: 'body',
@@ -167,7 +189,10 @@ describe('retryCompare', function () {
       config: { ...baseConfig, compareRetries: 0 },
       scenario: { ...baseScenario, compareRetries: 2, compareRetryDelay: 10 },
       initialRefBuffer: buf1,
-      initialTestBuffer: buf2
+      initialTestBuffer: buf2,
+      refBrowserOrContext: {},
+      testBrowserOrContext: {},
+      engineScriptsPath: ''
     });
 
     // 2 retries * 2 captures per retry (test + ref) = 4 calls
@@ -184,6 +209,7 @@ describe('retryCompare', function () {
 
     const result = await retryCompare({
       captureScreenshot,
+      preparePage: mockPreparePage,
       refPage: {},
       testPage: {},
       selector: 'body',
@@ -192,7 +218,10 @@ describe('retryCompare', function () {
       config: { ...baseConfig, compareRetries: 1, compareRetryDelay: 10, maxNumDiffPixels: 100 },
       scenario: baseScenario,
       initialRefBuffer: buf1,
-      initialTestBuffer: buf2
+      initialTestBuffer: buf2,
+      refBrowserOrContext: {},
+      testBrowserOrContext: {},
+      engineScriptsPath: ''
     });
 
     assert.strictEqual(result.pass, true, 'Should pass when retry within threshold');
@@ -207,6 +236,7 @@ describe('retryCompare', function () {
 
     const result = await retryCompare({
       captureScreenshot,
+      preparePage: mockPreparePage,
       refPage: {},
       testPage: {},
       selector: 'body',
@@ -215,7 +245,10 @@ describe('retryCompare', function () {
       config: { ...baseConfig, compareRetries: 1, compareRetryDelay: 10 },
       scenario: baseScenario,
       initialRefBuffer: buf1,
-      initialTestBuffer: buf2
+      initialTestBuffer: buf2,
+      refBrowserOrContext: {},
+      testBrowserOrContext: {},
+      engineScriptsPath: ''
     });
 
     assert.strictEqual(result.pass, false, 'Should fail when screenshots are null');
@@ -237,6 +270,7 @@ describe('retryCompare', function () {
 
     const result = await retryCompare({
       captureScreenshot,
+      preparePage: mockPreparePage,
       refPage: {},
       testPage: {},
       selector: 'body',
@@ -245,11 +279,110 @@ describe('retryCompare', function () {
       config: { ...baseConfig, compareRetries: 3, compareRetryDelay: 10 },
       scenario: baseScenario,
       initialRefBuffer: buf1,
-      initialTestBuffer: buf2
+      initialTestBuffer: buf2,
+      refBrowserOrContext: {},
+      testBrowserOrContext: {},
+      engineScriptsPath: ''
     });
 
     // Even if it fails, it should return the best match found
     assert(result.refBuffer, 'Should have best refBuffer');
     assert(result.testBuffer, 'Should have best testBuffer');
+  });
+
+  it('should call preparePage before each capture on every retry', async function () {
+    const preparePageCalls = [];
+    const mockPreparePageTracking = async function (page, url) {
+      preparePageCalls.push({ page, url });
+    };
+
+    // Create images that always mismatch (completely different pixel data)
+    let callCount = 0;
+    const captureScreenshot = async () => {
+      callCount++;
+      const img = new PNG({ width: 200, height: 142 });
+      const baseColor = (callCount * 37) % 256;
+      for (let i = 0; i < img.data.length; i += 4) {
+        img.data[i] = (baseColor + i) % 256;
+        img.data[i + 1] = (baseColor + i * 2) % 256;
+        img.data[i + 2] = (baseColor + i * 3) % 256;
+        img.data[i + 3] = 255;
+      }
+      return PNG.sync.write(img);
+    };
+
+    await retryCompare({
+      captureScreenshot,
+      preparePage: mockPreparePageTracking,
+      refPage: { id: 'ref' },
+      testPage: { id: 'test' },
+      selector: 'body',
+      selectorMap: {},
+      viewport: { width: 800, height: 600 },
+      config: { ...baseConfig, compareRetries: 2, compareRetryDelay: 10 },
+      scenario: baseScenario,
+      initialRefBuffer: buf1,
+      initialTestBuffer: buf2,
+      refBrowserOrContext: {},
+      testBrowserOrContext: {},
+      engineScriptsPath: ''
+    });
+
+    // 2 retries * 2 pages (test + ref) = 4 preparePage calls
+    assert.strictEqual(preparePageCalls.length, 4, 'preparePage should be called 4 times for 2 retries');
+
+    // Verify URLs: each retry prepares test page then ref page (in parallel, but both called)
+    const testUrls = preparePageCalls.filter(c => c.url === 'http://test.example.com');
+    const refUrls = preparePageCalls.filter(c => c.url === 'http://ref.example.com');
+    assert.strictEqual(testUrls.length, 2, 'Should prepare test page twice');
+    assert.strictEqual(refUrls.length, 2, 'Should prepare ref page twice');
+  });
+
+  it('should re-navigate before capture, not after', async function () {
+    const callOrder = [];
+
+    const mockPreparePageOrder = async function () {
+      callOrder.push('preparePage');
+    };
+
+    // Create images that always mismatch
+    let callCount = 0;
+    const captureScreenshot = async () => {
+      callCount++;
+      callOrder.push('capture');
+      const img = new PNG({ width: 200, height: 142 });
+      const baseColor = (callCount * 37) % 256;
+      for (let i = 0; i < img.data.length; i += 4) {
+        img.data[i] = (baseColor + i) % 256;
+        img.data[i + 1] = (baseColor + i * 2) % 256;
+        img.data[i + 2] = (baseColor + i * 3) % 256;
+        img.data[i + 3] = 255;
+      }
+      return PNG.sync.write(img);
+    };
+
+    await retryCompare({
+      captureScreenshot,
+      preparePage: mockPreparePageOrder,
+      refPage: {},
+      testPage: {},
+      selector: 'body',
+      selectorMap: {},
+      viewport: { width: 800, height: 600 },
+      config: { ...baseConfig, compareRetries: 1, compareRetryDelay: 10 },
+      scenario: baseScenario,
+      initialRefBuffer: buf1,
+      initialTestBuffer: buf2,
+      refBrowserOrContext: {},
+      testBrowserOrContext: {},
+      engineScriptsPath: ''
+    });
+
+    // For 1 retry: preparePage (test + ref in parallel), then capture test, then capture ref
+    // preparePage calls come first, then captures
+    assert.strictEqual(callOrder[0], 'preparePage', 'First action should be preparePage');
+    assert.strictEqual(callOrder[1], 'preparePage', 'Second action should be preparePage');
+    assert.strictEqual(callOrder[2], 'capture', 'Third action should be capture');
+    assert.strictEqual(callOrder[3], 'capture', 'Fourth action should be capture');
   });
 });

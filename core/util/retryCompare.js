@@ -1,5 +1,6 @@
 const { PNG } = require('pngjs');
 const { compareBuffers, createCompositeImage } = require('./compare/pixelmatch-inline');
+const defaultPreparePage = require('./preparePage');
 const logger = require('./logger')('retryCompare');
 
 function tryMatchAgainstAll (newScreenshot, existingScreenshots, maxNumDiffPixels) {
@@ -29,8 +30,12 @@ module.exports = async function retryCompare (options) {
     captureScreenshot,
     refPage, testPage,
     selector, selectorMap, viewport, config, scenario,
-    initialRefBuffer, initialTestBuffer
+    initialRefBuffer, initialTestBuffer,
+    refBrowserOrContext, testBrowserOrContext, engineScriptsPath,
+    preparePage: preparePageOverride
   } = options;
+
+  const preparePage = preparePageOverride || defaultPreparePage;
 
   const maxRetries = scenario.compareRetries != null
     ? scenario.compareRetries
@@ -62,6 +67,26 @@ module.exports = async function retryCompare (options) {
     logger.log(`Retry ${retry + 1}/${maxRetries} for "${scenario.label}" [${selector}] - chilling for ${delay}ms`);
     await new Promise(function (resolve) { setTimeout(resolve, delay); });
 
+    // Reset viewport to original dimensions before re-navigation.
+    // captureScreenshot may expand the viewport for element bounding boxes,
+    // and page.goto() does NOT reset it — causing dimension mismatches and
+    // false diff pixels from transparent padding in compareBuffers.
+    const VP_W = viewport.width || viewport.viewport.width;
+    const VP_H = viewport.height || viewport.viewport.height;
+    const setVPRef = refPage.setViewport || refPage.setViewportSize;
+    const setVPTest = testPage.setViewport || testPage.setViewportSize;
+    await Promise.all([
+      setVPRef.call(refPage, { width: VP_W, height: VP_H }),
+      setVPTest.call(testPage, { width: VP_W, height: VP_H })
+    ]);
+
+    // Re-navigate and re-prepare both pages before re-capturing
+    logger.log(`Re-navigating both pages for retry ${retry + 1}...`);
+    await Promise.all([
+      preparePage(testPage, scenario.url, scenario, viewport, config, false, testBrowserOrContext, engineScriptsPath),
+      preparePage(refPage, scenario.referenceUrl, scenario, viewport, config, true, refBrowserOrContext, engineScriptsPath)
+    ]);
+
     // Step 1: Re-capture from test page, compare against all reference screenshots
     const newTestBuffer = await captureScreenshot(testPage, selector, selectorMap, viewport, config);
     if (newTestBuffer) {
@@ -69,7 +94,7 @@ module.exports = async function retryCompare (options) {
 
       const testMatch = tryMatchAgainstAll(newTestBuffer, refScreenshots, maxNumDiffPixels);
       if (testMatch.pass) {
-        logger.log('green', `Match found on retry ${retry + 1} (test vs reference[${testMatch.matchIndex}])`);
+        logger.log(`Match found on retry ${retry + 1} (test vs reference[${testMatch.matchIndex}])`);
         return { pass: true, refBuffer: refScreenshots[testMatch.matchIndex], testBuffer: newTestBuffer };
       }
 
@@ -89,7 +114,7 @@ module.exports = async function retryCompare (options) {
 
       const refMatch = tryMatchAgainstAll(newRefBuffer, testScreenshots, maxNumDiffPixels);
       if (refMatch.pass) {
-        logger.log('green', `Match found on retry ${retry + 1} (reference vs test[${refMatch.matchIndex}])`);
+        logger.log(`Match found on retry ${retry + 1} (reference vs test[${refMatch.matchIndex}])`);
         return { pass: true, refBuffer: newRefBuffer, testBuffer: testScreenshots[refMatch.matchIndex] };
       }
 
@@ -104,7 +129,7 @@ module.exports = async function retryCompare (options) {
   }
 
   // All retries exhausted — save composite diff image
-  logger.log('red', `All ${maxRetries} retries exhausted for "${scenario.label}" [${selector}]. Least diff pixels: ${overallLeastDiff}`);
+  logger.log(`All ${maxRetries} retries exhausted for "${scenario.label}" [${selector}]. Least diff pixels: ${overallLeastDiff}`);
 
   let compositeBuffer = null;
   if (overallBestDiffPng) {

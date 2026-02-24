@@ -1,12 +1,10 @@
 const puppeteer = require('puppeteer');
 
 const fs = require('./fs');
-const path = require('path');
 const chalk = require('chalk');
-const _ = require('lodash');
 const ensureDirectoryPath = require('./ensureDirectoryPath');
-const injectBackstopTools = require('../../capture/backstopTools.js');
 const engineTools = require('./engineTools');
+const preparePage = require('./preparePage');
 
 const MIN_CHROME_VERSION = 62;
 const TEST_TIMEOUT = 60000;
@@ -95,28 +93,11 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     logger.log('blue', 'CREATING NEW REFERENCE FILE');
   }
 
-  // --- set up console output and ready event ---
-  const readyEvent = scenario.readyEvent || config.readyEvent;
-  const readyTimeout = scenario.readyTimeout || config.readyTimeout || 30000;
-  let readyResolve, readyPromise, readyTimeoutTimer;
-  if (readyEvent) {
-    readyPromise = new Promise(resolve => {
-      readyResolve = resolve;
-      // fire the ready event after the readyTimeout
-      readyTimeoutTimer = setTimeout(() => {
-        logger.error('red', `ReadyEvent not detected within readyTimeout limit. (${readyTimeout} ms)`, scenario.url);
-        resolve();
-      }, readyTimeout);
-    });
-  }
-
+  // --- set up console output logging ---
   page.on('console', msg => {
     for (let i = 0; i < msg.args().length; ++i) {
       const line = msg.args()[i];
       logger.log('reset', `Browser Console Log ${i}: ${line}`);
-      if (readyEvent && new RegExp(readyEvent).test(line)) {
-        readyResolve();
-      }
     }
   });
 
@@ -130,142 +111,16 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
   }
 
   let result;
-  const puppetCommands = async () => {
-    // --- BEFORE SCRIPT ---
-    const onBeforeScript = scenario.onBeforeScript || config.onBeforeScript;
-    if (onBeforeScript) {
-      const beforeScriptPath = path.resolve(engineScriptsPath, onBeforeScript);
-      if (fs.existsSync(beforeScriptPath)) {
-        await require(beforeScriptPath)(page, scenario, viewport, isReference, browser, config);
-      } else {
-        logger.warn('reset', 'WARNING: script not found: ' + beforeScriptPath);
-      }
-    }
-
-    //  --- OPEN URL ---
-    let url = scenario.url;
-    if (isReference && scenario.referenceUrl) {
-      url = scenario.referenceUrl;
-    }
-
-    const gotoParameters = scenario?.engineOptions?.gotoParameters || config?.engineOptions?.gotoParameters || {};
-    await page.goto(translateUrl(url, logger), gotoParameters);
-
-    await injectBackstopTools(page);
-
-    //  --- WAIT FOR READY EVENT ---
-    if (readyEvent) {
-      await page.evaluate(`window._readyEvent = '${readyEvent}'`);
-
-      await readyPromise;
-
-      clearTimeout(readyTimeoutTimer);
-
-      // can't use logger here -- this executes on the page
-      await page.evaluate(_ => console.info('readyEvent ok'));
-    }
-
-    // --- WAIT FOR SELECTOR ---
-    if (scenario.readySelector) {
-      await page.waitForSelector(scenario.readySelector, {
-        timeout: readyTimeout
-      });
-    }
-    //
-
-    // --- DELAY ---
-    if (scenario.delay > 0) {
-      await new Promise(resolve => {
-        setTimeout(resolve, scenario.delay);
-      });
-    }
-
-    // --- REMOVE SELECTORS ---
-    if (_.has(scenario, 'removeSelectors')) {
-      const removeSelectors = async () => {
-        return Promise.all(
-          scenario.removeSelectors.map(async (selector) => {
-            await page
-              .evaluate((sel) => {
-                document.querySelectorAll(sel).forEach(s => {
-                  s.style.cssText = 'display: none !important;';
-                  s.classList.add('__86d');
-                });
-              }, selector);
-          })
-        );
-      };
-
-      await removeSelectors();
-    }
-
-    //  --- ON READY SCRIPT ---
-    const onReadyScript = scenario.onReadyScript || config.onReadyScript;
-    if (onReadyScript) {
-      const readyScriptPath = path.resolve(engineScriptsPath, onReadyScript);
-      if (fs.existsSync(readyScriptPath)) {
-        await require(readyScriptPath)(page, scenario, viewport, isReference, browser, config);
-      } else {
-        logger.warn('reset', 'WARNING: script not found: ' + readyScriptPath);
-      }
-    }
-
-    // reinstall tools in case onReadyScript has loaded a new URL.
-    await injectBackstopTools(page);
-
-    // --- HIDE SELECTORS ---
-    if (_.has(scenario, 'hideSelectors')) {
-      const hideSelectors = async () => {
-        return Promise.all(
-          scenario.hideSelectors.map(async (selector) => {
-            await page
-              .evaluate((sel) => {
-                document.querySelectorAll(sel).forEach(s => {
-                  s.style.visibility = 'hidden';
-                });
-              }, selector);
-          })
-        );
-      };
-      await hideSelectors();
-    }
-
-    // --- HANDLE NO-SELECTORS ---
-    if (!_.has(scenario, 'selectors') || !scenario.selectors.length) {
-      scenario.selectors = [DOCUMENT_SELECTOR];
-    }
-
-    await page.evaluate(`window._selectorExpansion = '${scenario.selectorExpansion}'`);
-    await page.evaluate(`window._backstopSelectors = '${scenario.selectors}'`);
-    result = await page.evaluate(() => {
-      if (window._selectorExpansion.toString() === 'true') {
-        window._backstopSelectorsExp = window._backstopTools.expandSelectors(window._backstopSelectors);
-      } else {
-        window._backstopSelectorsExp = window._backstopSelectors;
-      }
-      if (!Array.isArray(window._backstopSelectorsExp)) {
-        window._backstopSelectorsExp = window._backstopSelectorsExp.split(',');
-      }
-      window._backstopSelectorsExpMap = window._backstopSelectorsExp.reduce((acc, selector) => {
-        acc[selector] = {
-          exists: window._backstopTools.exists(selector),
-          isVisible: window._backstopTools.isVisible(selector)
-        };
-        return acc;
-      }, {});
-      return {
-        backstopSelectorsExp: window._backstopSelectorsExp,
-        backstopSelectorsExpMap: window._backstopSelectorsExpMap
-      };
-    });
-  };
-
   let error;
-  await puppetCommands().catch(e => {
+
+  try {
+    const url = (isReference && scenario.referenceUrl) ? scenario.referenceUrl : scenario.url;
+    result = await preparePage(page, url, scenario, viewport, config, isReference, browser, engineScriptsPath);
+  } catch (e) {
     logger.log('red', `Puppeteer encountered an error while running scenario "${scenario.label}"`);
     logger.log('red', e);
     error = e;
-  });
+  }
 
   let compareConfig;
   if (!error) {
@@ -461,18 +316,6 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
       }
     };
     await selectorsShot();
-  }
-}
-
-// handle relative file name
-function translateUrl (url, logger) {
-  const RE = /^[./]/;
-  if (RE.test(url)) {
-    const fileUrl = 'file://' + path.join(process.cwd(), url);
-    logger.log('reset', 'Relative filename detected -- translating to ' + fileUrl);
-    return fileUrl;
-  } else {
-    return url;
   }
 }
 

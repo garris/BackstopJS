@@ -1,0 +1,118 @@
+{
+  "id": "livecompare-manual-test",
+  "viewports": [
+    {
+      "label": "phone",
+      "width": 375,
+      "height": 667
+    },
+    {
+      "label": "tablet",
+      "width": 768,
+      "height": 1024
+    },
+    {
+      "label": "desktop",
+      "width": 1280,
+      "height": 800
+    }
+  ],
+  "scenarios": [
+    {
+      "label": "Homepage",
+      "url": "http://localhost:3030/",
+      "referenceUrl": "http://localhost:3020/",
+      "delay": 50,
+      "misMatchThreshold": 0.1,
+      "selectors": [
+        ".css-30akml",
+        ".css-8qb8m4",
+        "document"
+      ]
+    },
+    {
+      "label": "Products List",
+      "url": "http://localhost:3030/products",
+      "referenceUrl": "http://localhost:3020/products",
+      "delay": 50,
+      "misMatchThreshold": 0.1
+    },
+    {
+      "label": "Products - Electronics Filter",
+      "url": "http://localhost:3030/products",
+      "referenceUrl": "http://localhost:3020/products",
+      "onReadyScript": "onReadyElectronicsFilter.js",
+      "delay": 50,
+      "misMatchThreshold": 0.1
+    },
+    {
+      "label": "Product Detail",
+      "url": "http://localhost:3030/products/1",
+      "referenceUrl": "http://localhost:3020/products/1",
+      "delay": 50,
+      "misMatchThreshold": 0.1
+    },
+    {
+      "label": "Cart",
+      "url": "http://localhost:3030/cart",
+      "referenceUrl": "http://localhost:3020/cart",
+      "delay": 50,
+      "misMatchThreshold": 0.1
+    },
+    {
+      "label": "Admin Dashboard - Cookie Login",
+      "url": "http://localhost:3030/admin",
+      "referenceUrl": "http://localhost:3020/admin",
+      "cookiePath": "backstop_data/engine_scripts/admin-auth-cookie.json",
+      "onReadyScript": "onReadyAdminWithCookie.js",
+      "delay": 50,
+      "misMatchThreshold": 0.1
+    },
+    {
+      "label": "Admin Orders - Form Login Interaction",
+      "url": "http://localhost:3030/admin/orders",
+      "referenceUrl": "http://localhost:3020/admin/orders",
+      "onReadyScript": "onReadyAdminWithInteraction.js",
+      "delay": 50,
+      "misMatchThreshold": 0.1
+    },
+    {
+      "label": "Carousel Demo - Pause With Override CSS",
+      "url": "http://localhost:3030/carousel-demo",
+      "referenceUrl": "http://localhost:3020/carousel-demo",
+      "onReadyScript": "onReadyCarouselPaused.js",
+      "delay": 50,
+      "misMatchThreshold": 0.1
+    },
+    {
+      "label": "Carousel Demo - Stub Slider Images",
+      "url": "http://localhost:3030/carousel-demo",
+      "referenceUrl": "http://localhost:3020/carousel-demo",
+      "onReadyScript": "onReadyCarouselStubImages.js",
+      "delay": 50,
+      "misMatchThreshold": 0.1
+    }
+  ],
+  "paths": {
+    "bitmaps_reference": "backstop_data/bitmaps_reference",
+    "bitmaps_test": "backstop_data/bitmaps_test",
+    "html_report": "backstop_data/html_report",
+    "engine_scripts": "/Users/ramezweissa/code/shaka/shaka-bundle-size/demo-ecommerce/backstop_data/engine_scripts/dist/playwright"
+  },
+  "engine": "playwright",
+  "engineOptions": {
+    "browser": "chromium",
+    "headless": true
+  },
+  "onBeforeScript": "onBefore.js",
+  "onReadyScript": "onReady.js",
+  "asyncCaptureLimit": 1,
+  "compareRetries": 5,
+  "compareRetryDelay": 2000,
+  "maxNumDiffPixels": 50,
+  "report": [
+    "browser"
+  ],
+  "debug": true,
+  "debugWindow": true
+}

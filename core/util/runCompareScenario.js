@@ -1,14 +1,12 @@
 const puppeteer = require('puppeteer');
 
 const fs = require('./fs');
-const path = require('path');
 const chalk = require('chalk');
-const _ = require('lodash');
 const ensureDirectoryPath = require('./ensureDirectoryPath');
-const injectBackstopTools = require('../../capture/backstopTools.js');
 const engineTools = require('./engineTools');
 const { compareBuffers } = require('./compare/pixelmatch-inline');
 const retryCompare = require('./retryCompare');
+const preparePage = require('./preparePage');
 
 const TEST_TIMEOUT = 60000;
 const DEFAULT_FILENAME_TEMPLATE = '{configId}_{scenarioLabel}_{selectorIndex}_{selectorLabel}_{viewportIndex}_{viewportLabel}';
@@ -36,147 +34,6 @@ function createLogger () {
     info: loggerAction.bind(logger, 'info')
   });
   return logger;
-}
-
-// handle relative file name
-function translateUrl (url) {
-  const RE = /^[./]/;
-  if (RE.test(url)) {
-    const fileUrl = 'file://' + path.join(process.cwd(), url);
-    return fileUrl;
-  }
-  return url;
-}
-
-/**
- * Prepare a page: navigate to url, inject tools, wait for ready, handle selectors.
- * Returns the expanded selectors and selectorMap.
- */
-async function preparePage (page, url, scenario, viewport, config, isReference, browserOrContext, engineScriptsPath, logger) {
-  const gotoParameters = scenario?.engineOptions?.gotoParameters || config?.engineOptions?.gotoParameters || {};
-
-  // --- BEFORE SCRIPT ---
-  const onBeforeScript = scenario.onBeforeScript || config.onBeforeScript;
-  if (onBeforeScript) {
-    const beforeScriptPath = path.resolve(engineScriptsPath, onBeforeScript);
-    if (fs.existsSync(beforeScriptPath)) {
-      await require(beforeScriptPath)(page, scenario, viewport, isReference, browserOrContext, config);
-    } else {
-      logger.warn('reset', 'WARNING: script not found: ' + beforeScriptPath);
-    }
-  }
-
-  // --- OPEN URL ---
-  await page.goto(translateUrl(url), gotoParameters);
-  await injectBackstopTools(page);
-
-  // --- READY EVENT ---
-  const readyEvent = scenario.readyEvent || config.readyEvent;
-  const readyTimeout = scenario.readyTimeout || config.readyTimeout || 30000;
-  if (readyEvent) {
-    let readyResolve;
-    const readyPromise = new Promise(function (resolve) {
-      readyResolve = resolve;
-      setTimeout(function () {
-        logger.error('red', 'ReadyEvent not detected within readyTimeout limit. (' + readyTimeout + ' ms)', url);
-        resolve();
-      }, readyTimeout);
-    });
-
-    page.on('console', function (msg) {
-      for (let i = 0; i < msg.args().length; ++i) {
-        const line = msg.args()[i];
-        if (new RegExp(readyEvent).test(line)) {
-          readyResolve();
-        }
-      }
-    });
-
-    await page.evaluate('window._readyEvent = \'' + readyEvent + '\'');
-    await readyPromise;
-  }
-
-  // --- WAIT FOR SELECTOR ---
-  if (scenario.readySelector) {
-    await page.waitForSelector(scenario.readySelector, { timeout: readyTimeout });
-  }
-
-  // --- DELAY ---
-  if (scenario.delay > 0) {
-    await new Promise(function (resolve) { setTimeout(resolve, scenario.delay); });
-  }
-
-  // --- REMOVE SELECTORS ---
-  if (_.has(scenario, 'removeSelectors')) {
-    await Promise.all(
-      scenario.removeSelectors.map(function (sel) {
-        return page.evaluate(function (s) {
-          document.querySelectorAll(s).forEach(function (el) {
-            el.style.cssText = 'display: none !important;';
-            el.classList.add('__86d');
-          });
-        }, sel);
-      })
-    );
-  }
-
-  // --- ON READY SCRIPT ---
-  const onReadyScript = scenario.onReadyScript || config.onReadyScript;
-  if (onReadyScript) {
-    const readyScriptPath = path.resolve(engineScriptsPath, onReadyScript);
-    if (fs.existsSync(readyScriptPath)) {
-      await require(readyScriptPath)(page, scenario, viewport, isReference, browserOrContext, config);
-    } else {
-      logger.warn('reset', 'WARNING: script not found: ' + readyScriptPath);
-    }
-  }
-
-  await injectBackstopTools(page);
-
-  // --- HIDE SELECTORS ---
-  if (_.has(scenario, 'hideSelectors')) {
-    await Promise.all(
-      scenario.hideSelectors.map(function (sel) {
-        return page.evaluate(function (s) {
-          document.querySelectorAll(s).forEach(function (el) {
-            el.style.visibility = 'hidden';
-          });
-        }, sel);
-      })
-    );
-  }
-
-  // --- HANDLE NO-SELECTORS ---
-  if (!_.has(scenario, 'selectors') || !scenario.selectors.length) {
-    scenario.selectors = [DOCUMENT_SELECTOR];
-  }
-
-  // --- EXPAND SELECTORS ---
-  await page.evaluate('window._selectorExpansion = \'' + scenario.selectorExpansion + '\'');
-  await page.evaluate('window._backstopSelectors = \'' + scenario.selectors + '\'');
-  const result = await page.evaluate(function () {
-    if (window._selectorExpansion.toString() === 'true') {
-      window._backstopSelectorsExp = window._backstopTools.expandSelectors(window._backstopSelectors);
-    } else {
-      window._backstopSelectorsExp = window._backstopSelectors;
-    }
-    if (!Array.isArray(window._backstopSelectorsExp)) {
-      window._backstopSelectorsExp = window._backstopSelectorsExp.split(',');
-    }
-    window._backstopSelectorsExpMap = window._backstopSelectorsExp.reduce(function (acc, selector) {
-      acc[selector] = {
-        exists: window._backstopTools.exists(selector),
-        isVisible: window._backstopTools.isVisible(selector)
-      };
-      return acc;
-    }, {});
-    return {
-      backstopSelectorsExp: window._backstopSelectorsExp,
-      backstopSelectorsExpMap: window._backstopSelectorsExpMap
-    };
-  });
-
-  return result;
 }
 
 /**
@@ -264,8 +121,8 @@ async function processCompareView (scenario, variantOrScenarioLabelSafe, scenari
 
   // Prepare both pages in parallel
   const [refResult, testResult] = await Promise.all([
-    preparePage(refPage, scenario.referenceUrl, scenario, viewport, config, true, refBrowserOrContext, engineScriptsPath, logger),
-    preparePage(testPage, scenario.url, scenario, viewport, config, false, testBrowserOrContext, engineScriptsPath, logger)
+    preparePage(refPage, scenario.referenceUrl, scenario, viewport, config, true, refBrowserOrContext, engineScriptsPath),
+    preparePage(testPage, scenario.url, scenario, viewport, config, false, testBrowserOrContext, engineScriptsPath)
   ]);
 
   // Use selectors from test page (the main subject), fall back to reference
@@ -345,7 +202,9 @@ async function processCompareView (scenario, variantOrScenarioLabelSafe, scenari
       scenario,
       initialRefBuffer: refBuffer,
       initialTestBuffer: testBuffer,
-      testPair
+      refBrowserOrContext,
+      testBrowserOrContext,
+      engineScriptsPath
     });
 
     // Save the best screenshots to disk
