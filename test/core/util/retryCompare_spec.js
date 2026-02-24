@@ -13,6 +13,11 @@ const retryCompare = require('../../../core/util/retryCompare');
 // Mock preparePage — no-op, avoids real browser navigation in unit tests
 const mockPreparePage = async function () {};
 
+// Mock page with no-op setViewport (needed for viewport reset in retry loop)
+function createMockPage (props) {
+  return Object.assign({ setViewport: async function () {} }, props);
+}
+
 describe('retryCompare', function () {
   this.timeout(10000); // Increase timeout for retry tests
 
@@ -74,8 +79,8 @@ describe('retryCompare', function () {
     const result = await retryCompare({
       captureScreenshot,
       preparePage: mockPreparePage,
-      refPage: {},
-      testPage: {},
+      refPage: createMockPage(),
+      testPage: createMockPage(),
       selector: 'body',
       selectorMap: {},
       viewport: { width: 800, height: 600 },
@@ -105,8 +110,8 @@ describe('retryCompare', function () {
     const result = await retryCompare({
       captureScreenshot,
       preparePage: mockPreparePage,
-      refPage: { isRef: true },
-      testPage: { isTest: true },
+      refPage: createMockPage({ isRef: true }),
+      testPage: createMockPage({ isTest: true }),
       selector: 'body',
       selectorMap: {},
       viewport: { width: 800, height: 600 },
@@ -144,8 +149,8 @@ describe('retryCompare', function () {
     const result = await retryCompare({
       captureScreenshot,
       preparePage: mockPreparePage,
-      refPage: {},
-      testPage: {},
+      refPage: createMockPage(),
+      testPage: createMockPage(),
       selector: 'body',
       selectorMap: {},
       viewport: { width: 800, height: 600 },
@@ -181,8 +186,8 @@ describe('retryCompare', function () {
     await retryCompare({
       captureScreenshot,
       preparePage: mockPreparePage,
-      refPage: {},
-      testPage: {},
+      refPage: createMockPage(),
+      testPage: createMockPage(),
       selector: 'body',
       selectorMap: {},
       viewport: { width: 800, height: 600 },
@@ -210,8 +215,8 @@ describe('retryCompare', function () {
     const result = await retryCompare({
       captureScreenshot,
       preparePage: mockPreparePage,
-      refPage: {},
-      testPage: {},
+      refPage: createMockPage(),
+      testPage: createMockPage(),
       selector: 'body',
       selectorMap: {},
       viewport: { width: 800, height: 600 },
@@ -237,8 +242,8 @@ describe('retryCompare', function () {
     const result = await retryCompare({
       captureScreenshot,
       preparePage: mockPreparePage,
-      refPage: {},
-      testPage: {},
+      refPage: createMockPage(),
+      testPage: createMockPage(),
       selector: 'body',
       selectorMap: {},
       viewport: { width: 800, height: 600 },
@@ -271,8 +276,8 @@ describe('retryCompare', function () {
     const result = await retryCompare({
       captureScreenshot,
       preparePage: mockPreparePage,
-      refPage: {},
-      testPage: {},
+      refPage: createMockPage(),
+      testPage: createMockPage(),
       selector: 'body',
       selectorMap: {},
       viewport: { width: 800, height: 600 },
@@ -314,8 +319,8 @@ describe('retryCompare', function () {
     await retryCompare({
       captureScreenshot,
       preparePage: mockPreparePageTracking,
-      refPage: { id: 'ref' },
-      testPage: { id: 'test' },
+      refPage: createMockPage({ id: 'ref' }),
+      testPage: createMockPage({ id: 'test' }),
       selector: 'body',
       selectorMap: {},
       viewport: { width: 800, height: 600 },
@@ -364,8 +369,8 @@ describe('retryCompare', function () {
     await retryCompare({
       captureScreenshot,
       preparePage: mockPreparePageOrder,
-      refPage: {},
-      testPage: {},
+      refPage: createMockPage(),
+      testPage: createMockPage(),
       selector: 'body',
       selectorMap: {},
       viewport: { width: 800, height: 600 },
@@ -384,5 +389,91 @@ describe('retryCompare', function () {
     assert.strictEqual(callOrder[1], 'preparePage', 'Second action should be preparePage');
     assert.strictEqual(callOrder[2], 'capture', 'Third action should be capture');
     assert.strictEqual(callOrder[3], 'capture', 'Fourth action should be capture');
+  });
+
+  it('should reset viewport before each retry', async function () {
+    const viewportCalls = [];
+    const mockPage = (id) => ({
+      id,
+      setViewport: async function (vp) { viewportCalls.push({ id, ...vp }); }
+    });
+
+    let callCount = 0;
+    const captureScreenshot = async () => {
+      callCount++;
+      const img = new PNG({ width: 200, height: 142 });
+      const baseColor = (callCount * 37) % 256;
+      for (let i = 0; i < img.data.length; i += 4) {
+        img.data[i] = (baseColor + i) % 256;
+        img.data[i + 1] = (baseColor + i * 2) % 256;
+        img.data[i + 2] = (baseColor + i * 3) % 256;
+        img.data[i + 3] = 255;
+      }
+      return PNG.sync.write(img);
+    };
+
+    await retryCompare({
+      captureScreenshot,
+      preparePage: mockPreparePage,
+      refPage: mockPage('ref'),
+      testPage: mockPage('test'),
+      selector: 'body',
+      selectorMap: {},
+      viewport: { width: 800, height: 600 },
+      config: { ...baseConfig, compareRetries: 2, compareRetryDelay: 10 },
+      scenario: baseScenario,
+      initialRefBuffer: buf1,
+      initialTestBuffer: buf2,
+      refBrowserOrContext: {},
+      testBrowserOrContext: {},
+      engineScriptsPath: ''
+    });
+
+    // 2 retries * 2 pages = 4 viewport reset calls
+    assert.strictEqual(viewportCalls.length, 4, 'Should reset viewport 4 times for 2 retries');
+    // All resets should use the original viewport dimensions
+    viewportCalls.forEach(function (call) {
+      assert.strictEqual(call.width, 800, 'Viewport width should be reset to 800');
+      assert.strictEqual(call.height, 600, 'Viewport height should be reset to 600');
+    });
+  });
+
+  it('should continue retrying when preparePage fails', async function () {
+    let prepareCallCount = 0;
+    let captureCallCount = 0;
+    const failingPreparePage = async function () {
+      prepareCallCount++;
+      if (prepareCallCount <= 2) {
+        // First retry: both preparePage calls fail (they run in parallel)
+        throw new Error('Navigation timeout');
+      }
+      // Second retry: succeed
+    };
+
+    const captureScreenshot = async () => {
+      captureCallCount++;
+      return buf1; // Matches initialRefBuffer
+    };
+
+    const result = await retryCompare({
+      captureScreenshot,
+      preparePage: failingPreparePage,
+      refPage: createMockPage(),
+      testPage: createMockPage(),
+      selector: 'body',
+      selectorMap: {},
+      viewport: { width: 800, height: 600 },
+      config: { ...baseConfig, compareRetries: 2, compareRetryDelay: 10 },
+      scenario: baseScenario,
+      initialRefBuffer: buf1,
+      initialTestBuffer: buf2,
+      refBrowserOrContext: {},
+      testBrowserOrContext: {},
+      engineScriptsPath: ''
+    });
+
+    // First retry failed (preparePage threw), second retry should succeed
+    assert.strictEqual(result.pass, true, 'Should pass after recovering from preparePage failure');
+    assert(captureCallCount > 0, 'Should have captured screenshots on the successful retry');
   });
 });
