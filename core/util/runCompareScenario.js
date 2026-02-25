@@ -253,7 +253,7 @@ module.exports.puppet = async function runComparePuppet ({ scenario, viewport, c
     {},
     {
       ignoreHTTPSErrors: true,
-      headless: config.debugWindow ? false : config?.engineOptions?.headless || 'new'
+      headless: config.debugWindow ? false : (config?.engineOptions?.headless ?? 'new')
     },
     config.engineOptions
   );
