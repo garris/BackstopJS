@@ -63,10 +63,11 @@ async function captureScreenshot (page, selector, selectorMap, viewport, config)
           });
         }
 
-        return await page.screenshot({
-          captureBeyondViewport: false,
-          clip: box
-        });
+        const screenshotOptions = { clip: box };
+        if (page.setViewport) {
+          screenshotOptions.captureBeyondViewport = false;
+        }
+        return await page.screenshot(screenshotOptions);
       }
     }
     return null; // selector not found or not visible
