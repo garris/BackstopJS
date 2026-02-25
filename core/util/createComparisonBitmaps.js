@@ -145,7 +145,7 @@ function delegateCompareScenarios (config) {
   } else if (config.engine.startsWith('play')) {
     return new Promise(function (resolve, reject) {
       createPlaywrightBrowser(config).then(function (browser) {
-        console.log('Browser created');
+        logger.log('Browser created');
 
         for (let i = 0; i < scenarioViews.length; i++) {
           scenarioViews[i]._playwrightBrowser = browser;
