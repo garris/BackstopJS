@@ -106,13 +106,13 @@
   },
   "onBeforeScript": "onBefore.js",
   "onReadyScript": "onReady.js",
-  "asyncCaptureLimit": 1,
+  "asyncCaptureLimit": 4,
   "compareRetries": 5,
   "compareRetryDelay": 2000,
   "maxNumDiffPixels": 50,
   "report": [
     "browser"
   ],
-  "debug": true,
-  "debugWindow": true
+  "debug": false,
+  "debugWindow": false
 }
