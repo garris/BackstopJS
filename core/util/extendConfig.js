@@ -26,9 +26,9 @@ function extendConfig (config, userConfig) {
   config.scenarioLogsInReports = userConfig.scenarioLogsInReports;
 
   // liveCompare command options
-  config.compareRetries = userConfig.compareRetries || 0;
-  config.compareRetryDelay = userConfig.compareRetryDelay || 5000;
-  config.maxNumDiffPixels = userConfig.maxNumDiffPixels || 0;
+  config.compareRetries = userConfig.compareRetries ?? 0;
+  config.compareRetryDelay = userConfig.compareRetryDelay ?? 5000;
+  config.maxNumDiffPixels = userConfig.maxNumDiffPixels ?? 0;
 
   return config;
 }
