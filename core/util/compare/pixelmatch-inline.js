@@ -1,7 +1,7 @@
 const { PNG } = require('pngjs');
 const pixelmatch = require('pixelmatch');
 
-function resizePng (png, targetHeight, targetWidth) {
+function resizePng (png, targetWidth, targetHeight) {
   if (png.width === targetWidth && png.height === targetHeight) {
     return png;
   }
@@ -19,8 +19,8 @@ function compareBuffers (buf1, buf2, options) {
   const height = Math.max(img1.height, img2.height);
   const isSameDimensions = img1.width === img2.width && img1.height === img2.height;
 
-  const resized1 = resizePng(img1, height, width);
-  const resized2 = resizePng(img2, height, width);
+  const resized1 = resizePng(img1, width, height);
+  const resized2 = resizePng(img2, width, height);
 
   const diff = new PNG({ width, height });
   const numDiffPixels = pixelmatch(
