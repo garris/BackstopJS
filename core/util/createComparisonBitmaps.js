@@ -60,6 +60,7 @@ function decorateConfigForCompare (config) {
   configJSON.env = cloneDeep(config);
   configJSON.isReference = false;
   configJSON.isCompare = true;
+  configJSON.paths = configJSON.paths || {};
   configJSON.paths.tempCompareConfigFileName = config.tempCompareConfigFileName;
   configJSON.defaultMisMatchThreshold = config.defaultMisMatchThreshold;
   configJSON.backstopConfigFileName = config.backstopConfigFileName;
