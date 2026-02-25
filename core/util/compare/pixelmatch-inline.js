@@ -6,7 +6,7 @@ function resizePng (png, targetWidth, targetHeight) {
     return png;
   }
   const resized = new PNG({ width: targetWidth, height: targetHeight });
-  PNG.bitblt(png, resized, 0, 0, png.width, png.height, 0, 0);
+  PNG.bitblt(png, resized, 0, 0, Math.min(png.width, targetWidth), Math.min(png.height, targetHeight), 0, 0);
   return resized;
 }
 
