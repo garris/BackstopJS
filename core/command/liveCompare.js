@@ -6,7 +6,7 @@ module.exports = {
     const executeCommand = require('./index');
     if (shouldRunDocker(config)) {
       return runDocker(config, 'liveCompare')
-        .finally(function () {
+        .then(function () {
           if (config.openReport && config.report && config.report.indexOf('browser') > -1) {
             executeCommand('_openReport', config);
           }
