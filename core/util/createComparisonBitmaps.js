@@ -159,7 +159,9 @@ function delegateCompareScenarios (config) {
       }, function (e) { reject(e); });
     });
   } else {
-    logger.error('Engine "' + ((typeof config.engine === 'string' && config.engine) || 'undefined') + '" not recognized!');
+    const engineStr = (typeof config.engine === 'string' && config.engine) || 'undefined';
+    logger.error('Engine "' + engineStr + '" not recognized!');
+    return Promise.reject(new Error('Engine "' + engineStr + '" not recognized'));
   }
 }
 
