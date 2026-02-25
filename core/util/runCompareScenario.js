@@ -243,6 +243,25 @@ async function processCompareView (scenario, variantOrScenarioLabelSafe, scenari
   return compareConfig;
 }
 
+async function buildErrorCompareConfig (config, scenario, viewport, variantOrScenarioLabelSafe, scenarioLabelSafe, error) {
+  config._bitmapsTestPath = config.paths.bitmaps_test || DEFAULT_BITMAPS_TEST_DIR;
+  config._bitmapsReferencePath = config.paths.bitmaps_reference || DEFAULT_BITMAPS_REFERENCE_DIR;
+  config._fileNameTemplate = config.fileNameTemplate || DEFAULT_FILENAME_TEMPLATE;
+  config._outputFileFormatSuffix = '.' + ((config.outputFormat && config.outputFormat.match(/jpg|jpeg/)) || 'png');
+  config._configId = config.id || engineTools.genHash(config.backstopConfigFileName);
+
+  const testPair = engineTools.generateTestPair(config, scenario, viewport, variantOrScenarioLabelSafe, scenarioLabelSafe, 0, (scenario.selectors || ['document']).join('__'));
+  testPair.engineErrorMsg = error.message;
+
+  const filePath = testPair.test;
+  ensureDirectoryPath(filePath);
+  await fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
+  ensureDirectoryPath(testPair.reference);
+  await fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, testPair.reference);
+
+  return { testPairs: [testPair] };
+}
+
 // ── Puppeteer entry point ──────────────────────────────────────────
 
 module.exports.puppet = async function runComparePuppet ({ scenario, viewport, config }) {
@@ -284,22 +303,7 @@ module.exports.puppet = async function runComparePuppet ({ scenario, viewport, c
   }
 
   if (error) {
-    config._bitmapsTestPath = config.paths.bitmaps_test || DEFAULT_BITMAPS_TEST_DIR;
-    config._bitmapsReferencePath = config.paths.bitmaps_reference || DEFAULT_BITMAPS_REFERENCE_DIR;
-    config._fileNameTemplate = config.fileNameTemplate || DEFAULT_FILENAME_TEMPLATE;
-    config._outputFileFormatSuffix = '.' + ((config.outputFormat && config.outputFormat.match(/jpg|jpeg/)) || 'png');
-    config._configId = config.id || engineTools.genHash(config.backstopConfigFileName);
-
-    const testPair = engineTools.generateTestPair(config, scenario, viewport, variantOrScenarioLabelSafe, scenarioLabelSafe, 0, (scenario.selectors || ['document']).join('__'));
-    testPair.engineErrorMsg = error.message;
-
-    compareConfig = { testPairs: [testPair] };
-    const filePath = testPair.test;
-    ensureDirectoryPath(filePath);
-    await fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
-    // Also copy error image to reference path so the report can find it
-    ensureDirectoryPath(testPair.reference);
-    await fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, testPair.reference);
+    compareConfig = await buildErrorCompareConfig(config, scenario, viewport, variantOrScenarioLabelSafe, scenarioLabelSafe, error);
   }
 
   return Promise.resolve(compareConfig);
@@ -341,21 +345,7 @@ module.exports.playwright = async function runComparePlaywright ({ scenario, vie
   }
 
   if (error) {
-    config._bitmapsTestPath = config.paths.bitmaps_test || DEFAULT_BITMAPS_TEST_DIR;
-    config._bitmapsReferencePath = config.paths.bitmaps_reference || DEFAULT_BITMAPS_REFERENCE_DIR;
-    config._fileNameTemplate = config.fileNameTemplate || DEFAULT_FILENAME_TEMPLATE;
-    config._outputFileFormatSuffix = '.' + ((config.outputFormat && config.outputFormat.match(/jpg|jpeg/)) || 'png');
-    config._configId = config.id || engineTools.genHash(config.backstopConfigFileName);
-
-    const testPair = engineTools.generateTestPair(config, scenario, viewport, variantOrScenarioLabelSafe, scenarioLabelSafe, 0, (scenario.selectors || ['document']).join('__'));
-    testPair.engineErrorMsg = error.message;
-
-    compareConfig = { testPairs: [testPair] };
-    const filePath = testPair.test;
-    ensureDirectoryPath(filePath);
-    await fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, filePath);
-    ensureDirectoryPath(testPair.reference);
-    await fs.copy(config.env.backstop + ERROR_SELECTOR_PATH, testPair.reference);
+    compareConfig = await buildErrorCompareConfig(config, scenario, viewport, variantOrScenarioLabelSafe, scenarioLabelSafe, error);
   }
 
   return Promise.resolve(compareConfig);
