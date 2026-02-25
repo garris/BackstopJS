@@ -30,9 +30,9 @@ function decorateConfigForCompare (config) {
   let configJSON;
 
   if (typeof config.args.config === 'object') {
-    configJSON = config.args.config;
+    configJSON = cloneDeep(config.args.config);
   } else {
-    configJSON = Object.assign({}, require(config.backstopConfigFileName));
+    configJSON = cloneDeep(require(config.backstopConfigFileName));
   }
   configJSON.scenarios = configJSON.scenarios || [];
   ensureViewportLabel(configJSON);
