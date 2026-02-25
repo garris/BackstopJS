@@ -61,6 +61,10 @@ module.exports = async function retryCompare (options) {
   overallLeastDiff = initialResult.numDiffPixels;
   overallBestDiffPng = initialResult.diffPng;
 
+  if (initialResult.numDiffPixels <= maxNumDiffPixels) {
+    return { pass: true, refBuffer: initialRefBuffer, testBuffer: initialTestBuffer };
+  }
+
   for (let retry = 0; retry < maxRetries; retry++) {
     // Linear backoff: 5s, 10s, 15s, ...
     const delay = retryDelayMs * (retry + 1);
