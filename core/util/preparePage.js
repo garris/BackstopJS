@@ -51,14 +51,10 @@ async function preparePage (page, url, scenario, viewport, config, isReference, 
     });
 
     var onConsole = function (msg) {
-      for (let i = 0; i < msg.args().length; ++i) {
-        const line = msg.args()[i];
-        if (new RegExp(readyEvent).test(line)) {
-          clearTimeout(readyTimeoutTimer);
-          page.removeListener('console', onConsole);
-          readyResolve();
-          break;
-        }
+      if (new RegExp(readyEvent).test(msg.text())) {
+        clearTimeout(readyTimeoutTimer);
+        page.removeListener('console', onConsole);
+        readyResolve();
       }
     };
     page.on('console', onConsole);
