@@ -52,11 +52,11 @@ const commands = commandNames
   .map(function definitionToExecution (command) {
     return {
       name: command.name,
-      execute: function execute (config) {
+      execute: function execute (config, ...args) {
         config.perf[command.name] = { started: new Date() };
         logger.info('Executing core for "' + command.name + '"');
 
-        let promise = command.commandDefinition.execute(config);
+        let promise = command.commandDefinition.execute(config, ...args);
 
         // If the command didn't return a promise, assume it resolved already
         if (!promise) {
@@ -97,7 +97,7 @@ const exposedCommands = exposedCommandNames
   })
   .reduce(toObjectReducer, {});
 
-function execute (commandName, config) {
+function execute (commandName, config, ...args) {
   if (!_.has(exposedCommands, commandName)) {
     if (commandName.charAt(0) === '_' && _.has(commands, commandName.substring(1))) {
       commandName = commandName.substring(1);
@@ -106,7 +106,7 @@ function execute (commandName, config) {
     }
   }
 
-  return commands[commandName](config);
+  return commands[commandName](config, ...args);
 }
 
 module.exports = execute;

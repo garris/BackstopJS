@@ -243,6 +243,12 @@ module.exports = {
           height: 300
         }
       ]
+    },
+    {
+      label: 'retryOnError',
+      url: 'http://127.0.0.1:65534/nonexistent',
+      retry: 1,
+      selectors: ['document']
     }
   ],
   paths: {

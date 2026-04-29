@@ -198,6 +198,7 @@ Scenario properties, [which may be global](#global-scenario-properties), are des
 | `requireSameDimensions`  | If set to true -- any change in selector size will trigger a test failure.                                                    |
 | `viewports`              | An array of screen size objects your DOM will be tested against. This configuration will override the viewports property assigned at the config root. |
 | `gotoParameters`         | An array of settings passed to page.goto(url, parameters) function.                                                           |
+| `retry`                  | Number of times to retry a scenario on visual mismatch (default: 0)                                                           |
 
 ### Global Scenario Properties
 
@@ -500,6 +501,24 @@ More info on how misMatchThreshold is derived can be found here... https://githu
 `"requireSameDimensions"` (true || false) will change whether BackstopJS will accept any change in dimensions. The default setting is `true`. If set to true then the test must be the same dimensions as the reference. If set to false the test does not have to be the same dimensions as the reference.
 
 This setting can be used in conjunction with `"misMatchThreshold"`, for example, when setting a `"misMatchThreshold"` of more than 0.00% and the mismatch causing a change in dimensions, setting `"requireSameDimensions"` to false will allow the test to still pass, setting it to true would still make it fail.
+
+#### Retrying Failed Scenarios
+
+If your tests run in an environment prone to transient errors (network timeouts, intermittent page load failures), you can configure BackstopJS to automatically retry failed scenarios.
+
+```json
+"scenarios": [
+  {
+    "label": "Flaky page",
+    "url": "https://example.com",
+    "retry": 3
+  }
+]
+```
+
+`"retry"` (number, default: 0) sets how many times a scenario will be re-attempted after a visual mismatch. Each retry re-captures the screenshot and re-compares it against the reference.
+
+This property can also be set globally via `scenarioDefaults` or at the config root level.
 
 #### Capturing the entire document or just the viewport, or just an element, or a combination.
 
