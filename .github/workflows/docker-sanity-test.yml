@@ -13,7 +13,7 @@ permissions:
 
 env:
   BRANCH_NAME: ${{ github.event.pull_request.head_ref || github.event.pull_request.head.ref_name || github.head_ref || github.ref_name }}
-  NODE_VERSION: 20
+  NODE_VERSION: 24
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
 

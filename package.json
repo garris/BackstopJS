@@ -29,8 +29,10 @@
     "smoke-test-docker": "cd test/configs/ && node ../../cli/index.js test --config=backstop_features --docker && npm --prefix ../../ run -s fail-message || npm --prefix ../../ run -s caution-message",
     "smoke-test-playwright-docker": "cd test/configs/ && node ../../cli/index.js test --config=backstop_features_pw --docker && npm --prefix ../../ run -s fail-message || npm --prefix ../../ run -s caution-message",
     "sanity-test": "cd test/configs/ && node ../../cli/index.js test && npm --prefix ../../ run -s success-message || npm --prefix ../../ run -s caution-message",
+    "sanity-test-webp": "cd test/configs/ && node ../../cli/index.js test --config backstop_webp.json && npm --prefix ../../ run -s success-message || npm --prefix ../../ run -s caution-message",
     "reference-test": "cd test/configs/ && node ../../cli/index.js reference && node ../../cli/index.js test",
     "sanity-test-playwright": "cd test/configs/ && node ../../cli/index.js test --config=playwright && npm --prefix ../../ run -s success-message || npm --prefix ../../ run -s caution-message",
+    "sanity-test-playwright-webp": "cd test/configs/ && node ../../cli/index.js test --config=playwright_webp && npm --prefix ../../ run -s success-message || npm --prefix ../../ run -s caution-message",
     "sanity-test-docker": "cd test/configs/ && node ../../cli/index.js test --docker && npm --prefix ../../ run -s success-message || npm --prefix ../../ run -s caution-message",
     "sanity-test-playwright-docker": "cd test/configs/ && node ../../cli/index.js test --config=playwright --docker && npm --prefix ../../ run -s success-message || npm --prefix ../../ run -s caution-message",
     "copy-report-bundle": "mkdir -p test/configs/backstop_data/html_report && cp compare/output/index_bundle.js test/configs/backstop_data/html_report/",
@@ -112,9 +114,9 @@
     "os": "^0.1.2",
     "p-map": "^4.0.0",
     "path": "^0.12.7",
-    "playwright": "^1.40.1",
+    "playwright": "^1.62.1",
     "portfinder": "^1.0.32",
-    "puppeteer": "^22.1.0",
+    "puppeteer": "^25.6.0",
     "super-simple-web-server": "^1.1.4",
     "temp": "^0.9.4"
   }

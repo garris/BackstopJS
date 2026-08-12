@@ -28,7 +28,7 @@ module.exports = function ({ scenario, viewport, config }) {
   config._bitmapsTestPath = config.paths.bitmaps_test || DEFAULT_BITMAPS_TEST_DIR;
   config._bitmapsReferencePath = config.paths.bitmaps_reference || DEFAULT_BITMAPS_REFERENCE_DIR;
   config._fileNameTemplate = config.fileNameTemplate || DEFAULT_FILENAME_TEMPLATE;
-  config._outputFileFormatSuffix = '.' + ((config.outputFormat && config.outputFormat.match(/jpg|jpeg/)) || 'png');
+  config._outputFileFormatSuffix = '.' + ((config.outputFormat && config.outputFormat.match(/jpg|jpeg|webp/)) || 'png');
   config._configId = config.id || engineTools.genHash(config.backstopConfigFileName);
 
   const logger = {
@@ -388,6 +388,7 @@ async function delegateSelectors (
 async function captureScreenshot (page, browser, selector, selectorMap, config, selectors, viewport, logger) {
   let filePath, logFilePath;
   const fullPage = (selector === NOCLIP_SELECTOR || selector === DOCUMENT_SELECTOR);
+  const imageFormat = config.outputFormat || 'png';
   if (selector) {
     filePath = selectorMap[selector].filePath;
     logFilePath = selectorMap[selector].logFilePath;
@@ -396,7 +397,8 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
     try {
       await page.screenshot({
         path: filePath,
-        fullPage
+        fullPage,
+        type: imageFormat
       });
       await writeScenarioLogs(config, logFilePath, logger);
     } catch (e) {
@@ -427,9 +429,10 @@ async function captureScreenshot (page, browser, selector, selectorMap, config, 
             ? {
                 captureBeyondViewport: false,
                 path,
-                clip: box
+                clip: box,
+                type: imageFormat
               }
-            : { captureBeyondViewport: false, path };
+            : { captureBeyondViewport: false, path, type: imageFormat };
 
           await type.screenshot(params);
           await writeScenarioLogs(config, logFilePath, logger);
