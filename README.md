@@ -10,11 +10,7 @@
 
 ## News
 
-**Backstop 6.3.2 -- now with support for Node 20** Many thanks to @dgrebb for this doozy of a maintainance release!
-
-**EmberJS users** -- check out our ember-backstop test helper! https://github.com/garris/ember-backstop
-
-**Want to learn how to Backstop from a pro?** Check out [visual regression testing with BackstopJS on udemy.com]([https://www.udemy.com/course/visual-regression-testing-with-backstopjs/](https://www.udemy.com/course/testes-de-regressao-visual-com-backstopjs/?referralCode=3751623DD59D061311E1)) by [Walmyr Filho](https://www.udemy.com/user/walmyr/)
+BackstopJS needs a new maintainer/owner.  If you are passionate about VRT, reach out to garris@me.com. 
 
 ## Backstop Features
 
