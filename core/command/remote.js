@@ -4,6 +4,20 @@ const { exec } = require('child_process');
 const getRemotePort = require('../util/getRemotePort');
 const ssws = require.resolve('super-simple-web-server');
 
+function wrapPath(pathStr) {
+  if (!pathStr.includes('"')) {
+    return `"${pathStr}"`;
+  }
+
+  // No windows below this point, since double-quotes are not allowed in paths.
+
+  if (!pathStr.includes("'")) {
+    return `'${pathStr}'`;
+  }
+
+  return `"${pathStr.replace(/"/g, '\\"')}"`;
+}
+
 module.exports = {
   execute: function (config) {
     const MIDDLEWARE_PATH = path.resolve(config.backstop, 'remote');
@@ -11,7 +25,7 @@ module.exports = {
 
     return new Promise(function (resolve, reject) {
       const port = getRemotePort();
-      const commandStr = `node ${ssws} ${projectPath} ${MIDDLEWARE_PATH} --config=${config.backstopConfigFileName}`;
+      const commandStr = `node ${wrapPath(ssws)} ${wrapPath(projectPath)} ${wrapPath(MIDDLEWARE_PATH)} --config=${wrapPath(config.backstopConfigFileName)}`;
       const env = { SSWS_HTTP_PORT: port };
 
       logger.log(`Starting remote with: ${commandStr} with env ${JSON.stringify(env)}`);
