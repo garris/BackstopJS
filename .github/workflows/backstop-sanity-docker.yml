@@ -12,7 +12,7 @@ permissions:
   packages: write
 
 env:
-  NODE_VERSION: 20
+  NODE_VERSION: 24
   # BRANCH_NAME: ${{ github.event.pull_request.head_ref || github.event.pull_request.head.ref_name || github.head_ref || github.ref_name }}
   # REGISTRY: ghcr.io
   # IMAGE_NAME: ${{ github.repository }}

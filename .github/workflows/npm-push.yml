@@ -13,7 +13,7 @@ permissions:
   
 env:
   BRANCH_NAME: ${{ github.event.pull_request.head.sha || github.head_ref || github.ref_name }}
-  NODE_VERSION: 20
+  NODE_VERSION: 24
 
 jobs:
   publish:

@@ -111,7 +111,7 @@ module.exports.runPlaywright = function ({ scenario, viewport, config, _playwrig
   config._bitmapsTestPath = config.paths.bitmaps_test || DEFAULT_BITMAPS_TEST_DIR;
   config._bitmapsReferencePath = config.paths.bitmaps_reference || DEFAULT_BITMAPS_REFERENCE_DIR;
   config._fileNameTemplate = config.fileNameTemplate || DEFAULT_FILENAME_TEMPLATE;
-  config._outputFileFormatSuffix = '.' + ((config.outputFormat && config.outputFormat.match(/jpg|jpeg/)) || 'png');
+  config._outputFileFormatSuffix = '.' + ((config.outputFormat && config.outputFormat.match(/jpg|jpeg|webp/)) || 'png');
   config._configId = config.id || engineTools.genHash(config.backstopConfigFileName);
 
   return processScenarioView(scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, config, browser);
@@ -435,6 +435,7 @@ async function delegateSelectors (
 async function captureScreenshot (page, browserContext, selector, selectorMap, config, selectors, viewport) {
   let filePath;
   const fullPage = (selector === NOCLIP_SELECTOR || selector === DOCUMENT_SELECTOR);
+  const imageFormat = config.outputFormat || 'png';
   if (selector) {
     filePath = selectorMap[selector].filePath;
     ensureDirectoryPath(filePath);
@@ -442,7 +443,8 @@ async function captureScreenshot (page, browserContext, selector, selectorMap, c
     try {
       await page.screenshot({
         path: filePath,
-        fullPage
+        fullPage,
+        type: imageFormat
       });
     } catch (e) {
       console.log(chalk.red('Error capturing..'), e);
@@ -467,7 +469,7 @@ async function captureScreenshot (page, browserContext, selector, selectorMap, c
           }
 
           const type = el;
-          const params = { captureBeyondViewport: false, path };
+          const params = { captureBeyondViewport: false, path, type: imageFormat };
 
           await type.screenshot(params);
         } else {
