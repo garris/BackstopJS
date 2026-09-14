@@ -956,6 +956,8 @@ During a test, BackstopJS processes image capture and image comparisons in paral
 
 By default, this value is limited to 10.  This value can be adjusted as needed to increase/decrease the amount of RAM required during a test.
 
+The `BACKSTOP_ASYNC_CAPTURE_LIMIT` environment variable overrides both the default and any `asyncCaptureLimit` in your config.
+
 The example below would capture 5 screens at a time...
 ```json
 asyncCaptureLimit: 5
@@ -964,6 +966,8 @@ asyncCaptureLimit: 5
 #### Comparing Screens In Parallel
 
 By default, this value is limited to 50. This value can be adjusted as needed to increase/decrease the amount of RAM required during a test.
+
+The `BACKSTOP_ASYNC_COMPARE_LIMIT` environment variable overrides both the default and any `asyncCompareLimit` in your config.
 
 As a (very approximate) rule of thumb, BackstopJS will use 100MB RAM plus approximately 5 MB for each concurrent image comparison.
 

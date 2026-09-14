@@ -8,6 +8,7 @@ const { createPlaywrightBrowser, runPlaywright, disposePlaywrightBrowser } = req
 
 const ensureDirectoryPath = require('./ensureDirectoryPath');
 const logger = require('./logger')('createBitmaps');
+const getEnvironmentDefaults = require('./getEnvironmentDefaults');
 
 const CONCURRENCY_DEFAULT = 10;
 
@@ -127,7 +128,7 @@ function delegateScenarios (config) {
     });
   });
 
-  const asyncCaptureLimit = config.asyncCaptureLimit === 0 ? 1 : config.asyncCaptureLimit || CONCURRENCY_DEFAULT;
+  const asyncCaptureLimit = getEnvironmentDefaults().asyncCaptureLimit || (config.asyncCaptureLimit === 0 ? 1 : config.asyncCaptureLimit || CONCURRENCY_DEFAULT);
 
   if (config.engine.startsWith('puppet')) {
     return pMap(scenarioViews, runPuppet, { concurrency: asyncCaptureLimit });
