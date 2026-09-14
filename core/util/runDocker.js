@@ -2,7 +2,7 @@ const { spawn } = require('child_process');
 const version = require('../../package').version;
 const fs = require('./fs');
 
-const DEFAULT_DOCKER_COMMAND_TEMPLATE = 'docker run --rm -it --mount type=bind,source="{cwd}",target=/src backstopjs/backstopjs:{version} {backstopCommand} {args}';
+const DEFAULT_DOCKER_COMMAND_TEMPLATE = 'docker run {envs} --rm -it --mount type=bind,source="{cwd}",target=/src backstopjs/backstopjs:{version} {backstopCommand} {args}';
 
 module.exports.shouldRunDocker = (config) => config.args.docker;
 
@@ -46,7 +46,14 @@ module.exports.runDocker = async (config, backstopCommand) => {
 
     const dockerCommandTemplate = config.dockerCommandTemplate || DEFAULT_DOCKER_COMMAND_TEMPLATE;
 
+    // Forward any BACKSTOP_* environment variables into the container.
+    const envFlags = Object.keys(process.env)
+      .filter(name => name.startsWith('BACKSTOP_'))
+      .map(name => `-e ${name}`)
+      .join(' ');
+
     const dockerCommand = dockerCommandTemplate
+      .replace(/{envs}/g, envFlags)
       .replace(/{cwd}/g, process.cwd())
       .replace(/{version}/, version)
       .replace(/{backstopCommand}/, backstopCommand)
