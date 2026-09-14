@@ -6,6 +6,7 @@ const cp = require('child_process');
 const Reporter = require('./../Reporter');
 const logger = require('./../logger')('compare');
 const storeFailedDiffStub = require('./store-failed-diff-stub.js');
+const getEnvironmentDefaults = require('./../getEnvironmentDefaults');
 
 const ASYNC_COMPARE_LIMIT = 20;
 
@@ -88,7 +89,7 @@ module.exports = function (config) {
   const compareConfig = require(config.tempCompareConfigFileName).compareConfig;
 
   const report = new Reporter(config.ciReport.testSuiteName);
-  const asyncCompareLimit = config.asyncCompareLimit || ASYNC_COMPARE_LIMIT;
+  const asyncCompareLimit = getEnvironmentDefaults().asyncCompareLimit || config.asyncCompareLimit || ASYNC_COMPARE_LIMIT;
   report.id = config.id;
 
   return map(compareConfig.testPairs, pair => comparePair(pair, report, config, compareConfig), { concurrency: asyncCompareLimit })

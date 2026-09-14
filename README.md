@@ -801,13 +801,15 @@ The above flag will cause BackstopJS to hit your Docker local client, spin up a 
 If the default docker command or image does not work for you, you can customize the command to run BackstopJS with Docker by changing the `dockerCommandTemplate` config option. The default is:
 
 ```sh
-"dockerCommandTemplate": "docker run --rm -it --mount type=bind,source=\"{cwd}\",target=/src backstopjs/backstopjs:{version} {backstopCommand} {args}"
+"dockerCommandTemplate": "docker run {envs} --rm -it --mount type=bind,source=\"{cwd}\",target=/src backstopjs/backstopjs:{version} {backstopCommand} {args}"
 ```
+
+`{envs}` will be replaced with `-e` for any environment variable on your system that starts with `BACKSTOP_`
 
 To improve security and prevent ownership problems of the generated files it is recommended to configure the used dockerCommandTemplate to use a user which does match your environment, for example to run it on linux with your current user and group id you could use that template:
 
 ```sh
-"dockerCommandTemplate": "docker run --rm -it --user $(id -u):$(id -g) --mount type=bind,source=\"{cwd}\",target=/src backstopjs/backstopjs:{version} {backstopCommand} {args}"
+"dockerCommandTemplate": "docker run {envs} --rm -it --user $(id -u):$(id -g) --mount type=bind,source=\"{cwd}\",target=/src backstopjs/backstopjs:{version} {backstopCommand} {args}"
 ```
 
 > [!TIP]
@@ -956,6 +958,8 @@ During a test, BackstopJS processes image capture and image comparisons in paral
 
 By default, this value is limited to 10.  This value can be adjusted as needed to increase/decrease the amount of RAM required during a test.
 
+The `BACKSTOP_ASYNC_CAPTURE_LIMIT` environment variable overrides both the default and any `asyncCaptureLimit` in your config.
+
 The example below would capture 5 screens at a time...
 ```json
 asyncCaptureLimit: 5
@@ -964,6 +968,8 @@ asyncCaptureLimit: 5
 #### Comparing Screens In Parallel
 
 By default, this value is limited to 50. This value can be adjusted as needed to increase/decrease the amount of RAM required during a test.
+
+The `BACKSTOP_ASYNC_COMPARE_LIMIT` environment variable overrides both the default and any `asyncCompareLimit` in your config.
 
 As a (very approximate) rule of thumb, BackstopJS will use 100MB RAM plus approximately 5 MB for each concurrent image comparison.
 
