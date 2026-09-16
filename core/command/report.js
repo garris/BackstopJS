@@ -264,8 +264,12 @@ function writeJsonReport (config, reporter) {
 }
 
 module.exports = {
-  execute: function (config) {
-    return compare(config).then(function (report) {
+  execute: function (config, preComputedReport) {
+    const reportPromise = preComputedReport
+      ? Promise.resolve(preComputedReport)
+      : compare(config);
+
+    return reportPromise.then(function (report) {
       const failed = report.failed();
       logger.log('Test completed...');
       logger.log(chalk.green(report.passed() + ' Passed'));
