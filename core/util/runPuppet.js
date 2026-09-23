@@ -49,6 +49,54 @@ function loggerAction (action, color, message, ...rest) {
   console[action](chalk[color](message), ...rest);
 }
 
+/**
+ *
+ * Launch the browser, or connect to it.
+ *
+ * @param {Object} puppeteerArgs
+ * @returns {Promise<Puppeteer.Browser>}
+ */
+async function obtainBrowser (puppeteerArgs) {
+  if (puppeteerArgs.remote === true) {
+    return puppeteer.connect(puppeteerArgs.remoteOptions);
+  }
+
+  return puppeteer.launch(puppeteerArgs);
+}
+
+/**
+ * Close the browser, or disconnect from it.
+ *
+ * @param {Puppeteer.Browser} browser
+ * @param {Object} puppeteerArgs
+ * @returns {Promise<*>}
+ */
+async function releaseBrowser (browser, puppeteerArgs) {
+  if (puppeteerArgs.remote === true) {
+    return browser.disconnect();
+  }
+
+  return browser.close();
+}
+
+/**
+ * Build the puppeteer args object.
+ *
+ * @param {Object} config
+ * @returns {Object}
+ */
+function buildPuppeteerArgs (config) {
+  return Object.assign(
+    {},
+    {
+      ignoreHTTPSErrors: true,
+      headless: config.debugWindow ? false : config?.engineOptions?.headless || 'new',
+      remote: false
+    },
+    config.engineOptions
+  );
+}
+
 async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenarioLabelSafe, viewport, config, logger) {
   const { scenarioDefaults = {} } = config;
 
@@ -76,16 +124,9 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
   const VP_W = viewport.width || viewport.viewport.width;
   const VP_H = viewport.height || viewport.viewport.height;
 
-  const puppeteerArgs = Object.assign(
-    {},
-    {
-      ignoreHTTPSErrors: true,
-      headless: config.debugWindow ? false : config?.engineOptions?.headless || 'new'
-    },
-    config.engineOptions
-  );
+  const puppeteerArgs = buildPuppeteerArgs(config);
 
-  const browser = await puppeteer.launch(puppeteerArgs);
+  const browser = await obtainBrowser(puppeteerArgs);
   const page = await browser.newPage();
 
   await page.setViewport({ width: VP_W, height: VP_H });
@@ -286,7 +327,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
       error = e;
     }
   } else {
-    await browser.close();
+    await releaseBrowser(browser, puppeteerArgs);
   }
 
   if (error) {
@@ -355,6 +396,8 @@ async function delegateSelectors (
     captureJobs.push(function () { return captureScreenshot(page, browser, null, selectorMap, config, captureList, viewport, logger); });
   }
 
+  const puppeteerArgs = buildPuppeteerArgs(config);
+
   return new Promise(function (resolve, reject) {
     let job = null;
     const errors = [];
@@ -378,10 +421,10 @@ async function delegateSelectors (
     next();
   }).then(async () => {
     logger.log('green', 'x Close Browser');
-    await browser.close();
+    await releaseBrowser(browser, puppeteerArgs);
   }).catch(async (err) => {
     logger.log('red', err);
-    await browser.close();
+    await releaseBrowser(browser, puppeteerArgs);
   }).then(_ => compareConfig);
 }
 
