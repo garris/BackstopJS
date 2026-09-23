@@ -4,7 +4,11 @@ const extendConfig = require('./extendConfig');
 const NON_CONFIG_COMMANDS = ['init', 'version', 'stop'];
 
 function projectPath (config) {
-  return process.cwd();
+  if (config && config.args && typeof config.args.projectPath === 'string' && config.args.projectPath.length > 0) {
+    return config.args.projectPath;
+  } else {
+    return process.cwd();
+  }
 }
 
 function loadProjectConfig (command, options, config) {
@@ -54,7 +58,6 @@ function makeConfig (command, options) {
   const config = {};
 
   config.args = options || {};
-
   config.backstop = path.join(__dirname, '../..');
   config.projectPath = projectPath(config);
   config.perf = {};
