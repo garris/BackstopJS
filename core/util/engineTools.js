@@ -51,7 +51,9 @@ function getSelectorName (selector) {
 }
 
 function makeSafe (str) {
-  return str.replace(/[ /]/g, '_');
+  return str
+    .replace(/[^a-z0-9_-]/gi, (match) => encodeURIComponent(match))
+    .replace(/[ /]/g, '_');
 }
 
 function getFilename (fileNameTemplate, outputFileFormatSuffix, configId, scenarioIndex, scenarioLabelSafe, selectorIndex, selectorLabel, viewportIndex, viewportLabel) {
