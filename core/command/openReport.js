@@ -18,15 +18,15 @@ module.exports = {
         resp.on('end', () => {
           if (BACKSTOP_REPORT_SIGNATURE_RE.test(data)) {
             logger.log('Remote found. Opening ' + remoteReportUrl);
-            resolve(open(remoteReportUrl, { wait: false }));
+            resolve(open(remoteReportUrl, { wait: true }));
           } else {
             logger.log('Remote not detected. Opening ' + config.compareReportURL);
-            resolve(open(config.compareReportURL, { wait: false }));
+            resolve(open(config.compareReportURL, { wait: true }));
           }
         });
       }).on('error', (err) => {
         logger.log('Remote not found. Opening ' + config.compareReportURL, 'Error: ' + err.message);
-        resolve(open(path.resolve(config.compareReportURL), { wait: false }));
+        resolve(open(path.resolve(config.compareReportURL), { wait: true }));
       });
     });
   }
