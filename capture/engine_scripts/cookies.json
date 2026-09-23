@@ -1,6 +1,5 @@
 [
   {
-    "domain": ".www.yourdomain.com",
     "path": "/",
     "name": "yourCookieName",
     "value": "yourCookieValue",
