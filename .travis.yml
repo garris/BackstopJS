@@ -2,8 +2,7 @@ addons: # get google-chrome [stable|beta]
   chrome: beta
 language: node_js
 node_js:
-  - 14
-  - 16
+  - 22
 install:
   - npm install
 script:

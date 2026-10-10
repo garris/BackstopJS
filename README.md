@@ -73,6 +73,8 @@ npm install -g backstopjs
 
 ### Installation
 
+BackstopJS requires Node.js 22.12.0 or newer and npm 8 or newer.
+
 #### Global Installation (Recommended)
 
 ```sh
@@ -743,24 +745,25 @@ The [storageState](https://playwright.dev/docs/api/class-browsercontext#browser-
 <!-- omit from toc -->
 ### Setting Puppeteer And Playwright Option Flags
 
-Backstop sets two defaults for both Puppeteer and Playwright:
-
-```json
-ignoreHTTPSErrors: true,
-headless: <!!!config.debugWindow>
-```
-
-You can add more settings (or override the defaults) with the `engineOptions` property. (properties are merged). This is where headless mode can also be set to 'new', until "new headless mode" is less hacky and more supported by Playwright.
-
-> [!INFORMATION]
-> Puppeteer now runs in `new` headless mode by default, but can be set to `old` headless by passing `"headless": true` in the configuration file.
+Puppeteer accepts insecure certificates and runs headless by default. Playwright uses `ignoreHTTPSErrors` for its certificate option.
 
 ```json
 "engineOptions": {
-  "ignoreHTTPSErrors": false,
+  "acceptInsecureCerts": true,
+  "headless": true
+}
+```
+
+Add or override browser settings with `engineOptions`. For Puppeteer, `headless` accepts `true`, `false` or `"shell"`. The legacy value `"new"` still works.
+
+Existing Puppeteer configurations can keep `ignoreHTTPSErrors`. BackstopJS uses it when `acceptInsecureCerts` is absent. An explicit `acceptInsecureCerts` value takes precedence.
+
+```json
+"engineOptions": {
+  "acceptInsecureCerts": false,
   "args": ["--no-sandbox", "--disable-setuid-sandbox"],
-  "headless": "new",
-  "gotoParameters": { "waitUntil": "networkidle0" },
+  "headless": true,
+  "gotoParameters": { "waitUntil": "networkidle0" }
 }
 ```
 
@@ -1151,7 +1154,7 @@ See the next section for running the SMOKE TEST -- Please make sure this is work
 <!-- omit from toc -->
 ### SANITY TEST: Does Backstop work in my environment?
 
-Run the following command from your Desktop, home or project directory to check that Backstop will install and run in your environment. _Please make sure you have node version 8 or above. Windows users: Powershell is recommended._
+Run this command in a new directory to check that BackstopJS installs and runs. Use Node.js 22.12.0 or newer. Windows users can use PowerShell.
 
 ```
 mkdir backstopSanityTest; cd backstopSanityTest; mkdir node_modules; npm install backstopjs; ./node_modules/.bin/backstop init; ./node_modules/.bin/backstop reference; ./node_modules/.bin/backstop test
