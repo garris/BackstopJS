@@ -1,6 +1,17 @@
 
 # Change Log
 
+## Unreleased
+
+Puppeteer 25.13.0 removes the flagged `extract-zip` dependency from the browser installer (#1625).
+
+This update requires Node.js 22.12.0 or newer. Upgrade Node.js before installing this version.
+The Docker base image and Travis tests now use Node.js 22.
+Puppeteer's newer Chrome can change screenshot rendering. Review visual differences before approving new reference images.
+
+Existing `ignoreHTTPSErrors` and `headless: "new"` settings still work with Puppeteer's current launch options.
+Use `acceptInsecureCerts` for new Puppeteer configurations. Explicit `false` values keep certificate validation enabled.
+
  
 ## [6.0.4] - 2021-12-10
 ### Added

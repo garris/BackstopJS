@@ -7,6 +7,7 @@ const _ = require('lodash');
 const ensureDirectoryPath = require('./ensureDirectoryPath');
 const injectBackstopTools = require('../../capture/backstopTools.js');
 const engineTools = require('./engineTools');
+const puppeteerOptions = require('./puppeteerOptions');
 
 const MIN_CHROME_VERSION = 62;
 const TEST_TIMEOUT = 60000;
@@ -76,14 +77,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
   const VP_W = viewport.width || viewport.viewport.width;
   const VP_H = viewport.height || viewport.viewport.height;
 
-  const puppeteerArgs = Object.assign(
-    {},
-    {
-      ignoreHTTPSErrors: true,
-      headless: config.debugWindow ? false : config?.engineOptions?.headless || 'new'
-    },
-    config.engineOptions
-  );
+  const puppeteerArgs = puppeteerOptions(config);
 
   const browser = await puppeteer.launch(puppeteerArgs);
   const page = await browser.newPage();
